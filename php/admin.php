@@ -168,7 +168,7 @@ class el_admin {
 		else {
 			$events = el_db::get_events( 'upcoming' );
 		}
-		$out = self::calendar_nav();
+		$out = el_db::html_calendar_nav();
 		$out .= '<a href="?page=el_admin_new" class="button-primary" style="float:right;">New Event</a>
 			<table class="widefat" style="margin-top:10px;">
 				<thead>
@@ -268,47 +268,6 @@ class el_admin {
 			</tr>
 			</table>';
 		$out .= '<p class="submit"><input type="submit" class="button-primary" name="save" value="Save Event" id="submitbutton"> <a href="?page=el_admin_main" class="button-secondary">Cancel</a></p></form>';
-		return $out;
-	}
-	
-	private static function calendar_nav() {
-		$first_year = el_db::get_event_date( 'first' );
-		$last_year = el_db::get_event_date( 'last' );
-	
-		if ( is_admin() ) {
-			$query_prefix = "?page=el_admin_main&";
-		}
-		else if ( get_option( 'permalink_structure' ) ) {
-			$query_prefix = "?";
-		}
-		else {
-			$existing = "?";
-			foreach ( $_GET as  $k => $v ) {
-				if ( $k != "ytd" && $k != "event_id" ) $existing .= $k . "=" . $v . "&";
-			}
-			$query_prefix = $existing;
-		}
-		
-		if ( isset( $_GET['ytd'] ) ) {
-			$out = '<h2>'.$_GET['ytd'].' Events</h2>';
-			$out .= "<div id=\"cal_nav\"><a href=\"" . $query_prefix . "\">Upcoming</a> | Archive: ";
-		}
-		else if ( isset( $_GET['event_id'] ) ) {
-			$out = "<h2>Event Information</h2>";
-			$out .= "<div id=\"cal_nav\"><a href=\"" . $query_prefix . "\">Upcoming</a> | Archive: ";
-		}
-		else {
-			// TODO: Update setting names:
-			$mfgigcal_settings = get_option('mfgigcal_settings');
-			($mfgigcal_settings['upcoming_title'] == "") ? $upcoming_title = "Upcoming Events" : $upcoming_title = $mfgigcal_settings['upcoming_title'];
-			$out = "<h2>$upcoming_title</h2>";
-			$out .= "<div id=\"cal_nav\"><strong>Upcoming</strong> | Archive: ";
-		}
-	
-		for ($i=$last_year;$i>=$first_year;$i--) {
-			( isset( $_GET['ytd'] ) && $i == $_GET['ytd'] ) ? $out .= "<strong>$i</strong> " : $out .= "<a href=\"" . $query_prefix . "ytd=$i\">$i</a> ";
-		}
-		$out .= "</div>";
 		return $out;
 	}
 
