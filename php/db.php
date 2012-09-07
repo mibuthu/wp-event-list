@@ -145,39 +145,42 @@ class el_db {
 		$last_year = self::get_event_date( 'last' );
 	
 		if ( is_admin() ) {
-			$query_prefix = "?page=el_admin_main&";
+			$url = "?page=el_admin_main&";
 		}
 		else if ( get_option( 'permalink_structure' ) ) {
-			$query_prefix = "?";
+			$url = "?";
 		}
 		else {
 			$existing = "?";
 			foreach ( $_GET as  $k => $v ) {
 				if ( $k != "ytd" && $k != "event_id" ) $existing .= $k . "=" . $v . "&";
 			}
-			$query_prefix = $existing;
+			$url = $existing;
 		}
 	
-		if ( isset( $_GET['ytd'] ) ) {
-			$out = '<h2>'.$_GET['ytd'].' Events</h2>';
-			$out .= "<div id=\"cal_nav\"><a href=\"" . $query_prefix . "\">Upcoming</a> | Archive: ";
-		}
-		else if ( isset( $_GET['event_id'] ) ) {
-			$out = "<h2>Event Information</h2>";
-			$out .= "<div id=\"cal_nav\"><a href=\"" . $query_prefix . "\">Upcoming</a> | Archive: ";
+		// Calendar Navigation
+		$out = '<div id="cal_nav">';
+		if ( isset( $_GET['ytd'] ) || isset( $_GET['event_id'] ) ) {
+			$out .= '<a href="'.$url.'">Upcoming</a>';
 		}
 		else {
-			// TODO: Update setting names:
-			$mfgigcal_settings = get_option('mfgigcal_settings');
-			($mfgigcal_settings['upcoming_title'] == "") ? $upcoming_title = "Upcoming Events" : $upcoming_title = $mfgigcal_settings['upcoming_title'];
-			$out = "<h2>$upcoming_title</h2>";
-			$out .= "<div id=\"cal_nav\"><strong>Upcoming</strong> | Archive: ";
+			$out .= '<strong>Upcoming</strong>';
 		}
-	
-		for ($i=$last_year;$i>=$first_year;$i--) {
-			( isset( $_GET['ytd'] ) && $i == $_GET['ytd'] ) ? $out .= "<strong>$i</strong> " : $out .= "<a href=\"" . $query_prefix . "ytd=$i\">$i</a> ";
+		for( $year=$last_year; $year>=$first_year; $year-- ) {
+			$out .= ' | ';
+			if( isset( $_GET['ytd'] ) && $year == $_GET['ytd'] ) {
+				$out .= '<strong>'.$year.'</strong>';
+			}
+			else {
+				$out .= '<a href="'.$url.'ytd='.$year.'">'.$year.'</a>';
+			}
 		}
-		$out .= "</div>";
+		$out .= '</div><br />';
+		
+		// Title (only if event details are viewed)
+		if( isset( $_GET['event_id'] ) ) {
+			$out .= '<h2>Event Information:</h2>';
+		}
 		return $out;
 	}
 }
