@@ -48,8 +48,7 @@ if ( is_admin() ) {
 
 // FRONT PAGE:
 else {
-	// TODO: add shortcode
-//	add_shortcode( 'event-list', 'on_el_sc_event_list' ); // add shortcode [event-list]
+	add_shortcode( 'event-list', 'on_el_sc_event_list' ); // add shortcode [event-list]
 }
 
 function on_el_plugin_loaded() {
@@ -69,12 +68,12 @@ function on_el_register_settings() {
 	require_once( 'php/options.php' );
 	el_options::register();
 }
-/*
+
 function on_el_sc_event_list( $atts ) {
 	require_once( 'php/sc_event-list.php' );
 	return sc_event_list::show_html( $atts );
 }
-
+/*
 function on_el_widgets() {
 	require_once( 'php/event-list_widget.php' );
 	return register_widget( 'event_list_widget' );
