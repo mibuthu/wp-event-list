@@ -1,0 +1,132 @@
+/* 
+===================
+ Event List Layout
+===================
+
+<ul id="cal">
+
+	<li class="event">
+		<div class="date">
+		
+			<!-- ONLY OUTPUT FOR MULTI-DAY EVENTS -->		
+			<div class="start-date">
+				<div class="weekday"></div>
+				<div class="day"></div>
+				<div class="month"></div>
+				<div class="year"></div>
+			</div>
+			<!-- ONLY OUTPUT FOR MULTI-DAY EVENTS -->
+			
+			<div class="end-date">
+				<div class="weekday"></div>
+				<div class="day"></div>
+				<div class="month"></div>
+				<div class="year"></div>
+			</div>
+		</div>
+		<div class="info_block">
+			<h3>[Event Title]</h3>
+			<span class="time"></span>
+			[Event Location]
+			[Event Details]
+		</div>
+	</li>
+
+</ul>
+
+=======================================
+*/
+/*
+a.rss-link {
+	display:block;
+	height:16px;
+	float:right;
+	background:transparent url(images/icon-rss.png) right top no-repeat;
+	padding-right:20px;
+	line-height:16px;
+}
+*/
+#eventlist_nav {
+	font-size: 1.2em;
+	margin-bottom: 0.3em;
+}
+
+ul#eventlist {
+	list-style: none;
+	margin: 1em 0 1.5em 0;
+	padding: 0;
+}
+
+
+#eventlist li.event {
+	clear: both;
+}
+
+#eventlist .date {
+	white-space: nowrap;
+	float: left;
+	margin-bottom: 1.5em;
+}
+
+#eventlist .multi-date {
+	background: url(../images/date-separator.png) center no-repeat;
+}
+
+#eventlist .start-date, #eventlist .end-date {
+	text-align: center;
+	width: 3.2em;
+	border-radius: 5px;
+	background-color: rgb(220,220,220);
+	overflow: hidden;
+}
+
+#eventlist .start-date {
+	float: left;
+}
+
+#eventlist .end-date {
+	margin-left: 3.8em;
+}
+
+#eventlist .weekday {
+	font-size: 0.9em;
+	text-transform: uppercase;
+}
+
+#eventlist .day {
+	font-size: 1.3em;
+	font-weight: bold;
+	line-height: 1em;
+	margin-bottom: -0.2em;
+}
+
+#eventlist .month {
+	text-transform: uppercase;
+	font-size: 0.9em;
+	line-height: 1em;
+	padding: 0.4em 0 0.4em 0;
+}
+
+#eventlist .year {
+	font-size: 0.8em;
+	line-height: 0.8em;
+	letter-spacing: 0.1em;
+	padding-bottom: 0.3em;
+}
+
+#eventlist .info_block {
+	margin: 0 0 0 7.5em;
+}
+
+#eventlist .info_block h3 {
+	clear: none;
+}
+
+#eventlist .time {
+	font-weight: bold;
+	padding-right: 0.8em;
+}
+
+#eventlist .details {
+	font-size: 0.8em;
+}
