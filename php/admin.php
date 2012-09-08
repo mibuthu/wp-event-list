@@ -138,12 +138,15 @@ class el_admin {
 				<h3>Instructions</h3>
 				<p>Add your events <a href="admin.php?page=el_admin_main">here</a>.</p>
 				<p>To show the events on your site just place this short code on any Page or Post:</p>
-				<pre>[event-list]</pre>
-	
-				<p>The plugin includes a handy widget you can place in your sidebar to show upcoming events.</p>
-				<p>Be sure to also check out the <a href="admin.php?page=el_admin_settings">settings page</a> to get Event List behaving just the way you want.</p>
+				<pre>[event-list]</pre>';
+//				<p>The plugin includes a widget to place your events in a sidebar.</p>
+		$out .= '<p>Be sure to also check out the <a href="admin.php?page=el_admin_settings">settings page</a> to get Event List behaving just the way you want.</p>
 			</div>';
 		echo $out;
+	}
+	
+	public static function embed_admin_js() {
+		echo '<script type="text/javascript" src="'.EL_URL.'/js/admin.js"></script>';
 	}
 
 	private static function list_events() {
@@ -181,7 +184,7 @@ class el_admin {
 						<td class="event_buttons" style="white-space:nowrap;">
 							<a href="?page=el_admin_main&id='.$event->id.'&action=edit" class="button-secondary" title="Edit this event">Edit</a>
 							<a href="?page=el_admin_main&id='.$event->id.'&action=copy" class="button-secondary" title="Create a new event based on this event">Duplicate</a>
-							<a href="?page=el_admin_main&id='.$event->id.'&action=delete" class="button-secondary" title="Delete this event">Delete</a>
+							<a href="#" onClick="eventlist_deleteEvent('.$event->id.');return false;" class="button-secondary" title="Delete this event">Delete</a>
 						</td></tr>';
 			}
 		}
