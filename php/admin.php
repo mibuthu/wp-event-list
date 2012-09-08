@@ -110,21 +110,6 @@ class el_admin {
 				$out .= '
 								</table>';
 				break;
-			case 'comment_form' :
-				$out .= '
-							<p>This is an early version of this plugin. No settings are available yet.</p>';
-				break;
-			case 'comment_form_html' :
-				$out .= '
-							<p>This is an early version of this plugin. No settings are available yet.</p>';
-				break;
-			case 'comment_html' :
-				$out .= '
-							<table class="form-table">';
-				$out .= cgb_admin::show_options( 'comment_html', 'newline' );
-				$out .= '
-								</table>';
-				break;
 			default : // 'general'
 				$out .= '
 							<table class="form-table">';
@@ -169,6 +154,16 @@ class el_admin {
 			$events = el_db::get_events( 'upcoming' );
 		}
 		$out = el_db::html_calendar_nav();
+		$out .=  '<style type="text/css">
+					<!--
+					.widefat .event_date { text-align: right; width: 150px; }
+					.widefat .event_location { text-align: left; width: 27%; min-width: 200px; }
+					.widefat .event_details { min-width: 70px; }
+					.widefat .event_buttons { text-align: right; padding: 8px; }
+					.widefat .event_title { font-weight: bold; }
+					}
+					-->
+				</style>';
 		$out .= '<a href="?page=el_admin_new" class="button-primary" style="float:right;">New Event</a>
 			<table class="widefat" style="margin-top:10px;">
 				<thead>
@@ -183,7 +178,7 @@ class el_admin {
 				$out .= '</td>
 						<td class="event_location"><div class="event_title">'.$event->title.'</div>'.self::truncate( 80, $event->location ).'</td>
 						<td class="event_details">'.self::truncate( 100, $event->details ).'</td>
-						<td class="buttons" style="white-space:nowrap;">
+						<td class="event_buttons" style="white-space:nowrap;">
 							<a href="?page=el_admin_main&id='.$event->id.'&action=edit" class="button-secondary" title="Edit this event">Edit</a>
 							<a href="?page=el_admin_main&id='.$event->id.'&action=copy" class="button-secondary" title="Create a new event based on this event">Duplicate</a>
 							<a href="?page=el_admin_main&id='.$event->id.'&action=delete" class="button-secondary" title="Delete this event">Delete</a>
