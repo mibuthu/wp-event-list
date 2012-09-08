@@ -3,7 +3,7 @@ require_once( EL_PATH.'php/options.php' );
 
 // Class for database access via wordpress functions
 class el_db {
-	const VERSION = "0.03";
+	const VERSION = "0.1";
 	const TABLE_NAME = "event_list";
 
 	// UPDATE DB
