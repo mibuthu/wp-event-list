@@ -98,9 +98,8 @@ class sc_event_list {
 	}
 	
 	private static function html_event( $event, $url=false ) {
-		$out = '<li class="event"><div class="date">';
+		$out = '<li class="event">';
 		$out .= self::html_fulldate( $event->start_date, $event->end_date );
-		$out .= '</div>';
 		$out .= '<div class="info_block"><h3>';
 		if( $url ) {
 			$out .= '<a href="'.$url.'event_id='.$event->id.'">'.$event->title.'</a>';
@@ -126,12 +125,14 @@ class sc_event_list {
 		$out = '';
 		if( $start_date == $end_date ) {
 			// one day event
+			$out .= '<div class="date">';
 			$out .= '<div class="end-date">';
 			$out .= self::html_date( $start_date );
 			$out .= '</div>';
 		}
 		else {
 			// multi day event
+			$out .= '<div class="date multi-date">';
 			$out .= '<div class="start-date">';
 			$out .= self::html_date( $start_date );
 			$out .= '</div>';
@@ -139,6 +140,7 @@ class sc_event_list {
 			$out .= self::html_date( $end_date );
 			$out .= '</div>';
 		}
+		$out .= '</div>';
 		return $out;
 	}
 

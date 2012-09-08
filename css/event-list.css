@@ -68,6 +68,10 @@ ul#eventlist {
 	margin-bottom: 1.5em;
 }
 
+#eventlist .multi-date {
+	background: url(../images/date-separator.png) center no-repeat;
+}
+
 #eventlist .start-date, #eventlist .end-date {
 	text-align: center;
 	width: 3.2em;
@@ -78,14 +82,10 @@ ul#eventlist {
 
 #eventlist .start-date {
 	float: left;
-//	padding-right: 0.5em;
-//	background: transparent url(images/hyphen.png) right 2em no-repeat;
 }
 
-
 #eventlist .end-date {
-	margin-left: 3.6em;
-	overflow: hidden;
+	margin-left: 3.8em;
 }
 
 #eventlist .weekday {
