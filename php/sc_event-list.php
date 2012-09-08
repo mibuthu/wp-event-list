@@ -9,7 +9,7 @@ class sc_event_list {
 
 		'initial_date' => array( 'val'     => 'upcoming<br />year e.g. "2012"',
 		                         'std_val' => 'upcoming',
-		                         'desc'    => 'This attribute specifies which events are listet after the site is shown. The standard is to show the upcoming events.<br />
+		                         'desc'    => 'This attribute specifies which events are listed after the site is shown. The standard is to show the upcoming events.<br />
 		                                       Specify a year e.g. "2012" to change this.' )
 	);
 
@@ -34,7 +34,9 @@ class sc_event_list {
 	private static function html_event_details( $event_id ) {
 		$event = el_db::get_event( $event_id );
 		$out = el_db::html_calendar_nav();
+		$out .= '<ul id="eventlist">';
 		$out .= self::html_event( $event );
+		$out .= '</ul>';
 		return $out;
 	}
 	
@@ -85,7 +87,7 @@ class sc_event_list {
 			}
 			
 			// set html code
-			$out .= '<ul id="cal">';
+			$out .= '<ul id="eventlist">';
 			foreach ($events as $event) {
 				$out .= self::html_event( $event, $url );
 			}
@@ -107,9 +109,11 @@ class sc_event_list {
 			$out .= $event->title;
 		}
 		$out .= '</h3>';
-		$out .= '<span class="time">'.$event->time.'</span>';
-		$out .= $event->location;
-		$out .= $event->details;
+		if( $event->time != '' ) {
+			$out .= '<span class="time">'.$event->time.'</span>';
+		}
+		$out .= '<span class="location">'.$event->location.'</span>';
+		$out .= '<span class="details">'.$event->details.'</span>';
 		$out .= '</div></li>';
 		return $out;
 	}

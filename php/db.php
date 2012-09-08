@@ -159,7 +159,7 @@ class el_db {
 		}
 	
 		// Calendar Navigation
-		$out = '<div id="cal_nav">';
+		$out = '<div id="eventlist_nav">';
 		if ( isset( $_GET['ytd'] ) || isset( $_GET['event_id'] ) ) {
 			$out .= '<a href="'.$url.'">Upcoming</a>';
 		}

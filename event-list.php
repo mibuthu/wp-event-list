@@ -49,6 +49,8 @@ if ( is_admin() ) {
 // FRONT PAGE:
 else {
 	add_shortcode( 'event-list', 'on_el_sc_event_list' ); // add shortcode [event-list]
+	// Stylesheet for display
+	add_action('wp_print_styles', 'on_el_styles');
 }
 
 function on_el_plugin_loaded() {
@@ -73,6 +75,12 @@ function on_el_sc_event_list( $atts ) {
 	require_once( 'php/sc_event-list.php' );
 	return sc_event_list::show_html( $atts );
 }
+
+function on_el_styles() {
+	wp_register_style('event-list_css', EL_URL.'css/event-list.css');
+	wp_enqueue_style( 'event-list_css');
+}
+
 /*
 function on_el_widgets() {
 	require_once( 'php/event-list_widget.php' );
