@@ -1,5 +1,5 @@
 <?php
-require_once( EL_PATH.'php/options.php' );
+//require_once( EL_PATH.'php/options.php' );
 require_once( EL_PATH.'php/db.php' );
 
 // This class handles all available admin pages

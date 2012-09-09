@@ -1,5 +1,5 @@
 <?php
-require_once( EL_PATH.'php/options.php' );
+//require_once( EL_PATH.'php/options.php' );
 
 // Class for database access via wordpress functions
 class el_db {
@@ -8,7 +8,8 @@ class el_db {
 
 	// UPDATE DB
 	public static function update_check() {
-		if( el_options::get( 'el_db_version' ) != self::VERSION) {
+		// TODO: added version checking
+//		if( el_options::get( 'el_db_version' ) != self::VERSION) {
 			$sql = 'CREATE TABLE '.self::table_name().' (
 				id int(11) NOT NULL AUTO_INCREMENT,
 				pub_user bigint(20) NOT NULL,
@@ -26,8 +27,8 @@ class el_db {
 			require_once( ABSPATH.'wp-admin/includes/upgrade.php' );
 			dbDelta( $sql );
 			
-			el_options::set( 'el_db_version', self::VERSION );
-		}
+//			el_options::set( 'el_db_version', self::VERSION );
+//		}
 	}
 
 	public static function table_name() {

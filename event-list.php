@@ -43,7 +43,7 @@ add_action( 'plugins_loaded', 'on_el_plugin_loaded' );
 // ADMIN PAGE:
 if ( is_admin() ) {
 	add_action( 'admin_menu', 'on_el_admin' ); // add admin pages in admin menu
-	add_action( 'admin_init', 'on_el_register_settings' ); // register settings
+//	add_action( 'admin_init', 'on_el_register_settings' ); // register settings
 }
 
 // FRONT PAGE:
@@ -67,12 +67,12 @@ function on_el_admin() {
 	add_submenu_page( 'el_admin_main', 'Event List Settings', 'Settings', 'manage_options', 'el_admin_settings', array( 'el_admin', 'show_settings' ) );
 	add_submenu_page( 'el_admin_main', 'About Event List', 'About', 'manage_options', 'el_admin_about', array( 'el_admin', 'show_about' ) );
 }
-
+/*
 function on_el_register_settings() {
 	require_once( 'php/options.php' );
 	el_options::register();
 }
-
+*/
 function on_el_sc_event_list( $atts ) {
 	require_once( 'php/sc_event-list.php' );
 	return sc_event_list::show_html( $atts );
