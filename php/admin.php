@@ -17,8 +17,8 @@ class el_admin {
 			</div>';
 		
 		// is there POST data to deal with?
-		if ($_POST) {
-			el_db::update_event($_POST);
+		if( !empty( $_POST ) ) {
+			el_db::update_event( $_POST );
 		}
 		
 		$out .= '<div class="wrap">';
@@ -204,7 +204,7 @@ class el_admin {
 		if( isset( $_GET['id'] ) ) {
 			// existing event
 			$event = el_db::get_event( $_GET['id'] );
-			if ( isset( $_GET['action'] ) && $_GET['action'] == 'copy' ) {
+			if( isset( $_GET['action'] ) && $_GET['action'] == 'copy' ) {
 				// copy of existing event
 				$start_date = date('Y-m-d');
 				$end_date = date('Y-m-d');

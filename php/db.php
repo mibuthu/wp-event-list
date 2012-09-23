@@ -88,7 +88,7 @@ class el_db {
 	
 	public static function update_event( $event_data ) {
 		global $wpdb;
-		self::remove_wp_magic_quotes();
+		$event_data = self::remove_magic_quotes( $event_data );
 		$current_user = wp_get_current_user();
 		
 		$sqldata = array( 'pub_user'   => $current_user->ID,
@@ -114,11 +114,8 @@ class el_db {
 		$wpdb->query( 'DELETE FROM '.self::table_name().' WHERE id = "'.$event_id.'"' );
 	}
 	
-	public static function remove_wp_magic_quotes() {
-		$_GET    = stripslashes_deep($_GET);
-		$_POST   = stripslashes_deep($_POST);
-		$_COOKIE = stripslashes_deep($_COOKIE);
-		$_REQUEST = stripslashes_deep($_REQUEST);
+	public static function remove_magic_quotes( $array ) {
+		return stripslashes_deep( $array );
 	}
 	
 	public static function extract_date( $date, $format ) {
@@ -145,23 +142,23 @@ class el_db {
 		$first_year = self::get_event_date( 'first' );
 		$last_year = self::get_event_date( 'last' );
 	
-		if ( is_admin() ) {
+		if( is_admin() ) {
 			$url = "?page=el_admin_main&";
 		}
-		else if ( get_option( 'permalink_structure' ) ) {
+		else if( get_option( 'permalink_structure' ) ) {
 			$url = "?";
 		}
 		else {
 			$existing = "?";
-			foreach ( $_GET as  $k => $v ) {
-				if ( $k != "ytd" && $k != "event_id" ) $existing .= $k . "=" . $v . "&";
+			foreach( $_GET as  $k => $v ) {
+				if( $k != "ytd" && $k != "event_id" ) $existing .= $k . "=" . $v . "&";
 			}
 			$url = $existing;
 		}
 	
 		// Calendar Navigation
 		$out = '<div id="eventlist_nav">';
-		if ( isset( $_GET['ytd'] ) || isset( $_GET['event_id'] ) ) {
+		if( isset( $_GET['ytd'] ) || isset( $_GET['event_id'] ) ) {
 			$out .= '<a href="'.$url.'">Upcoming</a>';
 		}
 		else {
