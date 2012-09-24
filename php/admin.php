@@ -230,7 +230,7 @@ class el_admin {
 		$out .= '<table class="form-table">
 			<tr>
 				<th><label>Start Date (required)</label></th>
-				<td><input type="text" class="text datepicker form-required" name="start_date" id="start_date" value="'.$start_date.'" /> <label><input type="checkbox" id="multi" /> Multiple Day Event</label></td>
+				<td><input type="text" class="text datepicker form-required" name="start_date" id="start_date" value="'.$start_date.'" /> <label><input type="checkbox" id="multiday" /> Multiple Day Event</label></td>
 			</tr>
 			<tr id="end_date_row">
 				<th><label>End Date</label></th>

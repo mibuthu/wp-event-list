@@ -88,17 +88,42 @@ class el_db {
 	
 	public static function update_event( $event_data ) {
 		global $wpdb;
-		$event_data = self::remove_magic_quotes( $event_data );
+		// prepare and validate sqldata
+		$sqldata = array();
+		//pub_user
 		$current_user = wp_get_current_user();
-		
-		$sqldata = array( 'pub_user'   => $current_user->ID,
-		                  'pub_date'   => date( "Y-m-d H:i:s" ),
-		                  'start_date' => $event_data['start_date'],
-		                  'end_date'   => $event_data['end_date'],
-		                  'time'       => $event_data['time'],
-		                  'title'      => $event_data['title'],
-		                  'location'   => $event_data['location'],
-		                  'details'    => $event_data['details'] );
+		$sqldata['pub_user'] = $current_user->ID;
+		//pub_date
+		$sqldata['pub_date'] = date( "Y-m-d H:i:s" );
+		//start_date
+		if( !isset( $event_data['start_date']) ) { return false; }
+		$start_timestamp = 0;
+		$sqldata['start_date'] = self::extract_date( $event_data['start_date'], "Y-m-d", $start_timestamp );
+		if( false === $sqldata['start_date'] ) { return false; }
+		//end_date
+		if( !isset( $event_data['end_date']) ) { return false; }
+		if( !isset( $event_data['multiday'] ) || "checked" === $event_data['multiday'] ) {
+			$end_timestamp = 0;
+			$sqldata['end_date'] = self::extract_date( $event_data['end_date'], "Y-m-d", $end_timestamp );
+			if( false === $sqldata['end_date'] ) { $sqldata['end_date'] = $sqldata['start_date']; }
+			elseif( $end_timestamp < $start_timestamp )	 { $sqldata['end_date'] = $sqldata['start_date']; }
+		}
+		else {
+			$sqldata['end_date'] = $sqldata['start_date'];
+		}
+		//time
+		if( !isset( $event_data['time'] ) ) { $sqldata['time'] = ''; }
+		else { $sqldata['time'] = $event_data['time']; }
+		//title
+		if( !isset( $event_data['title'] ) ) { return false; }
+		$sqldata['title'] = stripslashes( $event_data['title'] );
+		//location
+		if( !isset( $event_data['location'] ) ) { $sqldata['location'] = ''; }
+		else { $sqldata['location'] = stripslashes ($event_data['location'] ); }
+		//details
+		if( !isset( $event_data['details'] ) ) { $sqldata['details'] = ''; }
+		else { $sqldata['details'] = stripslashes ($event_data['details'] ); }
+		//types for sql data
 		$sqltypes = array( '%s', '%s', '%s', '%s', '%s', '%s', '%s' );
 
 		if( isset( $event_data['id'] ) ) { // update event
@@ -111,31 +136,25 @@ class el_db {
 	
 	public static function delete_event( $event_id ) {
 		global $wpdb;
-		$wpdb->query( 'DELETE FROM '.self::table_name().' WHERE id = "'.$event_id.'"' );
+		$wpdb->query( $wpdb->prepare( 'DELETE FROM '.self::table_name().' WHERE id = "'.$event_id.'"' ) );
 	}
 	
-	public static function remove_magic_quotes( $array ) {
-		return stripslashes_deep( $array );
-	}
-	
-	public static function extract_date( $date, $format ) {
-	
-		if( $date == "0000-00-00" || !$date ) return false;
-	
-		$dateArray = explode( "-", $date );
-		$date = mktime( 0, 0, 0, $dateArray[1] ,$dateArray[2] ,$dateArray[0] );
-	
-		// special for day set to "00"
-		if( $dateArray[2] == "00" ) {
-			if( $format == "d" ) {
-				return "00";
-			}
-			else {
-				$date = mktime(0,0,0,$dateArray[1],15,$dateArray[0]);
-			}
+	public static function extract_date( $datestring, $ret_format, &$ret_timestamp=NULL, &$ret_datearray=NULL ) {
+		$date_array = date_parse( $datestring );
+		if( !empty( $date_array['errors']) ) {
+			return false;
 		}
-	
-		return date( $format, $date );
+		if( false === checkdate( $date_array['month'], $date_array['day'], $date_array['year'] ) ) {
+			return false;
+		}
+		$timestamp = mktime( 0, 0, 0, $date_array['month'], $date_array['day'], $date_array['year'] );
+		if( isset( $ret_timestamp ) ) {
+			$ret_timestamp = $timestamp;
+		}
+		if( isset( $ret_datearray ) ) {
+			$ret_datearray = $date_array;
+		}
+		return date( $ret_format, $timestamp );
 	}
 	
 	public static function html_calendar_nav() {
