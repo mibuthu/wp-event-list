@@ -23,10 +23,10 @@ class el_db {
 				history text,
 				PRIMARY KEY  (id) )
 				DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;';
-	
+
 			require_once( ABSPATH.'wp-admin/includes/upgrade.php' );
 			dbDelta( $sql );
-			
+
 //			el_options::set( 'el_db_version', self::VERSION );
 //		}
 	}
@@ -35,10 +35,10 @@ class el_db {
 		global $wpdb;
 		return $wpdb->prefix.self::TABLE_NAME;
 	}
-	
+
 	public static function get_events( $date_range='all' ) {
 		global $wpdb;
-		
+
 		// set date for data base query
 		if( $date_range === 'all' ) {
 			// get all events
@@ -57,13 +57,13 @@ class el_db {
 		$sql = 'SELECT * FROM '.self::table_name().' WHERE (end_date >= "'.$range_start.'" AND start_date <= "'.$range_end.'") ORDER BY start_date ASC, time ASC, end_date ASC';
 		return $wpdb->get_results( $sql );
 	}
-	
+
 	public static function get_event( $id ) {
 		global $wpdb;
 		$sql = 'SELECT * FROM '.self::table_name().' WHERE id = '.$id.' LIMIT 1';
 		return $wpdb->get_row( $sql );
 	}
-	
+
 	public static function get_event_date( $event ) {
 		global $wpdb;
 		if( $event === 'first' ) {
@@ -85,14 +85,13 @@ class el_db {
 		}
 		return $date;
 	}
-	
+
 	public static function update_event( $event_data ) {
 		global $wpdb;
 		// prepare and validate sqldata
 		$sqldata = array();
 		//pub_user
-		$current_user = wp_get_current_user();
-		$sqldata['pub_user'] = $current_user->ID;
+		$sqldata['pub_user'] = wp_get_current_user()->ID;
 		//pub_date
 		$sqldata['pub_date'] = date( "Y-m-d H:i:s" );
 		//start_date
@@ -115,7 +114,7 @@ class el_db {
 		if( !isset( $event_data['time'] ) ) { $sqldata['time'] = ''; }
 		else { $sqldata['time'] = $event_data['time']; }
 		//title
-		if( !isset( $event_data['title'] ) ) { return false; }
+		if( !isset( $event_data['title'] ) || $event_data['title'] === '' ) { return false; }
 		$sqldata['title'] = stripslashes( $event_data['title'] );
 		//location
 		if( !isset( $event_data['location'] ) ) { $sqldata['location'] = ''; }
@@ -133,12 +132,12 @@ class el_db {
 			$wpdb->insert( self::table_name(), $sqldata, $sqltypes );
 		}
 	}
-	
+
 	public static function delete_event( $event_id ) {
 		global $wpdb;
 		$wpdb->query( $wpdb->prepare( 'DELETE FROM '.self::table_name().' WHERE id = "'.$event_id.'"' ) );
 	}
-	
+
 	public static function extract_date( $datestring, $ret_format, &$ret_timestamp=NULL, &$ret_datearray=NULL ) {
 		$date_array = date_parse( $datestring );
 		if( !empty( $date_array['errors']) ) {
@@ -156,11 +155,11 @@ class el_db {
 		}
 		return date( $ret_format, $timestamp );
 	}
-	
+
 	public static function html_calendar_nav() {
 		$first_year = self::get_event_date( 'first' );
 		$last_year = self::get_event_date( 'last' );
-	
+
 		if( is_admin() ) {
 			$url = "?page=el_admin_main&";
 		}
@@ -174,7 +173,7 @@ class el_db {
 			}
 			$url = $existing;
 		}
-	
+
 		// Calendar Navigation
 		$out = '<div id="eventlist_nav">';
 		if( isset( $_GET['ytd'] ) || isset( $_GET['event_id'] ) ) {
@@ -193,7 +192,7 @@ class el_db {
 			}
 		}
 		$out .= '</div><br />';
-		
+
 		// Title (only if event details are viewed)
 		if( isset( $_GET['event_id'] ) ) {
 			$out .= '<h2>Event Information:</h2>';
