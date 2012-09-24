@@ -102,7 +102,7 @@ class el_db {
 		if( false === $sqldata['start_date'] ) { return false; }
 		//end_date
 		if( !isset( $event_data['end_date']) ) { return false; }
-		if( !isset( $event_data['multiday'] ) || "checked" === $event_data['multiday'] ) {
+		if( isset( $event_data['multiday'] ) && "1" === $event_data['multiday'] ) {
 			$end_timestamp = 0;
 			$sqldata['end_date'] = self::extract_date( $event_data['end_date'], "Y-m-d", $end_timestamp );
 			if( false === $sqldata['end_date'] ) { $sqldata['end_date'] = $sqldata['start_date']; }
