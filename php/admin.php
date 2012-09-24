@@ -10,36 +10,31 @@ class el_admin {
 		if ( !current_user_can( 'edit_posts' ) ) {
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
-
-		$out ='
-			<div class="wrap nosubsub" style="padding-bottom:15px">
-			<div id="icon-edit-pages" class="icon32"><br /></div><h2>Events <a href="?page=el_admin_new" class="add-new-h2"> Add New </a></h2>
-			</div>';
-
+		$action = '';
 		// is there POST data an event was edited must be updated
 		if( !empty( $_POST ) ) {
 			el_db::update_event( $_POST );
 		}
-
-		$out .= '<div class="wrap">';
-
-		if( !isset( $_GET['action'] ) ) {
-			$_GET['action'] = '';
+		// get action
+		if( isset( $_GET['action'] ) ) {
+			$action = $_GET['action'];
 		}
-		switch ( $_GET['action'] ) {
-			case "edit" :
-				$out .= self::show_edit();
-				break;
-			case "delete" :
-				el_db::delete_event( $_GET['id'] );
-				$out .= self::list_events();
-				break;
-			case "copy" :
-				$out .= self::edit_event();
-				break;
-			default :
-				$out .= self::list_events();
+		// if an event should be edited a different page must be displayed
+		if( $action === 'edit' ) {
+			self::show_edit();
+			return;
 		}
+		// delete an event if required
+		if( $action === 'delete' && isset( $_GET['id'] ) ) {
+			el_db::delete_event( $_GET['id'] );
+		}
+		// headline for the normal page
+		$out ='
+			<div class="wrap nosubsub" style="padding-bottom:15px">
+			<div id="icon-edit-pages" class="icon32"><br /></div><h2>Events <a href="?page=el_admin_new" class="add-new-h2"> Add New </a></h2>
+			</div>
+			<div class="wrap">';
+			$out .= self::list_events();
 		$out .= '</div>';
 		echo $out;
 	}
@@ -182,7 +177,7 @@ class el_admin {
 						<td class="event_details">'.self::truncate( 100, $event->details ).'</td>
 						<td class="event_buttons" style="white-space:nowrap;">
 							<a href="?page=el_admin_main&id='.$event->id.'&action=edit" class="button-secondary" title="Edit this event">Edit</a>
-							<a href="?page=el_admin_main&id='.$event->id.'&action=copy" class="button-secondary" title="Create a new event based on this event">Duplicate</a>
+							<a href="?page=el_admin_new&id='.$event->id.'&action=copy" class="button-secondary" title="Create a new event based on this event">Duplicate</a>
 							<a href="#" onClick="eventlist_deleteEvent('.$event->id.');return false;" class="button-secondary" title="Delete this event">Delete</a>
 						</td></tr>';
 			}
@@ -198,32 +193,30 @@ class el_admin {
 	}
 
 	private static function edit_event() {
-		$copy = false;
-		$new = false;
-		if( isset( $_GET['id'] ) ) {
+		$edit = false;
+		if( isset( $_GET['id'] ) && is_numeric( $_GET['id'] ) ) {
 			// existing event
 			$event = el_db::get_event( $_GET['id'] );
-			if( isset( $_GET['action'] ) && $_GET['action'] == 'copy' ) {
+			if( isset( $_GET['action'] ) && $_GET['action'] === 'copy' ) {
 				// copy of existing event
 				$start_date = date('Y-m-d');
 				$end_date = date('Y-m-d');
-				$copy = true;
 			}
 			else {
 				// edit existing event
 				$start_date = $event->start_date;
 				$end_date = $event->end_date;
+				$edit = true;
 			}
 		}
 		else {
 			//new event
 			$start_date = date('Y-m-d');
 			$end_date = date('Y-m-d');
-			$new = true;
 		}
 
 		$out = '<form method="POST" action="?page=el_admin_main">';
-		if ( !$new && !$copy ) {
+		if ( true === $edit ) {
 			$out .= '<input type="hidden" name="id" value="'.$_GET['id'].'" />';
 		}
 		$out .= '<table class="form-table">
