@@ -15,12 +15,12 @@ class el_admin {
 			<div class="wrap nosubsub" style="padding-bottom:15px">
 			<div id="icon-edit-pages" class="icon32"><br /></div><h2>Event List</h2>
 			</div>';
-		
+
 		// is there POST data to deal with?
-		if ($_POST) {
-			el_db::update_event($_POST);
+		if( !empty( $_POST ) ) {
+			el_db::update_event( $_POST );
 		}
-		
+
 		$out .= '<div class="wrap">';
 
 		if( !isset( $_GET['action'] ) ) {
@@ -43,7 +43,7 @@ class el_admin {
 		$out .= '</div>';
 		echo $out;
 	}
-	
+
 	public static function show_new() {
 		$out = '<div class="wrap">
 				<div class="wrap nosubsub" style="padding-bottom:15px">
@@ -53,7 +53,7 @@ class el_admin {
 		$out .= '</div>';
 		echo $out;
 	}
-	
+
 	private static function show_edit() {
 		$out = '<div class="wrap">
 				<div class="wrap nosubsub" style="padding-bottom:15px">
@@ -63,7 +63,7 @@ class el_admin {
 		$out .= '</div>';
 		echo $out;
 	}
-	
+
 	public static function show_settings () {
 		if (!current_user_can('manage_options'))  {
 			wp_die( __('You do not have sufficient permissions to access this page.') );
@@ -129,7 +129,7 @@ class el_admin {
 		</div>';
 		echo $out;
 	}
-	
+
 	public static function show_about() {
 		$out = '<div class="wrap">
 				<div class="wrap nosubsub" style="padding-bottom:15px">
@@ -144,7 +144,7 @@ class el_admin {
 			</div>';
 		echo $out;
 	}
-	
+
 	public static function embed_admin_js() {
 		echo '<script type="text/javascript" src="'.EL_URL.'/js/admin.js"></script>';
 	}
@@ -170,10 +170,10 @@ class el_admin {
 		$out .= '<a href="?page=el_admin_new" class="button-primary" style="float:right;">New Event</a>
 			<table class="widefat" style="margin-top:10px;">
 				<thead>
-				<tr><th class="event_date">Date</th><th class="event_location">Event</th><th class="event_details" colspan="2">Event Details</th></tr>
+				<tr><th class="event_date">Date</th><th class="event_location">Event</th><th class="event_details">Details</th><th class="event_buttons">Actions</tr>
 			</thead>';
 
-		if ( !empty( $events ) ) {	
+		if ( !empty( $events ) ) {
 			foreach ( $events as $event ) {
 				$out .= '<tr><td class="event_date">';
 				$out .= self::format_date( $event->start_date, $event->end_date).'<br />';
@@ -193,18 +193,18 @@ class el_admin {
 				<td colspan="10" style="text-align:center;">No events found in this range.</td>
 			</tr>';
 		}
-	
+
 		$out .= "</table>";
 		return $out;
 	}
-	
+
 	private static function edit_event() {
 		$copy = false;
 		$new = false;
 		if( isset( $_GET['id'] ) ) {
 			// existing event
 			$event = el_db::get_event( $_GET['id'] );
-			if ( isset( $_GET['action'] ) && $_GET['action'] == 'copy' ) {
+			if( isset( $_GET['action'] ) && $_GET['action'] == 'copy' ) {
 				// copy of existing event
 				$start_date = date('Y-m-d');
 				$end_date = date('Y-m-d');
@@ -230,7 +230,7 @@ class el_admin {
 		$out .= '<table class="form-table">
 			<tr>
 				<th><label>Start Date (required)</label></th>
-				<td><input type="text" class="text datepicker form-required" name="start_date" id="start_date" value="'.$start_date.'" /> <label><input type="checkbox" id="multi" /> Multiple Day Event</label></td>
+				<td><input type="text" class="text datepicker form-required" name="start_date" id="start_date" value="'.$start_date.'" /> <label><input type="checkbox" name="multiday" id="multiday" value="1" /> Multiple Day Event</label></td>
 			</tr>
 			<tr id="end_date_row">
 				<th><label>End Date</label></th>
@@ -275,7 +275,7 @@ class el_admin {
 		$end_array = explode("-", $end_date);
 		$end_date = mktime(0,0,0,$end_array[1],$end_array[2],$end_array[0]);
 		$out = '';
-	
+
 		if ($start_date == $end_date) {
 			if ($start_array[2] == "00") {
 				$start_date = mktime(0,0,0,$start_array[1],15,$start_array[0]);
@@ -285,7 +285,7 @@ class el_admin {
 			$out .= '<span style="white-space:nowrap;">' . date("M j, Y", $start_date) . "</span>";
 			return $out;
 		}
-	
+
 		if ($start_array[0] == $end_array[0]) {
 			if ($start_array[1] == $end_array[1]) {
 				$out .= '<span style="white-space:nowrap;">' . date("M j", $start_date) . "-" . date("j, Y", $end_date) . "</span>";
@@ -293,13 +293,13 @@ class el_admin {
 			}
 			$out .= '<span style="white-space:nowrap;">' . date("M j", $start_date) . "-" . date("M j, Y", $end_date) . "</span>";
 			return $out;
-	
+
 		}
-	
+
 		$out .= '<span style="white-space:nowrap;">' . date("M j, Y", $start_date) . "-" . date("M j, Y", $end_date) . "</span>";
 		return $out;
 	}
-	
+
 	private static function create_tabs( $current = 'general' )  {
 		$tabs = array( 'general' => 'General settings', 'comment_list' => 'Comment-list settings', 'comment_form' => 'Comment-form settings',
 						'comment_form_html' => 'Comment-form html code', 'comment_html' => 'Comment html code' );
@@ -311,7 +311,7 @@ class el_admin {
 		$out .= '</h3>';
 		return $out;
 	}
-	
+
 	// $desc_pos specifies where the descpription will be displayed.
 	// available options:  'right'   ... description will be displayed on the right side of the option (standard value)
 	//                     'newline' ... description will be displayed below the option
@@ -357,7 +357,7 @@ class el_admin {
 		}
 		return $out;
 	}
-	
+
 	private static function show_checkbox( $name, $value, $caption ) {
 		$out = '
 							<label for="'.$name.'">
@@ -382,18 +382,18 @@ class el_admin {
 							<textarea name="'.$name.'" id="'.$name.'" rows="20" class="large-text code">'.$value.'</textarea>';
 		return $out;
 	}
-	
+
 	// function to truncate and shorten html text
 	private static function truncate( $maxLength, $html ) {
 		$printedLength = 0;
 		$position = 0;
 		$tags = array();
-	
+
 		$out = '';
-	
+
 		while ($printedLength < $maxLength && preg_match('{</?([a-z]+)[^>]*>|&#?[a-zA-Z0-9]+;}', $html, $match, PREG_OFFSET_CAPTURE, $position)) {
 			list($tag, $tagPosition) = $match[0];
-	
+
 			// Print text leading up to the tag.
 			$str = substr($html, $position, $tagPosition - $position);
 			if ($printedLength + strlen($str) > $maxLength) {
@@ -401,10 +401,10 @@ class el_admin {
 				$printedLength = $maxLength;
 				break;
 			}
-	
+
 			$out .= $str;
 			$printedLength += strlen($str);
-	
+
 			if ($tag[0] == '&') {
 				// Handle the entity.
 				$out .= $tag;
@@ -430,11 +430,11 @@ class el_admin {
 					$tags[] = $tagName;
 				}
 			}
-	
+
 			// Continue after the tag.
 			$position = $tagPosition + strlen($tag);
 		}
-	
+
 		// Print any remaining text.
 		if ($printedLength < $maxLength && $position < strlen($html)) {
 			$out .= substr($html, $position, $maxLength - $printedLength);

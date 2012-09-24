@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, admin, attribute, widget, sidebar
 Requires at least: 3.3
 Tested up to: 3.4.2
-Stable tag: 0.1.0
+Stable tag: 0.1.1
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -23,7 +23,7 @@ There are also admin sites available to access the plugin-settings and to manage
 * a duplicate function for events
 * an possibility to view past events by year
 
-The event list can be placed in any page or post on your Wordpress site. Just include the following short code where you want the calendar to appear: 
+The event list can be placed in any page or post on your Wordpress site. Just include the following short code where you want the calendar to appear:
 
 ‘[event-list]’
 
@@ -52,6 +52,13 @@ not available yet
 
 
 == Changelog ==
+
+= 0.1.1 (2012-09-24) =
+
+* fixed an issue with additional quotes after adding or editing an event
+* fixed saving of wrong date when adding a new event
+* fixed sorting of events when more events are at the same day
+* added validation of data before saving to database
 
 = 0.1.0 (2012-09-08) =
 
