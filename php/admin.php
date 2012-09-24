@@ -47,7 +47,7 @@ class el_admin {
 	public static function show_new() {
 		$out = '<div class="wrap">
 				<div class="wrap nosubsub" style="padding-bottom:15px">
-					<div id="icon-edit-pages" class="icon32"><br /></div><h2>New Event</h2>
+					<div id="icon-edit-pages" class="icon32"><br /></div><h2>Add New Event</h2>
 				</div>';
 		$out .= self::edit_event();
 		$out .= '</div>';
