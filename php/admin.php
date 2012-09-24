@@ -13,10 +13,10 @@ class el_admin {
 
 		$out ='
 			<div class="wrap nosubsub" style="padding-bottom:15px">
-			<div id="icon-edit-pages" class="icon32"><br /></div><h2>Event List</h2>
+			<div id="icon-edit-pages" class="icon32"><br /></div><h2>Events <a href="?page=el_admin_new" class="add-new-h2"> Add New </a></h2>
 			</div>';
 
-		// is there POST data to deal with?
+		// is there POST data an event was edited must be updated
 		if( !empty( $_POST ) ) {
 			el_db::update_event( $_POST );
 		}
@@ -167,8 +167,7 @@ class el_admin {
 					}
 					-->
 				</style>';
-		$out .= '<a href="?page=el_admin_new" class="button-primary" style="float:right;">New Event</a>
-			<table class="widefat" style="margin-top:10px;">
+		$out .= '<table class="widefat" style="margin-top:10px;">
 				<thead>
 				<tr><th class="event_date">Date</th><th class="event_location">Event</th><th class="event_details">Details</th><th class="event_buttons">Actions</tr>
 			</thead>';

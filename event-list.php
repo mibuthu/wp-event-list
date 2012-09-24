@@ -61,7 +61,7 @@ function on_el_plugin_loaded() {
 function on_el_admin() {
 	require_once( 'php/admin.php' );
 	add_menu_page( 'Event List', 'Event List', 'edit_posts', 'el_admin_main', array( 'el_admin', 'show_main' ) );
-	$page = add_submenu_page( 'el_admin_main', 'Event List', 'All Events', 'edit_posts', 'el_admin_main', array( 'el_admin', 'show_main' ) );
+	$page = add_submenu_page( 'el_admin_main', 'Events', 'All Events', 'edit_posts', 'el_admin_main', array( 'el_admin', 'show_main' ) );
 	add_action( 'admin_head-'.$page, array( 'el_admin', 'embed_admin_js' ) );
 	$page = add_submenu_page( 'el_admin_main', 'Add New Event', 'Add New', 'edit_posts', 'el_admin_new', array( 'el_admin', 'show_new' ) );
 	add_action( 'admin_head-'.$page, array( 'el_admin', 'embed_admin_js' ) );
