@@ -36,7 +36,7 @@ class el_db {
 		return $wpdb->prefix.self::TABLE_NAME;
 	}
 
-	public static function get_events( $date_range='all' ) {
+	public static function get_events( $date_range='all', $sort_array=array( 'start_date ASC', 'time ASC', 'end_date ASC') ) {
 		global $wpdb;
 
 		// set date for data base query
@@ -54,7 +54,7 @@ class el_db {
 			$range_start = $date_range.'-01-01';
 			$range_end = $date_range.'-12-31';
 		}
-		$sql = 'SELECT * FROM '.self::table_name().' WHERE (end_date >= "'.$range_start.'" AND start_date <= "'.$range_end.'") ORDER BY start_date ASC, time ASC, end_date ASC';
+		$sql = 'SELECT * FROM '.self::table_name().' WHERE (end_date >= "'.$range_start.'" AND start_date <= "'.$range_end.'") ORDER BY '.implode( ', ', $sort_array );
 		return $wpdb->get_results( $sql );
 	}
 

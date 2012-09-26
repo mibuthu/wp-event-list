@@ -29,6 +29,12 @@ class el_admin {
 		if( $action === 'delete' && isset( $_GET['id'] ) ) {
 			el_db::delete_event( $_GET['id'] );
 		}
+		// automatically set order of table to date, if no manual sorting is set
+		if( !isset( $_GET['orderby'] ) ) {
+			$_GET['orderby'] = 'date';
+			$_GET['order'] = 'asc';
+		}
+
 		// headline for the normal page
 		$out ='
 			<div class="wrap nosubsub" style="padding-bottom:15px">

@@ -104,8 +104,7 @@ class Admin_Event_Table extends WP_List_Table {
 	* @return array An associative array containing all the columns that should be sortable: 'slugs'=>array('data_values',bool)
 	***************************************************************************/
 	public function get_sortable_columns() {
-		// TODO: added sortable columns: functionality must be integrated first
-	/*	$sortable_columns = array(
+		$sortable_columns = array(
 			'date'     => array( 'date', true ),  //true means its already sorted
 			'title'    => array( 'title', false ),
 			'location' => array( 'location', false ),
@@ -113,7 +112,7 @@ class Admin_Event_Table extends WP_List_Table {
 			'pub_date' => array( 'pub_date', false )
 		);
 		return $sortable_columns;
-	*/
+
 		return array();
 	}
 
@@ -170,19 +169,55 @@ class Admin_Event_Table extends WP_List_Table {
 		// handle the bulk actions
 		$this->process_bulk_action();
 		// get the required event data
-		// TODO: sorting of events must be implemented
-		$data = $events = el_db::get_events( $date_range );
+		$data = $this->get_events( $date_range );
 		// setup pagination
 		$current_page = $this->get_pagenum();
 		$total_items = count( $data );
 		$data = array_slice( $data, ( ( $current_page-1 )*$per_page ), $per_page );
 		$this->set_pagination_args( array(
-			'total_items' => $total_items,                  //WE have to calculate the total number of items
-			'per_page'    => $per_page,                     //WE have to determine how many items to show on a page
-			'total_pages' => ceil($total_items/$per_page)   //WE have to calculate the total number of pages
+			'total_items' => $total_items,
+			'per_page'    => $per_page,
+			'total_pages' => ceil($total_items/$per_page)
 		) );
 		// setup items which are used by the rest of the class
 		$this->items = $data;
+	}
+
+	private function get_events( $date_range ) {
+		// define sort_array
+		$order = 'ASC';
+		if( isset( $_GET['order'] ) && $_GET['order'] === 'desc' ) {
+			$order = 'DESC';
+		}
+		$orderby = '';
+		if( isset( $_GET['orderby'] ) ){
+			$orderby = $_GET['orderby'];
+		}
+		// set standard sort according date ASC, only when date should be sorted desc, DESC should be used
+		if( $orderby == 'date' && $order == 'DESC' ) {
+			$sort_array = array( 'start_date DESC', 'time DESC', 'end_date DESC');
+		}
+		else {
+			$sort_array = array( 'start_date ASC', 'time ASC', 'end_date ASC');
+		}
+		// add primary order column to the front of the standard sort array
+		switch( $orderby )
+		{
+			case 'title' :
+				array_unshift( $sort_array, 'title '.$order );
+				break;
+			case 'location' :
+				array_unshift( $sort_array, 'location '.$order );
+				break;
+			case 'pub_user' :
+				array_unshift( $sort_array, 'pub_user '.$order );
+				break;
+			case 'pub_date' :
+				array_unshift( $sort_array, 'pub_date '.$order );
+				break;
+		}
+		// get and return events in the correct order
+		return el_db::get_events( $date_range, $sort_array );
 	}
 
 	/** ************************************************************************
