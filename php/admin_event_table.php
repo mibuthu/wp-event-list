@@ -24,7 +24,7 @@ class Admin_Event_Table extends WP_List_Table {
 	* @param array $column_name The name/slug of the column to be processed
 	* @return string Text or HTML to be placed inside the column <td>
 	***************************************************************************/
-	function column_default($item, $column_name) {
+	protected function column_default($item, $column_name) {
 		switch($column_name){
 			case 'date' :
 				return $this->format_date( $item->start_date, $item->end_date, $item->time );

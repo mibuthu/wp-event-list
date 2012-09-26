@@ -145,6 +145,19 @@ class el_admin {
 		echo '<script type="text/javascript" src="'.EL_URL.'/js/admin.js"></script>';
 	}
 
+	public static function embed_table_style() {
+		// add styles for event table
+		$out = '<style type="text/css">
+				.wp-list-table .column-date { width: 110px; }
+				.wp-list-table .column-title { width: 38%; }
+				.wp-list-table .column-location { width: 20% }
+				.wp-list-table .column-details { width: 42%; }
+				.wp-list-table .column-pub_user { width: 90px; }
+				.wp-list-table .column-pub_date { width: 150px; }
+			</style>';
+		echo $out;
+	}
+
 	private static function list_events() {
 		// show calendar navigation
 		$out = el_db::html_calendar_nav();
