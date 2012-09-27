@@ -72,7 +72,7 @@ class Admin_Event_Table extends WP_List_Table {
 	protected function column_cb($item) {
 		//Let's simply repurpose the table's singular label ("event")
 		//The value of the checkbox should be the record's id
-		return '<input type="checkbox" name="'.$this->_args['singular'].'[]" value="'.$item->id.'" />';
+		return '<input type="checkbox" name="id[]" value="'.$item->id.'" />';
 	}
 
 	/** ************************************************************************
@@ -125,13 +125,10 @@ class Admin_Event_Table extends WP_List_Table {
 	* @return array An associative array containing all the bulk actions: 'slugs'=>'Visible Titles'
 	****************************************************************************/
 	public function get_bulk_actions() {
-		// TODO: bulk action deleting must be integrated
-	/*	$actions = array(
-			'delete' => 'Delete'
+		$actions = array(
+			'delete_bulk' => 'Delete'
 		);
 		return $actions;
-	*/
-		return array();
 	}
 
 	/** ************************************************************************
@@ -142,10 +139,10 @@ class Admin_Event_Table extends WP_List_Table {
 	private function process_bulk_action() {
 		// TODO: bulk action must be integrated
 		//Detect when a bulk action is being triggered...
-	/*	if( 'delete'===$this->current_action() ) {
-			wp_die('Items deleted (or they would be if we had items to delete)!');
+		if( 'delete_bulk'===$this->current_action() ) {
+			// Show confirmation window before deleting
+			echo '<script language="JavaScript">eventlist_deleteEvent ("'.implode( ', ', $_GET['id'] ).'");</script>';
 		}
-	*/
 	}
 
 	/** ************************************************************************

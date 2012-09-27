@@ -25,9 +25,9 @@ class el_admin {
 			self::show_edit();
 			return;
 		}
-		// delete an event if required
+		// delete events if required
 		if( $action === 'delete' && isset( $_GET['id'] ) ) {
-			el_db::delete_event( $_GET['id'] );
+			el_db::delete_events( $_GET['id'] );
 		}
 		// automatically set order of table to date, if no manual sorting is set
 		if( !isset( $_GET['orderby'] ) ) {
@@ -173,12 +173,17 @@ class el_admin {
 			$date_range = $_GET['ytd'];
 		}
 		// show event table
+		// the form is required for bulk actions, the page field is required for plugins to ensure that the form posts back to the current page
+		$out .= '<form id="event-filter" method="get">
+				<input type="hidden" name="page" value="'.$_REQUEST['page'].'" />';
+		// show table
 		$table = new Admin_Event_Table();
 		$table->prepare_items( $date_range );
 		ob_start();
 			$table->display();
 			$out .= ob_get_contents();
 		ob_end_clean();
+		$out .= '</form>';
 		return $out;
 	}
 

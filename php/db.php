@@ -133,9 +133,10 @@ class el_db {
 		}
 	}
 
-	public static function delete_event( $event_id ) {
+	public static function delete_events( $event_ids ) {
 		global $wpdb;
-		$wpdb->query( $wpdb->prepare( 'DELETE FROM '.self::table_name().' WHERE id = "'.$event_id.'"' ) );
+		// sql query
+		$wpdb->query( $wpdb->prepare( 'DELETE FROM '.self::table_name().' WHERE id IN ('.$event_ids.')' ) );
 	}
 
 	public static function extract_date( $datestring, $ret_format, &$ret_timestamp=NULL, &$ret_datearray=NULL ) {
