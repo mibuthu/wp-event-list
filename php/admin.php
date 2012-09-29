@@ -37,12 +37,10 @@ class el_admin {
 
 		// headline for the normal page
 		$out ='
-			<div class="wrap nosubsub" style="padding-bottom:15px">
-			<div id="icon-edit-pages" class="icon32"><br /></div><h2>Events <a href="?page=el_admin_new" class="add-new-h2"> Add New </a></h2>
-			</div>
-			<div class="wrap">';
+			<div class="wrap">
+			<div id="icon-edit-pages" class="icon32"><br /></div><h2>Events <a href="?page=el_admin_new" class="add-new-h2">Add New</a></h2>';
 			$out .= self::list_events();
-		$out .= '</div>';
+			$out .= '</div>';
 		echo $out;
 	}
 
