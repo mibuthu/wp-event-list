@@ -159,10 +159,10 @@ class el_admin {
 	public static function embed_table_style() {
 		// add styles for event table
 		$out = '<style type="text/css">
-				.wp-list-table .column-date { width: 110px; }
-				.wp-list-table .column-title { width: 38%; }
-				.wp-list-table .column-location { width: 20% }
-				.wp-list-table .column-details { width: 42%; }
+				.wp-list-table .column-date { width: 140px; }
+				.wp-list-table .column-title { width: 35%; }
+				.wp-list-table .column-location { width: 25% }
+				.wp-list-table .column-details { width: 40%; }
 				.wp-list-table .column-pub_user { width: 90px; }
 				.wp-list-table .column-pub_date { width: 150px; }
 			</style>';
@@ -174,7 +174,7 @@ class el_admin {
 		$out = el_db::html_calendar_nav();
 		// set date range of events being displayed
 		$date_range = 'upcoming';
-		if ( isset( $_GET['ytd'] ) && is_numeric( $_GET['ytd'] ) ) {
+		if( isset( $_GET['ytd'] ) && is_numeric( $_GET['ytd'] ) ) {
 			$date_range = $_GET['ytd'];
 		}
 		// show event table
