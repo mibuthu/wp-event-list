@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, admin, attribute, widget, sidebar
 Requires at least: 3.3
 Tested up to: 3.4.2
-Stable tag: 0.1.1
+Stable tag: 0.2.0
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -52,6 +52,15 @@ not available yet
 
 
 == Changelog ==
+
+= 0.2.0 (2012-09-29) =
+
+* adapted menu names to wordpress standard (similar to posts and pages)
+* adapted event list table admin page to wordpress standard layout
+* used wordpress included table view for admin event table
+* added sort functionality in admin event table
+* added bulk action delete in admin event table
+* added status messages for added, modified and deleted events on admin page
 
 = 0.1.1 (2012-09-24) =
 
