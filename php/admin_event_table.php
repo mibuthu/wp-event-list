@@ -235,10 +235,12 @@ class Admin_Event_Table extends WP_List_Table {
 		if ($start_date == $end_date) {
 			if ($start_array[2] == "00") {
 				$start_date = mktime(0,0,0,$start_array[1],15,$start_array[0]);
-				$out .= '<span style="white-space:nowrap;">' . date("F, Y", $start_date) . "</span>";
+				$out .= '<span style="white-space:nowrap;">'.date("F, Y", $start_date).'</span><br />
+				<span style="white-space:nowrap;">'.$start_time.'</span>';
 				return $out;
 			}
-			$out .= '<span style="white-space:nowrap;">' . date("M j, Y", $start_date) . "</span>";
+			$out .= '<span style="white-space:nowrap;">'.date("M j, Y", $start_date).'</span><br />
+				<span style="white-space:nowrap;">'.$start_time.'</span>';
 			return $out;
 		}
 
