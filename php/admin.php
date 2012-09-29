@@ -5,7 +5,9 @@ require_once( EL_PATH.'php/admin_event_table.php' );
 
 // This class handles all available admin pages
 class el_admin {
-
+	private static $event_action = false;
+	private static $event_action_error = false;
+	
 	// show the main admin page as a submenu of "Comments"
 	public static function show_main() {
 		if ( !current_user_can( 'edit_posts' ) ) {
@@ -14,7 +16,8 @@ class el_admin {
 		$action = '';
 		// is there POST data an event was edited must be updated
 		if( !empty( $_POST ) ) {
-			el_db::update_event( $_POST );
+			self::$event_action_error = !el_db::update_event( $_POST );
+			self::$event_action = isset( $_POST['id'] ) ? 'modified' : 'added';
 		}
 		// get action
 		if( isset( $_GET['action'] ) ) {
@@ -27,7 +30,8 @@ class el_admin {
 		}
 		// delete events if required
 		if( $action === 'delete' && isset( $_GET['id'] ) ) {
-			el_db::delete_events( $_GET['id'] );
+			self::$event_action_error = !el_db::delete_events( $_GET['id'] );
+			self::$event_action = 'deleted';
 		}
 		// automatically set order of table to date, if no manual sorting is set
 		if( !isset( $_GET['orderby'] ) ) {
@@ -39,8 +43,11 @@ class el_admin {
 		$out ='
 			<div class="wrap">
 			<div id="icon-edit-pages" class="icon32"><br /></div><h2>Events <a href="?page=el_admin_new" class="add-new-h2">Add New</a></h2>';
-			$out .= self::list_events();
-			$out .= '</div>';
+		// added messages if required
+		$out .= self::show_messages();
+		// list event table
+		$out .= self::list_events();
+		$out .= '</div>';
 		echo $out;
 	}
 
@@ -251,6 +258,43 @@ class el_admin {
 			</tr>
 			</table>';
 		$out .= '<p class="submit"><input type="submit" class="button-primary" name="save" value="Save Event" id="submitbutton"> <a href="?page=el_admin_main" class="button-secondary">Cancel</a></p></form>';
+		return $out;
+	}
+	
+	private static function show_messages() {
+		$out = '';
+		// event added
+		if( 'added' === self::$event_action ) {
+			if( false === self::$event_action_error ) {
+				$out .= '<div id="message" class=updated below-h2"><p>New Event "'.$_POST['title'].'" was added.</p></div>';
+			}
+			else {
+				$out .= '<div id="message" class=error below-h2"><p>Error: New Event "'.$_POST['title'].'" could not be added.</p></div>';
+			}
+		}
+		// event modified
+		elseif( 'modified' === self::$event_action ) {
+			if( false === self::$event_action_error ) {
+				$out .= '<div id="message" class=updated below-h2"><p>Event "'.$_POST['title'].'" (id: '.$_POST['id'].') was modified.</p></div>';
+			}
+			else {
+				$out .= '<div id="message" class=error below-h2"><p>Error: Event "'.$_POST['title'].'" (id: '.$_POST['id'].') could not be modified.</p></div>';
+			}
+		}
+		// event deleted
+		elseif( 'deleted' === self::$event_action ) {
+			$num_deleted = count( explode( ',', $_GET['id'] ) );
+			$plural = '';
+			if( $num_deleted > 1 ) {
+				$plural = 's';
+			}
+			if( false === self::$event_action_error ) {
+				$out .= '<div id="message" class=updated below-h2"><p>'.$num_deleted.' Event'.$plural.' deleted (id'.$plural.': '.$_GET['id'].').</p></div>';
+			}
+			else {
+				$out .= '<div id="message" class=error below-h2"><p>Error while deleting '.$num_deleted.' Event'.$plural.'.</p></div>';
+			}
+		}
 		return $out;
 	}
 
