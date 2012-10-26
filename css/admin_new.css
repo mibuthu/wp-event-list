@@ -1,0 +1,5 @@
+@import url("datepicker/jquery-ui-datepicker.css");
+
+img.ui-datepicker-trigger {
+	vertical-align: middle;
+}

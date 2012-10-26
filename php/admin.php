@@ -169,9 +169,11 @@ class el_admin {
 
 	public static function embed_admin_new_scripts() {
 		// Scripts
+		wp_print_scripts( 'jquery-ui-datepicker' );
 		wp_enqueue_script( 'eventlist_new_js', EL_URL.'js/admin_new.js' );
 
 		// Styles
+		wp_enqueue_style('admin_main-style', EL_URL.'css/admin_new.css');
 	}
 
 	private static function list_events() {
