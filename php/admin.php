@@ -221,16 +221,16 @@ class el_admin {
 		}
 		$out .= '<table class="form-table">
 			<tr>
+				<th><label>Event Title (required)</label></th>
+				<td><input type="text" class="text form-required" style="width:350px;" name="title" id="title" value="'.str_replace( '"', '&quot;', isset( $event->title ) ? $event->title : '' ).'" /></td>
+			</tr>
+			<tr>
 				<th><label>Start Date (required)</label></th>
 				<td><input type="text" class="text datepicker form-required" name="start_date" id="start_date" value="'.$start_date.'" /> <label><input type="checkbox" name="multiday" id="multiday" value="1" /> Multiple Day Event</label></td>
 			</tr>
 			<tr id="end_date_row">
 				<th><label>End Date</label></th>
 				<td><input type="text" class="text datepicker" name="end_date" id="end_date" value="'.$end_date.'" /></td>
-			</tr>
-			<tr>
-				<th><label>Event Title (required)</label></th>
-				<td><input type="text" class="text form-required" style="width:350px;" name="title" id="title" value="'.str_replace( '"', '&quot;', isset( $event->title ) ? $event->title : '' ).'" /></td>
 			</tr>
 			<tr>
 				<th><label>Event Time</label></th>
