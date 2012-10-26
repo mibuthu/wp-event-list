@@ -198,22 +198,17 @@ class el_admin {
 		if( isset( $_GET['id'] ) && is_numeric( $_GET['id'] ) ) {
 			// existing event
 			$event = el_db::get_event( $_GET['id'] );
-			if( isset( $_GET['action'] ) && $_GET['action'] === 'copy' ) {
-				// copy of existing event
-				$start_date = date('Y-m-d');
-				$end_date = date('Y-m-d');
-			}
-			else {
-				// edit existing event
-				$start_date = $event->start_date;
-				$end_date = $event->end_date;
+			if( isset( $_GET['action'] ) && $_GET['action'] === 'edit' ) {
+				// editing of an existing event, if not it would be copy of an existing event
 				$edit = true;
 			}
+			$start_date = $event->start_date;
+			$end_date = $event->end_date;
 		}
 		else {
 			//new event
-			$start_date = date('Y-m-d');
-			$end_date = date('Y-m-d');
+			$start_date = date( 'Y-m-d', time()+1*24*60*60 );
+			$end_date = $start_date;
 		}
 
 		// Add required data for javascript in a hidden field
