@@ -5,7 +5,7 @@ jQuery(document).ready(function( $ ) {
 	
 	// Show or hide end_date
 	if ($("#start_date").val() == $("#end_date").val()) {
-		$("#end_date_row").hide();
+		$("#end_date_area").hide();
 	}
 	else {
 		$("#multiday").attr('checked', true);
@@ -15,10 +15,10 @@ jQuery(document).ready(function( $ ) {
 	$("#multiday").click(function() {
 		if (this.checked) {
 			$("#end_date").val($("#start_date").val());
-			$("#end_date_row").fadeIn();
+			$("#end_date_area").fadeIn();
 		}
 		else {
-			$("#end_date_row").fadeOut();
+			$("#end_date_area").fadeOut();
 			$("#end_date").val($("#start_date").val());
 		}
 	});

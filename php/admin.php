@@ -226,20 +226,16 @@ class el_admin {
 				<td><input type="text" class="text form-required" style="width:350px;" name="title" id="title" value="'.str_replace( '"', '&quot;', isset( $event->title ) ? $event->title : '' ).'" /></td>
 			</tr>
 			<tr>
-				<th><label>Start Date (required)</label></th>
-				<td><input type="text" class="text datepicker form-required" name="start_date" id="start_date" value="'.$start_date.'" /> <label><input type="checkbox" name="multiday" id="multiday" value="1" /> Multiple Day Event</label></td>
-			</tr>
-			<tr id="end_date_row">
-				<th><label>End Date</label></th>
-				<td><input type="text" class="text datepicker" name="end_date" id="end_date" value="'.$end_date.'" /></td>
+				<th><label>Event Date (required)</label></th>
+				<td><input type="text" class="text datepicker form-required" style="width:108px;" name="start_date" id="start_date" value="'.$start_date.'" /><span id="end_date_area"> - <input type="text" class="text datepicker" style="width:108px;" name="end_date" id="end_date" value="'.$end_date.'" /></span> <label><input type="checkbox" name="multiday" id="multiday" value="1" /> Multi Day Event</label></td>
 			</tr>
 			<tr>
 				<th><label>Event Time</label></th>
-				<td><input type="text" class="text" name="time" id="time" value="'.str_replace( '"', '&quot;', isset( $event->time ) ? $event->time : '' ).'" /></td>
+				<td><input type="text" class="text" style="width:110px;" name="time" id="time" value="'.str_replace( '"', '&quot;', isset( $event->time ) ? $event->time : '' ).'" /></td>
 			</tr>
 			<tr>
 				<th><label>Event Location</label></th>
-				<td><input type="text" class="text" name="location" id="location" value="'.str_replace( '"', '&quot;', isset( $event->location ) ? $event->location : '' ).'" /></td>
+				<td><input type="text" class="text" style="width:350px;" name="location" id="location" value="'.str_replace( '"', '&quot;', isset( $event->location ) ? $event->location : '' ).'" /></td>
 			</tr>
 			<tr>
 				<th><label>Event Details</label></th>
