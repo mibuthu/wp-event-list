@@ -226,19 +226,19 @@ class el_admin {
 		$out .= '<table class="form-table">
 			<tr>
 				<th><label>Event Title (required)</label></th>
-				<td><input type="text" class="text form-required" style="width:350px;" name="title" id="title" value="'.str_replace( '"', '&quot;', isset( $event->title ) ? $event->title : '' ).'" /></td>
+				<td><input type="text" class="text form-required" name="title" id="title" value="'.str_replace( '"', '&quot;', isset( $event->title ) ? $event->title : '' ).'" /></td>
 			</tr>
 			<tr>
 				<th><label>Event Date (required)</label></th>
-				<td><input type="text" class="text datepicker form-required" style="width:108px;" name="start_date" id="start_date" value="'.$start_date.'" /><span id="end_date_area"> - <input type="text" class="text datepicker" style="width:108px;" name="end_date" id="end_date" value="'.$end_date.'" /></span> <label><input type="checkbox" name="multiday" id="multiday" value="1" /> Multi Day Event</label></td>
+				<td><input type="text" class="text datepicker form-required" name="start_date" id="start_date" value="'.$start_date.'" /><span id="end_date_area"> - <input type="text" class="text datepicker" name="end_date" id="end_date" value="'.$end_date.'" /></span> <label><input type="checkbox" name="multiday" id="multiday" value="1" /> Multi-Day Event</label></td>
 			</tr>
 			<tr>
 				<th><label>Event Time</label></th>
-				<td><input type="text" class="text" style="width:110px;" name="time" id="time" value="'.str_replace( '"', '&quot;', isset( $event->time ) ? $event->time : '' ).'" /></td>
+				<td><input type="text" class="text" name="time" id="time" value="'.str_replace( '"', '&quot;', isset( $event->time ) ? $event->time : '' ).'" /></td>
 			</tr>
 			<tr>
 				<th><label>Event Location</label></th>
-				<td><input type="text" class="text" style="width:350px;" name="location" id="location" value="'.str_replace( '"', '&quot;', isset( $event->location ) ? $event->location : '' ).'" /></td>
+				<td><input type="text" class="text" name="location" id="location" value="'.str_replace( '"', '&quot;', isset( $event->location ) ? $event->location : '' ).'" /></td>
 			</tr>
 			<tr>
 				<th><label>Event Details</label></th>
@@ -254,7 +254,7 @@ class el_admin {
 			wp_editor( isset( $event->details ) ? $event->details : '', 'details', $editor_settings);
 			$out .= ob_get_contents();
 		ob_end_clean();
-		$out .= '<p style="margin:2px;"><i>NOTE: In the text editor, use RETURN to start a new paragraph - use SHIFT-RETURN to start a new line.</i></p></td>
+		$out .= '<p class="note">NOTE: In the text editor, use RETURN to start a new paragraph - use SHIFT-RETURN to start a new line.</p></td>
 			</tr>
 			</table>';
 		$out .= '<p class="submit"><input type="submit" class="button-primary" name="save" value="Save Event" id="submitbutton"> <a href="?page=el_admin_main" class="button-secondary">Cancel</a></p></form>';
