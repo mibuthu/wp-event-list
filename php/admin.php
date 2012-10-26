@@ -7,7 +7,7 @@ require_once( EL_PATH.'php/admin_event_table.php' );
 class el_admin {
 	private static $event_action = false;
 	private static $event_action_error = false;
-	
+
 	// show the main admin page as a submenu of "Comments"
 	public static function show_main() {
 		if ( !current_user_can( 'edit_posts' ) ) {
@@ -152,13 +152,12 @@ class el_admin {
 		echo $out;
 	}
 
-	public static function embed_admin_js() {
-		echo '<script type="text/javascript" src="'.EL_URL.'/js/admin.js"></script>';
-	}
+	public static function embed_admin_main_scripts() {
+		// Scripts
+		wp_enqueue_script( 'eventlist_main_js', EL_URL.'js/admin_main.js' );
 
-	public static function embed_table_style() {
-		// add styles for event table
-		$out = '<style type="text/css">
+		// Styles
+		echo '<style type="text/css">
 				.wp-list-table .column-date { width: 140px; }
 				.wp-list-table .column-title { width: 35%; }
 				.wp-list-table .column-location { width: 25% }
@@ -166,7 +165,13 @@ class el_admin {
 				.wp-list-table .column-pub_user { width: 90px; }
 				.wp-list-table .column-pub_date { width: 150px; }
 			</style>';
-		echo $out;
+	}
+
+	public static function embed_admin_new_scripts() {
+		// Scripts
+		wp_enqueue_script( 'eventlist_new_js', EL_URL.'js/admin_new.js' );
+
+		// Styles
 	}
 
 	private static function list_events() {
@@ -260,7 +265,7 @@ class el_admin {
 		$out .= '<p class="submit"><input type="submit" class="button-primary" name="save" value="Save Event" id="submitbutton"> <a href="?page=el_admin_main" class="button-secondary">Cancel</a></p></form>';
 		return $out;
 	}
-	
+
 	private static function show_messages() {
 		$out = '';
 		// event added
