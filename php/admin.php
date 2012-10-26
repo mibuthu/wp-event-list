@@ -216,8 +216,11 @@ class el_admin {
 			$end_date = date('Y-m-d');
 		}
 
-		$out = '<form method="POST" action="?page=el_admin_main">';
-		if ( true === $edit ) {
+		// Add required data for javascript in a hidden field
+		$json = json_encode( Array( 'el_url' => EL_URL ) );
+		$out = "<input type='hidden' id='json_for_js' value='".$json."' />";
+		$out .= '<form method="POST" action="?page=el_admin_main">';
+		if( true === $edit ) {
 			$out .= '<input type="hidden" name="id" value="'.$_GET['id'].'" />';
 		}
 		$out .= '<table class="form-table">

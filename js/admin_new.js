@@ -2,6 +2,9 @@
 
 // Date helpers
 jQuery(document).ready(function( $ ) {	
+	// Read required config data from hidden field json_for_js
+	var json = $("#json_for_js").val();
+	var conf = eval('(' + json + ')');
 	
 	// Show or hide end_date
 	if ($("#start_date").val() == $("#end_date").val()) {
@@ -18,6 +21,9 @@ jQuery(document).ready(function( $ ) {
 		changeMonth: true,
 		changeYear: true,
 		numberOfMonths: 3,
+		showOn: "both",
+		buttonImage: conf.el_url + "images/calendar-icon.png",
+		buttonImageOnly: true,
 		constrainInput: true,
 		onClose: function(selectedDate) {
 			minDate = new Date(selectedDate);
@@ -32,6 +38,9 @@ jQuery(document).ready(function( $ ) {
 		changeMonth: true,
 		changeYear: true,
 		numberOfMonths: 3,
+		showOn: "both",
+		buttonImage: conf.el_url + "images/calendar-icon.png",
+		buttonImageOnly: true,
 		constrainInput: true
 	});
 	
@@ -42,6 +51,7 @@ jQuery(document).ready(function( $ ) {
 			timestamp = enddate.getTime() + 1*24*60*60*1000;
 			enddate.setTime(timestamp);
 			$("#end_date_area").fadeIn();
+			$("#end_date").datepicker("option", "minDate", enddate);
 		}
 		else {
 			$("#end_date_area").fadeOut();
