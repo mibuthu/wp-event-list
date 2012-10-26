@@ -153,18 +153,25 @@ class el_admin {
 	}
 
 	public static function embed_admin_main_scripts() {
-		// Scripts
-		wp_enqueue_script( 'eventlist_main_js', EL_URL.'js/admin_main.js' );
+		// If edit event is selected switch to embed admin_new
+		if( isset( $_GET['action'] ) && 'edit' === $_GET['action'] ) {
+			self::embed_admin_new_scripts();
+		}
+		else {
+			// Proceed with embedding for admin_main
+			// Scripts
+			wp_enqueue_script( 'eventlist_main_js', EL_URL.'js/admin_main.js' );
 
-		// Styles
-		echo '<style type="text/css">
-				.wp-list-table .column-date { width: 140px; }
-				.wp-list-table .column-title { width: 35%; }
-				.wp-list-table .column-location { width: 25% }
-				.wp-list-table .column-details { width: 40%; }
-				.wp-list-table .column-pub_user { width: 90px; }
-				.wp-list-table .column-pub_date { width: 150px; }
-			</style>';
+			// Styles
+			echo '<style type="text/css">
+					.wp-list-table .column-date { width: 140px; }
+					.wp-list-table .column-title { width: 35%; }
+					.wp-list-table .column-location { width: 25% }
+					.wp-list-table .column-details { width: 40%; }
+					.wp-list-table .column-pub_user { width: 90px; }
+					.wp-list-table .column-pub_date { width: 150px; }
+				</style>';
+		}
 	}
 
 	public static function embed_admin_new_scripts() {
