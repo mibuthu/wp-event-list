@@ -159,28 +159,15 @@ class el_admin {
 		}
 		else {
 			// Proceed with embedding for admin_main
-			// Scripts
-			wp_enqueue_script( 'eventlist_main_js', EL_URL.'js/admin_main.js' );
-
-			// Styles
-			echo '<style type="text/css">
-					.wp-list-table .column-date { width: 140px; }
-					.wp-list-table .column-title { width: 35%; }
-					.wp-list-table .column-location { width: 25% }
-					.wp-list-table .column-details { width: 40%; }
-					.wp-list-table .column-pub_user { width: 90px; }
-					.wp-list-table .column-pub_date { width: 150px; }
-				</style>';
+			wp_enqueue_script( 'eventlist_admin_main_js', EL_URL.'js/admin_main.js' );
+			wp_enqueue_style( 'eventlist_admin_main_css', EL_URL.'css/admin_main.css' );
 		}
 	}
 
 	public static function embed_admin_new_scripts() {
-		// Scripts
 		wp_print_scripts( 'jquery-ui-datepicker' );
-		wp_enqueue_script( 'eventlist_new_js', EL_URL.'js/admin_new.js' );
-
-		// Styles
-		wp_enqueue_style('admin_main-style', EL_URL.'css/admin_new.css');
+		wp_enqueue_script( 'eventlist_admin_new_js', EL_URL.'js/admin_new.js' );
+		wp_enqueue_style( 'eventlist_admin_new_css', EL_URL.'css/admin_new.css' );
 	}
 
 	private static function list_events() {
