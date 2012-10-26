@@ -7,7 +7,7 @@ require_once( EL_PATH.'php/admin_event_table.php' );
 class el_admin {
 	private static $event_action = false;
 	private static $event_action_error = false;
-	
+
 	// show the main admin page as a submenu of "Comments"
 	public static function show_main() {
 		if ( !current_user_can( 'edit_posts' ) ) {
@@ -152,21 +152,22 @@ class el_admin {
 		echo $out;
 	}
 
-	public static function embed_admin_js() {
-		echo '<script type="text/javascript" src="'.EL_URL.'/js/admin.js"></script>';
+	public static function embed_admin_main_scripts() {
+		// If edit event is selected switch to embed admin_new
+		if( isset( $_GET['action'] ) && 'edit' === $_GET['action'] ) {
+			self::embed_admin_new_scripts();
+		}
+		else {
+			// Proceed with embedding for admin_main
+			wp_enqueue_script( 'eventlist_admin_main_js', EL_URL.'js/admin_main.js' );
+			wp_enqueue_style( 'eventlist_admin_main_css', EL_URL.'css/admin_main.css' );
+		}
 	}
 
-	public static function embed_table_style() {
-		// add styles for event table
-		$out = '<style type="text/css">
-				.wp-list-table .column-date { width: 140px; }
-				.wp-list-table .column-title { width: 35%; }
-				.wp-list-table .column-location { width: 25% }
-				.wp-list-table .column-details { width: 40%; }
-				.wp-list-table .column-pub_user { width: 90px; }
-				.wp-list-table .column-pub_date { width: 150px; }
-			</style>';
-		echo $out;
+	public static function embed_admin_new_scripts() {
+		wp_print_scripts( 'jquery-ui-datepicker' );
+		wp_enqueue_script( 'eventlist_admin_new_js', EL_URL.'js/admin_new.js' );
+		wp_enqueue_style( 'eventlist_admin_new_css', EL_URL.'css/admin_new.css' );
 	}
 
 	private static function list_events() {
@@ -197,40 +198,34 @@ class el_admin {
 		if( isset( $_GET['id'] ) && is_numeric( $_GET['id'] ) ) {
 			// existing event
 			$event = el_db::get_event( $_GET['id'] );
-			if( isset( $_GET['action'] ) && $_GET['action'] === 'copy' ) {
-				// copy of existing event
-				$start_date = date('Y-m-d');
-				$end_date = date('Y-m-d');
-			}
-			else {
-				// edit existing event
-				$start_date = $event->start_date;
-				$end_date = $event->end_date;
+			if( isset( $_GET['action'] ) && $_GET['action'] === 'edit' ) {
+				// editing of an existing event, if not it would be copy of an existing event
 				$edit = true;
 			}
+			$start_date = $event->start_date;
+			$end_date = $event->end_date;
 		}
 		else {
 			//new event
-			$start_date = date('Y-m-d');
-			$end_date = date('Y-m-d');
+			$start_date = date( 'Y-m-d', time()+1*24*60*60 );
+			$end_date = $start_date;
 		}
 
-		$out = '<form method="POST" action="?page=el_admin_main">';
-		if ( true === $edit ) {
+		// Add required data for javascript in a hidden field
+		$json = json_encode( Array( 'el_url' => EL_URL ) );
+		$out = "<input type='hidden' id='json_for_js' value='".$json."' />";
+		$out .= '<form method="POST" action="?page=el_admin_main">';
+		if( true === $edit ) {
 			$out .= '<input type="hidden" name="id" value="'.$_GET['id'].'" />';
 		}
 		$out .= '<table class="form-table">
 			<tr>
-				<th><label>Start Date (required)</label></th>
-				<td><input type="text" class="text datepicker form-required" name="start_date" id="start_date" value="'.$start_date.'" /> <label><input type="checkbox" name="multiday" id="multiday" value="1" /> Multiple Day Event</label></td>
-			</tr>
-			<tr id="end_date_row">
-				<th><label>End Date</label></th>
-				<td><input type="text" class="text datepicker" name="end_date" id="end_date" value="'.$end_date.'" /></td>
+				<th><label>Event Title (required)</label></th>
+				<td><input type="text" class="text form-required" name="title" id="title" value="'.str_replace( '"', '&quot;', isset( $event->title ) ? $event->title : '' ).'" /></td>
 			</tr>
 			<tr>
-				<th><label>Event Title (required)</label></th>
-				<td><input type="text" class="text form-required" style="width:350px;" name="title" id="title" value="'.str_replace( '"', '&quot;', isset( $event->title ) ? $event->title : '' ).'" /></td>
+				<th><label>Event Date (required)</label></th>
+				<td><input type="text" class="text datepicker form-required" name="start_date" id="start_date" value="'.$start_date.'" /><span id="end_date_area"> - <input type="text" class="text datepicker" name="end_date" id="end_date" value="'.$end_date.'" /></span> <label><input type="checkbox" name="multiday" id="multiday" value="1" /> Multi-Day Event</label></td>
 			</tr>
 			<tr>
 				<th><label>Event Time</label></th>
@@ -254,13 +249,13 @@ class el_admin {
 			wp_editor( isset( $event->details ) ? $event->details : '', 'details', $editor_settings);
 			$out .= ob_get_contents();
 		ob_end_clean();
-		$out .= '<p style="margin:2px;"><i>NOTE: In the text editor, use RETURN to start a new paragraph - use SHIFT-RETURN to start a new line.</i></p></td>
+		$out .= '<p class="note">NOTE: In the text editor, use RETURN to start a new paragraph - use SHIFT-RETURN to start a new line.</p></td>
 			</tr>
 			</table>';
-		$out .= '<p class="submit"><input type="submit" class="button-primary" name="save" value="Save Event" id="submitbutton"> <a href="?page=el_admin_main" class="button-secondary">Cancel</a></p></form>';
+		$out .= '<p class="submit"><input type="submit" class="button-primary" name="publish" value="Publish" id="submitbutton"> <a href="?page=el_admin_main" class="button-secondary">Cancel</a></p></form>';
 		return $out;
 	}
-	
+
 	private static function show_messages() {
 		$out = '';
 		// event added

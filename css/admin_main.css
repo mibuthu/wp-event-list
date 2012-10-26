@@ -1,0 +1,22 @@
+.wp-list-table .column-date {
+	width: 140px;
+}
+.wp-list-table .column-title {
+	width: 35%;
+}
+.wp-list-table .column-location {
+	width: 25%
+}
+.wp-list-table .column-details {
+	width: 40%;
+}
+.wp-list-table .column-pub_user {
+	width: 90px;
+}
+.wp-list-table .column-pub_date {
+	width: 150px;
+}
+
+span.time {
+	font-style: italic;
+}

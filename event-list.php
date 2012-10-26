@@ -3,7 +3,7 @@
 Plugin Name: Event List
 Plugin URI: http://wordpress.org/extend/plugins/event-list/
 Description: Manage your events and show them in a list view on your site.
-Version: 0.2.0
+Version: 0.2.1
 Author: Michael Burtscher
 Author URI: http://wordpress.org/extend/plugins/event-list/
 License: GPLv2
@@ -62,10 +62,9 @@ function on_el_admin() {
 	require_once( 'php/admin.php' );
 	add_menu_page( 'Event List', 'Event List', 'edit_posts', 'el_admin_main', array( 'el_admin', 'show_main' ) );
 	$page = add_submenu_page( 'el_admin_main', 'Events', 'All Events', 'edit_posts', 'el_admin_main', array( 'el_admin', 'show_main' ) );
-	add_action( 'admin_head-'.$page, array( 'el_admin', 'embed_admin_js' ) );
-	add_action( 'admin_head-'.$page, array( 'el_admin', 'embed_table_style' ) );
+	add_action( 'admin_print_scripts-'.$page, array( 'el_admin', 'embed_admin_main_scripts' ) );
 	$page = add_submenu_page( 'el_admin_main', 'Add New Event', 'Add New', 'edit_posts', 'el_admin_new', array( 'el_admin', 'show_new' ) );
-	add_action( 'admin_head-'.$page, array( 'el_admin', 'embed_admin_js' ) );
+	add_action( 'admin_print_scripts-'.$page, array( 'el_admin', 'embed_admin_new_scripts' ) );
 	add_submenu_page( 'el_admin_main', 'Event List Settings', 'Settings', 'manage_options', 'el_admin_settings', array( 'el_admin', 'show_settings' ) );
 	add_submenu_page( 'el_admin_main', 'About Event List', 'About', 'manage_options', 'el_admin_about', array( 'el_admin', 'show_about' ) );
 }
