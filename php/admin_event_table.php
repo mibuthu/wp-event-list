@@ -258,7 +258,7 @@ class Admin_Event_Table extends WP_List_Table {
 			$out .= date("M j, Y", $start_date).'-<br />'.date("M j, Y", $end_date).'&nbsp;';
 		}
 		$out .= '<br />
-					'.$start_time.'</span>';
+					<span class="time">'.$start_time.'</span></span>';
 		return $out;
 	}
 
