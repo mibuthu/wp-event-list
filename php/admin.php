@@ -261,19 +261,19 @@ class el_admin {
 		// event added
 		if( 'added' === self::$event_action ) {
 			if( false === self::$event_action_error ) {
-				$out .= '<div id="message" class=updated below-h2"><p>New Event "'.$_POST['title'].'" was added.</p></div>';
+				$out .= '<div id="message" class="updated below-h2"><p><strong>New Event "'.$_POST['title'].'" was added.</strong></p></div>';
 			}
 			else {
-				$out .= '<div id="message" class=error below-h2"><p>Error: New Event "'.$_POST['title'].'" could not be added.</p></div>';
+				$out .= '<div id="message" class="error below-h2"><p><strong>Error: New Event "'.$_POST['title'].'" could not be added.</strong></p></div>';
 			}
 		}
 		// event modified
 		elseif( 'modified' === self::$event_action ) {
 			if( false === self::$event_action_error ) {
-				$out .= '<div id="message" class=updated below-h2"><p>Event "'.$_POST['title'].'" (id: '.$_POST['id'].') was modified.</p></div>';
+				$out .= '<div id="message" class="updated below-h2"><p><strong>Event "'.$_POST['title'].'" (id: '.$_POST['id'].') was modified.</strong></p></div>';
 			}
 			else {
-				$out .= '<div id="message" class=error below-h2"><p>Error: Event "'.$_POST['title'].'" (id: '.$_POST['id'].') could not be modified.</p></div>';
+				$out .= '<div id="message" class="error below-h2"><p><strong>Error: Event "'.$_POST['title'].'" (id: '.$_POST['id'].') could not be modified.</strong></p></div>';
 			}
 		}
 		// event deleted
@@ -284,10 +284,10 @@ class el_admin {
 				$plural = 's';
 			}
 			if( false === self::$event_action_error ) {
-				$out .= '<div id="message" class=updated below-h2"><p>'.$num_deleted.' Event'.$plural.' deleted (id'.$plural.': '.$_GET['id'].').</p></div>';
+				$out .= '<div id="message" class="updated below-h2"><p><strong>'.$num_deleted.' Event'.$plural.' deleted (id'.$plural.': '.$_GET['id'].').</strong></p></div>';
 			}
 			else {
-				$out .= '<div id="message" class=error below-h2"><p>Error while deleting '.$num_deleted.' Event'.$plural.'.</p></div>';
+				$out .= '<div id="message" class="error below-h2"><p><strong>Error while deleting '.$num_deleted.' Event'.$plural.'.</strong></p></div>';
 			}
 		}
 		return $out;
