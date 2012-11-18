@@ -5,7 +5,7 @@ jQuery(document).ready(function( $ ) {
 	// Read required config data from hidden field json_for_js
 	var json = $("#json_for_js").val();
 	var conf = eval('(' + json + ')');
-	
+
 	// Show or hide end_date
 	if ($("#start_date").val() == $("#end_date").val()) {
 		$("#end_date_area").hide();
@@ -13,10 +13,10 @@ jQuery(document).ready(function( $ ) {
 	else {
 		$("#multiday").attr('checked', true);
 	}
-	
+
 	// Datepickers
 	$("#start_date").datepicker( {
-		dateFormat: "yy-mm-dd",
+		dateFormat: conf.el_date_format,
 		firstDay: 1,
 		changeMonth: true,
 		changeYear: true,
@@ -33,7 +33,7 @@ jQuery(document).ready(function( $ ) {
 		}
 	});
 	$("#end_date").datepicker( {
-		dateFormat: "yy-mm-dd",
+		dateFormat: conf.el_date_format,
 		firstDay: 1,
 		changeMonth: true,
 		changeYear: true,
@@ -43,7 +43,7 @@ jQuery(document).ready(function( $ ) {
 		buttonImageOnly: true,
 		constrainInput: true
 	});
-	
+
 	// Toogle end_date visibility and insert the correct date
 	$("#multiday").click(function() {
 		var enddate = $("#start_date").datepicker("getDate");
