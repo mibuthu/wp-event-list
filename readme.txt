@@ -3,8 +3,8 @@ Contributors: mibuthu
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W54LNZMWF9KW2
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, admin, attribute, widget, sidebar
 Requires at least: 3.3
-Tested up to: 3.4.2
-Stable tag: 0.2.1
+Tested up to: 3.5
+Stable tag: 0.2.2
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -52,6 +52,12 @@ not available yet
 
 
 == Changelog ==
+
+= 0.2.2 (2012-11-18) =
+
+* localization of date and time on the frontpage
+* changed and localized date and time view in the admin event list table
+* localization of date in the new event form
 
 = 0.2.1 (2012-10-26) =
 

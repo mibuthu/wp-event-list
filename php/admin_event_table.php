@@ -27,11 +27,13 @@ class Admin_Event_Table extends WP_List_Table {
 	protected function column_default($item, $column_name) {
 		switch($column_name){
 			case 'date' :
-				return $this->format_date( $item->start_date, $item->end_date, $item->time );
+				return $this->format_event_date( $item->start_date, $item->end_date, $item->time );
 			case 'details' :
-				return $this->truncate( 80, $item->details );
+				return '<span title="'.$item->details.'">'.$this->truncate( 80, $item->details ).'</span>';
 			case 'pub_user' :
-				return get_userdata( $item->$column_name )->user_login;
+				return get_userdata( $item->pub_user )->user_login;
+			case 'pub_date' :
+				return $this->format_pub_date( $item->pub_date );
 			default :
 				return $item->$column_name;
 		}
@@ -225,41 +227,35 @@ class Admin_Event_Table extends WP_List_Table {
 	* @param string $end_date The end date of the event
 	* @param string $time The start time of the event
 	***************************************************************************/
-	private function format_date( $start_date, $end_date, $start_time ) {
-		$start_array = explode("-", $start_date);
-		$start_date = mktime(0,0,0,$start_array[1],$start_array[2],$start_array[0]);
-		$end_array = explode("-", $end_date);
-		$end_date = mktime(0,0,0,$end_array[1],$end_array[2],$end_array[0]);
+	private function format_event_date( $start_date, $end_date, $start_time ) {
 		$out = '<span style="white-space:nowrap;">';
-		// one day event
-		if( $start_date == $end_date ) {
-			if ($start_array[2] == "00") {
-				$start_date = mktime(0,0,0,$start_array[1],15,$start_array[0]);
-				$out .= date("F, Y", $start_date);
-			}
-			else {
-				$out .= date("M j, Y", $start_date);
-			}
+		// start date
+		$out .= mysql2date( __( 'Y/m/d' ), $start_date );
+		// end date for multiday event
+		if( $start_date !== $end_date ) {
+			$out .= ' -<br />'.mysql2date( __( 'Y/m/d' ), $end_date );
 		}
-		// multiday event with start and end date in the same year
-		elseif( $start_array[0] == $end_array[0] ) {
-			$out .= date("M j", $start_date).'-';
-			// same start and end month
-			if( $start_array[1] == $end_array[1] ) {
-				$out .= date("j, Y", $end_date);
-			}
-			// different start and end month
-			else {
-				$out .= date("M j, Y", $end_date);
-			}
+		// event time
+		if( '' !== $start_time ) {
+			$out .= '<br />
+				<span class="time">'.mysql2date( get_option( 'time_format' ), $start_time ).'</span></span>';
 		}
-		// multiday event with different start and end year
-		else {
-			$out .= date("M j, Y", $start_date).'-<br />'.date("M j, Y", $end_date).'&nbsp;';
-		}
-		$out .= '<br />
-					<span class="time">'.$start_time.'</span></span>';
 		return $out;
+	}
+
+	private function format_pub_date( $pub_date ) {
+		// similar output than for post or pages
+		$timestamp = strtotime( $pub_date );
+		$time_diff = time() - $timestamp;
+		error_log( "time_diff: ".$time_diff );
+		if( $time_diff >= 0 && $time_diff < 24*60*60 ) {
+			$date = sprintf( __( '%s ago' ), human_time_diff( $timestamp ) );
+		}
+		else {
+			$date = mysql2date( __( 'Y/m/d' ), $pub_date );
+		}
+		$datetime = mysql2date( __( 'Y/m/d g:i:s A' ), $pub_date );
+		return '<abbr title="'.$datetime.'">'.$date.'</abbr>';
 	}
 
 	// function to truncate and shorten html text

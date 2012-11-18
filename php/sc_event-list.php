@@ -30,7 +30,7 @@ class sc_event_list {
 		}
 		return $out;
 	}
-	
+
 	private static function html_event_details( $event_id ) {
 		$event = el_db::get_event( $event_id );
 		$out = el_db::html_calendar_nav();
@@ -39,7 +39,7 @@ class sc_event_list {
 		$out .= '</ul>';
 		return $out;
 	}
-	
+
 	private static function html_events( $a ) {
 		// specify visible events
 		if( isset( $_GET['ytd'] ) ) {
@@ -57,7 +57,7 @@ class sc_event_list {
 		//			(get_option('permalink_structure')) ? $feed_link = "/feed/events" : $feed_link = "/?feed=events";
 		//			$out .= "<a href=\"$feed_link\" class=\"rss-link\">RSS</a>";
 		//		}
-		
+
 		// generate output
 		$out .= el_db::html_calendar_nav();
 		// TODO: Setting missing
@@ -85,7 +85,7 @@ class sc_event_list {
 					}
 				}
 			}
-			
+
 			// set html code
 			$out .= '<ul id="eventlist">';
 			foreach ($events as $event) {
@@ -96,7 +96,7 @@ class sc_event_list {
 		}
 		return $out;
 	}
-	
+
 	private static function html_event( $event, $url=false ) {
 		$out = '<li class="event">';
 		$out .= self::html_fulldate( $event->start_date, $event->end_date );
@@ -109,21 +109,17 @@ class sc_event_list {
 		}
 		$out .= '</h3>';
 		if( $event->time != '' ) {
-			$out .= '<span class="time">'.$event->time.'</span>';
+			$out .= '<span class="time">'.mysql2date( get_option( 'time_format' ), $event->time ).'</span>';
 		}
 		$out .= '<span class="location">'.$event->location.'</span>';
 		$out .= '<span class="details">'.$event->details.'</span>';
 		$out .= '</div></li>';
 		return $out;
 	}
-	
+
 	private static function html_fulldate( $start_date, $end_date ) {
-		$startArray = explode("-", $start_date);
-		$start_date = mktime(0,0,0,$startArray[1],$startArray[2],$startArray[0]);
-		$endArray = explode("-", $end_date);
-		$end_date = mktime(0,0,0,$endArray[1],$endArray[2],$endArray[0]);
 		$out = '';
-		if( $start_date == $end_date ) {
+		if( $start_date === $end_date ) {
 			// one day event
 			$out .= '<div class="date">';
 			$out .= '<div class="end-date">';
@@ -145,10 +141,10 @@ class sc_event_list {
 	}
 
 	private static function html_date( $date ) {
-		$out = '<div class="weekday">'.date( 'D', $date ).'</div>';
-		$out .= '<div class="day">'.date( 'd', $date ).'</div>';
-		$out .= '<div class="month">'.date( 'M', $date ).'</div>';
-		$out .= '<div class="year">'.date( 'Y', $date ).'</div>';
+		$out = '<div class="weekday">'.mysql2date( 'D', $date ).'</div>';
+		$out .= '<div class="day">'.mysql2date( 'd', $date ).'</div>';
+		$out .= '<div class="month">'.mysql2date( 'M', $date ).'</div>';
+		$out .= '<div class="year">'.mysql2date( 'Y', $date ).'</div>';
 		return $out;
 	}
 }
