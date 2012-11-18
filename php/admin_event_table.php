@@ -226,36 +226,28 @@ class Admin_Event_Table extends WP_List_Table {
 	* @param string $time The start time of the event
 	***************************************************************************/
 	private function format_date( $start_date, $end_date, $start_time ) {
-		$start_array = explode("-", $start_date);
-		$start_date = mktime(0,0,0,$start_array[1],$start_array[2],$start_array[0]);
-		$end_array = explode("-", $end_date);
-		$end_date = mktime(0,0,0,$end_array[1],$end_array[2],$end_array[0]);
+		$start_date = getdate( strtotime( $start_date ) );
+		$end_date = getdate( strtotime( $end_date ) );
 		$out = '<span style="white-space:nowrap;">';
 		// one day event
-		if( $start_date == $end_date ) {
-			if ($start_array[2] == "00") {
-				$start_date = mktime(0,0,0,$start_array[1],15,$start_array[0]);
-				$out .= date("F, Y", $start_date);
-			}
-			else {
-				$out .= date("M j, Y", $start_date);
-			}
+		if( $start_date[0] == $end_date[0] ) {
+			$out .= date_i18n("M j, Y", $start_date[0]);
 		}
 		// multiday event with start and end date in the same year
-		elseif( $start_array[0] == $end_array[0] ) {
-			$out .= date("M j", $start_date).'-';
+		elseif( $start_date['year'] == $end_date['year'] ) {
+			$out .= date_i18n("M j", $start_date[0]).'-';
 			// same start and end month
-			if( $start_array[1] == $end_array[1] ) {
-				$out .= date("j, Y", $end_date);
+			if( $start_date['mon'] == $end_date['mon'] ) {
+				$out .= date_i18n("j, Y", $end_date[0]);
 			}
 			// different start and end month
 			else {
-				$out .= date("M j, Y", $end_date);
+				$out .= date_i18n("M j, Y", $end_date[0]);
 			}
 		}
 		// multiday event with different start and end year
 		else {
-			$out .= date("M j, Y", $start_date).'-<br />'.date("M j, Y", $end_date).'&nbsp;';
+			$out .= date_i18n("M j, Y", $start_date[0]).'-<br />'.date_i18n("M j, Y", $end_date[0]).'&nbsp;';
 		}
 		$out .= '<br />
 					<span class="time">'.$start_time.'</span></span>';
