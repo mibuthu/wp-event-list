@@ -238,7 +238,7 @@ class Admin_Event_Table extends WP_List_Table {
 		// event time
 		if( '' !== $start_time ) {
 			$out .= '<br />
-					<span class="time">'.$start_time.'</span></span>';
+				<span class="time">'.mysql2date( get_option( 'time_format' ), $start_time ).'</span></span>';
 		}
 		return $out;
 	}

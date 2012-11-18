@@ -109,7 +109,7 @@ class sc_event_list {
 		}
 		$out .= '</h3>';
 		if( $event->time != '' ) {
-			$out .= '<span class="time">'.$event->time.'</span>';
+			$out .= '<span class="time">'.mysql2date( get_option( 'time_format' ), $event->time ).'</span>';
 		}
 		$out .= '<span class="location">'.$event->location.'</span>';
 		$out .= '<span class="details">'.$event->details.'</span>';
