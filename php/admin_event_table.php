@@ -239,31 +239,18 @@ class Admin_Event_Table extends WP_List_Table {
 	* @param string $time The start time of the event
 	***************************************************************************/
 	private function format_date( $start_date, $end_date, $start_time ) {
-		$start_date = getdate( strtotime( $start_date ) );
-		$end_date = getdate( strtotime( $end_date ) );
 		$out = '<span style="white-space:nowrap;">';
-		// one day event
-		if( $start_date[0] == $end_date[0] ) {
-			$out .= date_i18n("M j, Y", $start_date[0]);
+		// start date
+		$out .= mysql2date( __( 'Y/m/d' ), $start_date );
+		// end date for multiday event
+		if( $start_date !== $end_date ) {
+			$out .= ' -<br />'.mysql2date( __( 'Y/m/d' ), $end_date );
 		}
-		// multiday event with start and end date in the same year
-		elseif( $start_date['year'] == $end_date['year'] ) {
-			$out .= date_i18n("M j", $start_date[0]).'-';
-			// same start and end month
-			if( $start_date['mon'] == $end_date['mon'] ) {
-				$out .= date_i18n("j, Y", $end_date[0]);
-			}
-			// different start and end month
-			else {
-				$out .= date_i18n("M j, Y", $end_date[0]);
-			}
-		}
-		// multiday event with different start and end year
-		else {
-			$out .= date_i18n("M j, Y", $start_date[0]).'-<br />'.date_i18n("M j, Y", $end_date[0]).'&nbsp;';
-		}
-		$out .= '<br />
+		// event time
+		if( '' !== $start_time ) {
+			$out .= '<br />
 					<span class="time">'.$start_time.'</span></span>';
+		}
 		return $out;
 	}
 
