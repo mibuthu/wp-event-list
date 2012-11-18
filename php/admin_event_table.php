@@ -31,7 +31,20 @@ class Admin_Event_Table extends WP_List_Table {
 			case 'details' :
 				return $this->truncate( 80, $item->details );
 			case 'pub_user' :
-				return get_userdata( $item->$column_name )->user_login;
+				return get_userdata( $item->pub_user )->user_login;
+			case 'pub_date' :
+				// similar output than for post or pages
+				$timestamp = strtotime( $item->pub_date );
+				$time_diff = time() - $timestamp;
+				error_log( "time_diff: ".$time_diff );
+				if( $time_diff >= 0 && $time_diff < 24*60*60 ) {
+					$date = sprintf( __( '%s ago' ), human_time_diff( $timestamp ) );
+				}
+				else {
+					$date = mysql2date( __( 'Y/m/d' ), $item->pub_date );
+				}
+				$datetime = mysql2date( __( 'Y/m/d g:i:s A' ), $item->pub_date );
+				return '<abbr title="'.$datetime.'">'.$date.'</abbr>';
 			default :
 				return $item->$column_name;
 		}
