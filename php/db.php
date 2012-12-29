@@ -25,7 +25,7 @@ class el_db {
 	}
 
 	// UPDATE DB
-	public function update_check() {
+	public function upgrade_check() {
 		// TODO: added version checking
 //		if( el_options::get( 'el_db_version' ) != self::VERSION) {
 			$sql = 'CREATE TABLE '.$this->table.' (
