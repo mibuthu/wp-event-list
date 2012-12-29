@@ -6,8 +6,8 @@ class el_db {
 	const VERSION = "0.1";
 	const TABLE_NAME = "event_list";
 	private static $instance;
+	private $table;
 	private $options;
-	private $atts;
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -19,6 +19,8 @@ class el_db {
 	}
 
 	private function __construct() {
+		global $wpdb;
+		$this->table = $wpdb->prefix.self::TABLE_NAME;
 		//$this->options = &lv_options::get_instance();
 	}
 
@@ -26,7 +28,7 @@ class el_db {
 	public function update_check() {
 		// TODO: added version checking
 //		if( el_options::get( 'el_db_version' ) != self::VERSION) {
-			$sql = 'CREATE TABLE '.$this->table_name().' (
+			$sql = 'CREATE TABLE '.$this->table.' (
 				id int(11) NOT NULL AUTO_INCREMENT,
 				pub_user bigint(20) NOT NULL,
 				pub_date datetime NOT NULL DEFAULT "0000-00-00 00:00:00",
@@ -47,11 +49,6 @@ class el_db {
 //		}
 	}
 
-	public function table_name() {
-		global $wpdb;
-		return $wpdb->prefix.self::TABLE_NAME;
-	}
-
 	public function get_events( $date_range='all', $sort_array=array( 'start_date ASC', 'time ASC', 'end_date ASC') ) {
 		global $wpdb;
 
@@ -70,13 +67,13 @@ class el_db {
 			$range_start = $date_range.'-01-01';
 			$range_end = $date_range.'-12-31';
 		}
-		$sql = 'SELECT * FROM '.$this->table_name().' WHERE (end_date >= "'.$range_start.'" AND start_date <= "'.$range_end.'") ORDER BY '.implode( ', ', $sort_array );
+		$sql = 'SELECT * FROM '.$this->table.' WHERE (end_date >= "'.$range_start.'" AND start_date <= "'.$range_end.'") ORDER BY '.implode( ', ', $sort_array );
 		return $wpdb->get_results( $sql );
 	}
 
 	public function get_event( $id ) {
 		global $wpdb;
-		$sql = 'SELECT * FROM '.$this->table_name().' WHERE id = '.$id.' LIMIT 1';
+		$sql = 'SELECT * FROM '.$this->table.' WHERE id = '.$id.' LIMIT 1';
 		return $wpdb->get_row( $sql );
 	}
 
@@ -85,12 +82,12 @@ class el_db {
 		if( $event === 'first' ) {
 			// first year
 			$search_date = 'start_date';
-			$sql = 'SELECT DISTINCT '.$search_date.' FROM '.$this->table_name().' WHERE '.$search_date.' != "0000-00-00" ORDER BY '.$search_date.' ASC LIMIT 1';
+			$sql = 'SELECT DISTINCT '.$search_date.' FROM '.$this->table.' WHERE '.$search_date.' != "0000-00-00" ORDER BY '.$search_date.' ASC LIMIT 1';
 		}
 		else {
 			// last year
 			$search_date = 'end_date';
-			$sql = 'SELECT DISTINCT '.$search_date.' FROM '.$this->table_name().' WHERE '.$search_date.' != "0000-00-00" ORDER BY '.$search_date.' DESC LIMIT 1';
+			$sql = 'SELECT DISTINCT '.$search_date.' FROM '.$this->table.' WHERE '.$search_date.' != "0000-00-00" ORDER BY '.$search_date.' DESC LIMIT 1';
 		}
 		$date = $wpdb->get_results($sql, ARRAY_A);
 		if( !empty( $date ) ) {
@@ -142,10 +139,10 @@ class el_db {
 		$sqltypes = array( '%s', '%s', '%s', '%s', '%s', '%s', '%s' );
 
 		if( isset( $event_data['id'] ) ) { // update event
-			$wpdb->update( $this->table_name(), $sqldata, array( 'id' => $event_data['id'] ), $sqltypes );
+			$wpdb->update( $this->table, $sqldata, array( 'id' => $event_data['id'] ), $sqltypes );
 		}
 		else { // new event
-			$wpdb->insert( $this->table_name(), $sqldata, $sqltypes );
+			$wpdb->insert( $this->table, $sqldata, $sqltypes );
 		}
 		return true;
 	}
@@ -153,7 +150,7 @@ class el_db {
 	public function delete_events( $event_ids ) {
 		global $wpdb;
 		// sql query
-		$num_deleted = (int) $wpdb->query( $wpdb->prepare( 'DELETE FROM '.$this->table_name().' WHERE id IN ('.$event_ids.')' ) );
+		$num_deleted = (int) $wpdb->query( $wpdb->prepare( 'DELETE FROM '.$this->table.' WHERE id IN ('.$event_ids.')' ) );
 		if( $num_deleted == count( explode( ',', $event_ids ) ) ) {
 			return true;
 		}
