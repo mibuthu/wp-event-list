@@ -326,7 +326,7 @@ class el_admin {
 		$out = '<h3 class="nav-tab-wrapper">';
 		foreach( $tabs as $tab => $name ){
 			$class = ( $tab == $current ) ? ' nav-tab-active' : '';
-			$out .= "<a class='nav-tab$class' href='?page=cgb_admin_main&tab=$tab'>$name</a>";
+			$out .= "<a class='nav-tab$class' href='?page=cgb_admin_main&amp;tab=$tab'>$name</a>";
 		}
 		$out .= '</h3>';
 		return $out;

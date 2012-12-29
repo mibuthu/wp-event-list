@@ -197,10 +197,10 @@ class el_db {
 			for( $year=$last_year; $year>=$first_year; $year-- ) {
 				$out .= ' | ';
 				if( isset( $_GET['ytd'] ) && $year == $_GET['ytd'] ) {
-					$out .= '<li class="year"><a class="current" href="'.$url.'&ytd='.$year.'">'.$year.'</a></li>';
+					$out .= '<li class="year"><a class="current" href="'.$url.'ytd='.$year.'">'.$year.'</a></li>';
 				}
 				else {
-					$out .= '<li class="year"><a href="'.$url.'&ytd='.$year.'">'.$year.'</a></li>';
+					$out .= '<li class="year"><a href="'.$url.'&amp;ytd='.$year.'">'.$year.'</a></li>';
 				}
 			}
 			$out .= '</ul><br />';

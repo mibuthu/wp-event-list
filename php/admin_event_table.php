@@ -53,8 +53,8 @@ class Admin_Event_Table extends WP_List_Table {
 	protected function column_title($item) {
 		//Prepare Columns
 		$actions = array(
-			'edit'      => '<a href="?page='.$_REQUEST['page'].'&id='.$item->id.'&action=edit">Edit</a>',
-			'duplicate' => '<a href="?page=el_admin_new&id='.$item->id.'&action=copy">Duplicate</a>',
+			'edit'      => '<a href="?page='.$_REQUEST['page'].'&amp;id='.$item->id.'&amp;action=edit">Edit</a>',
+			'duplicate' => '<a href="?page=el_admin_new&amp;id='.$item->id.'&amp;action=copy">Duplicate</a>',
 			'delete'    => '<a href="#" onClick="eventlist_deleteEvent('.$item->id.');return false;">Delete</a>'
 		);
 
