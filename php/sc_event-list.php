@@ -4,6 +4,7 @@ require_once( EL_PATH.'php/db.php' );
 // This class handles the shortcode [event-list]
 class sc_event_list {
 	private static $instance;
+	private $db;
 	private $options;
 	private $atts;
 
@@ -17,6 +18,7 @@ class sc_event_list {
 	}
 
 	private function __construct() {
+		$this->db = el_db::get_instance();
 		//$this->options = &lv_options::get_instance();
 
 		// All available attributes
@@ -48,8 +50,8 @@ class sc_event_list {
 	}
 
 	private function html_event_details( $event_id ) {
-		$event = el_db::get_event( $event_id );
-		$out = el_db::html_calendar_nav();
+		$event = $this->db->get_event( $event_id );
+		$out = $this->db->html_calendar_nav();
 		$out .= '<ul id="eventlist">';
 		$out .= $this->html_event( $event );
 		$out .= '</ul>';
@@ -59,13 +61,13 @@ class sc_event_list {
 	private function html_events( $a ) {
 		// specify visible events
 		if( isset( $_GET['ytd'] ) ) {
-			$events = el_db::get_events( $_GET['ytd'] );
+			$events = $this->db->get_events( $_GET['ytd'] );
 		}
 		elseif( $a['initial_date'] !== 'upcoming' ) {
-			$events = el_db::get_events( $a['initial_date'] );
+			$events = $this->db->get_events( $a['initial_date'] );
 		}
 		else {
-			$events = el_db::get_events( 'upcoming' );
+			$events = $this->db->get_events( 'upcoming' );
 		}
 		$out = '';
 		// TODO: add rss feed
@@ -75,7 +77,7 @@ class sc_event_list {
 		//		}
 
 		// generate output
-		$out .= el_db::html_calendar_nav();
+		$out .= $this->db->html_calendar_nav();
 		// TODO: Setting missing
 		if( empty( $events ) /*&& $mfgigcal_settings['no-events'] == "text"*/ ) {
 			$out .= "<p>" . 'no event' /*$mfgigcal_settings['message'] */. "</p>";

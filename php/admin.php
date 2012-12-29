@@ -5,11 +5,13 @@ require_once( EL_PATH.'php/admin_event_table.php' );
 
 // This class handles all available admin pages
 class el_admin {
+	private $db;
 	private $options;
 	private $event_action = false;
 	private $event_action_error = false;
 
 	public function __construct() {
+		$this->db = el_db::get_instance();
 		//$this->options = &el_options::get_instance();
 		$this->event_action = null;
 		$this->event_action_error = null;
@@ -36,7 +38,7 @@ class el_admin {
 		$action = '';
 		// is there POST data an event was edited must be updated
 		if( !empty( $_POST ) ) {
-			$this->event_action_error = !el_db::update_event( $_POST );
+			$this->event_action_error = !$this->db->update_event( $_POST );
 			$this->event_action = isset( $_POST['id'] ) ? 'modified' : 'added';
 		}
 		// get action
@@ -50,7 +52,7 @@ class el_admin {
 		}
 		// delete events if required
 		if( $action === 'delete' && isset( $_GET['id'] ) ) {
-			$this->event_action_error = !el_db::delete_events( $_GET['id'] );
+			$this->event_action_error = !$this->db->delete_events( $_GET['id'] );
 			$this->event_action = 'deleted';
 		}
 		// automatically set order of table to date, if no manual sorting is set
@@ -192,7 +194,7 @@ class el_admin {
 
 	private function list_events() {
 		// show calendar navigation
-		$out = el_db::html_calendar_nav();
+		$out = $this->db->html_calendar_nav();
 		// set date range of events being displayed
 		$date_range = 'upcoming';
 		if( isset( $_GET['ytd'] ) && is_numeric( $_GET['ytd'] ) ) {
@@ -218,7 +220,7 @@ class el_admin {
 		$edit = false;
 		if( isset( $_GET['id'] ) && is_numeric( $_GET['id'] ) ) {
 			// existing event
-			$event = el_db::get_event( $_GET['id'] );
+			$event = $this->db->get_event( $_GET['id'] );
 			if( isset( $_GET['action'] ) && $_GET['action'] === 'edit' ) {
 				// editing of an existing event, if not it would be copy of an existing event
 				$edit = true;

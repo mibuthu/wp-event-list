@@ -59,7 +59,8 @@ else {
 
 function on_el_plugin_loaded() {
 	require_once( 'php/db.php' );
-	el_db::update_check();
+	$db = el_db::get_instance();
+	$db->update_check();
 }
 
 /*
