@@ -3,44 +3,60 @@ require_once( EL_PATH.'php/db.php' );
 
 // This class handles the shortcode [event-list]
 class sc_event_list {
+	private static $instance;
+	private $options;
+	private $atts;
 
-	// All available attributes
-	public static $attr = array(
+	public static function &get_instance() {
+		// Create class instance if required
+		if( !isset( self::$instance ) ) {
+			self::$instance = new sc_event_list();
+		}
+		// Return class instance
+		return self::$instance;
+	}
 
-		'initial_date' => array( 'val'     => 'upcoming<br />year e.g. "2012"',
-		                         'std_val' => 'upcoming',
-		                         'desc'    => 'This attribute specifies which events are listed after the site is shown. The standard is to show the upcoming events.<br />
-		                                       Specify a year e.g. "2012" to change this.' )
-	);
+	private function __construct() {
+		//$this->options = &lv_options::get_instance();
+
+		// All available attributes
+		$this->atts = array(
+
+			'initial_date' => array( 'val'     => 'upcoming<br />year e.g. "2012"',
+			                         'std_val' => 'upcoming',
+			                         'desc'    => 'This attribute specifies which events are listed after the site is shown. The standard is to show the upcoming events.<br />
+			                                       Specify a year e.g. "2012" to change this.' )
+		);
+	}
 
 	// main function to show the rendered HTML output
-	public static function show_html( $atts ) {
+	public function show_html( $atts ) {
 		// check attributes
 		$std_values = array();
-		foreach( self::$attr as $aname => $attribute ) {
+		foreach( $this->atts as $aname => $attribute ) {
 			$std_values[$aname] = $attribute['std_val'];
 		}
 		$a = shortcode_atts( $std_values, $atts );
 
 		if( isset( $_GET['event_id'] ) ) {
-			$out = self::html_event_details( $_GET['event_id'] );
+			$out = $this->html_event_details( $_GET['event_id'] );
 		}
 		else {
-			$out = self::html_events( $a );
+			$out = $this->html_events( $a );
 		}
 		return $out;
 	}
 
-	private static function html_event_details( $event_id ) {
+	private function html_event_details( $event_id ) {
 		$event = el_db::get_event( $event_id );
 		$out = el_db::html_calendar_nav();
 		$out .= '<ul id="eventlist">';
-		$out .= self::html_event( $event );
+		$out .= $this->html_event( $event );
 		$out .= '</ul>';
 		return $out;
 	}
 
-	private static function html_events( $a ) {
+	private function html_events( $a ) {
 		// specify visible events
 		if( isset( $_GET['ytd'] ) ) {
 			$events = el_db::get_events( $_GET['ytd'] );
@@ -89,7 +105,7 @@ class sc_event_list {
 			// set html code
 			$out .= '<ul id="eventlist">';
 			foreach ($events as $event) {
-				$out .= self::html_event( $event, $url );
+				$out .= $this->html_event( $event, $url );
 			}
 			$out .= '</ul>';
 			return $out;
@@ -97,9 +113,9 @@ class sc_event_list {
 		return $out;
 	}
 
-	private static function html_event( $event, $url=false ) {
+	private function html_event( $event, $url=false ) {
 		$out = '<li class="event">';
-		$out .= self::html_fulldate( $event->start_date, $event->end_date );
+		$out .= $this->html_fulldate( $event->start_date, $event->end_date );
 		$out .= '<div class="info_block"><h3>';
 		if( $url ) {
 			$out .= '<a href="'.$url.'event_id='.$event->id.'">'.$event->title.'</a>';
@@ -117,30 +133,30 @@ class sc_event_list {
 		return $out;
 	}
 
-	private static function html_fulldate( $start_date, $end_date ) {
+	private function html_fulldate( $start_date, $end_date ) {
 		$out = '';
 		if( $start_date === $end_date ) {
 			// one day event
 			$out .= '<div class="date">';
 			$out .= '<div class="end-date">';
-			$out .= self::html_date( $start_date );
+			$out .= $this->html_date( $start_date );
 			$out .= '</div>';
 		}
 		else {
 			// multi day event
 			$out .= '<div class="date multi-date">';
 			$out .= '<div class="start-date">';
-			$out .= self::html_date( $start_date );
+			$out .= $this->html_date( $start_date );
 			$out .= '</div>';
 			$out .= '<div class="end-date">';
-			$out .= self::html_date( $end_date );
+			$out .= $this->html_date( $end_date );
 			$out .= '</div>';
 		}
 		$out .= '</div>';
 		return $out;
 	}
 
-	private static function html_date( $date ) {
+	private function html_date( $date ) {
 		$out = '<div class="weekday">'.mysql2date( 'D', $date ).'</div>';
 		$out .= '<div class="day">'.mysql2date( 'd', $date ).'</div>';
 		$out .= '<div class="month">'.mysql2date( 'M', $date ).'</div>';

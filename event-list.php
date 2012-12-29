@@ -70,7 +70,8 @@ function on_el_register_settings() {
 */
 function on_el_sc_event_list( $atts ) {
 	require_once( 'php/sc_event-list.php' );
-	return sc_event_list::show_html( $atts );
+	$shortcode = sc_event_list::get_instance();
+	return $shortcode->show_html( $atts );
 }
 
 function on_el_styles() {
