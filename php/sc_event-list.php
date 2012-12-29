@@ -27,7 +27,12 @@ class sc_event_list {
 			'initial_date' => array( 'val'     => 'upcoming<br />year e.g. "2012"',
 			                         'std_val' => 'upcoming',
 			                         'desc'    => 'This attribute specifies which events are listed after the site is shown. The standard is to show the upcoming events.<br />
-			                                       Specify a year e.g. "2012" to change this.' )
+			                                       Specify a year e.g. "2012" to change this.' ),
+
+			'num_events'   => array( 'val'     => 'number',
+			                         'std_val' => '0',
+			                         'desc'    => 'This attribute specifies how many events should be displayed if upcoming events is selected.<br />
+			                                       0 is the standard value which means that all events will be displayed' )
 		);
 	}
 
@@ -63,11 +68,11 @@ class sc_event_list {
 		if( isset( $_GET['ytd'] ) ) {
 			$events = $this->db->get_events( $_GET['ytd'] );
 		}
-		elseif( $a['initial_date'] !== 'upcoming' ) {
+		elseif( 'upcoming' !== $a['initial_date'] ) {
 			$events = $this->db->get_events( $a['initial_date'] );
 		}
 		else {
-			$events = $this->db->get_events( 'upcoming' );
+			$events = $this->db->get_events( 'upcoming', $a['num_events'] );
 		}
 		$out = '';
 		// TODO: add rss feed

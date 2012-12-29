@@ -49,16 +49,16 @@ class el_db {
 //		}
 	}
 
-	public function get_events( $date_range='all', $sort_array=array( 'start_date ASC', 'time ASC', 'end_date ASC') ) {
+	public function get_events( $date_range='all', $num_events=0, $sort_array=array( 'start_date ASC', 'time ASC', 'end_date ASC') ) {
 		global $wpdb;
 
 		// set date for data base query
-		if( $date_range === 'all' ) {
+		if( 'all' === $date_range ) {
 			// get all events
 			$range_start = '0000-01-01';
 			$range_end = '9999-12-31';
 		}
-		elseif( $date_range === 'upcoming' ) {
+		elseif( 'upcoming' === $date_range ) {
 			// get only events in the future
 			$range_start = date( 'Y-m-d' );
 			$range_end = '9999-12-31';
@@ -68,6 +68,9 @@ class el_db {
 			$range_end = $date_range.'-12-31';
 		}
 		$sql = 'SELECT * FROM '.$this->table.' WHERE (end_date >= "'.$range_start.'" AND start_date <= "'.$range_end.'") ORDER BY '.implode( ', ', $sort_array );
+		if( 'upcoming' === $date_range && is_numeric($num_events) && 0 < $num_events ) {
+			$sql .= ' LIMIT '.$num_events;
+		}
 		return $wpdb->get_results( $sql );
 	}
 
