@@ -250,7 +250,6 @@ class Admin_Event_Table extends WP_List_Table {
 		// similar output than for post or pages
 		$timestamp = strtotime( $pub_date );
 		$time_diff = time() - $timestamp;
-		error_log( "time_diff: ".$time_diff );
 		if( $time_diff >= 0 && $time_diff < 24*60*60 ) {
 			$date = sprintf( __( '%s ago' ), human_time_diff( $timestamp ) );
 		}
