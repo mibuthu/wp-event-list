@@ -42,7 +42,11 @@ add_action( 'plugins_loaded', 'on_el_plugin_loaded' );
 
 // ADMIN PAGE:
 if ( is_admin() ) {
-	add_action( 'admin_menu', 'on_el_admin' ); // add admin pages in admin menu
+	// Include required php-files and initialize required objects
+	require_once( 'php/admin.php' );
+	$admin = new el_admin();
+	// Register actions
+	add_action( 'admin_menu', array( &$admin, 'register_pages' ) );
 //	add_action( 'admin_init', 'on_el_register_settings' ); // register settings
 }
 
@@ -58,16 +62,6 @@ function on_el_plugin_loaded() {
 	el_db::update_check();
 }
 
-function on_el_admin() {
-	require_once( 'php/admin.php' );
-	add_menu_page( 'Event List', 'Event List', 'edit_posts', 'el_admin_main', array( 'el_admin', 'show_main' ) );
-	$page = add_submenu_page( 'el_admin_main', 'Events', 'All Events', 'edit_posts', 'el_admin_main', array( 'el_admin', 'show_main' ) );
-	add_action( 'admin_print_scripts-'.$page, array( 'el_admin', 'embed_admin_main_scripts' ) );
-	$page = add_submenu_page( 'el_admin_main', 'Add New Event', 'Add New', 'edit_posts', 'el_admin_new', array( 'el_admin', 'show_new' ) );
-	add_action( 'admin_print_scripts-'.$page, array( 'el_admin', 'embed_admin_new_scripts' ) );
-	add_submenu_page( 'el_admin_main', 'Event List Settings', 'Settings', 'manage_options', 'el_admin_settings', array( 'el_admin', 'show_settings' ) );
-	add_submenu_page( 'el_admin_main', 'About Event List', 'About', 'manage_options', 'el_admin_about', array( 'el_admin', 'show_about' ) );
-}
 /*
 function on_el_register_settings() {
 	require_once( 'php/options.php' );
