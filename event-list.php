@@ -45,8 +45,7 @@ class event_list {
 		// Register shortcodes
 		add_shortcode( 'event-list', array( &$this, 'shortcode_event_list' ) );
 		// Register widgets
-		// TODO: Add widget
-		//add_action( 'widgets_init', array( &$this, 'widget_init' ) );
+		add_action( 'widgets_init', array( &$this, 'widget_init' ) );
 
 		// ADMIN PAGE:
 		if ( is_admin() ) {
@@ -75,8 +74,8 @@ class event_list {
 
 	public function widget_init() {
 		// Widget "event-list"
-		//require_once( 'php/event-list_widget.php' );
-		//return register_widget( 'event_list_widget' );
+		require_once( 'php/event-list_widget.php' );
+		return register_widget( 'event_list_widget' );
 	}
 
 	public function print_styles() {
