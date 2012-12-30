@@ -142,7 +142,6 @@ class Admin_Event_Table extends WP_List_Table {
 	* @see $this->prepare_items()
 	***************************************************************************/
 	private function process_bulk_action() {
-		// TODO: bulk action must be integrated
 		//Detect when a bulk action is being triggered...
 		if( 'delete_bulk'===$this->current_action() ) {
 			// Show confirmation window before deleting
