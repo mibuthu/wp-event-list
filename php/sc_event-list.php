@@ -34,9 +34,13 @@ class sc_event_list {
 			                         'desc'    => 'This attribute specifies how many events should be displayed if upcoming events is selected.<br />
 			                                       0 is the standard value which means that all events will be displayed' ),
 
-			'show_nav'     => array( 'val'     => '0..false',
-			                         'std_val' => '1..true',
-			                         'desc'    => 'This attribute specifies if the navigation should be shown.')
+			'show_nav'     => array( 'val'     => '0..false<br />1..true',
+			                         'std_val' => '1',
+			                         'desc'    => 'This attribute specifies if the navigation should be shown.'),
+
+			'show_details' => array( 'val'     => '0..false<br />1..true',
+			                         'std_val' => '1',
+			                         'desc'    => 'This attribute specifies if the details are displayed.')
 		);
 	}
 
@@ -118,7 +122,7 @@ class sc_event_list {
 			// set html code
 			$out .= '<ul id="eventlist">';
 			foreach ($events as $event) {
-				$out .= $this->html_event( $event, $url );
+				$out .= $this->html_event( $event, $a, $url );
 			}
 			$out .= '</ul>';
 			return $out;
@@ -126,7 +130,7 @@ class sc_event_list {
 		return $out;
 	}
 
-	private function html_event( $event, $url=false ) {
+	private function html_event( $event, $a=null, $url=false ) {
 		$out = '<li class="event">';
 		$out .= $this->html_fulldate( $event->start_date, $event->end_date );
 		$out .= '<div class="info_block"><h3>';
@@ -141,7 +145,9 @@ class sc_event_list {
 			$out .= '<span class="time">'.mysql2date( get_option( 'time_format' ), $event->time ).'</span>';
 		}
 		$out .= '<span class="location">'.$event->location.'</span>';
-		$out .= '<span class="details">'.$event->details.'</span>';
+		if( null !== $a && 0 != $a['show_details'] ) {
+			$out .= '<span class="details">'.$event->details.'</span>';
+		}
 		$out .= '</div></li>';
 		return $out;
 	}
