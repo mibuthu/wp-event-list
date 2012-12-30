@@ -34,7 +34,7 @@ class event_list_widget extends WP_Widget {
 		}
 		echo do_shortcode( '[event-list num_events="'.$instance['num_events'].'" show_nav=0 show_details=0 show_location=0 link_to_event='.$instance['link_to_event'].']' );
 		if( 1 == $instance['link_to_page'] ) {
-			echo '<a title="'.$instance['link_to_page_caption'].'" href="'.$instance[ 'link_to_page_url'].'">'.$instance['link_to_page_caption'].'</a>';
+			echo '<div style="clear:both"><a title="'.$instance['link_to_page_caption'].'" href="'.$instance[ 'link_to_page_url'].'">'.$instance['link_to_page_caption'].'</a></div>';
 		}
 		echo $after_widget;
 		extract( $args );
