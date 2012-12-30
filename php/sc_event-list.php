@@ -44,7 +44,11 @@ class sc_event_list {
 
 			'show_location' => array( 'val'     => '0..false<br />1..true',
 			                          'std_val' => '1',
-			                          'desc'    => 'This attribute specifies if the location is displayed.')
+			                          'desc'    => 'This attribute specifies if the location is displayed.'),
+
+			'link_to_event' => array( 'val'     => '0..false<br />1..true',
+			                          'std_val' => '1',
+			                          'desc'    => 'This attribute specifies if a link to the single event should be added onto the event name.')
 		);
 	}
 
@@ -134,11 +138,11 @@ class sc_event_list {
 		return $out;
 	}
 
-	private function html_event( $event, $a=null, $url=false ) {
+	private function html_event( $event, $a=null, $url=null ) {
 		$out = '<li class="event">';
 		$out .= $this->html_fulldate( $event->start_date, $event->end_date );
 		$out .= '<div class="info_block"><h3>';
-		if( $url ) {
+		if( null !== $url && ( null !== $a && 0 != $a['link_to_event'] ) ) {
 			$out .= '<a href="'.$url.'event_id='.$event->id.'">'.$event->title.'</a>';
 		}
 		else {
