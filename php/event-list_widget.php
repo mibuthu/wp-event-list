@@ -32,7 +32,7 @@ class event_list_widget extends WP_Widget {
 		{
 			echo $before_title . $title . $after_title;
 		}
-		$out = do_shortcode( '[event-list num_events="'.$instance['num_events'].'" show_nav=0 show_details=0 show_location=0]' );
+		$out = do_shortcode( '[event-list num_events="'.$instance['num_events'].'" show_nav=0 show_details=0 show_location=0 link_to_event='.$instance['link_to_event'].']' );
 		echo $out;
 		echo $after_widget;
 		extract( $args );
@@ -52,6 +52,7 @@ class event_list_widget extends WP_Widget {
 		$instance = array();
 		$instance['title'] = strip_tags( $new_instance['title'] );
 		$instance['num_events'] = strip_tags( $new_instance['num_events'] );
+		$instance['link_to_event'] = (isset( $new_instance['link_to_event'] ) && 1==$new_instance['link_to_event'] ) ? 1 : 0;
 		return $instance;
 	}
 
@@ -63,16 +64,21 @@ class event_list_widget extends WP_Widget {
 	 * @param array $instance Previously saved values from database.
 	 */
 	public function form( $instance ) {
-		isset( $instance['title'] ) ? $title = $instance['title'] : $title = __( 'New title', 'text_domain' );
-		isset( $instance['num_events'] ) ? $num_events = $instance['num_events'] : $num_events = '3';
+		$title =         isset( $instance['title'] )         ? $instance['title'] : __( 'New title', 'text_domain' );
+		$num_events =    isset( $instance['num_events'] )    ? $instance['num_events'] : '3';
+		$link_to_event = isset( $instance['link_to_event'] ) ? $instance['link_to_event'] : '';
+		$link_to_event_checked = 1==$link_to_event ? 'checked = "checked" ' : '';
 		$out = '
 		<p>
 			<label for="'.$this->get_field_id( 'title' ).'">'.__( 'Title:' ).'</label>
 			<input class="widefat" id="'.$this->get_field_id( 'title' ).'" name="'.$this->get_field_name( 'title' ).'" type="text" value="'.esc_attr( $title ).'" />
 		</p>
 		<p>
-			<label for="'.$this->get_field_id( 'atts' ).'">'.__( 'Number of events:' ).'</label>
+			<label for="'.$this->get_field_id( 'num_events' ).'">'.__( 'Number of events:' ).'</label>
 			<input style="width:30px" class="widefat" id="'.$this->get_field_id( 'num_events' ).'" name="'.$this->get_field_name( 'num_events' ).'" type="text" value="'.esc_attr( $num_events ).'">
+		</p>
+		<p>
+			<label><input class="widefat" id="'.$this->get_field_id( 'link_to_event' ).'" name="'.$this->get_field_name( 'link_to_event' ).'" type="checkbox" '.$link_to_event_checked.'value="1"> '.__( 'Add a link to the event' ).'</input></label>
 		</p>';
 		echo $out;
 	}
