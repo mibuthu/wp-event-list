@@ -128,9 +128,10 @@ class sc_event_list {
 			}
 
 			// set html code
-			$out .= '<ul id="eventlist">';
+			$out .= '<ul class="event-list">';
+			$single_day_only = $this->is_single_day_only( $events );
 			foreach ($events as $event) {
-				$out .= $this->html_event( $event, $a, $url );
+				$out .= $this->html_event( $event, $a, $url, $single_day_only );
 			}
 			$out .= '</ul>';
 			return $out;
@@ -138,10 +139,17 @@ class sc_event_list {
 		return $out;
 	}
 
-	private function html_event( $event, $a=null, $url=null ) {
+	private function html_event( $event, $a=null, $url=null, $single_day_only=false ) {
 		$out = '<li class="event">';
-		$out .= $this->html_fulldate( $event->start_date, $event->end_date );
-		$out .= '<div class="info_block"><h3>';
+		$out .= $this->html_fulldate( $event->start_date, $event->end_date, $single_day_only );
+		$out .= '<div class="event-info';
+		if( $single_day_only ) {
+			$out .= ' single-day';
+		}
+		else {
+			$out .= ' multi-day';
+		}
+		$out .= '"><h3>';
 		if( null !== $url && ( null !== $a && 0 != $a['link_to_event'] ) ) {
 			$out .= '<a href="'.$url.'event_id='.$event->id.'">'.$event->title.'</a>';
 		}
@@ -150,30 +158,35 @@ class sc_event_list {
 		}
 		$out .= '</h3>';
 		if( $event->time != '' ) {
-			$out .= '<span class="time">'.mysql2date( get_option( 'time_format' ), $event->time ).'</span>';
+			$out .= '<span class="event-time">'.mysql2date( get_option( 'time_format' ), $event->time ).'</span>';
 		}
 		if( null !== $a && 0 != $a['show_location'] ) {
-			$out .= '<span class="location">'.$event->location.'</span>';
+			$out .= '<span class="event-location">'.$event->location.'</span>';
 		}
 		if( null !== $a && 0 != $a['show_details'] ) {
-			$out .= '<span class="details">'.$event->details.'</span>';
+			$out .= '<div class="event-details">'.$event->details.'</div>';
 		}
 		$out .= '</div></li>';
 		return $out;
 	}
 
-	private function html_fulldate( $start_date, $end_date ) {
+	private function html_fulldate( $start_date, $end_date, $single_day_only=false ) {
 		$out = '';
 		if( $start_date === $end_date ) {
 			// one day event
-			$out .= '<div class="date">';
-			$out .= '<div class="end-date">';
+			$out .= '<div class="event-date">';
+			if( $single_day_only ) {
+				$out .= '<div class="start-date">';
+			}
+			else {
+				$out .= '<div class="end-date">';
+			}
 			$out .= $this->html_date( $start_date );
 			$out .= '</div>';
 		}
 		else {
 			// multi day event
-			$out .= '<div class="date multi-date">';
+			$out .= '<div class="event-date multi-date">';
 			$out .= '<div class="start-date">';
 			$out .= $this->html_date( $start_date );
 			$out .= '</div>';
@@ -186,11 +199,20 @@ class sc_event_list {
 	}
 
 	private function html_date( $date ) {
-		$out = '<div class="weekday">'.mysql2date( 'D', $date ).'</div>';
-		$out .= '<div class="day">'.mysql2date( 'd', $date ).'</div>';
-		$out .= '<div class="month">'.mysql2date( 'M', $date ).'</div>';
-		$out .= '<div class="year">'.mysql2date( 'Y', $date ).'</div>';
+		$out = '<div class="event-weekday">'.mysql2date( 'D', $date ).'</div>';
+		$out .= '<div class="event-day">'.mysql2date( 'd', $date ).'</div>';
+		$out .= '<div class="event-month">'.mysql2date( 'M', $date ).'</div>';
+		$out .= '<div class="event-year">'.mysql2date( 'Y', $date ).'</div>';
 		return $out;
+	}
+
+	private function is_single_day_only( &$events ) {
+		foreach( $events as $event ) {
+			if( $event->start_date !== $event->end_date ) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
 ?>
