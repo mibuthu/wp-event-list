@@ -24,23 +24,27 @@ class sc_event_list {
 		// All available attributes
 		$this->atts = array(
 
-			'initial_date' => array( 'val'     => 'upcoming<br />year e.g. "2012"',
-			                         'std_val' => 'upcoming',
-			                         'desc'    => 'This attribute specifies which events are listed after the site is shown. The standard is to show the upcoming events.<br />
+			'initial_date'  => array( 'val'     => 'upcoming<br />year e.g. "2012"',
+			                          'std_val' => 'upcoming',
+			                          'desc'    => 'This attribute specifies which events are listed after the site is shown. The standard is to show the upcoming events.<br />
 			                                       Specify a year e.g. "2012" to change this.' ),
 
-			'num_events'   => array( 'val'     => 'number',
-			                         'std_val' => '0',
-			                         'desc'    => 'This attribute specifies how many events should be displayed if upcoming events is selected.<br />
+			'num_events'    => array( 'val'     => 'number',
+			                          'std_val' => '0',
+			                          'desc'    => 'This attribute specifies how many events should be displayed if upcoming events is selected.<br />
 			                                       0 is the standard value which means that all events will be displayed' ),
 
-			'show_nav'     => array( 'val'     => '0..false<br />1..true',
-			                         'std_val' => '1',
-			                         'desc'    => 'This attribute specifies if the navigation should be shown.'),
+			'show_nav'      => array( 'val'     => '0..false<br />1..true',
+			                          'std_val' => '1',
+			                          'desc'    => 'This attribute specifies if the navigation should be shown.'),
 
-			'show_details' => array( 'val'     => '0..false<br />1..true',
-			                         'std_val' => '1',
-			                         'desc'    => 'This attribute specifies if the details are displayed.')
+			'show_details'  => array( 'val'     => '0..false<br />1..true',
+			                          'std_val' => '1',
+			                          'desc'    => 'This attribute specifies if the details are displayed.'),
+
+			'show_location' => array( 'val'     => '0..false<br />1..true',
+			                          'std_val' => '1',
+			                          'desc'    => 'This attribute specifies if the location is displayed.')
 		);
 	}
 
@@ -144,7 +148,9 @@ class sc_event_list {
 		if( $event->time != '' ) {
 			$out .= '<span class="time">'.mysql2date( get_option( 'time_format' ), $event->time ).'</span>';
 		}
-		$out .= '<span class="location">'.$event->location.'</span>';
+		if( null !== $a && 0 != $a['show_location'] ) {
+			$out .= '<span class="location">'.$event->location.'</span>';
+		}
 		if( null !== $a && 0 != $a['show_details'] ) {
 			$out .= '<span class="details">'.$event->details.'</span>';
 		}

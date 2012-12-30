@@ -32,7 +32,7 @@ class event_list_widget extends WP_Widget {
 		{
 			echo $before_title . $title . $after_title;
 		}
-		$out = do_shortcode( '[event-list num_events="'.$instance['num_events'].'" show_nav=0 show_details=0]' );
+		$out = do_shortcode( '[event-list num_events="'.$instance['num_events'].'" show_nav=0 show_details=0 show_location=0]' );
 		echo $out;
 		echo $after_widget;
 		extract( $args );
