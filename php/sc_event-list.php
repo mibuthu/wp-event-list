@@ -32,7 +32,11 @@ class sc_event_list {
 			'num_events'   => array( 'val'     => 'number',
 			                         'std_val' => '0',
 			                         'desc'    => 'This attribute specifies how many events should be displayed if upcoming events is selected.<br />
-			                                       0 is the standard value which means that all events will be displayed' )
+			                                       0 is the standard value which means that all events will be displayed' ),
+
+			'show_nav'     => array( 'val'     => '0..false',
+			                         'std_val' => '1..true',
+			                         'desc'    => 'This attribute specifies if the navigation should be shown.')
 		);
 	}
 
@@ -82,7 +86,9 @@ class sc_event_list {
 		//		}
 
 		// generate output
-		$out .= $this->db->html_calendar_nav();
+		if( 0 != $a['show_nav'] ) {
+			$out .= $this->db->html_calendar_nav();
+		}
 		// TODO: Setting missing
 		if( empty( $events ) /*&& $mfgigcal_settings['no-events'] == "text"*/ ) {
 			$out .= "<p>" . 'no event' /*$mfgigcal_settings['message'] */. "</p>";
