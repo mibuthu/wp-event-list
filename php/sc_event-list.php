@@ -122,8 +122,8 @@ class sc_event_list {
 			$url = '?';
 			if( !get_option( 'permalink_structure' ) ) {
 				foreach( $_GET as  $k => $v ) {
-					if( $k != 'ytd' && $k != 'event_id' ) {
-						$url .= $k . "=" . $v . "&";
+					if( 'ytd' !== $k && 'event_id' !== $k ) {
+						$url .= $k.'='.$v.'&amp;';
 					}
 				}
 			}

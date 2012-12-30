@@ -212,7 +212,9 @@ class el_db {
 			else {
 				$existing = "?";
 				foreach( $_GET as  $k => $v ) {
-					if( $k != "ytd" && $k != "event_id" ) $existing .= $k . "=" . $v . "&";
+					if( 'ytd' !== $k && 'event_id' !== $k ) {
+						$existing .= $k.'='.$v.'&amp;';
+					}
 				}
 				$url = $existing;
 			}
