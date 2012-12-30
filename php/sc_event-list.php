@@ -73,7 +73,8 @@ class sc_event_list {
 	private function html_event_details( $event_id ) {
 		$event = $this->db->get_event( $event_id );
 		$out = $this->db->html_calendar_nav();
-		$out .= '<ul id="eventlist">';
+		$out .= '
+			<ul class="event-list">';
 		$out .= $this->html_event( $event );
 		$out .= '</ul>';
 		return $out;
@@ -160,10 +161,10 @@ class sc_event_list {
 		if( $event->time != '' ) {
 			$out .= '<span class="event-time">'.mysql2date( get_option( 'time_format' ), $event->time ).'</span>';
 		}
-		if( null !== $a && 0 != $a['show_location'] ) {
+		if( null === $a || 0 != $a['show_location'] ) {
 			$out .= '<span class="event-location">'.$event->location.'</span>';
 		}
-		if( null !== $a && 0 != $a['show_details'] ) {
+		if( null === $a || 0 != $a['show_details'] ) {
 			$out .= '<div class="event-details">'.$event->details.'</div>';
 		}
 		$out .= '</div></li>';
