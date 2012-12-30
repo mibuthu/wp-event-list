@@ -378,7 +378,7 @@ class el_admin {
 		return $out;
 	}
 
-	private static function show_checkbox( $name, $value, $caption ) {
+	private function show_checkbox( $name, $value, $caption ) {
 		$out = '
 							<label for="'.$name.'">
 								<input name="'.$name.'" type="checkbox" id="'.$name.'" value="1"';
@@ -391,13 +391,13 @@ class el_admin {
 		return $out;
 	}
 
-	private static function show_text( $name, $value ) {
+	private function show_text( $name, $value ) {
 		$out = '
 							<input name="'.$name.'" type="text" id="'.$name.'" value="'.$value.'" />';
 		return $out;
 	}
 
-	private static function show_textarea( $name, $value ) {
+	private function show_textarea( $name, $value ) {
 		$out = '
 							<textarea name="'.$name.'" id="'.$name.'" rows="20" class="large-text code">'.$value.'</textarea>';
 		return $out;
