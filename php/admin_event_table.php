@@ -32,7 +32,7 @@ class Admin_Event_Table extends WP_List_Table {
 			case 'date' :
 				return $this->format_event_date( $item->start_date, $item->end_date, $item->time );
 			case 'details' :
-				return '<span title="'.$item->details.'">'.$this->truncate( 80, $item->details ).'</span>';
+				return '<div title="'.$item->details.'">'.$this->truncate( 80, $item->details ).'</div>';
 			case 'pub_user' :
 				return get_userdata( $item->pub_user )->user_login;
 			case 'pub_date' :
