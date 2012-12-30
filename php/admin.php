@@ -1,18 +1,21 @@
 <?php
 //require_once( EL_PATH.'php/options.php' );
 require_once( EL_PATH.'php/db.php' );
+require_once( EL_PATH.'php/sc_event-list.php' );
 require_once( EL_PATH.'php/admin_event_table.php' );
 
 // This class handles all available admin pages
 class el_admin {
 	private $db;
 	private $options;
+	private $shortcode;
 	private $event_action = false;
 	private $event_action_error = false;
 
 	public function __construct() {
 		$this->db = el_db::get_instance();
 		//$this->options = &el_options::get_instance();
+		$this->shortcode = &sc_event_list::get_instance();
 		$this->event_action = null;
 		$this->event_action_error = null;
 	}
@@ -27,7 +30,8 @@ class el_admin {
 		$page = add_submenu_page( 'el_admin_main', 'Add New Event', 'Add New', 'edit_posts', 'el_admin_new', array( &$this, 'show_new' ) );
 		add_action( 'admin_print_scripts-'.$page, array( &$this, 'embed_admin_new_scripts' ) );
 		add_submenu_page( 'el_admin_main', 'Event List Settings', 'Settings', 'manage_options', 'el_admin_settings', array( &$this, 'show_settings' ) );
-		add_submenu_page( 'el_admin_main', 'About Event List', 'About', 'manage_options', 'el_admin_about', array( &$this, 'show_about' ) );
+		$page = add_submenu_page( 'el_admin_main', 'About Event List', 'About', 'manage_options', 'el_admin_about', array( &$this, 'show_about' ) );
+		add_action( 'admin_print_scripts-'.$page, array( &$this, 'embed_admin_about_scripts' ) );
 	}
 
 	// show the main admin page as a submenu of "Comments"
@@ -167,10 +171,11 @@ class el_admin {
 				<h3>Instructions</h3>
 				<p>Add your events <a href="admin.php?page=el_admin_main">here</a>.</p>
 				<p>To show the events on your site just place this short code on any Page or Post:</p>
-				<pre>[event-list]</pre>';
-//				<p>The plugin includes a widget to place your events in a sidebar.</p>
+				<code>[event-list]</code>
+				<p>The plugin includes also a widget to place your events in a sidebar.</p>';
 		$out .= '<p>Be sure to also check out the <a href="admin.php?page=el_admin_settings">settings page</a> to get Event List behaving just the way you want.</p>
 			</div>';
+		$out .= $this->html_atts();
 		echo $out;
 	}
 
@@ -182,14 +187,18 @@ class el_admin {
 		else {
 			// Proceed with embedding for admin_main
 			wp_enqueue_script( 'eventlist_admin_main_js', EL_URL.'js/admin_main.js' );
-			wp_enqueue_style( 'eventlist_admin_main_css', EL_URL.'css/admin_main.css' );
+			wp_enqueue_style( 'eventlist_admin_main', EL_URL.'css/admin_main.css' );
 		}
 	}
 
 	public function embed_admin_new_scripts() {
 		wp_print_scripts( 'jquery-ui-datepicker' );
 		wp_enqueue_script( 'eventlist_admin_new_js', EL_URL.'js/admin_new.js' );
-		wp_enqueue_style( 'eventlist_admin_new_css', EL_URL.'css/admin_new.css' );
+		wp_enqueue_style( 'eventlist_admin_new', EL_URL.'css/admin_new.css' );
+	}
+
+	public function embed_admin_about_scripts() {
+		wp_enqueue_style( 'eventlist_admin_about', EL_URL.'css/admin_about.css' );
 	}
 
 	private function list_events() {
@@ -400,6 +409,45 @@ class el_admin {
 	private function show_textarea( $name, $value ) {
 		$out = '
 							<textarea name="'.$name.'" id="'.$name.'" rows="20" class="large-text code">'.$value.'</textarea>';
+		return $out;
+	}
+
+	private function html_atts() {
+		$out = '
+			<h3 class="lv-headline">Available Shortcode Attributes</h3>
+			<div>
+				You have some options to modify the output if you add some of the following attributes to the shortcode.<br />
+				You can combine as much attributes as you want.<br />
+				The <code>[event-list]</code> shortcode including the attributes "num_events" and "show_nav" looks like this:
+				<p><code>[event-list num_events=10 show_nav=0]</code></p>
+				<p>Below you can find a list of all supported attributes with their descriptions and available options:</p>';
+		$out .= $this->html_atts_table();
+		$out .= '
+			</div>';
+		return $out;
+	}
+
+	private function html_atts_table() {
+		$out = '
+			<table class="el-atts-table">
+				<tr>
+					<th class="el-atts-table-name">Attribute name</th>
+					<th class="el-atts-table-options">Value options</th>
+					<th class="el-atts-table-default">Default value</th>
+					<th class="el-atts-table-desc">Description</th>
+				</tr>';
+		$atts = $this->shortcode->get_atts();
+		foreach( $atts as $aname => $a ) {
+			$out .= '
+				<tr>
+					<td>'.$aname.'</td>
+					<td>'.$a['val'].'</td>
+					<td>'.$a['std_val'].'</td>
+					<td>'.$a['desc'].'</td>
+				</tr>';
+		}
+		$out .= '
+			</table>';
 		return $out;
 	}
 

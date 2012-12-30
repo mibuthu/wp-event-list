@@ -52,6 +52,10 @@ class sc_event_list {
 		);
 	}
 
+	public function get_atts() {
+		return $this->atts;
+	}
+
 	// main function to show the rendered HTML output
 	public function show_html( $atts ) {
 		// check attributes
