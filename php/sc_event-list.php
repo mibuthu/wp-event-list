@@ -129,7 +129,8 @@ class sc_event_list {
 			}
 
 			// set html code
-			$out .= '<ul class="event-list">';
+			$out .= '
+				<ul class="event-list">';
 			$single_day_only = $this->is_single_day_only( $events );
 			foreach ($events as $event) {
 				$out .= $this->html_event( $event, $a, $url, $single_day_only );
@@ -141,9 +142,11 @@ class sc_event_list {
 	}
 
 	private function html_event( $event, $a=null, $url=null, $single_day_only=false ) {
-		$out = '<li class="event">';
+		$out = '
+			 	<li class="event">';
 		$out .= $this->html_fulldate( $event->start_date, $event->end_date, $single_day_only );
-		$out .= '<div class="event-info';
+		$out .= '
+					<div class="event-info';
 		if( $single_day_only ) {
 			$out .= ' single-day';
 		}
@@ -167,12 +170,14 @@ class sc_event_list {
 		if( null === $a || 0 != $a['show_details'] ) {
 			$out .= '<div class="event-details">'.$event->details.'</div>';
 		}
-		$out .= '</div></li>';
+		$out .= '</div>
+				</li>';
 		return $out;
 	}
 
 	private function html_fulldate( $start_date, $end_date, $single_day_only=false ) {
-		$out = '';
+		$out = '
+					';
 		if( $start_date === $end_date ) {
 			// one day event
 			$out .= '<div class="event-date">';
