@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, admin, attribute, widget, sidebar
 Requires at least: 3.3
 Tested up to: 3.5
-Stable tag: 0.2.2
+Stable tag: 0.3.0
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -14,7 +14,7 @@ Manage your events and show them in a list view on your site.
 
 == Description ==
 
-The purpose of this plugin is to to show a list of events with date, time, description, place, etc. on your site by using a shortcode.
+The purpose of this plugin is to to show a list of events with date, time, description, place, etc. on your site by using a shortcode or a widget.
 There are also admin sites available to access the plugin-settings and to manage the events.
 
 = Current Features =
@@ -26,6 +26,9 @@ There are also admin sites available to access the plugin-settings and to manage
 The event list can be placed in any page or post on your Wordpress site. Just include the following short code where you want the calendar to appear:
 
 ‘[event-list]’
+
+With the existing attributes it is possible to modify the listed events and their style.
+There is also a widget available to view the upcoming events in a sidebar.
 
 If you want to follow the development status have a look at the [git-repository on github](https://github.com/mibuthu/wp-event-list "wp-event-list git-repository").
 
@@ -48,10 +51,22 @@ Event List uses the built-in Wordpress WYSIWYG editor. It's exactly the same pro
 
 == Screenshots ==
 
-not available yet
+1. Admin page: Main page with the event list table
+2. Admin page: New event form
+3. Admin page: About page with help and available attributes list
+4. Admin page: Widget with the available options
+5. Example page created with [event-list] shortcode
 
 
 == Changelog ==
+
+= 0.3.0 (2012-12-31) =
+
+* added a widget to show upcoming events in a sidebar
+* added some shortcode attributes to modify the output
+* internal code changes
+* fixed some html issues
+* updated help texts on admin about page
 
 = 0.2.2 (2012-11-18) =
 
