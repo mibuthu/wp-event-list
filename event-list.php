@@ -3,7 +3,7 @@
 Plugin Name: Event List
 Plugin URI: http://wordpress.org/extend/plugins/event-list/
 Description: Manage your events and show them in a list view on your site.
-Version: 0.2.2
+Version: 0.3.0
 Author: Michael Burtscher
 Author URI: http://wordpress.org/extend/plugins/event-list/
 License: GPLv2
@@ -25,69 +25,72 @@ You can view a copy of the HTML version of the GNU General Public
 License at http://www.gnu.org/copyleft/gpl.html
 */
 
-// general definitions
+// GENERAL DEFINITIONS
 define( 'EL_URL', plugin_dir_url( __FILE__ ) );
 define( 'EL_PATH', plugin_dir_path( __FILE__ ) );
 
 
-// ADD HOOKS, ACTIONS AND SHORTCODES:
+// MAIN PLUGIN CLASS
+class event_list {
+	private $shortcode;
 
-// FOR ADMIN AND FRONTPAGE:
-// TODO: Check the following hooks
-//register_activation_hook( 'php/db.php', array( 'el_db', 'upgrade_check' ) );
-//register_activation_hook( 'php/options.php', array( 'el_options', 'upgrade' ) );
-add_action( 'plugins_loaded', 'on_el_plugin_loaded' );
-// TODO: Add widget
-//add_action( 'widgets_init', 'on_el_widgets' );
+	/**
+	 * Constructor:
+	 * Initializes the plugin.
+	 */
+	public function __construct() {
+		$this->shortcode = NULL;
 
-// ADMIN PAGE:
-if ( is_admin() ) {
-	add_action( 'admin_menu', 'on_el_admin' ); // add admin pages in admin menu
-//	add_action( 'admin_init', 'on_el_register_settings' ); // register settings
-}
+		// ALWAYS:
+		// Register shortcodes
+		add_shortcode( 'event-list', array( &$this, 'shortcode_event_list' ) );
+		// Register widgets
+		add_action( 'widgets_init', array( &$this, 'widget_init' ) );
 
-// FRONT PAGE:
-else {
-	add_shortcode( 'event-list', 'on_el_sc_event_list' ); // add shortcode [event-list]
-	// Stylesheet for display
-	add_action('wp_print_styles', 'on_el_styles');
-}
+		// ADMIN PAGE:
+		if ( is_admin() ) {
+			// Include required php-files and initialize required objects
+			require_once( 'php/admin.php' );
+			$admin = new el_admin();
+			// Register actions
+			add_action( 'admin_menu', array( &$admin, 'register_pages' ) );
+			add_action( 'plugins_loaded', array( &$this, 'db_upgrade_check' ) );
+		}
 
-function on_el_plugin_loaded() {
-	require_once( 'php/db.php' );
-	el_db::update_check();
-}
+		// FRONT PAGE:
+		else {
+			// Register actions
+			add_action('wp_print_styles', array( &$this, 'print_styles' ) );
+		}
+	} // end constructor
 
-function on_el_admin() {
-	require_once( 'php/admin.php' );
-	add_menu_page( 'Event List', 'Event List', 'edit_posts', 'el_admin_main', array( 'el_admin', 'show_main' ) );
-	$page = add_submenu_page( 'el_admin_main', 'Events', 'All Events', 'edit_posts', 'el_admin_main', array( 'el_admin', 'show_main' ) );
-	add_action( 'admin_print_scripts-'.$page, array( 'el_admin', 'embed_admin_main_scripts' ) );
-	$page = add_submenu_page( 'el_admin_main', 'Add New Event', 'Add New', 'edit_posts', 'el_admin_new', array( 'el_admin', 'show_new' ) );
-	add_action( 'admin_print_scripts-'.$page, array( 'el_admin', 'embed_admin_new_scripts' ) );
-	add_submenu_page( 'el_admin_main', 'Event List Settings', 'Settings', 'manage_options', 'el_admin_settings', array( 'el_admin', 'show_settings' ) );
-	add_submenu_page( 'el_admin_main', 'About Event List', 'About', 'manage_options', 'el_admin_about', array( 'el_admin', 'show_about' ) );
-}
-/*
-function on_el_register_settings() {
-	require_once( 'php/options.php' );
-	el_options::register();
-}
-*/
-function on_el_sc_event_list( $atts ) {
-	require_once( 'php/sc_event-list.php' );
-	return sc_event_list::show_html( $atts );
-}
+	public function shortcode_event_list( $atts ) {
+		if( NULL == $this->shortcode ) {
+			require_once( 'php/sc_event-list.php' );
+			$this->shortcode = sc_event_list::get_instance();
+		}
+		return $this->shortcode->show_html( $atts );
+	}
 
-function on_el_styles() {
-	wp_register_style('event-list_css', EL_URL.'css/event-list.css');
-	wp_enqueue_style( 'event-list_css');
-}
+	public function widget_init() {
+		// Widget "event-list"
+		require_once( 'php/event-list_widget.php' );
+		return register_widget( 'event_list_widget' );
+	}
 
-/*
-function on_el_widgets() {
-	require_once( 'php/event-list_widget.php' );
-	return register_widget( 'event_list_widget' );
-}
-*/
+	public function print_styles() {
+		wp_register_style('event-list_css', EL_URL.'css/event-list.css');
+		wp_enqueue_style( 'event-list_css');
+	}
+
+	public function db_upgrade_check() {
+		require_once( 'php/db.php' );
+		$db = el_db::get_instance();
+		$db->upgrade_check();
+	}
+} // end class linkview
+
+
+// create a class instance
+$event_list = new event_list();
 ?>

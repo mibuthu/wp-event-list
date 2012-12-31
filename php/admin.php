@@ -1,23 +1,49 @@
 <?php
 //require_once( EL_PATH.'php/options.php' );
 require_once( EL_PATH.'php/db.php' );
+require_once( EL_PATH.'php/sc_event-list.php' );
 require_once( EL_PATH.'php/admin_event_table.php' );
 
 // This class handles all available admin pages
 class el_admin {
-	private static $event_action = false;
-	private static $event_action_error = false;
+	private $db;
+	private $options;
+	private $shortcode;
+	private $event_action = false;
+	private $event_action_error = false;
+
+	public function __construct() {
+		$this->db = el_db::get_instance();
+		//$this->options = &el_options::get_instance();
+		$this->shortcode = &sc_event_list::get_instance();
+		$this->event_action = null;
+		$this->event_action_error = null;
+	}
+
+	/**
+	 * Add and register all admin pages in the admin menu
+	 */
+	public function register_pages() {
+		add_menu_page( 'Event List', 'Event List', 'edit_posts', 'el_admin_main', array( &$this, 'show_main' ) );
+		$page = add_submenu_page( 'el_admin_main', 'Events', 'All Events', 'edit_posts', 'el_admin_main', array( &$this, 'show_main' ) );
+		add_action( 'admin_print_scripts-'.$page, array( &$this, 'embed_admin_main_scripts' ) );
+		$page = add_submenu_page( 'el_admin_main', 'Add New Event', 'Add New', 'edit_posts', 'el_admin_new', array( &$this, 'show_new' ) );
+		add_action( 'admin_print_scripts-'.$page, array( &$this, 'embed_admin_new_scripts' ) );
+		add_submenu_page( 'el_admin_main', 'Event List Settings', 'Settings', 'manage_options', 'el_admin_settings', array( &$this, 'show_settings' ) );
+		$page = add_submenu_page( 'el_admin_main', 'About Event List', 'About', 'manage_options', 'el_admin_about', array( &$this, 'show_about' ) );
+		add_action( 'admin_print_scripts-'.$page, array( &$this, 'embed_admin_about_scripts' ) );
+	}
 
 	// show the main admin page as a submenu of "Comments"
-	public static function show_main() {
+	public function show_main() {
 		if ( !current_user_can( 'edit_posts' ) ) {
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
 		$action = '';
 		// is there POST data an event was edited must be updated
 		if( !empty( $_POST ) ) {
-			self::$event_action_error = !el_db::update_event( $_POST );
-			self::$event_action = isset( $_POST['id'] ) ? 'modified' : 'added';
+			$this->event_action_error = !$this->db->update_event( $_POST );
+			$this->event_action = isset( $_POST['id'] ) ? 'modified' : 'added';
 		}
 		// get action
 		if( isset( $_GET['action'] ) ) {
@@ -25,13 +51,13 @@ class el_admin {
 		}
 		// if an event should be edited a different page must be displayed
 		if( $action === 'edit' ) {
-			self::show_edit();
+			$this->show_edit();
 			return;
 		}
 		// delete events if required
 		if( $action === 'delete' && isset( $_GET['id'] ) ) {
-			self::$event_action_error = !el_db::delete_events( $_GET['id'] );
-			self::$event_action = 'deleted';
+			$this->event_action_error = !$this->db->delete_events( $_GET['id'] );
+			$this->event_action = 'deleted';
 		}
 		// automatically set order of table to date, if no manual sorting is set
 		if( !isset( $_GET['orderby'] ) ) {
@@ -44,34 +70,34 @@ class el_admin {
 			<div class="wrap">
 			<div id="icon-edit-pages" class="icon32"><br /></div><h2>Events <a href="?page=el_admin_new" class="add-new-h2">Add New</a></h2>';
 		// added messages if required
-		$out .= self::show_messages();
+		$out .= $this->show_messages();
 		// list event table
-		$out .= self::list_events();
+		$out .= $this->list_events();
 		$out .= '</div>';
 		echo $out;
 	}
 
-	public static function show_new() {
+	public function show_new() {
 		$out = '<div class="wrap">
 				<div class="wrap nosubsub" style="padding-bottom:15px">
 					<div id="icon-edit-pages" class="icon32"><br /></div><h2>Add New Event</h2>
 				</div>';
-		$out .= self::edit_event();
+		$out .= $this->edit_event();
 		$out .= '</div>';
 		echo $out;
 	}
 
-	private static function show_edit() {
+	private function show_edit() {
 		$out = '<div class="wrap">
 				<div class="wrap nosubsub" style="padding-bottom:15px">
 					<div id="icon-edit-pages" class="icon32"><br /></div><h2>Edit Event</h2>
 				</div>';
-		$out .= self::edit_event();
+		$out .= $this->edit_event();
 		$out .= '</div>';
 		echo $out;
 	}
 
-	public static function show_settings () {
+	public function show_settings () {
 		if (!current_user_can('manage_options'))  {
 			wp_die( __('You do not have sufficient permissions to access this page.') );
 		}
@@ -137,42 +163,50 @@ class el_admin {
 		echo $out;
 	}
 
-	public static function show_about() {
+	public function show_about() {
 		$out = '<div class="wrap">
 				<div class="wrap nosubsub" style="padding-bottom:15px">
 					<div id="icon-edit-pages" class="icon32"><br /></div><h2>About Event List</h2>
 				</div>
-				<h3>Instructions</h3>
-				<p>Add your events <a href="admin.php?page=el_admin_main">here</a>.</p>
-				<p>To show the events on your site just place this short code on any Page or Post:</p>
-				<pre>[event-list]</pre>';
-//				<p>The plugin includes a widget to place your events in a sidebar.</p>
-		$out .= '<p>Be sure to also check out the <a href="admin.php?page=el_admin_settings">settings page</a> to get Event List behaving just the way you want.</p>
+				<h3>Help and Instructions</h3>
+				<p>You can manage your events <a href="admin.php?page=el_admin_main">here</a>.</p>
+				<p>To show the events on your site you have two possibilities:
+					<ul class="el-show-event-options"><li>you can place the <strong>shortcode</strong> <code>[event-list]</code> on any page or post</li>
+					<li>you can add the <strong>widget</strong> "Event List" in your sidebars</li></ul>
+					The the displayed events and their style can be modified with the available widget settings and the available attributes for the shortcode.<br />
+					A list of all available shortcode attributes with their description can be found below.
+				</p>
+				<p>Be sure to also check the <a href="admin.php?page=el_admin_settings">settings page</a> to get Event List behaving just the way you want.</p>
 			</div>';
+		$out .= $this->html_atts();
 		echo $out;
 	}
 
-	public static function embed_admin_main_scripts() {
+	public function embed_admin_main_scripts() {
 		// If edit event is selected switch to embed admin_new
 		if( isset( $_GET['action'] ) && 'edit' === $_GET['action'] ) {
-			self::embed_admin_new_scripts();
+			$this->embed_admin_new_scripts();
 		}
 		else {
 			// Proceed with embedding for admin_main
 			wp_enqueue_script( 'eventlist_admin_main_js', EL_URL.'js/admin_main.js' );
-			wp_enqueue_style( 'eventlist_admin_main_css', EL_URL.'css/admin_main.css' );
+			wp_enqueue_style( 'eventlist_admin_main', EL_URL.'css/admin_main.css' );
 		}
 	}
 
-	public static function embed_admin_new_scripts() {
+	public function embed_admin_new_scripts() {
 		wp_print_scripts( 'jquery-ui-datepicker' );
 		wp_enqueue_script( 'eventlist_admin_new_js', EL_URL.'js/admin_new.js' );
-		wp_enqueue_style( 'eventlist_admin_new_css', EL_URL.'css/admin_new.css' );
+		wp_enqueue_style( 'eventlist_admin_new', EL_URL.'css/admin_new.css' );
 	}
 
-	private static function list_events() {
+	public function embed_admin_about_scripts() {
+		wp_enqueue_style( 'eventlist_admin_about', EL_URL.'css/admin_about.css' );
+	}
+
+	private function list_events() {
 		// show calendar navigation
-		$out = el_db::html_calendar_nav();
+		$out = $this->show_calendar_nav();
 		// set date range of events being displayed
 		$date_range = 'upcoming';
 		if( isset( $_GET['ytd'] ) && is_numeric( $_GET['ytd'] ) ) {
@@ -193,12 +227,12 @@ class el_admin {
 		return $out;
 	}
 
-	private static function edit_event() {
+	private function edit_event() {
 		$date_format = __( 'Y/m/d' ); // similar date format than in list tables (e.g. post, pages, media)
 		$edit = false;
 		if( isset( $_GET['id'] ) && is_numeric( $_GET['id'] ) ) {
 			// existing event
-			$event = el_db::get_event( $_GET['id'] );
+			$event = $this->db->get_event( $_GET['id'] );
 			if( isset( $_GET['action'] ) && $_GET['action'] === 'edit' ) {
 				// editing of an existing event, if not it would be copy of an existing event
 				$edit = true;
@@ -214,7 +248,7 @@ class el_admin {
 
 		// Add required data for javascript in a hidden field
 		$json = json_encode( array( 'el_url'         => EL_URL,
-		                            'el_date_format' => self::datepicker_format( $date_format ) ) );
+		                            'el_date_format' => $this->datepicker_format( $date_format ) ) );
 		$out = "<input type='hidden' id='json_for_js' value='".$json."' />";
 		$out .= '<form method="POST" action="?page=el_admin_main">';
 		if( true === $edit ) {
@@ -260,11 +294,39 @@ class el_admin {
 		return $out;
 	}
 
-	private static function show_messages() {
+	private function show_calendar_nav() {
+		$first_year = $this->db->get_event_date( 'first' );
+		$last_year = $this->db->get_event_date( 'last' );
+
+		// Calendar Navigation
+		if( true === is_admin() ) {
+			$url = "?page=el_admin_main";
+			$out = '<ul class="subsubsub">';
+			if( isset( $_GET['ytd'] ) || isset( $_GET['event_id'] ) ) {
+				$out .= '<li class="upcoming"><a href="'.$url.'">Upcoming</a></li>';
+			}
+			else {
+				$out .= '<li class="upcoming"><a class="current" href="'.$url.'">Upcoming</a></li>';
+			}
+			for( $year=$last_year; $year>=$first_year; $year-- ) {
+				$out .= ' | ';
+				if( isset( $_GET['ytd'] ) && $year == $_GET['ytd'] ) {
+					$out .= '<li class="year"><a class="current" href="'.$url.'ytd='.$year.'">'.$year.'</a></li>';
+				}
+				else {
+					$out .= '<li class="year"><a href="'.$url.'&amp;ytd='.$year.'">'.$year.'</a></li>';
+				}
+			}
+			$out .= '</ul><br />';
+		}
+		return $out;
+	}
+
+	private function show_messages() {
 		$out = '';
 		// event added
-		if( 'added' === self::$event_action ) {
-			if( false === self::$event_action_error ) {
+		if( 'added' === $this->event_action ) {
+			if( false === $this->event_action_error ) {
 				$out .= '<div id="message" class="updated below-h2"><p><strong>New Event "'.$_POST['title'].'" was added.</strong></p></div>';
 			}
 			else {
@@ -272,8 +334,8 @@ class el_admin {
 			}
 		}
 		// event modified
-		elseif( 'modified' === self::$event_action ) {
-			if( false === self::$event_action_error ) {
+		elseif( 'modified' === $this->event_action ) {
+			if( false === $this->event_action_error ) {
 				$out .= '<div id="message" class="updated below-h2"><p><strong>Event "'.$_POST['title'].'" (id: '.$_POST['id'].') was modified.</strong></p></div>';
 			}
 			else {
@@ -281,13 +343,13 @@ class el_admin {
 			}
 		}
 		// event deleted
-		elseif( 'deleted' === self::$event_action ) {
+		elseif( 'deleted' === $this->event_action ) {
 			$num_deleted = count( explode( ',', $_GET['id'] ) );
 			$plural = '';
 			if( $num_deleted > 1 ) {
 				$plural = 's';
 			}
-			if( false === self::$event_action_error ) {
+			if( false === $this->event_action_error ) {
 				$out .= '<div id="message" class="updated below-h2"><p><strong>'.$num_deleted.' Event'.$plural.' deleted (id'.$plural.': '.$_GET['id'].').</strong></p></div>';
 			}
 			else {
@@ -298,13 +360,13 @@ class el_admin {
 	}
 
 	// TODO: Function "create_tabs" not required yet, can be removed probably
-	private static function create_tabs( $current = 'general' )  {
+	private function create_tabs( $current = 'general' )  {
 		$tabs = array( 'general' => 'General settings', 'comment_list' => 'Comment-list settings', 'comment_form' => 'Comment-form settings',
 						'comment_form_html' => 'Comment-form html code', 'comment_html' => 'Comment html code' );
 		$out = '<h3 class="nav-tab-wrapper">';
 		foreach( $tabs as $tab => $name ){
 			$class = ( $tab == $current ) ? ' nav-tab-active' : '';
-			$out .= "<a class='nav-tab$class' href='?page=cgb_admin_main&tab=$tab'>$name</a>";
+			$out .= "<a class='nav-tab$class' href='?page=cgb_admin_main&amp;tab=$tab'>$name</a>";
 		}
 		$out .= '</h3>';
 		return $out;
@@ -313,9 +375,9 @@ class el_admin {
 	// $desc_pos specifies where the descpription will be displayed.
 	// available options:  'right'   ... description will be displayed on the right side of the option (standard value)
 	//                     'newline' ... description will be displayed below the option
-	private static function show_options( $section, $desc_pos='right' ) {
+	private function show_options( $section, $desc_pos='right' ) {
 		$out = '';
-		foreach( self::$options as $oname => $o ) {
+		foreach( $this->options as $oname => $o ) {
 			if( $o['section'] == $section ) {
 				$out .= '
 						<tr valign="top">
@@ -327,13 +389,13 @@ class el_admin {
 						<td>';
 				switch( $o['type'] ) {
 					case 'checkbox':
-						$out .= cgb_admin::show_checkbox( $oname, self::get( $oname ), $o['caption'] );
+						$out .= cgb_admin::show_checkbox( $oname, $this->get( $oname ), $o['caption'] );
 						break;
 					case 'text':
-						$out .= cgb_admin::show_text( $oname, self::get( $oname ) );
+						$out .= cgb_admin::show_text( $oname, $this->get( $oname ) );
 						break;
 					case 'textarea':
-						$out .= cgb_admin::show_textarea( $oname, self::get( $oname ) );
+						$out .= cgb_admin::show_textarea( $oname, $this->get( $oname ) );
 						break;
 				}
 				$out .= '
@@ -356,7 +418,7 @@ class el_admin {
 		return $out;
 	}
 
-	private static function show_checkbox( $name, $value, $caption ) {
+	private function show_checkbox( $name, $value, $caption ) {
 		$out = '
 							<label for="'.$name.'">
 								<input name="'.$name.'" type="checkbox" id="'.$name.'" value="1"';
@@ -369,15 +431,53 @@ class el_admin {
 		return $out;
 	}
 
-	private static function show_text( $name, $value ) {
+	private function show_text( $name, $value ) {
 		$out = '
 							<input name="'.$name.'" type="text" id="'.$name.'" value="'.$value.'" />';
 		return $out;
 	}
 
-	private static function show_textarea( $name, $value ) {
+	private function show_textarea( $name, $value ) {
 		$out = '
 							<textarea name="'.$name.'" id="'.$name.'" rows="20" class="large-text code">'.$value.'</textarea>';
+		return $out;
+	}
+
+	private function html_atts() {
+		$out = '
+			<h3 class="el-headline">Available Shortcode Attributes</h3>
+			<div>
+				You have the possibility to modify the output if you add some of the following attributes to the shortcode.<br />
+				You can combine as much attributes as you want. E.g.the shortcode including the attributes "num_events" and "show_nav" would looks like this:
+				<p><code>[event-list num_events=10 show_nav=0]</code></p>
+				<p>Below you can find a list of all supported attributes with their descriptions and available options:</p>';
+		$out .= $this->html_atts_table();
+		$out .= '
+			</div>';
+		return $out;
+	}
+
+	private function html_atts_table() {
+		$out = '
+			<table class="el-atts-table">
+				<tr>
+					<th class="el-atts-table-name">Attribute name</th>
+					<th class="el-atts-table-options">Value options</th>
+					<th class="el-atts-table-default">Default value</th>
+					<th class="el-atts-table-desc">Description</th>
+				</tr>';
+		$atts = $this->shortcode->get_atts();
+		foreach( $atts as $aname => $a ) {
+			$out .= '
+				<tr>
+					<td>'.$aname.'</td>
+					<td>'.$a['val'].'</td>
+					<td>'.$a['std_val'].'</td>
+					<td>'.$a['desc'].'</td>
+				</tr>';
+		}
+		$out .= '
+			</table>';
 		return $out;
 	}
 
@@ -387,7 +487,7 @@ class el_admin {
 	 * @param string $format a date format
 	 * @return string
 	 */
-	private static function datepicker_format( $format ) {
+	private function datepicker_format( $format ) {
 		$chars = array(
 				// Day
 				'd' => 'dd', 'j' => 'd', 'l' => 'DD', 'D' => 'D',

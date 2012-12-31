@@ -6,7 +6,10 @@ if(!class_exists('WP_List_Table')){
 require_once( EL_PATH.'php/db.php' );
 
 class Admin_Event_Table extends WP_List_Table {
+	private $db;
+
 	public function __construct() {
+		$this->db = el_db::get_instance();
 		global $status, $page;
 		//Set parent defaults
 		parent::__construct( array(
@@ -29,7 +32,7 @@ class Admin_Event_Table extends WP_List_Table {
 			case 'date' :
 				return $this->format_event_date( $item->start_date, $item->end_date, $item->time );
 			case 'details' :
-				return '<span title="'.$item->details.'">'.$this->truncate( 80, $item->details ).'</span>';
+				return '<div title="'.$item->details.'">'.$this->truncate( 80, $item->details ).'</div>';
 			case 'pub_user' :
 				return get_userdata( $item->pub_user )->user_login;
 			case 'pub_date' :
@@ -50,8 +53,8 @@ class Admin_Event_Table extends WP_List_Table {
 	protected function column_title($item) {
 		//Prepare Columns
 		$actions = array(
-			'edit'      => '<a href="?page='.$_REQUEST['page'].'&id='.$item->id.'&action=edit">Edit</a>',
-			'duplicate' => '<a href="?page=el_admin_new&id='.$item->id.'&action=copy">Duplicate</a>',
+			'edit'      => '<a href="?page='.$_REQUEST['page'].'&amp;id='.$item->id.'&amp;action=edit">Edit</a>',
+			'duplicate' => '<a href="?page=el_admin_new&amp;id='.$item->id.'&amp;action=copy">Duplicate</a>',
 			'delete'    => '<a href="#" onClick="eventlist_deleteEvent('.$item->id.');return false;">Delete</a>'
 		);
 
@@ -139,7 +142,6 @@ class Admin_Event_Table extends WP_List_Table {
 	* @see $this->prepare_items()
 	***************************************************************************/
 	private function process_bulk_action() {
-		// TODO: bulk action must be integrated
 		//Detect when a bulk action is being triggered...
 		if( 'delete_bulk'===$this->current_action() ) {
 			// Show confirmation window before deleting
@@ -216,7 +218,7 @@ class Admin_Event_Table extends WP_List_Table {
 				break;
 		}
 		// get and return events in the correct order
-		return el_db::get_events( $date_range, $sort_array );
+		return $this->db->get_events( $date_range, 0, $sort_array );
 	}
 
 	/** ************************************************************************
@@ -247,7 +249,6 @@ class Admin_Event_Table extends WP_List_Table {
 		// similar output than for post or pages
 		$timestamp = strtotime( $pub_date );
 		$time_diff = time() - $timestamp;
-		error_log( "time_diff: ".$time_diff );
 		if( $time_diff >= 0 && $time_diff < 24*60*60 ) {
 			$date = sprintf( __( '%s ago' ), human_time_diff( $timestamp ) );
 		}

@@ -1,0 +1,35 @@
+.el-show-event-options {
+	list-style: circle inside;
+}
+
+.el-headline {
+	margin-top: 2.3em;
+}
+
+.el-atts-table {
+	border: 1px solid #aaa;
+	border-collapse: collapse;
+	width: 95%;
+}
+.el-atts-table th {
+	border: 1px solid #aaa;
+	padding: 3px 4px !important;
+	background: #eeeeee;
+}
+.el-atts-table td {
+	border: 1px solid #aaa;
+	padding: 2px 5px !important;
+	vertical-align: top;
+}
+
+.el-atts-table-name {
+	width: 110px;
+}
+
+.el-atts-table-options {
+	width: 110px;
+}
+
+.el-atts-table-default {
+	width: 110px;
+}
