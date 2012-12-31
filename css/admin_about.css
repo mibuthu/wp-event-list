@@ -1,3 +1,11 @@
+.el-show-event-options {
+	list-style: circle inside;
+}
+
+.el-headline {
+	margin-top: 2.3em;
+}
+
 .el-atts-table {
 	border: 1px solid #aaa;
 	border-collapse: collapse;

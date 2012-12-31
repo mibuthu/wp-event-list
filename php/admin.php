@@ -168,12 +168,15 @@ class el_admin {
 				<div class="wrap nosubsub" style="padding-bottom:15px">
 					<div id="icon-edit-pages" class="icon32"><br /></div><h2>About Event List</h2>
 				</div>
-				<h3>Instructions</h3>
-				<p>Add your events <a href="admin.php?page=el_admin_main">here</a>.</p>
-				<p>To show the events on your site just place this short code on any Page or Post:</p>
-				<code>[event-list]</code>
-				<p>The plugin includes also a widget to place your events in a sidebar.</p>';
-		$out .= '<p>Be sure to also check out the <a href="admin.php?page=el_admin_settings">settings page</a> to get Event List behaving just the way you want.</p>
+				<h3>Help and Instructions</h3>
+				<p>You can manage your events <a href="admin.php?page=el_admin_main">here</a>.</p>
+				<p>To show the events on your site you have two possibilities:
+					<ul class="el-show-event-options"><li>you can place the <strong>shortcode</strong> <code>[event-list]</code> on any page or post</li>
+					<li>you can add the <strong>widget</strong> "Event List" in your sidebars</li></ul>
+					The the displayed events and their style can be modified with the available widget settings and the available attributes for the shortcode.<br />
+					A list of all available shortcode attributes with their description can be found below.
+				</p>
+				<p>Be sure to also check the <a href="admin.php?page=el_admin_settings">settings page</a> to get Event List behaving just the way you want.</p>
 			</div>';
 		$out .= $this->html_atts();
 		echo $out;
@@ -442,11 +445,10 @@ class el_admin {
 
 	private function html_atts() {
 		$out = '
-			<h3 class="lv-headline">Available Shortcode Attributes</h3>
+			<h3 class="el-headline">Available Shortcode Attributes</h3>
 			<div>
-				You have some options to modify the output if you add some of the following attributes to the shortcode.<br />
-				You can combine as much attributes as you want.<br />
-				The <code>[event-list]</code> shortcode including the attributes "num_events" and "show_nav" looks like this:
+				You have the possibility to modify the output if you add some of the following attributes to the shortcode.<br />
+				You can combine as much attributes as you want. E.g.the shortcode including the attributes "num_events" and "show_nav" would looks like this:
 				<p><code>[event-list num_events=10 show_nav=0]</code></p>
 				<p>Below you can find a list of all supported attributes with their descriptions and available options:</p>';
 		$out .= $this->html_atts_table();
