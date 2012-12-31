@@ -26,29 +26,29 @@ class sc_event_list {
 
 			'initial_date'  => array( 'val'     => 'upcoming<br />year e.g. "2012"',
 			                          'std_val' => 'upcoming',
-			                          'desc'    => 'This attribute specifies which events are listed after the site is shown. The standard is to show the upcoming events.<br />
-			                                       Specify a year e.g. "2012" to change this.' ),
+			                          'desc'    => 'This attribute specifies which events are initially shown. The standard is to show the upcoming events.<br />
+			                                        Specify a year e.g. "2012" to change this behavior.' ),
 
 			'num_events'    => array( 'val'     => 'number',
 			                          'std_val' => '0',
 			                          'desc'    => 'This attribute specifies how many events should be displayed if upcoming events is selected.<br />
-			                                       0 is the standard value which means that all events will be displayed' ),
+			                                        0 is the standard value which means that all events will be displayed.' ),
 
 			'show_nav'      => array( 'val'     => '0..false<br />1..true',
 			                          'std_val' => '1',
-			                          'desc'    => 'This attribute specifies if the navigation should be shown.'),
+			                          'desc'    => 'This attribute specifies if the calendar navigation should be displayed.'),
 
 			'show_details'  => array( 'val'     => '0..false<br />1..true',
 			                          'std_val' => '1',
-			                          'desc'    => 'This attribute specifies if the details are displayed.'),
+			                          'desc'    => 'This attribute specifies if the details are displayed in the event list.'),
 
 			'show_location' => array( 'val'     => '0..false<br />1..true',
 			                          'std_val' => '1',
-			                          'desc'    => 'This attribute specifies if the location is displayed.'),
+			                          'desc'    => 'This attribute specifies if the location is displayed in the event list.'),
 
 			'link_to_event' => array( 'val'     => '0..false<br />1..true',
 			                          'std_val' => '1',
-			                          'desc'    => 'This attribute specifies if a link to the single event should be added onto the event name.')
+			                          'desc'    => 'This attribute specifies if a link to the single event should be added onto the event name in the event list.')
 		);
 	}
 
