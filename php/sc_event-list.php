@@ -76,8 +76,9 @@ class sc_event_list {
 
 	private function html_event_details( $event_id ) {
 		$event = $this->db->get_event( $event_id );
-		$out = $this->db->html_calendar_nav();
+		$out = $this->html_calendar_nav();
 		$out .= '
+			<h2>Event Information:</h2>
 			<ul class="event-list">';
 		$out .= $this->html_event( $event );
 		$out .= '</ul>';
@@ -104,7 +105,7 @@ class sc_event_list {
 
 		// generate output
 		if( 0 != $a['show_nav'] ) {
-			$out .= $this->db->html_calendar_nav();
+			$out .= $this->html_calendar_nav();
 		}
 		// TODO: Setting missing
 		if( empty( $events ) /*&& $mfgigcal_settings['no-events'] == "text"*/ ) {
@@ -213,6 +214,41 @@ class sc_event_list {
 		$out .= '<div class="event-day">'.mysql2date( 'd', $date ).'</div>';
 		$out .= '<div class="event-month">'.mysql2date( 'M', $date ).'</div>';
 		$out .= '<div class="event-year">'.mysql2date( 'Y', $date ).'</div>';
+		return $out;
+	}
+
+	private function html_calendar_nav() {
+		$first_year = $this->db->get_event_date( 'first' );
+		$last_year = $this->db->get_event_date( 'last' );
+
+		$url = get_permalink();
+		if( !get_option( 'permalink_structure' ) ) {
+			foreach( $_GET as  $k => $v ) {
+				if( 'ytd' !== $k && 'event_id' !== $k ) {
+					$url .= $k.'='.$v.'&amp;';
+				}
+			}
+		}
+		else {
+			$url .= '?';
+		}
+		$out = '<div class="subsubsub">';
+		if( isset( $_GET['ytd'] ) || isset( $_GET['event_id'] ) ) {
+			$out .= '<a href="'.$url.'">Upcoming</a>';
+		}
+		else {
+			$out .= '<strong>Upcoming</strong>';
+		}
+		for( $year=$last_year; $year>=$first_year; $year-- ) {
+			$out .= ' | ';
+			if( isset( $_GET['ytd'] ) && $year == $_GET['ytd'] ) {
+				$out .= '<strong>'.$year.'</strong>';
+			}
+			else {
+				$out .= '<a href="'.$url.'ytd='.$year.'">'.$year.'</a>';
+			}
+		}
+		$out .= '</div><br />';
 		return $out;
 	}
 
