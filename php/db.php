@@ -206,17 +206,16 @@ class el_db {
 			$out .= '</ul><br />';
 		}
 		else {
-			if( get_option( 'permalink_structure' ) ) {
-				$url = "?";
-			}
-			else {
-				$existing = "?";
+			$url = get_permalink();
+			if( !get_option( 'permalink_structure' ) ) {
 				foreach( $_GET as  $k => $v ) {
 					if( 'ytd' !== $k && 'event_id' !== $k ) {
-						$existing .= $k.'='.$v.'&amp;';
+						$url .= $k.'='.$v.'&amp;';
 					}
 				}
-				$url = $existing;
+			}
+			else {
+				$url .= '?';
 			}
 			$out = '<div class="subsubsub">';
 			if( isset( $_GET['ytd'] ) || isset( $_GET['event_id'] ) ) {
