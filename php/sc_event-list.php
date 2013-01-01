@@ -124,21 +124,12 @@ class sc_event_list {
 		}
 		*/
 		else {
-			$url = get_permalink();
-			if( !get_option( 'permalink_structure' ) ) {
-				foreach( $_GET as  $k => $v ) {
-					if( 'ytd' !== $k && 'event_id' !== $k ) {
-						$url .= $k.'='.$v.'&amp;';
-					}
-				}
-			}
-
 			// set html code
 			$out .= '
 				<ul class="event-list">';
 			$single_day_only = $this->is_single_day_only( $events );
 			foreach ($events as $event) {
-				$out .= $this->html_event( $event, $a, $url, $single_day_only );
+				$out .= $this->html_event( $event, $a, $this->get_url(), $single_day_only );
 			}
 			$out .= '</ul>';
 			return $out;
@@ -221,17 +212,7 @@ class sc_event_list {
 		$first_year = $this->db->get_event_date( 'first' );
 		$last_year = $this->db->get_event_date( 'last' );
 
-		$url = get_permalink();
-		if( !get_option( 'permalink_structure' ) ) {
-			foreach( $_GET as  $k => $v ) {
-				if( 'ytd' !== $k && 'event_id' !== $k ) {
-					$url .= $k.'='.$v.'&amp;';
-				}
-			}
-		}
-		else {
-			$url .= '?';
-		}
+		$url = $this->get_url();
 		$out = '<div class="subsubsub">';
 		if( isset( $_GET['ytd'] ) || isset( $_GET['event_id'] ) ) {
 			$out .= '<a href="'.$url.'">Upcoming</a>';
@@ -250,6 +231,21 @@ class sc_event_list {
 		}
 		$out .= '</div><br />';
 		return $out;
+	}
+
+	private function get_url() {
+		$url = get_permalink();
+		if( !get_option( 'permalink_structure' ) ) {
+			foreach( $_GET as  $k => $v ) {
+				if( 'ytd' !== $k && 'event_id' !== $k ) {
+					$url .= $k.'='.$v.'&amp;';
+				}
+			}
+		}
+		else {
+			$url .= '?';
+		}
+		return $url;
 	}
 
 	private function is_single_day_only( &$events ) {
