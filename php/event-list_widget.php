@@ -11,7 +11,7 @@ class event_list_widget extends WP_Widget {
 		parent::__construct(
 				'event_list_widget', // Base ID
 				'Event List', // Name
-				array( 'description' => __( 'This widget displays a list of upcoming events.', 'text_domain' ), ) // Args
+				array( 'description' => __( 'This widget displays a list of upcoming events. If you want to enable a link to the events or to the event page you have to insert a link to the event-list page or post.', 'text_domain' ), ) // Args
 		);
 	}
 
@@ -32,7 +32,11 @@ class event_list_widget extends WP_Widget {
 		{
 			echo $before_title . $title . $after_title;
 		}
-		echo do_shortcode( '[event-list num_events="'.$instance['num_events'].'" show_nav=0 show_details=0 show_location=0 link_to_event='.$instance['link_to_event'].']' );
+		echo do_shortcode( '[event-list num_events="'.$instance['num_events'].'" '
+		                              .'show_nav=0 '
+		                              .'show_details=0 '
+		                              .'show_location='.$instance['show_location'].' '
+		                              .'link_to_event='.$instance['link_to_event'].']' );
 		if( 1 == $instance['link_to_page'] ) {
 			echo '<div style="clear:both"><a title="'.$instance['link_to_page_caption'].'" href="'.$instance[ 'link_to_page_url'].'">'.$instance['link_to_page_caption'].'</a></div>';
 		}
@@ -54,6 +58,7 @@ class event_list_widget extends WP_Widget {
 		$instance = array();
 		$instance['title'] = strip_tags( $new_instance['title'] );
 		$instance['num_events'] = strip_tags( $new_instance['num_events'] );
+		$instance['show_location'] =  (isset( $new_instance['show_location'] ) && 1==$new_instance['show_location'] ) ? 1 : 0;
 		$instance['link_to_event'] = (isset( $new_instance['link_to_event'] ) && 1==$new_instance['link_to_event'] ) ? 1 : 0;
 		$instance['link_to_page'] = (isset( $new_instance['link_to_page'] ) && 1==$new_instance['link_to_page'] ) ? 1 : 0;
 		$instance['link_to_page_url'] = strip_tags( $new_instance['link_to_page_url'] );
@@ -71,10 +76,12 @@ class event_list_widget extends WP_Widget {
 	public function form( $instance ) {
 		$title =                isset( $instance['title'] )                ? $instance['title']                : __( 'New title', 'text_domain' );
 		$num_events =           isset( $instance['num_events'] )           ? $instance['num_events']           : '3';
-		$link_to_event =        isset( $instance['link_to_event'] )        ? $instance['link_to_event']        : '1';
-		$link_to_page =         isset( $instance['link_to_page'] )         ? $instance['link_to_page']         : '';
+		$show_location =        isset( $instance['show_location'] )        ? $instance['show_location']        : '';
 		$link_to_page_url =     isset( $instance['link_to_page_url'] )     ? $instance['link_to_page_url']     : '';
+		$link_to_event =        isset( $instance['link_to_event'] )        ? $instance['link_to_event']        : '';
+		$link_to_page =         isset( $instance['link_to_page'] )         ? $instance['link_to_page']         : '';
 		$link_to_page_caption = isset( $instance['link_to_page_caption'] ) ? $instance['link_to_page_caption'] : __( 'show event-list page', 'text_domain' );
+		$show_location_checked = 1==$show_location ? 'checked = "checked" ' : '';
 		$link_to_event_checked = 1==$link_to_event ? 'checked = "checked" ' : '';
 		$link_to_page_checked =  1==$link_to_page  ? 'checked = "checked" ' : '';
 		$out = '
@@ -83,22 +90,25 @@ class event_list_widget extends WP_Widget {
 			<input class="widefat" id="'.$this->get_field_id( 'title' ).'" name="'.$this->get_field_name( 'title' ).'" type="text" value="'.esc_attr( $title ).'" />
 		</p>
 		<p>
-			<label for="'.$this->get_field_id( 'num_events' ).'">'.__( 'Number of events:' ).'</label>
-			<input style="width:30px" class="widefat" id="'.$this->get_field_id( 'num_events' ).'" name="'.$this->get_field_name( 'num_events' ).'" type="text" value="'.esc_attr( $num_events ).'">
+			<label for="'.$this->get_field_id( 'num_events' ).'">'.__( 'Number of upcoming events:' ).'</label>
+			<input style="width:30px" class="widefat" id="'.$this->get_field_id( 'num_events' ).'" name="'.$this->get_field_name( 'num_events' ).'" type="text" value="'.esc_attr( $num_events ).'" />
 		</p>
 		<p>
-			<label><input class="widefat" id="'.$this->get_field_id( 'link_to_event' ).'" name="'.$this->get_field_name( 'link_to_event' ).'" type="checkbox" '.$link_to_event_checked.'value="1"> '.__( 'Add links to the single events' ).'</input></label>
+			<label><input class="widefat" id="'.$this->get_field_id( 'show_location' ).'" name="'.$this->get_field_name( 'show_location' ).'" type="checkbox" '.$show_location_checked.'value="1" /> '.__( 'Show location' ).'</label>
 		</p>
 		<p>
-			<label><input class="widefat" id="'.$this->get_field_id( 'link_to_page' ).'" name="'.$this->get_field_name( 'link_to_page' ).'" type="checkbox" '.$link_to_page_checked.'value="1"> '.__( 'Add a link to a page:' ).'</input></label>
-			<p>
-				<label for="'.$this->get_field_id( 'link_to_page_url' ).'">'.__( 'URL of the linked page:' ).'</label>
-				<input class="widefat" id="'.$this->get_field_id( 'link_to_page_url' ).'" name="'.$this->get_field_name( 'link_to_page_url' ).'" type="text" value="'.esc_attr( $link_to_page_url ).'" />
-			</p>
-			<p>
-				<label for="'.$this->get_field_id( 'link_to_page_caption' ).'">'.__( 'Caption for the link:' ).'</label>
-				<input class="widefat" id="'.$this->get_field_id( 'link_to_page_caption' ).'" name="'.$this->get_field_name( 'link_to_page_caption' ).'" type="text" value="'.esc_attr( $link_to_page_caption ).'" />
-			</p>
+			<label for="'.$this->get_field_id( 'link_to_page_url' ).'">'.__( 'URL to the linked eventlist page:' ).'</label>
+			<input class="widefat" id="'.$this->get_field_id( 'link_to_page_url' ).'" name="'.$this->get_field_name( 'link_to_page_url' ).'" type="text" value="'.esc_attr( $link_to_page_url ).'" />
+		</p>
+		<p style="margin-left:0.8em">
+			<label><input class="widefat" id="'.$this->get_field_id( 'link_to_event' ).'" name="'.$this->get_field_name( 'link_to_event' ).'" type="checkbox" '.$link_to_event_checked.'value="1" /> '.__( 'Add links to the single events' ).'</label>
+		</p>
+		<p style="margin:0 0 0.2em 0.8em">
+			<label><input class="widefat" id="'.$this->get_field_id( 'link_to_page' ).'" name="'.$this->get_field_name( 'link_to_page' ).'" type="checkbox" '.$link_to_page_checked.'value="1" /> '.__( 'Add a link to an event page' ).'</label>
+		</p>
+		<p style="margin:0 0 1em 2.5em">
+			<label for="'.$this->get_field_id( 'link_to_page_caption' ).'">'.__( 'Caption for the link:' ).'</label>
+			<input class="widefat" id="'.$this->get_field_id( 'link_to_page_caption' ).'" name="'.$this->get_field_name( 'link_to_page_caption' ).'" type="text" value="'.esc_attr( $link_to_page_caption ).'" />
 		</p>';
 		echo $out;
 	}
