@@ -222,7 +222,8 @@ class sc_event_list {
 		$url = $this->get_url( $a['sc_id'] );
 		$out = '<div class="subsubsub">';
 		if( is_numeric( $a['ytd'] ) || is_numeric( $a['event_id'] ) ) {
-			$out .= '<a href="'.$url.'">Upcoming</a>';
+			$ytd = isset( $a['initial_date'] ) && is_numeric( $a['initial_date'] ) ? 'ytd_'.$a['sc_id'].'=upcoming' : '';
+			$out .= '<a href="'.$url.'ytd_'.$a['sc_id'].'=upcoming">Upcoming</a>';
 		}
 		else {
 			$out .= '<strong>Upcoming</strong>';
@@ -241,10 +242,16 @@ class sc_event_list {
 	}
 
 	private function get_ytd( &$a ) {
-		if( isset( $_GET['ytd_'.$a['sc_id']] ) && is_numeric( $_GET['ytd_'.$a['sc_id']] ) ) {
+		if( isset( $_GET['ytd_'.$a['sc_id']] ) && 'upcoming' === $_GET['ytd_'.$a['sc_id']] ){
+			// ytd is 'upcoming'
+			$ytd = 'upcoming';
+		}
+		elseif( isset( $_GET['ytd_'.$a['sc_id']] ) && is_numeric( $_GET['ytd_'.$a['sc_id']] ) ) {
+			// ytd is a year
 			$ytd = (int)$_GET['ytd_'.$a['sc_id']];
 		}
-		elseif( isset( $a['initial_date'] ) && is_numeric( $a['initial_date'] ) ) {
+		elseif( isset( $a['initial_date'] ) && is_numeric( $a['initial_date'] ) && !is_numeric( $a['event_id'] ) && !isset( $_GET['link_'.$a['sc_id']] ) ) {
+			// initial_date attribute is set
 			$ytd = (int)$a['initial_date'];
 		}
 		else {
@@ -260,7 +267,7 @@ class sc_event_list {
 		else {
 			$url ='?';
 			foreach( $_GET as  $k => $v ) {
-				if( 'ytd_'.$sc_id !== $k && 'event_id_'.$sc_id !== $k ) {
+				if( 'ytd_'.$sc_id !== $k && 'event_id_'.$sc_id !== $k && 'link_'.$sc_id !== $k ) {
 					$url .= $k.'='.$v.'&amp;';
 				}
 			}
