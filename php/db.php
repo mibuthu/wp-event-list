@@ -53,19 +53,20 @@ class el_db {
 		global $wpdb;
 
 		// set date for data base query
-		if( 'all' === $date_range ) {
+		if( is_numeric( $date_range ) ) {
+			// get events of a specific year
+			$range_start = $date_range.'-01-01';
+			$range_end = $date_range.'-12-31';
+		}
+		elseif( 'all' === $date_range ) {
 			// get all events
 			$range_start = '0000-01-01';
 			$range_end = '9999-12-31';
 		}
-		elseif( 'upcoming' === $date_range ) {
+		else {  // upcoming
 			// get only events in the future
 			$range_start = date( 'Y-m-d' );
 			$range_end = '9999-12-31';
-		}
-		else {
-			$range_start = $date_range.'-01-01';
-			$range_end = $date_range.'-12-31';
 		}
 		$sql = 'SELECT * FROM '.$this->table.' WHERE (end_date >= "'.$range_start.'" AND start_date <= "'.$range_end.'") ORDER BY '.implode( ', ', $sort_array );
 		if( 'upcoming' === $date_range && is_numeric($num_events) && 0 < $num_events ) {
