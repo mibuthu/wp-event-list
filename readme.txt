@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, admin, attribute, widget, sidebar
 Requires at least: 3.3
 Tested up to: 3.5
-Stable tag: 0.3.0
+Stable tag: 0.3.1
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -59,6 +59,16 @@ Event List uses the built-in Wordpress WYSIWYG editor. It's exactly the same pro
 
 
 == Changelog ==
+
+= 0.3.1 (2013-01-03) =
+
+* added widget option "show_location"
+* fixed wrong url for single event page link
+* fixed issue with different shortcodes on one page or post
+* changed required prevelegs for admin about page
+* updated help messages on admin about page
+* small style changes on frontpage
+
 
 = 0.3.0 (2012-12-31) =
 
