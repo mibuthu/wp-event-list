@@ -297,7 +297,8 @@ class sc_event_list {
 	private function get_url( &$a ) {
 		if( '' !== $a['url_to_page'] ) {
 			// use given url
-			$url = $a['url_to_page'].'&amp;';
+			$url = $a['url_to_page'];
+			$url .= get_option( 'permalink_structure' ) ? '?' : '&amp;';
 		}
 		elseif( get_option( 'permalink_structure' ) ) {
 			// permalink structure
