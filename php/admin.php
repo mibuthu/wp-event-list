@@ -30,7 +30,7 @@ class el_admin {
 		$page = add_submenu_page( 'el_admin_main', 'Add New Event', 'Add New', 'edit_posts', 'el_admin_new', array( &$this, 'show_new' ) );
 		add_action( 'admin_print_scripts-'.$page, array( &$this, 'embed_admin_new_scripts' ) );
 		add_submenu_page( 'el_admin_main', 'Event List Settings', 'Settings', 'manage_options', 'el_admin_settings', array( &$this, 'show_settings' ) );
-		$page = add_submenu_page( 'el_admin_main', 'About Event List', 'About', 'manage_options', 'el_admin_about', array( &$this, 'show_about' ) );
+		$page = add_submenu_page( 'el_admin_main', 'About Event List', 'About', 'edit_posts', 'el_admin_about', array( &$this, 'show_about' ) );
 		add_action( 'admin_print_scripts-'.$page, array( &$this, 'embed_admin_about_scripts' ) );
 	}
 
@@ -173,8 +173,14 @@ class el_admin {
 				<p>To show the events on your site you have two possibilities:
 					<ul class="el-show-event-options"><li>you can place the <strong>shortcode</strong> <code>[event-list]</code> on any page or post</li>
 					<li>you can add the <strong>widget</strong> "Event List" in your sidebars</li></ul>
-					The the displayed events and their style can be modified with the available widget settings and the available attributes for the shortcode.<br />
-					A list of all available shortcode attributes with their description can be found below.
+					The displayed events and their style can be modified with the available widget settings and the available attributes for the shortcode.<br />
+					A list of all available shortcode attributes with their description is listed below.<br />
+					The most available options of the widget should be clear by there description.<br />
+					It is important to know that you have to insert an URL to the linked event-list page if you enable one of the links options ("Add links to the single events" or "Add a link to an event page").
+					This is required because the widget didn´t know in which page or post you have insert the shortcode.<br />
+					Additonally you have to insert the correct Shortcode ID on the linked page. This ID describes which shortcode should be used on the given page or post if you have more than one.
+					So the standard value "1" is normally o.k., but you can check the ID if you have a look into the URL of an event link on your linked page or post.
+					The ID is given behind the "_" (e.g. <i>http://www.your-homepage.com/?page_id=99&event_id_<strong>1</strong>=11</i>).
 				</p>
 				<p>Be sure to also check the <a href="admin.php?page=el_admin_settings">settings page</a> to get Event List behaving just the way you want.</p>
 			</div>';
