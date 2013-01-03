@@ -27,30 +27,49 @@ class sc_event_list {
 
 			'initial_date'  => array( 'val'     => 'upcoming<br />year e.g. "2012"',
 			                          'std_val' => 'upcoming',
+			                          'visible' => true,
 			                          'desc'    => 'This attribute specifies which events are initially shown. The standard is to show the upcoming events.<br />
 			                                        Specify a year e.g. "2012" to change this behavior.' ),
 
 			'num_events'    => array( 'val'     => 'number',
 			                          'std_val' => '0',
+			                          'visible' => true,
 			                          'desc'    => 'This attribute specifies how many events should be displayed if upcoming events is selected.<br />
 			                                        0 is the standard value which means that all events will be displayed.' ),
 
 			'show_nav'      => array( 'val'     => '0..false<br />1..true',
 			                          'std_val' => '1',
+			                          'visible' => true,
 			                          'desc'    => 'This attribute specifies if the calendar navigation should be displayed.'),
 
 			'show_details'  => array( 'val'     => '0..false<br />1..true',
 			                          'std_val' => '1',
+			                          'visible' => true,
 			                          'desc'    => 'This attribute specifies if the details are displayed in the event list.'),
 
 			'show_location' => array( 'val'     => '0..false<br />1..true',
 			                          'std_val' => '1',
+			                          'visible' => true,
 			                          'desc'    => 'This attribute specifies if the location is displayed in the event list.'),
 
 			'link_to_event' => array( 'val'     => '0..false<br />1..true',
 			                          'std_val' => '1',
-			                          'desc'    => 'This attribute specifies if a link to the single event should be added onto the event name in the event list.')
-			// Internal attributes:
+			                          'visible' => true,
+			                          'desc'    => 'This attribute specifies if a link to the single event should be added onto the event name in the event list.'),
+			// Invisible attributes ('visibe' = false): This attributes are required for the widget but will not be listed in the attributes table on the admin info page
+			'url_to_page'   => array( 'val'     => 'url',
+			                          'std_val' => '',
+			                          'visible' => false,
+			                          'desc'    => 'This attribute specifies that the link should follow the given url.<br />
+			                                        The standard is to leave this attribute empty, then the url will be calculated automatically from the actual page or post url.<br />
+			                                        This is o.k. for the normal use of the shortcode. This attribute is normally only required for the event-list widget.' ),
+
+			'sc_id_for_url' => array( 'val'     => 'number',
+			                          'std_val' => '',
+			                          'visible' => false,
+			                          'desc'    => 'This attribute the specifies shortcode id of the used shortcode on the page specified with "url_to_page" attribute.<br />
+			                                        The empty standard value is o.k. for the normal use. This attribute is normally only required for the event-list widget.' )
+			// Internal attributes: This parameters will be added by the script and are not available in the shortcode
 			//   'sc_id'
 			//   'ytd'
 		);
@@ -58,8 +77,19 @@ class sc_event_list {
 		$this->num_sc_loaded = 0;
 	}
 
-	public function get_atts() {
-		return $this->atts;
+	public function get_atts( $only_visible=true ) {
+		if( $only_visible ) {
+			$atts = null;
+			foreach( $this->atts as $aname => $attr ) {
+				if( true === $attr['visible'] ) {
+					$atts[$aname] = $attr;
+				}
+			}
+			return $atts;
+		}
+		else {
+			return $this->atts;
+		}
 	}
 
 	// main function to show the rendered HTML output
@@ -76,6 +106,10 @@ class sc_event_list {
 		$a['sc_id'] = $this->num_sc_loaded;
 		$a['event_id'] = isset( $_GET['event_id_'.$a['sc_id']] ) ? (integer)$_GET['event_id_'.$a['sc_id']] : null;
 		$a['ytd'] = $this->get_ytd( $a );
+		// fix sc_id_for_url if required
+		if( !is_numeric( $a['sc_id_for_url'] ) ) {
+			$a['sc_id_for_url'] = $a['sc_id'];
+		}
 
 		if( is_numeric( $a['event_id'] ) ) {
 			// show events details if event_id is set
@@ -137,7 +171,7 @@ class sc_event_list {
 				<ul class="event-list">';
 			$single_day_only = $this->is_single_day_only( $events );
 			foreach ($events as $event) {
-				$out .= $this->html_event( $event, $a, $this->get_url( $a['sc_id'] ), $single_day_only );
+				$out .= $this->html_event( $event, $a, $this->get_url( $a ), $single_day_only );
 			}
 			$out .= '</ul>';
 		}
@@ -158,7 +192,7 @@ class sc_event_list {
 		}
 		$out .= '"><h3>';
 		if( null !== $url && 0 != $a['link_to_event'] ) {
-			$out .= '<a href="'.$url.'event_id_'.$a['sc_id'].'='.$event->id.'">'.$event->title.'</a>';
+			$out .= '<a href="'.$url.'event_id_'.$a['sc_id_for_url'].'='.$event->id.'">'.$event->title.'</a>';
 		}
 		else {
 			$out .= $event->title;
@@ -219,11 +253,11 @@ class sc_event_list {
 		$first_year = $this->db->get_event_date( 'first' );
 		$last_year = $this->db->get_event_date( 'last' );
 
-		$url = $this->get_url( $a['sc_id'] );
+		$url = $this->get_url( $a );
 		$out = '<div class="subsubsub">';
 		if( is_numeric( $a['ytd'] ) || is_numeric( $a['event_id'] ) ) {
-			$ytd = isset( $a['initial_date'] ) && is_numeric( $a['initial_date'] ) ? 'ytd_'.$a['sc_id'].'=upcoming' : '';
-			$out .= '<a href="'.$url.'ytd_'.$a['sc_id'].'=upcoming">Upcoming</a>';
+			$ytd = isset( $a['initial_date'] ) && is_numeric( $a['initial_date'] ) ? 'ytd_'.$a['sc_id_for_url'].'=upcoming' : '';
+			$out .= '<a href="'.$url.'ytd_'.$a['sc_id_for_url'].'=upcoming">Upcoming</a>';
 		}
 		else {
 			$out .= '<strong>Upcoming</strong>';
@@ -234,7 +268,7 @@ class sc_event_list {
 				$out .= '<strong>'.$year.'</strong>';
 			}
 			else {
-				$out .= '<a href="'.$url.'ytd_'.$a['sc_id'].'='.$year.'">'.$year.'</a>';
+				$out .= '<a href="'.$url.'ytd_'.$a['sc_id_for_url'].'='.$year.'">'.$year.'</a>';
 			}
 		}
 		$out .= '</div><br />';
@@ -260,14 +294,20 @@ class sc_event_list {
 		return $ytd;
 	}
 
-	private function get_url( $sc_id ) {
-		if( get_option( 'permalink_structure' ) ) {
+	private function get_url( &$a ) {
+		if( '' !== $a['url_to_page'] ) {
+			// use given url
+			$url = $a['url_to_page'].'&amp;';
+		}
+		elseif( get_option( 'permalink_structure' ) ) {
+			// permalink structure
 			$url = get_permalink().'?';
 		}
 		else {
+			// no permalink structure
 			$url ='?';
 			foreach( $_GET as  $k => $v ) {
-				if( 'ytd_'.$sc_id !== $k && 'event_id_'.$sc_id !== $k && 'link_'.$sc_id !== $k ) {
+				if( 'ytd_'.$a['sc_id'] !== $k && 'event_id_'.$a['sc_id'] !== $k && 'link_'.$a['sc_id'] !== $k ) {
 					$url .= $k.'='.$v.'&amp;';
 				}
 			}
