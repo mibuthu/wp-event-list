@@ -48,6 +48,9 @@ Insert the shortcode [event-list] in your page.
 = How do I use styled text and images in the event descriptions? =
 Event List uses the built-in Wordpress WYSIWYG editor. It's exactly the same process you use when creating Posts or Pages.
 
+= Can I call the shortcode directly via php e.g. for my own template, theme or plugin? =
+Yes, you can create an instance of the "sc_event_list" class which located in "php/sc_event-list.php" in the plugin folder and call the function show_html($atts).With $atts you can specify all the shortcode attributes you require. Another possibility would be to call the wordpress function "do_shortcode()".
+
 
 == Screenshots ==
 
