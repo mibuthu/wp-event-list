@@ -154,7 +154,7 @@ class el_db {
 	public function delete_events( $event_ids ) {
 		global $wpdb;
 		// sql query
-		$num_deleted = (int) $wpdb->query( $wpdb->prepare( 'DELETE FROM '.$this->table.' WHERE id IN ('.$event_ids.')' ) );
+		$num_deleted = (int) $wpdb->query( $wpdb->prepare( 'DELETE FROM %s WHERE id IN (%s)', $this->table, $event_ids ) );
 		if( $num_deleted == count( explode( ',', $event_ids ) ) ) {
 			return true;
 		}
