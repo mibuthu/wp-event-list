@@ -9,6 +9,7 @@ class el_admin {
 	private $db;
 	private $options;
 	private $shortcode;
+	private $dateformat;
 	private $event_action = false;
 	private $event_action_error = false;
 
@@ -16,6 +17,8 @@ class el_admin {
 		$this->db = el_db::get_instance();
 		//$this->options = &el_options::get_instance();
 		$this->shortcode = &sc_event_list::get_instance();
+		$this->dateformat = __( 'Y/m/d' ); // similar date format than in list tables (e.g. post, pages, media)
+		// $this->dateformat = 'd/m/Y'; // for debugging only
 		$this->event_action = null;
 		$this->event_action_error = null;
 	}
@@ -42,7 +45,7 @@ class el_admin {
 		$action = '';
 		// is there POST data an event was edited must be updated
 		if( !empty( $_POST ) ) {
-			$this->event_action_error = !$this->db->update_event( $_POST );
+			$this->event_action_error = !$this->db->update_event( $_POST, $this->dateformat );
 			$this->event_action = isset( $_POST['id'] ) ? 'modified' : 'added';
 		}
 		// get action
@@ -234,7 +237,6 @@ class el_admin {
 	}
 
 	private function edit_event() {
-		$date_format = __( 'Y/m/d' ); // similar date format than in list tables (e.g. post, pages, media)
 		$edit = false;
 		if( isset( $_GET['id'] ) && is_numeric( $_GET['id'] ) ) {
 			// existing event
@@ -254,7 +256,7 @@ class el_admin {
 
 		// Add required data for javascript in a hidden field
 		$json = json_encode( array( 'el_url'         => EL_URL,
-		                            'el_date_format' => $this->datepicker_format( $date_format ) ) );
+		                            'el_date_format' => $this->datepicker_format( $this->dateformat ) ) );
 		$out = "<input type='hidden' id='json_for_js' value='".$json."' />";
 		$out .= '<form method="POST" action="?page=el_admin_main">';
 		if( true === $edit ) {
@@ -267,8 +269,8 @@ class el_admin {
 			</tr>
 			<tr>
 				<th><label>Event Date (required)</label></th>
-				<td><input type="text" class="text datepicker form-required" name="start_date" id="start_date" value="'.date_i18n( $date_format, $start_date ).'" />
-						<span id="end_date_area"> - <input type="text" class="text datepicker" name="end_date" id="end_date" value="'.date_i18n( $date_format, $end_date ).'" /></span>
+				<td><input type="text" class="text datepicker form-required" name="start_date" id="start_date" value="'.date_i18n( $this->dateformat, $start_date ).'" />
+						<span id="end_date_area"> - <input type="text" class="text datepicker" name="end_date" id="end_date" value="'.date_i18n( $this->dateformat, $end_date ).'" /></span>
 						<label><input type="checkbox" name="multiday" id="multiday" value="1" /> Multi-Day Event</label></td>
 			</tr>
 			<tr>
