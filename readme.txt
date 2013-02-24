@@ -3,8 +3,8 @@ Contributors: mibuthu
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W54LNZMWF9KW2
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, admin, attribute, widget, sidebar
 Requires at least: 3.3
-Tested up to: 3.5
-Stable tag: 0.3.1
+Tested up to: 3.5.1
+Stable tag: 0.3.2
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -62,6 +62,13 @@ Yes, you can create an instance of the "sc_event_list" class which located in "p
 
 
 == Changelog ==
+
+= 0.3.2 (2013-02-24) =
+
+* removed empty settings page (will be added again when settings are available)
+* fixed view of details in admin event table
+* fixed adding or modifying events with alternative date formats
+* only set time format in output if a known time format was entered
 
 = 0.3.1 (2013-01-03) =
 
