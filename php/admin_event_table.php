@@ -32,7 +32,7 @@ class Admin_Event_Table extends WP_List_Table {
 			case 'date' :
 				return $this->format_event_date( $item->start_date, $item->end_date, $item->time );
 			case 'details' :
-				return '<div title="'.$item->details.'">'.$this->truncate( 80, $item->details ).'</div>';
+				return '<div>'.$this->truncate( 80, $item->details ).'</div>';
 			case 'pub_user' :
 				return get_userdata( $item->pub_user )->user_login;
 			case 'pub_date' :
@@ -239,8 +239,13 @@ class Admin_Event_Table extends WP_List_Table {
 		}
 		// event time
 		if( '' !== $start_time ) {
+			// set time format if a known format is available, else only show the text
+			$date_array = date_parse( $start_time );
+			if( empty( $date_array['errors']) && is_numeric( $date_array['hour'] ) && is_numeric( $date_array['minute'] ) ) {
+				$start_time = mysql2date( get_option( 'time_format' ), $start_time );
+			}
 			$out .= '<br />
-				<span class="time">'.mysql2date( get_option( 'time_format' ), $start_time ).'</span></span>';
+				<span class="time">'.$start_time.'</span></span>';
 		}
 		return $out;
 	}
@@ -264,64 +269,67 @@ class Admin_Event_Table extends WP_List_Table {
 	* Function to truncate and shorten text
 	*
 	* @param int $max_length The length to which the text should be shortened
-	* @param string $text The text which should be shortened
+	* @param string $html The html code which should be shortened
 	***************************************************************************/
-	private static function truncate( $max_length, $text ) {
-		$printedLength = 0;
-		$position = 0;
-		$tags = array();
-		$out = '';
-		while ($printedLength < $max_length && preg_match('{</?([a-z]+)[^>]*>|&#?[a-zA-Z0-9]+;}', $text, $match, PREG_OFFSET_CAPTURE, $position)) {
-			list($tag, $tagPosition) = $match[0];
-			// Print text leading up to the tag.
-			$str = substr($text, $position, $tagPosition - $position);
-			if ($printedLength + strlen($str) > $max_length) {
-				$out .= substr($str, 0, $max_length - $printedLength);
-				$printedLength = $max_length;
-				break;
-			}
-			$out .= $str;
-			$printedLength += strlen($str);
-			if ($tag[0] == '&') {
-				// Handle the entity.
-				$out .= $tag;
-				$printedLength++;
-			}
-			else {
-				// Handle the tag.
-				$tagName = $match[1][0];
-				if ($tag[1] == '/')
-				{
-					// This is a closing tag.
-					$openingTag = array_pop($tags);
-					assert($openingTag == $tagName); // check that tags are properly nested.
-					$out .= $tag;
+	private static function truncate( $max_length, $html ) {
+		if( strlen( $html ) > $max_length ) {
+			$printedLength = 0;
+			$position = 0;
+			$tags = array();
+			$out = '';
+			while ($printedLength < $max_length && preg_match('{</?([a-z]+)[^>]*>|&#?[a-zA-Z0-9]+;}', $html, $match, PREG_OFFSET_CAPTURE, $position)) {
+				list($tag, $tagPosition) = $match[0];
+				// Print text leading up to the tag
+				$str = substr($html, $position, $tagPosition - $position);
+				if ($printedLength + strlen($str) > $max_length) {
+					$out .= substr($str, 0, $max_length - $printedLength);
+					$printedLength = $max_length;
+					break;
 				}
-				else if ($tag[strlen($tag) - 2] == '/') {
-					// Self-closing tag.
+				$out .= $str;
+				$printedLength += strlen($str);
+				if ($tag[0] == '&') {
+					// Handle the entity
 					$out .= $tag;
+					$printedLength++;
 				}
 				else {
-					// Opening tag.
-					$out .= $tag;
-					$tags[] = $tagName;
+					// Handle the tag
+					$tagName = $match[1][0];
+					if ($tag[1] == '/')
+					{
+						// This is a closing tag
+						$openingTag = array_pop($tags);
+						assert($openingTag == $tagName); // check that tags are properly nested
+						$out .= $tag;
+					}
+					else if ($tag[strlen($tag) - 2] == '/') {
+						// Self-closing tag
+						$out .= $tag;
+					}
+					else {
+						// Opening tag
+						$out .= $tag;
+						$tags[] = $tagName;
+					}
 				}
+				// Continue after the tag
+				$position = $tagPosition + strlen($tag);
 			}
-			// Continue after the tag.
-			$position = $tagPosition + strlen($tag);
+			// Print any remaining text
+			if ($printedLength < $max_length && $position < strlen($html)) {
+				$out .= substr($html, $position, $max_length - $printedLength);
+			}
+			$out .= '...';
+			// Close any open tags.
+			while (!empty($tags)) {
+				$out .= '</'.array_pop($tags).'>';
+			}
+			return $out;
 		}
-		// Print any remaining text.
-		if ($printedLength < $max_length && $position < strlen($text)) {
-			$out .= substr($text, $position, $max_length - $printedLength);
+		else {
+			return $html;
 		}
-		if ($max_length < strlen($text)) {
-			$out .= "...";
-		}
-		// Close any open tags.
-		while (!empty($tags)) {
-			$out .= "</" . array_pop($tags) . ">";
-		}
-		return $out;
 	}
 }
 

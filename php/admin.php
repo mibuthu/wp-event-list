@@ -9,6 +9,7 @@ class el_admin {
 	private $db;
 	private $options;
 	private $shortcode;
+	private $dateformat;
 	private $event_action = false;
 	private $event_action_error = false;
 
@@ -16,6 +17,8 @@ class el_admin {
 		$this->db = el_db::get_instance();
 		//$this->options = &el_options::get_instance();
 		$this->shortcode = &sc_event_list::get_instance();
+		$this->dateformat = __( 'Y/m/d' ); // similar date format than in list tables (e.g. post, pages, media)
+		// $this->dateformat = 'd/m/Y'; // for debugging only
 		$this->event_action = null;
 		$this->event_action_error = null;
 	}
@@ -29,12 +32,12 @@ class el_admin {
 		add_action( 'admin_print_scripts-'.$page, array( &$this, 'embed_admin_main_scripts' ) );
 		$page = add_submenu_page( 'el_admin_main', 'Add New Event', 'Add New', 'edit_posts', 'el_admin_new', array( &$this, 'show_new' ) );
 		add_action( 'admin_print_scripts-'.$page, array( &$this, 'embed_admin_new_scripts' ) );
-		add_submenu_page( 'el_admin_main', 'Event List Settings', 'Settings', 'manage_options', 'el_admin_settings', array( &$this, 'show_settings' ) );
+		//add_submenu_page( 'el_admin_main', 'Event List Settings', 'Settings', 'manage_options', 'el_admin_settings', array( &$this, 'show_settings' ) );
 		$page = add_submenu_page( 'el_admin_main', 'About Event List', 'About', 'edit_posts', 'el_admin_about', array( &$this, 'show_about' ) );
 		add_action( 'admin_print_scripts-'.$page, array( &$this, 'embed_admin_about_scripts' ) );
 	}
 
-	// show the main admin page as a submenu of "Comments"
+	// show the main admin page
 	public function show_main() {
 		if ( !current_user_can( 'edit_posts' ) ) {
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
@@ -42,7 +45,7 @@ class el_admin {
 		$action = '';
 		// is there POST data an event was edited must be updated
 		if( !empty( $_POST ) ) {
-			$this->event_action_error = !$this->db->update_event( $_POST );
+			$this->event_action_error = !$this->db->update_event( $_POST, $this->dateformat );
 			$this->event_action = isset( $_POST['id'] ) ? 'modified' : 'added';
 		}
 		// get action
@@ -96,7 +99,7 @@ class el_admin {
 		$out .= '</div>';
 		echo $out;
 	}
-
+/*
 	public function show_settings () {
 		if (!current_user_can('manage_options'))  {
 			wp_die( __('You do not have sufficient permissions to access this page.') );
@@ -156,13 +159,13 @@ class el_admin {
 		ob_start();
 		submit_button();
 		$out .= ob_get_contents();
-		ob_end_clean();*/
+		ob_end_clean();
 		$out .='
 		</form>
 		</div>';
 		echo $out;
 	}
-
+*/
 	public function show_about() {
 		$out = '<div class="wrap">
 				<div class="wrap nosubsub" style="padding-bottom:15px">
@@ -234,7 +237,6 @@ class el_admin {
 	}
 
 	private function edit_event() {
-		$date_format = __( 'Y/m/d' ); // similar date format than in list tables (e.g. post, pages, media)
 		$edit = false;
 		if( isset( $_GET['id'] ) && is_numeric( $_GET['id'] ) ) {
 			// existing event
@@ -254,7 +256,7 @@ class el_admin {
 
 		// Add required data for javascript in a hidden field
 		$json = json_encode( array( 'el_url'         => EL_URL,
-		                            'el_date_format' => $this->datepicker_format( $date_format ) ) );
+		                            'el_date_format' => $this->datepicker_format( $this->dateformat ) ) );
 		$out = "<input type='hidden' id='json_for_js' value='".$json."' />";
 		$out .= '<form method="POST" action="?page=el_admin_main">';
 		if( true === $edit ) {
@@ -267,8 +269,8 @@ class el_admin {
 			</tr>
 			<tr>
 				<th><label>Event Date (required)</label></th>
-				<td><input type="text" class="text datepicker form-required" name="start_date" id="start_date" value="'.date_i18n( $date_format, $start_date ).'" />
-						<span id="end_date_area"> - <input type="text" class="text datepicker" name="end_date" id="end_date" value="'.date_i18n( $date_format, $end_date ).'" /></span>
+				<td><input type="text" class="text datepicker form-required" name="start_date" id="start_date" value="'.date_i18n( $this->dateformat, $start_date ).'" />
+						<span id="end_date_area"> - <input type="text" class="text datepicker" name="end_date" id="end_date" value="'.date_i18n( $this->dateformat, $end_date ).'" /></span>
 						<label><input type="checkbox" name="multiday" id="multiday" value="1" /> Multi-Day Event</label></td>
 			</tr>
 			<tr>

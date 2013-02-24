@@ -103,7 +103,7 @@ class el_db {
 		return $date;
 	}
 
-	public function update_event( $event_data ) {
+	public function update_event( $event_data, $dateformat=NULL ) {
 		global $wpdb;
 		// prepare and validate sqldata
 		$sqldata = array();
@@ -114,13 +114,13 @@ class el_db {
 		//start_date
 		if( !isset( $event_data['start_date']) ) { return false; }
 		$start_timestamp = 0;
-		$sqldata['start_date'] = $this->extract_date( $event_data['start_date'], "Y-m-d", $start_timestamp );
+		$sqldata['start_date'] = $this->extract_date( $event_data['start_date'], "Y-m-d", $dateformat, $start_timestamp );
 		if( false === $sqldata['start_date'] ) { return false; }
 		//end_date
 		if( !isset( $event_data['end_date']) ) { return false; }
 		if( isset( $event_data['multiday'] ) && "1" === $event_data['multiday'] ) {
 			$end_timestamp = 0;
-			$sqldata['end_date'] = $this->extract_date( $event_data['end_date'], "Y-m-d", $end_timestamp );
+			$sqldata['end_date'] = $this->extract_date( $event_data['end_date'], "Y-m-d", $dateformat, $end_timestamp );
 			if( false === $sqldata['end_date'] ) { $sqldata['end_date'] = $sqldata['start_date']; }
 			elseif( $end_timestamp < $start_timestamp )	 { $sqldata['end_date'] = $sqldata['start_date']; }
 		}
@@ -154,7 +154,7 @@ class el_db {
 	public function delete_events( $event_ids ) {
 		global $wpdb;
 		// sql query
-		$num_deleted = (int) $wpdb->query( $wpdb->prepare( 'DELETE FROM '.$this->table.' WHERE id IN ('.$event_ids.')' ) );
+		$num_deleted = (int) $wpdb->query( $wpdb->prepare( 'DELETE FROM %s WHERE id IN (%s)', $this->table, $event_ids ) );
 		if( $num_deleted == count( explode( ',', $event_ids ) ) ) {
 			return true;
 		}
@@ -163,8 +163,20 @@ class el_db {
 		}
 	}
 
-	public function extract_date( $datestring, $ret_format, &$ret_timestamp=NULL, &$ret_datearray=NULL ) {
-		$date_array = date_parse( $datestring );
+	private function extract_date( $datestring, $ret_format, $dateformat=NULL, &$ret_timestamp=NULL, &$ret_datearray=NULL ) {
+		if( NULL === $dateformat ) {
+			$date_array = date_parse( $datestring );
+		}
+		else {
+			if( function_exists( 'date_parse_from_format' ) ) {
+				// for php version >= 5.3.0
+				$date_array = date_parse_from_format( $dateformat, $datestring );
+			}
+			else {
+				// for older php versions
+				$date_array = $this->date_parse_from_format( $dateformat, $datestring );
+			}
+		}
 		if( !empty( $date_array['errors']) ) {
 			return false;
 		}
@@ -179,6 +191,27 @@ class el_db {
 			$ret_datearray = $date_array;
 		}
 		return date( $ret_format, $timestamp );
+	}
+
+	/*
+	 * date_parse_from_format function is only required for php versions < 5.3.0
+	 * see http://php.net/manual/en/function.date-parse-from-format.php for details
+	 */
+	private function date_parse_from_format( string $format, string $date ) {
+		$dMask = array(
+				'H'=>'hour',
+				'i'=>'minute',
+				's'=>'second',
+				'y'=>'year',
+				'm'=>'month',
+				'd'=>'day'
+		);
+		$format = preg_split('//', $format, -1, PREG_SPLIT_NO_EMPTY);
+		$date = preg_split('//', $date, -1, PREG_SPLIT_NO_EMPTY);
+		foreach ($date as $k => $v) {
+			if ($dMask[$format[$k]]) $dt[$dMask[$format[$k]]] .= $v;
+		}
+		return $dt;
 	}
 }
 ?>
