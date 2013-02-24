@@ -239,8 +239,13 @@ class Admin_Event_Table extends WP_List_Table {
 		}
 		// event time
 		if( '' !== $start_time ) {
+			// set time format if a known format is available, else only show the text
+			$date_array = date_parse( $start_time );
+			if( empty( $date_array['errors']) && is_numeric( $date_array['hour'] ) && is_numeric( $date_array['minute'] ) ) {
+				$start_time = mysql2date( get_option( 'time_format' ), $start_time );
+			}
 			$out .= '<br />
-				<span class="time">'.mysql2date( get_option( 'time_format' ), $start_time ).'</span></span>';
+				<span class="time">'.$start_time.'</span></span>';
 		}
 		return $out;
 	}

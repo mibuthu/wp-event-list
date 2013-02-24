@@ -199,7 +199,12 @@ class sc_event_list {
 		}
 		$out .= '</h3>';
 		if( $event->time != '' ) {
-			$out .= '<span class="event-time">'.mysql2date( get_option( 'time_format' ), $event->time ).'</span>';
+			// set time format if a known format is available, else only show the text
+			$date_array = date_parse( $event->time );
+			if( empty( $date_array['errors']) && is_numeric( $date_array['hour'] ) && is_numeric( $date_array['minute'] ) ) {
+				$event->time = mysql2date( get_option( 'time_format' ), $event->time );
+			}
+			$out .= '<span class="event-time">'.$event->time.'</span>';
 		}
 		if( null === $a || 0 != $a['show_location'] ) {
 			$out .= '<span class="event-location">'.$event->location.'</span>';
