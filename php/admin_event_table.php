@@ -320,7 +320,10 @@ class Admin_Event_Table extends WP_List_Table {
 			if ($printedLength < $max_length && $position < strlen($html)) {
 				$out .= substr($html, $position, $max_length - $printedLength);
 			}
-			$out .= '...';
+			// Print "..." if the html is not complete
+			if( strlen( $html) != $position ) {
+				$out .= ' ...';
+			}
 			// Close any open tags.
 			while (!empty($tags)) {
 				$out .= '</'.array_pop($tags).'>';
