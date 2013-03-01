@@ -168,14 +168,7 @@ class el_db {
 			$date_array = date_parse( $datestring );
 		}
 		else {
-			if( function_exists( 'date_parse_from_format' ) ) {
-				// for php version >= 5.3.0
-				$date_array = date_parse_from_format( $dateformat, $datestring );
-			}
-			else {
-				// for older php versions
-				$date_array = $this->date_parse_from_format( $dateformat, $datestring );
-			}
+			$date_array = date_parse_from_format( $dateformat, $datestring );
 		}
 		if( !empty( $date_array['errors']) ) {
 			return false;
@@ -192,25 +185,76 @@ class el_db {
 		}
 		return date( $ret_format, $timestamp );
 	}
+}
 
-	/*
-	 * date_parse_from_format function is only required for php versions < 5.3.0
-	 * see http://php.net/manual/en/function.date-parse-from-format.php for details
-	 */
-	private function date_parse_from_format( string $format, string $date ) {
-		$dMask = array(
-				'H'=>'hour',
-				'i'=>'minute',
-				's'=>'second',
-				'y'=>'year',
-				'm'=>'month',
-				'd'=>'day'
+// Define "date_parse_from_format" (This is required for php versions < 5.3)
+if( !function_exists('date_parse_from_format') ){
+	function date_parse_from_format($format, $date) {
+		// reverse engineer date formats
+		$keys = array(
+			'Y' => array('year', '\d{4}'),              // A full numeric representation of a year, 4 digits
+			'y' => array('year', '\d{2}'),              // A two digit representation of a year
+			'm' => array('month', '\d{2}'),             // Numeric representation of a month, with leading zeros
+			'n' => array('month', '\d{1,2}'),           // Numeric representation of a month, without leading zeros
+			'M' => array('month', '[A-Z][a-z]{3}'),     // A short textual representation of a month, three letters
+			'F' => array('month', '[A-Z][a-z]{2,8}'),   // A full textual representation of a month, such as January or March
+			'd' => array('day', '\d{2}'),               // Day of the month, 2 digits with leading zeros
+			'j' => array('day', '\d{1,2}'),             // Day of the month without leading zeros
+			'D' => array('day', '[A-Z][a-z]{2}'),       // A textual representation of a day, three letters
+			'l' => array('day', '[A-Z][a-z]{6,9}'),     // A full textual representation of the day of the week
+			'u' => array('hour', '\d{1,6}'),            // Microsecondes
+			'h' => array('hour', '\d{2}'),              // 12-hour format of an hour with leading zeros
+			'H' => array('hour', '\d{2}'),              // 24-hour format of an hour with leading zeros
+			'g' => array('hour', '\d{1,2}'),            // 12-hour format of an hour without leading zeros
+			'G' => array('hour', '\d{1,2}'),            // 24-hour format of an hour without leading zeros
+			'i' => array('minute', '\d{2}'),            // Minutes with leading zeros
+			's' => array('second', '\d{2}')             // Seconds, with leading zeros
 		);
-		$format = preg_split('//', $format, -1, PREG_SPLIT_NO_EMPTY);
-		$date = preg_split('//', $date, -1, PREG_SPLIT_NO_EMPTY);
-		foreach ($date as $k => $v) {
-			if ($dMask[$format[$k]]) $dt[$dMask[$format[$k]]] .= $v;
+
+		// convert format string to regex
+		$regex = '';
+		$chars = str_split($format);
+		foreach ( $chars AS $n => $char ) {
+			$lastChar = isset($chars[$n-1]) ? $chars[$n-1] : '';
+			$skipCurrent = '\\' == $lastChar;
+			if ( !$skipCurrent && isset($keys[$char]) ) {
+				$regex .= '(?P<'.$keys[$char][0].'>'.$keys[$char][1].')';
+			}
+			else if ( '\\' == $char ) {
+				$regex .= $char;
+			}
+			else {
+				$regex .= preg_quote($char);
+			}
 		}
+
+		// create array
+		$dt = array();
+		$dt['error_count'] = 0;
+		$dt['errors'] = array();
+		// now try to match it
+		if( preg_match('#^'.$regex.'$#', $date, $dt) ){
+			foreach ( $dt AS $k => $v ){
+				if ( is_int($k) ){
+					unset($dt[$k]);
+				}
+			}
+			if( !checkdate($dt['month'], $dt['day'], $dt['year']) ){
+				$dt['error_count'] = 1;
+				array_push( $dt['errors'], 'ERROR' );
+			}
+		}
+		else {
+			$dt['error_count'] = 1;
+			array_push( $dt['errors'], 'ERROR' );
+		}
+		$dt['fraction'] = '';
+		$dt['warning_count'] = 0;
+		$dt['warnings'] = array();
+		$dt['is_localtime'] = 0;
+		$dt['zone_type'] = 0;
+		$dt['zone'] = 0;
+		$dt['is_dst'] = '';
 		return $dt;
 	}
 }

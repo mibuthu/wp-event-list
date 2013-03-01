@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, admin, attribute, widget, sidebar
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 0.3.2
+Stable tag: 0.3.3
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -15,19 +15,20 @@ Manage your events and show them in a list view on your site.
 == Description ==
 
 The purpose of this plugin is to to show a list of events with date, time, description, place, etc. on your site by using a shortcode or a widget.
-There are also admin sites available to access the plugin-settings and to manage the events.
 
 = Current Features =
-* beginning and end dates for multiple-day events
-* Wordpress's WYSIWYG editor for the event description so you can include styled text, links, images and other media in your event list
-* a duplicate function for events
-* an possibility to view past events by year
+* Admin pages to view/create/manage/modify events
+* Available event data fields: event title, event start time, event location, event details
+* Beginning and end dates for multiple-day events
+* Wordpress's WYSIWYG editor for the event details. So you can include styled text, links, images and other media in your event list.
+* A duplicate function for events
+* Event navigation to view only upcoming events or past/future events filtered by year
 
 The event list can be placed in any page or post on your Wordpress site. Just include the following short code where you want the calendar to appear:
 
 ‘[event-list]’
 
-With the existing attributes it is possible to modify the listed events and their style.
+You can modify the listed events and their style with attributes. All available attributes can be found on the Event List -> About page.
 There is also a widget available to view the upcoming events in a sidebar.
 
 If you want to follow the development status have a look at the [git-repository on github](https://github.com/mibuthu/wp-event-list "wp-event-list git-repository").
@@ -62,6 +63,11 @@ Yes, you can create an instance of the "sc_event_list" class which located in "p
 
 
 == Changelog ==
+
+= 0.3.3 (2013-03-01) =
+
+* fixed event creation/modification problem with php versions < 5.3
+* improved truncate of details in admin event table
 
 = 0.3.2 (2013-02-24) =
 
