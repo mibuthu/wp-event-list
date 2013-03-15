@@ -59,7 +59,7 @@ class el_admin {
 		}
 		// delete events if required
 		if( $action === 'delete' && isset( $_GET['id'] ) ) {
-			$this->event_action_error = !$this->db->delete_events( $_GET['id'] );
+			$this->event_action_error = !$this->db->delete_events( explode(',', $_GET['id'] ) );
 			$this->event_action = 'deleted';
 		}
 		// automatically set order of table to date, if no manual sorting is set

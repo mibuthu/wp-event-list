@@ -153,9 +153,16 @@ class el_db {
 
 	public function delete_events( $event_ids ) {
 		global $wpdb;
+		// filter event_ids string to int values only
+		$filtered_ids = array_map( 'intval', $event_ids );
+		if( count( $event_ids ) != count( $filtered_ids ) )
+		{
+			// something is wrong with the event_ids array
+			return false;
+		}
 		// sql query
-		$num_deleted = (int) $wpdb->query( $wpdb->prepare( 'DELETE FROM %s WHERE id IN (%s)', $this->table, $event_ids ) );
-		if( $num_deleted == count( explode( ',', $event_ids ) ) ) {
+		$num_deleted = (int) $wpdb->query( 'DELETE FROM '.$this->table.' WHERE id IN ('.implode( ',', $filtered_ids ).')' );
+		if( $num_deleted == count( $event_ids ) ) {
 			return true;
 		}
 		else {
