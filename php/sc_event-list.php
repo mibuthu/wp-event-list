@@ -25,11 +25,11 @@ class sc_event_list {
 		// All available attributes
 		$this->atts = array(
 
-			'initial_date'   => array( 'val'     => 'upcoming<br />year e.g. "2012"',
+			'initial_date'   => array( 'val'     => 'upcoming<br />year e.g. "2013"',
 			                           'std_val' => 'upcoming',
 			                           'visible' => true,
 			                           'desc'    => 'This attribute specifies which events are initially shown. The standard is to show the upcoming events.<br />
-			                                         Specify a year e.g. "2012" to change this behavior.' ),
+			                                         Specify a year e.g. "2013" to change this behavior.' ),
 
 			'num_events'     => array( 'val'     => 'number',
 			                           'std_val' => '0',
@@ -37,32 +37,40 @@ class sc_event_list {
 			                           'desc'    => 'This attribute specifies how many events should be displayed if upcoming events is selected.<br />
 			                                         0 is the standard value which means that all events will be displayed.' ),
 
-			'show_nav'       => array( 'val'     => '0..false<br />1..true',
-			                           'std_val' => '1',
+			'show_nav'       => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
+			                           'std_val' => 'true',
 			                           'visible' => true,
-			                           'desc'    => 'This attribute specifies if the calendar navigation should be displayed.'),
+			                           'desc'    => 'This attribute specifies if the calendar navigation should be displayed.<br />
+			                                         Choose "false" to always hide and "true" to always show the navigation.<br />
+			                                         With "event_list_only" the navigation is only visible in the event list and with "single_event_only" only for a single event'),
 
-			'show_location'  => array( 'val'     => '0..false<br />1..true',
-			                           'std_val' => '1',
+			'show_location'  => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
+			                           'std_val' => 'true',
 			                           'visible' => true,
-			                           'desc'    => 'This attribute specifies if the location is displayed in the event list.'),
+			                           'desc'    => 'This attribute specifies if the location is displayed in the event list.<br />
+			                                         Choose "false" to always hide and "true" to always show the location.<br />
+			                                         With "event_list_only" the location is only visible in the event list and with "single_event_only" only for a single event'),
 
-			'show_details'   => array( 'val'     => '0..false<br />1..true',
-			                           'std_val' => '1',
+			'show_details'   => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
+			                           'std_val' => 'true',
 			                           'visible' => true,
-			                           'desc'    => 'This attribute specifies if the details are displayed in the event list.'),
+			                           'desc'    => 'This attribute specifies if the details are displayed in the event list.<br />
+			                                         Choose "false" to always hide and "true" to always show the details.<br />
+			                                         With "event_list_only" the details are only visible in the event list and with "single_event_only" only for a single event'),
 
 			'details_length' => array( 'val'     => 'number',
 			                           'std_val' => '0',
 			                           'visible' => true,
 			                           'desc'    => 'This attribute specifies if the details should be truncate to the given number of character in the event list.<br />
-			                                         With the standard value 0 the full details are shown.<br />
+			                                         With the standard value 0 the full details are displayed.<br />
 			                                         This attribute has no influence if only a single event is shown.'),
 
-			'link_to_event'  => array( 'val'     => '0..false<br />1..true',
-			                           'std_val' => '1',
+			'link_to_event'  => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
+			                           'std_val' => 'true',
 			                           'visible' => true,
-			                           'desc'    => 'This attribute specifies if a link to the single event should be added onto the event name in the event list.'),
+			                           'desc'    => 'This attribute specifies if a link to the single event should be added onto the event name in the event list.<br />
+			                                         Choose "false" to never add and "true" to always add the link.<br />
+			                                         With "event_list_only" the link is only added in the event list and with "single_event_only" only for a single event'),
 			// Invisible attributes ('visibe' = false): This attributes are required for the widget but will not be listed in the attributes table on the admin info page
 			'url_to_page'    => array( 'val'     => 'url',
 			                           'std_val' => '',
@@ -154,7 +162,7 @@ class sc_event_list {
 		//		}
 
 		// generate output
-		if( 0 != $a['show_nav'] ) {
+		if( 'false' !== $a['show_nav'] || 0 != $a['show_nav'] ) {
 			$out .= $this->html_calendar_nav( $a );
 		}
 		// TODO: Setting missing
@@ -187,7 +195,7 @@ class sc_event_list {
 			$out .= ' multi-day';
 		}
 		$out .= '"><h3>';
-		if( null !== $url && 0 != $a['link_to_event'] ) {
+		if( null !== $url && ( 'false' !== $a['link_to_event'] || 0 != $a['link_to_event'] ) ) {
 			$out .= '<a href="'.$url.'event_id_'.$a['sc_id_for_url'].'='.$event->id.'">'.$event->title.'</a>';
 		}
 		else {
@@ -202,10 +210,10 @@ class sc_event_list {
 			}
 			$out .= '<span class="event-time">'.$event->time.'</span>';
 		}
-		if( null === $a || 0 != $a['show_location'] ) {
+		if( null === $a || 'false' !== $a['show_location'] || 0 != $a['show_location'] ) {
 			$out .= '<span class="event-location">'.$event->location.'</span>';
 		}
-		if( null === $a || 0 != $a['show_details'] ) {
+		if( null === $a || 'false' !== $a['show_details'] || 0 != $a['show_details'] ) {
 			if( is_numeric( $a['event_id'] ) || 0 >= $a['details_length'] ) {
 				$details = $event->details;
 			}
