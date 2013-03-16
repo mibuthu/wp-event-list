@@ -213,10 +213,10 @@ class sc_event_list {
 			}
 			$out .= '<span class="event-time">'.$event->time.'</span>';
 		}
-		if( null === $a || $this->is_visible( $a['show_location'] ) ) {
+		if( $this->is_visible( $a['show_location'] ) ) {
 			$out .= '<span class="event-location">'.$event->location.'</span>';
 		}
-		if( null === $a || $this->is_visible( $a['show_details'] ) ) {
+		if( $this->is_visible( $a['show_details'] ) ) {
 			if( is_numeric( $a['event_id'] ) || 0 >= $a['details_length'] ) {
 				$details = $event->details;
 			}
