@@ -8,6 +8,7 @@ class sc_event_list {
 	private $options;
 	private $atts;
 	private $num_sc_loaded;
+	private $single_event;
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -90,6 +91,7 @@ class sc_event_list {
 		);
 
 		$this->num_sc_loaded = 0;
+		$this->single_event = false;
 	}
 
 	public function get_atts( $only_visible=true ) {
@@ -128,10 +130,12 @@ class sc_event_list {
 
 		if( is_numeric( $a['event_id'] ) ) {
 			// show events details if event_id is set
+			$this->single_event = true;
 			$out = $this->html_event_details( $a );
 		}
 		else {
 			// show full event list
+			$this->single_event = false;
 			$out = $this->html_events( $a );
 		}
 		return $out;
@@ -165,22 +169,23 @@ class sc_event_list {
 		$out .= $this->html_calendar_nav( $a );
 		// TODO: Setting missing
 		if( empty( $events ) /*&& $mfgigcal_settings['no-events'] == "text"*/ ) {
+			// no events found
 			$out .= "<p>" . 'no event' /*$mfgigcal_settings['message'] */. "</p>";
 		}
 		else {
-			// set html code
+			// print available events
 			$out .= '
 				<ul class="event-list">';
 			$single_day_only = $this->is_single_day_only( $events );
 			foreach ($events as $event) {
-				$out .= $this->html_event( $event, $a, $this->get_url( $a ), $single_day_only );
+				$out .= $this->html_event( $event, $a, $single_day_only );
 			}
 			$out .= '</ul>';
 		}
 		return $out;
 	}
 
-	private function html_event( &$event, &$a, $url=null, $single_day_only=false ) {
+	private function html_event( &$event, &$a, $single_day_only=false ) {
 		$out = '
 			 	<li class="event">';
 		$out .= $this->html_fulldate( $event->start_date, $event->end_date, $single_day_only );
@@ -193,8 +198,8 @@ class sc_event_list {
 			$out .= ' multi-day';
 		}
 		$out .= '"><h3>';
-		if( null !== $url && $this->is_visible( $a['link_to_event'] ) ) {
-			$out .= '<a href="'.$url.'event_id_'.$a['sc_id_for_url'].'='.$event->id.'">'.$event->title.'</a>';
+		if( $this->is_visible( $a['link_to_event'] ) ) {
+			$out .= '<a href="'.$this->get_url( $a ).'event_id_'.$a['sc_id_for_url'].'='.$event->id.'">'.$event->title.'</a>';
 		}
 		else {
 			$out .= $event->title;
@@ -347,8 +352,22 @@ class sc_event_list {
 		switch ($attribute_value) {
 			case 'false':
 				return false;
-			case 0: // = 'false'
+			case '0': // = 'false'
 				return false;
+			case 'event_list_only':
+				if( $this->single_event ) {
+					return false;
+				}
+				else {
+					return true;
+				}
+			case 'single_event_only':
+				if( $this->single_event ) {
+					return true;
+				}
+				else {
+					return false;
+				}
 			default: // 'true' or 1
 				return true;
 		}
