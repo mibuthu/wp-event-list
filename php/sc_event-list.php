@@ -162,9 +162,7 @@ class sc_event_list {
 		//		}
 
 		// generate output
-		if( 'false' !== $a['show_nav'] || 0 != $a['show_nav'] ) {
-			$out .= $this->html_calendar_nav( $a );
-		}
+		$out .= $this->html_calendar_nav( $a );
 		// TODO: Setting missing
 		if( empty( $events ) /*&& $mfgigcal_settings['no-events'] == "text"*/ ) {
 			$out .= "<p>" . 'no event' /*$mfgigcal_settings['message'] */. "</p>";
@@ -195,7 +193,7 @@ class sc_event_list {
 			$out .= ' multi-day';
 		}
 		$out .= '"><h3>';
-		if( null !== $url && ( 'false' !== $a['link_to_event'] || 0 != $a['link_to_event'] ) ) {
+		if( null !== $url && $this->is_visible( $a['link_to_event'] ) ) {
 			$out .= '<a href="'.$url.'event_id_'.$a['sc_id_for_url'].'='.$event->id.'">'.$event->title.'</a>';
 		}
 		else {
@@ -210,10 +208,10 @@ class sc_event_list {
 			}
 			$out .= '<span class="event-time">'.$event->time.'</span>';
 		}
-		if( null === $a || 'false' !== $a['show_location'] || 0 != $a['show_location'] ) {
+		if( null === $a || $this->is_visible( $a['show_location'] ) ) {
 			$out .= '<span class="event-location">'.$event->location.'</span>';
 		}
-		if( null === $a || 'false' !== $a['show_details'] || 0 != $a['show_details'] ) {
+		if( null === $a || $this->is_visible( $a['show_details'] ) ) {
 			if( is_numeric( $a['event_id'] ) || 0 >= $a['details_length'] ) {
 				$details = $event->details;
 			}
@@ -265,11 +263,16 @@ class sc_event_list {
 	}
 
 	private function html_calendar_nav( &$a ) {
+		$out = '';
+		if( ! $this->is_visible( $a['show_nav'] ) ) {
+			// no calendar navigation required
+			return $out;
+		}
 		$first_year = $this->db->get_event_date( 'first' );
 		$last_year = $this->db->get_event_date( 'last' );
 
 		$url = $this->get_url( $a );
-		$out = '<div class="subsubsub">';
+		$out .= '<div class="subsubsub">';
 		if( is_numeric( $a['ytd'] ) || is_numeric( $a['event_id'] ) ) {
 			$ytd = isset( $a['initial_date'] ) && is_numeric( $a['initial_date'] ) ? 'ytd_'.$a['sc_id_for_url'].'=upcoming' : '';
 			$out .= '<a href="'.$url.'ytd_'.$a['sc_id_for_url'].'=upcoming">Upcoming</a>';
@@ -338,6 +341,17 @@ class sc_event_list {
 			}
 		}
 		return true;
+	}
+
+	private function is_visible( $attribute_value ) {
+		switch ($attribute_value) {
+			case 'false':
+				return false;
+			case 0: // = 'false'
+				return false;
+			default: // 'true' or 1
+				return true;
+		}
 	}
 }
 ?>
