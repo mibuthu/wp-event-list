@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, admin, attribute, widget, sidebar
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 0.3.3
+Stable tag: 0.3.4
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -63,6 +63,14 @@ Yes, you can create an instance of the "sc_event_list" class which located in "p
 
 
 == Changelog ==
+
+= 0.3.4 (2013-03-16) =
+
+* fixed deleting of events
+* removed link to not available settings page in about page
+* changed parameter values from numbers to a more significant wording
+* added the options 'event_list_only' and 'single_event_only' for the shortcode attributes 'show_nav', 'show_location', 'show_details' and 'link_to_event'
+* added shortcode attribute details_length to truncate details
 
 = 0.3.3 (2013-03-01) =
 
