@@ -85,9 +85,9 @@ class event_list_widget extends WP_Widget {
 		$link_to_event =        isset( $instance['link_to_event'] )        ? $instance['link_to_event']        : 'false';
 		$link_to_page =         isset( $instance['link_to_page'] )         ? $instance['link_to_page']         : 'false';
 		$link_to_page_caption = isset( $instance['link_to_page_caption'] ) ? $instance['link_to_page_caption'] : __( 'show event-list page', 'text_domain' );
-		$show_location_checked = 'true'===$show_location ? 'checked = "checked" ' : '';
-		$link_to_event_checked = 'true'===$link_to_event ? 'checked = "checked" ' : '';
-		$link_to_page_checked =  'true'===$link_to_page  ? 'checked = "checked" ' : '';
+		$show_location_checked = 'true'===$show_location || 1==$show_location ? 'checked = "checked" ' : '';
+		$link_to_event_checked = 'true'===$link_to_event || 1==$link_to_event ? 'checked = "checked" ' : '';
+		$link_to_page_checked =  'true'===$link_to_page  || 1==$link_to_page ? 'checked = "checked" ' : '';
 		$out = '
 		<p>
 			<label for="'.$this->get_field_id( 'title' ).'">'.__( 'Title:' ).'</label>
