@@ -67,7 +67,7 @@ class sc_event_list {
 			                                         This attribute has no influence if only a single event is shown.'),
 
 			'link_to_event'  => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
-			                           'std_val' => 'true',
+			                           'std_val' => 'event_list_only',
 			                           'visible' => true,
 			                           'desc'    => 'This attribute specifies if a link to the single event should be added onto the event name in the event list.<br />
 			                                         Choose "false" to never add and "true" to always add the link.<br />
