@@ -32,7 +32,7 @@ class Admin_Event_Table extends WP_List_Table {
 			case 'date' :
 				return $this->format_event_date( $item->start_date, $item->end_date, $item->time );
 			case 'details' :
-				return '<div>'.$this->truncate( 80, $item->details ).'</div>';
+				return '<div>'.$this->db->truncate( 80, $item->details ).'</div>';
 			case 'pub_user' :
 				return get_userdata( $item->pub_user )->user_login;
 			case 'pub_date' :
@@ -262,77 +262,6 @@ class Admin_Event_Table extends WP_List_Table {
 		}
 		$datetime = mysql2date( __( 'Y/m/d g:i:s A' ), $pub_date );
 		return '<abbr title="'.$datetime.'">'.$date.'</abbr>';
-	}
-
-	// function to truncate and shorten html text
-	/** ************************************************************************
-	* Function to truncate and shorten text
-	*
-	* @param int $max_length The length to which the text should be shortened
-	* @param string $html The html code which should be shortened
-	***************************************************************************/
-	private static function truncate( $max_length, $html ) {
-		if( strlen( $html ) > $max_length ) {
-			$printedLength = 0;
-			$position = 0;
-			$tags = array();
-			$out = '';
-			while ($printedLength < $max_length && preg_match('{</?([a-z]+)[^>]*>|&#?[a-zA-Z0-9]+;}', $html, $match, PREG_OFFSET_CAPTURE, $position)) {
-				list($tag, $tagPosition) = $match[0];
-				// Print text leading up to the tag
-				$str = substr($html, $position, $tagPosition - $position);
-				if ($printedLength + strlen($str) > $max_length) {
-					$out .= substr($str, 0, $max_length - $printedLength);
-					$printedLength = $max_length;
-					break;
-				}
-				$out .= $str;
-				$printedLength += strlen($str);
-				if ($tag[0] == '&') {
-					// Handle the entity
-					$out .= $tag;
-					$printedLength++;
-				}
-				else {
-					// Handle the tag
-					$tagName = $match[1][0];
-					if ($tag[1] == '/')
-					{
-						// This is a closing tag
-						$openingTag = array_pop($tags);
-						assert($openingTag == $tagName); // check that tags are properly nested
-						$out .= $tag;
-					}
-					else if ($tag[strlen($tag) - 2] == '/') {
-						// Self-closing tag
-						$out .= $tag;
-					}
-					else {
-						// Opening tag
-						$out .= $tag;
-						$tags[] = $tagName;
-					}
-				}
-				// Continue after the tag
-				$position = $tagPosition + strlen($tag);
-			}
-			// Print any remaining text
-			if ($printedLength < $max_length && $position < strlen($html)) {
-				$out .= substr($html, $position, $max_length - $printedLength);
-			}
-			// Print "..." if the html is not complete
-			if( strlen( $html) != $position ) {
-				$out .= ' ...';
-			}
-			// Close any open tags.
-			while (!empty($tags)) {
-				$out .= '</'.array_pop($tags).'>';
-			}
-			return $out;
-		}
-		else {
-			return $html;
-		}
 	}
 }
 
