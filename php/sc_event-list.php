@@ -154,17 +154,6 @@ class sc_event_list {
 		if( empty( $events ) /*&& $mfgigcal_settings['no-events'] == "text"*/ ) {
 			$out .= "<p>" . 'no event' /*$mfgigcal_settings['message'] */. "</p>";
 		}
-		/*		else if (empty($events)) {
-		 $this_year = date("Y");
-		// show the current year
-		$sql = "SELECT * FROM $mfgigcal_table WHERE (end_date >= '$this_year-01-01' AND start_date <= '$this_year-12-31') ORDER BY start_date ASC";
-		$events = $wpdb->get_results($sql);
-		if (empty($events)) {
-		$out .= "<p>" . $mfgigcal_settings['message'] . "</p>";
-		return $out;
-		}
-		}
-		*/
 		else {
 			// set html code
 			$out .= '
