@@ -153,9 +153,16 @@ class el_db {
 
 	public function delete_events( $event_ids ) {
 		global $wpdb;
+		// filter event_ids string to int values only
+		$filtered_ids = array_map( 'intval', $event_ids );
+		if( count( $event_ids ) != count( $filtered_ids ) )
+		{
+			// something is wrong with the event_ids array
+			return false;
+		}
 		// sql query
-		$num_deleted = (int) $wpdb->query( $wpdb->prepare( 'DELETE FROM %s WHERE id IN (%s)', $this->table, $event_ids ) );
-		if( $num_deleted == count( explode( ',', $event_ids ) ) ) {
+		$num_deleted = (int) $wpdb->query( 'DELETE FROM '.$this->table.' WHERE id IN ('.implode( ',', $filtered_ids ).')' );
+		if( $num_deleted == count( $event_ids ) ) {
 			return true;
 		}
 		else {
@@ -185,7 +192,78 @@ class el_db {
 		}
 		return date( $ret_format, $timestamp );
 	}
+
+	/** ************************************************************************
+	 * Function to truncate and shorten text
+	 *
+	 * @param int $max_length The length to which the text should be shortened
+	 * @param string $html The html code which should be shortened
+	 ***************************************************************************/
+	public function truncate( $max_length, $html ) {
+		if( strlen( $html ) > $max_length ) {
+			$printedLength = 0;
+			$position = 0;
+			$tags = array();
+			$out = '';
+			while ($printedLength < $max_length && preg_match('{</?([a-z]+)[^>]*>|&#?[a-zA-Z0-9]+;}', $html, $match, PREG_OFFSET_CAPTURE, $position)) {
+				list($tag, $tagPosition) = $match[0];
+				// Print text leading up to the tag
+				$str = substr($html, $position, $tagPosition - $position);
+				if ($printedLength + strlen($str) > $max_length) {
+					$out .= substr($str, 0, $max_length - $printedLength);
+					$printedLength = $max_length;
+					break;
+				}
+				$out .= $str;
+				$printedLength += strlen($str);
+				if ($tag[0] == '&') {
+					// Handle the entity
+					$out .= $tag;
+					$printedLength++;
+				}
+				else {
+					// Handle the tag
+					$tagName = $match[1][0];
+					if ($tag[1] == '/')
+					{
+						// This is a closing tag
+						$openingTag = array_pop($tags);
+						assert($openingTag == $tagName); // check that tags are properly nested
+						$out .= $tag;
+					}
+					else if ($tag[strlen($tag) - 2] == '/') {
+						// Self-closing tag
+						$out .= $tag;
+				}
+					else {
+					// Opening tag
+						$out .= $tag;
+						$tags[] = $tagName;
+					}
+				}
+				// Continue after the tag
+				$position = $tagPosition + strlen($tag);
+			}
+			// Print any remaining text
+			if ($printedLength < $max_length && $position < strlen($html)) {
+				$out .= substr($html, $position, $max_length - $printedLength);
+			}
+			// Print "..." if the html is not complete
+			if( strlen( $html) != $position ) {
+				$out .= ' ...';
+			}
+			// Close any open tags.
+			while (!empty($tags)) {
+				$out .= '</'.array_pop($tags).'>';
+			}
+			return $out;
+		}
+		else {
+			return $html;
+		}
+	}
 }
+
 
 // Define "date_parse_from_format" (This is required for php versions < 5.3)
 if( !function_exists('date_parse_from_format') ){

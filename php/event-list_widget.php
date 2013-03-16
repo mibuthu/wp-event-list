@@ -33,13 +33,13 @@ class event_list_widget extends WP_Widget {
 			echo $before_title . $title . $after_title;
 		}
 		echo do_shortcode( '[event-list num_events="'.$instance['num_events'].'" '
-		                              .'show_nav=0 '
-		                              .'show_details=0 '
+		                              .'show_nav=false '
+		                              .'show_details=false '
 		                              .'show_location='.$instance['show_location'].' '
 		                              .'link_to_event='.$instance['link_to_event'].' '
 		                              .'url_to_page="'.$instance['url_to_page'].'" '
 		                              .'sc_id_for_url="'.$instance['sc_id_for_url'].'"]' );
-		if( 1 == $instance['link_to_page'] ) {
+		if( 'true' === $instance['link_to_page'] ) {
 			echo '<div style="clear:both"><a title="'.$instance['link_to_page_caption'].'" href="'.$instance[ 'url_to_page'].'">'.$instance['link_to_page_caption'].'</a></div>';
 		}
 		echo $after_widget;
@@ -60,11 +60,11 @@ class event_list_widget extends WP_Widget {
 		$instance = array();
 		$instance['title'] = strip_tags( $new_instance['title'] );
 		$instance['num_events'] = strip_tags( $new_instance['num_events'] );
-		$instance['show_location'] =  (isset( $new_instance['show_location'] ) && 1==$new_instance['show_location'] ) ? 1 : 0;
+		$instance['show_location'] =  (isset( $new_instance['show_location'] ) && 1==$new_instance['show_location'] ) ? 'true' : 'false';
 		$instance['url_to_page'] = strip_tags( $new_instance['url_to_page'] );
 		$instance['sc_id_for_url'] = strip_tags( $new_instance['sc_id_for_url'] );
-		$instance['link_to_event'] = (isset( $new_instance['link_to_event'] ) && 1==$new_instance['link_to_event'] ) ? 1 : 0;
-		$instance['link_to_page'] = (isset( $new_instance['link_to_page'] ) && 1==$new_instance['link_to_page'] ) ? 1 : 0;
+		$instance['link_to_event'] = (isset( $new_instance['link_to_event'] ) && 1==$new_instance['link_to_event'] ) ? 'true' : 'false';
+		$instance['link_to_page'] = (isset( $new_instance['link_to_page'] ) && 1==$new_instance['link_to_page'] ) ? 'true' : 'false';
 		$instance['link_to_page_caption'] = strip_tags( $new_instance['link_to_page_caption'] );
 		return $instance;
 	}
@@ -79,15 +79,15 @@ class event_list_widget extends WP_Widget {
 	public function form( $instance ) {
 		$title =                isset( $instance['title'] )                ? $instance['title']                : __( 'New title', 'text_domain' );
 		$num_events =           isset( $instance['num_events'] )           ? $instance['num_events']           : '3';
-		$show_location =        isset( $instance['show_location'] )        ? $instance['show_location']        : '';
+		$show_location =        isset( $instance['show_location'] )        ? $instance['show_location']        : 'false';
 		$url_to_page =          isset( $instance['url_to_page'] )          ? $instance['url_to_page']          : '';
 		$sc_id_for_url =        isset( $instance['sc_id_for_url'] )        ? $instance['sc_id_for_url']        : '1';
-		$link_to_event =        isset( $instance['link_to_event'] )        ? $instance['link_to_event']        : '';
-		$link_to_page =         isset( $instance['link_to_page'] )         ? $instance['link_to_page']         : '';
+		$link_to_event =        isset( $instance['link_to_event'] )        ? $instance['link_to_event']        : 'false';
+		$link_to_page =         isset( $instance['link_to_page'] )         ? $instance['link_to_page']         : 'false';
 		$link_to_page_caption = isset( $instance['link_to_page_caption'] ) ? $instance['link_to_page_caption'] : __( 'show event-list page', 'text_domain' );
-		$show_location_checked = 1==$show_location ? 'checked = "checked" ' : '';
-		$link_to_event_checked = 1==$link_to_event ? 'checked = "checked" ' : '';
-		$link_to_page_checked =  1==$link_to_page  ? 'checked = "checked" ' : '';
+		$show_location_checked = 'true'===$show_location || 1==$show_location ? 'checked = "checked" ' : '';
+		$link_to_event_checked = 'true'===$link_to_event || 1==$link_to_event ? 'checked = "checked" ' : '';
+		$link_to_page_checked =  'true'===$link_to_page  || 1==$link_to_page ? 'checked = "checked" ' : '';
 		$out = '
 		<p>
 			<label for="'.$this->get_field_id( 'title' ).'">'.__( 'Title:' ).'</label>
