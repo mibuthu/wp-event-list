@@ -200,7 +200,7 @@ class el_db {
 	 * @param string $html The html code which should be shortened
 	 ***************************************************************************/
 	public function truncate( $max_length, $html ) {
-		if( strlen( $html ) > $max_length ) {
+		if( $max_length > 0 && strlen( $html ) > $max_length ) {
 			$printedLength = 0;
 			$position = 0;
 			$tags = array();
