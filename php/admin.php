@@ -286,11 +286,7 @@ class el_admin {
 				<td>';
 		$editor_settings = array( 'media_buttons' => true,
 		                          'wpautop' => false,
-		                          'tinymce' => array( 'height' => '400',
-		                                              'force_br_newlines' => false,
-		                                              'force_p_newlines' => true,
-		                                              'convert_newlines_to_brs' => false ),
-		                          'quicktags' => true );
+		                          'textarea_rows' => 20 );
 		ob_start();
 			wp_editor( isset( $event->details ) ? $event->details : '', 'details', $editor_settings);
 			$out .= ob_get_contents();
