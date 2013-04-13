@@ -1,6 +1,6 @@
 <?php
-//require_once( EL_PATH.'php/options.php' );
 require_once( EL_PATH.'php/db.php' );
+require_once( EL_PATH.'php/options.php' );
 require_once( EL_PATH.'php/sc_event-list.php' );
 require_once( EL_PATH.'php/admin_event_table.php' );
 
@@ -15,7 +15,7 @@ class el_admin {
 
 	public function __construct() {
 		$this->db = &el_db::get_instance();
-		//$this->options = &el_options::get_instance();
+		$this->options = &el_options::get_instance();
 		$this->shortcode = &sc_event_list::get_instance();
 		$this->dateformat = __( 'Y/m/d' ); // similar date format than in list tables (e.g. post, pages, media)
 		// $this->dateformat = 'd/m/Y'; // for debugging only
@@ -369,7 +369,7 @@ class el_admin {
 			$desc_new_line = true;
 		}
 		$out = '';
-		/*foreach( $this->options->options as $oname => $o ) {
+		foreach( $this->options->options as $oname => $o ) {
 			if( $o['section'] == $section ) {
 				$out .= '
 						<tr style="vertical-align:top;">
@@ -408,7 +408,7 @@ class el_admin {
 						<td class="description">'.$o['desc'].'</td>
 					</tr>';
 			}
-		}*/
+		}
 		return $out;
 	}
 
