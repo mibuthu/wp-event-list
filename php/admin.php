@@ -370,22 +370,24 @@ class el_admin {
 		$out = '<h3 class="nav-tab-wrapper">';
 		foreach( $tabs as $tab => $name ){
 			$class = ( $tab == $current ) ? ' nav-tab-active' : '';
-			$out .= "<a class='nav-tab$class' href='?page=cgb_admin_main&amp;tab=$tab'>$name</a>";
+			$out .= "<a class='nav-tab$class' href='?page=el_admin_settings&amp;tab=$tab'>$name</a>";
 		}
 		$out .= '</h3>';
 		return $out;
 	}
 
-	// $desc_pos specifies where the descpription will be displayed.
-	// available options:  'right'   ... description will be displayed on the right side of the option (standard value)
-	//                     'newline' ... description will be displayed below the option
-	private function show_options( $section, $desc_pos='right' ) {
+	private function show_options( $section ) {
+		// define which sections should show the description in a new line instead on to right side of the option
+		$desc_new_line = false;
+		if( 'comment_html' === $section ) {
+			$desc_new_line = true;
+		}
 		$out = '';
-		foreach( $this->options as $oname => $o ) {
+		foreach( $this->options->options as $oname => $o ) {
 			if( $o['section'] == $section ) {
 				$out .= '
-						<tr valign="top">
-							<th scope="row">';
+						<tr style="vertical-align:top;">
+							<th>';
 				if( $o['label'] != '' ) {
 					$out .= '<label for="'.$oname.'">'.$o['label'].':</label>';
 				}
@@ -393,18 +395,24 @@ class el_admin {
 						<td>';
 				switch( $o['type'] ) {
 					case 'checkbox':
-						$out .= cgb_admin::show_checkbox( $oname, $this->get( $oname ), $o['caption'] );
+						$out .= $this->show_checkbox( $oname, $this->options->get( $oname ), $o['caption'] );
+						break;
+					case 'radio':
+						$out .= $this->show_radio( $oname, $this->options->get( $oname ), $o['caption'] );
 						break;
 					case 'text':
-						$out .= cgb_admin::show_text( $oname, $this->get( $oname ) );
+						$out .= $this->show_text( $oname, $this->options->get( $oname ) );
 						break;
 					case 'textarea':
-						$out .= cgb_admin::show_textarea( $oname, $this->get( $oname ) );
+						$out .= $this->show_textarea( $oname, $this->options->get( $oname ) );
+						break;
+					case 'array':
+						$out .= $this->show_radio( $oname, $this->options->get( $oname ) );
 						break;
 				}
 				$out .= '
 						</td>';
-				if( $desc_pos == 'newline' ) {
+				if( $desc_new_line ) {
 					$out .= '
 					</tr>
 					<tr>
@@ -413,10 +421,6 @@ class el_admin {
 				$out .= '
 						<td class="description">'.$o['desc'].'</td>
 					</tr>';
-				if( $desc_pos == 'newline' ) {
-					$out .= '
-						<tr><td></td></tr>';
-				}
 			}
 		}
 		return $out;
@@ -432,6 +436,23 @@ class el_admin {
 		$out .= ' />
 								'.$caption.'
 							</label>';
+		return $out;
+	}
+
+	private function show_radio( $name, $value, $caption ) {
+		$out = '
+							<fieldset>';
+		foreach( $caption as $okey => $ocaption ) {
+			$checked = ($value === $okey) ? 'checked="checked" ' : '';
+			$out .= '
+								<label title="'.$ocaption.'">
+									<input type="radio" '.$checked.'value="'.$okey.'" name="'.$name.'">
+									<span>'.$ocaption.'</span>
+								</label>
+								<br />';
+		}
+		$out .= '
+							</fieldset>';
 		return $out;
 	}
 
