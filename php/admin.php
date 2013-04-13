@@ -113,43 +113,15 @@ class el_admin {
 		$out.= '<div class="wrap">
 				<div class="wrap nosubsub" style="padding-bottom:15px">
 					<div id="icon-edit-pages" class="icon32"><br /></div><h2>Event List Settings</h2>
-				</div>
-				<form method="post" action="options.php">';
-		// TODO: Add settings to settings page
-//		$out .= settings_fields( 'mfgigcal_settings' );
-//		$out .= do_settings_sections('mfgigcal');
-//		$out .= '<input name="Submit" type="submit" value="'.esc_attr__( 'Save Changes' ).'" />
-		 if( !isset( $_GET['tab'] ) ) {
-			$_GET['tab'] = 'categories';
+				</div>';
+		if( !isset( $_GET['tab'] ) ) {
+			$_GET['tab'] = 'category';
 		}
 		$out .= $this->show_tabs( $_GET['tab'] );
 		$out .= '<div id="posttype-page" class="posttypediv">';
+		$out .= $this->show_options( $_GET['tab'] );
 		$out .= '
-			<form method="post" action="options.php">
-			';
-		ob_start();
-		settings_fields( 'el_'.$_GET['tab'] );
-		$out .= ob_get_contents();
-		ob_end_clean();
-		$out .= '
-				<div style="padding:0 10px">';
-		// define the tab to display
-		$tab = $_GET['tab'];
-		if( 'categories' !== $tab ) {
-			$tab = 'categories';
-		}
-		$out .= '
-				<table class="form-table">';
-		$out .= $this->show_options( $tab );
-		$out .= '
-				</table>
-				</div>';
-		ob_start();
-		submit_button();
-		$out .= ob_get_contents();
-		ob_end_clean();
-		$out .='
-			</form>
+				</div>
 			</div>';
 		echo $out;
 	}
@@ -351,8 +323,8 @@ class el_admin {
 		return $out;
 	}
 
-	private function show_tabs( $current = 'categories' ) {
-		$tabs = array( 'categories' => 'Categories' );
+	private function show_tabs( $current = 'category' ) {
+		$tabs = array( 'category' => 'Categories', 'test' => 'Test' );
 		$out = '<h3 class="nav-tab-wrapper">';
 		foreach( $tabs as $tab => $name ){
 			$class = ( $tab == $current ) ? ' nav-tab-active' : '';
@@ -363,51 +335,60 @@ class el_admin {
 	}
 
 	private function show_options( $section ) {
-		// define which sections should show the description in a new line instead on to right side of the option
-		$desc_new_line = false;
-		if( 'comment_html' === $section ) {
-			$desc_new_line = true;
-		}
 		$out = '';
-		foreach( $this->options->options as $oname => $o ) {
-			if( $o['section'] == $section ) {
-				$out .= '
-						<tr style="vertical-align:top;">
-							<th>';
-				if( $o['label'] != '' ) {
-					$out .= '<label for="'.$oname.'">'.$o['label'].':</label>';
-				}
-				$out .= '</th>
-						<td>';
-				switch( $o['type'] ) {
-					case 'checkbox':
-						$out .= $this->show_checkbox( $oname, $this->options->get( $oname ), $o['caption'] );
-						break;
-					case 'radio':
-						$out .= $this->show_radio( $oname, $this->options->get( $oname ), $o['caption'] );
-						break;
-					case 'text':
-						$out .= $this->show_text( $oname, $this->options->get( $oname ) );
-						break;
-					case 'textarea':
-						$out .= $this->show_textarea( $oname, $this->options->get( $oname ) );
-						break;
-					case 'array':
-						$out .= $this->show_radio( $oname, $this->options->get( $oname ) );
-						break;
-				}
-				$out .= '
-						</td>';
-				if( $desc_new_line ) {
+		if( 'category' === $section ) {
+			$out .= $this->show_category();
+		}
+		else {
+			$out .= '
+				<form method="post" action="options.php">
+				';
+			ob_start();
+			settings_fields( 'el_'.$_GET['tab'] );
+			$out .= ob_get_contents();
+			ob_end_clean();
+			$out .= '
+					<div style="padding:0 10px">
+					<table class="form-table">';
+			foreach( $this->options->options as $oname => $o ) {
+				if( $o['section'] == $section ) {
 					$out .= '
-					</tr>
-					<tr>
-						<td></td>';
+							<tr style="vertical-align:top;">
+								<th>';
+					if( $o['label'] != '' ) {
+						$out .= '<label for="'.$oname.'">'.$o['label'].':</label>';
+					}
+					$out .= '</th>
+							<td>';
+					switch( $o['type'] ) {
+						case 'checkbox':
+							$out .= $this->show_checkbox( $oname, $this->options->get( $oname ), $o['caption'] );
+							break;
+						case 'radio':
+							$out .= $this->show_radio( $oname, $this->options->get( $oname ), $o['caption'] );
+							break;
+						case 'text':
+							$out .= $this->show_text( $oname, $this->options->get( $oname ) );
+							break;
+						case 'textarea':
+							$out .= $this->show_textarea( $oname, $this->options->get( $oname ) );
+							break;
+					}
+					$out .= '
+							</td>
+							<td class="description">'.$o['desc'].'</td>
+						</tr>';
 				}
-				$out .= '
-						<td class="description">'.$o['desc'].'</td>
-					</tr>';
 			}
+			$out .= '
+				</table>
+				</div>';
+			ob_start();
+			submit_button();
+			$out .= ob_get_contents();
+			ob_end_clean();
+			$out .='
+			</form>';
 		}
 		return $out;
 	}
@@ -451,6 +432,45 @@ class el_admin {
 	private function show_textarea( $name, $value ) {
 		$out = '
 							<textarea name="'.$name.'" id="'.$name.'" rows="20" class="large-text code">'.$value.'</textarea>';
+		return $out;
+	}
+
+	private function show_category() {
+		require_once( EL_PATH.'php/admin_category_table.php' );
+		$table = new Admin_Category_Table();
+		$out = '';
+		// Check if a category was added
+		if( !empty( $_POST ) ) {
+			if( $table->add_to_cat_array( $_POST ) ) {
+				if( $table->update_cat_option() ) {
+					$out .= '<div id="message" class="updated below-h2"><p><strong>New Event "'.$_POST['name'].'" was added.</strong></p></div>';
+				}
+				else {
+					$out .= '<div id="message" class="error below-h2"><p><strong>Error: New Event "'.$_POST['name'].'" has a wrong format.</strong></p></div>';
+				}
+			}
+			else {
+				$out .= '<div id="message" class="error below-h2"><p><strong>Error: New Event "'.$_POST['name'].'" could not be added.</strong></p></div>';
+			}
+		}
+		$out .= '
+				<form method="POST" action="?page=el_admin_settings&tab=category">';
+		$out .= $this->show_text( 'name', '' );
+		$out .= $this->show_textarea( 'desc', '' );
+		$out .= $this->show_text( 'slug', '' );
+		$out .= '<p class="submit"><input type="submit" class="button-primary" name="add_cat" value="Add Category" id="submitbutton"></p>';
+		$out .= '
+				</form>';
+		// show category table
+		$out .= '<form id="category-filter" method="get">
+				<input type="hidden" name="page" value="'.$_REQUEST['page'].'" />';
+		// show table
+		$table->prepare_items();
+		ob_start();
+		$table->display();
+		$out .= ob_get_contents();
+		ob_end_clean();
+		$out .= '</form>';
 		return $out;
 	}
 

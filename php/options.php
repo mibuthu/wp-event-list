@@ -21,14 +21,20 @@ class el_options {
 		$this->group = 'event-list';
 
 		$this->options = array(
-
 			// TODO: DB-Version Check must be integrated
 			'el_db_version' => array( 'section' => 'system',
 			                          'type'    => 'text',
 			                          'std_val' => '',
 			                          'label'   => '',
 			                          'caption' => '',
-			                          'desc'    => 'Database version' )
+			                          'desc'    => 'Database version' ),
+
+			'el_categories' => array( 'section' => 'categories',
+			                          'type'    => 'category',
+			                          'std_val' => null,
+			                          'label'   => 'Event Categories',
+			                          'caption' => '',
+			                          'desc'    => '' )
 		);
 	}
 
@@ -42,8 +48,7 @@ class el_options {
 		}
 	}
 
-	/*
-	 public function set( $name, $value ) {
+	public function set( $name, $value ) {
 		if( isset( $this->options[$name] ) ) {
 			return update_option( $name, $value );
 		}
@@ -51,7 +56,6 @@ class el_options {
 			return false;
 		}
 	}
-	*/
 
 	public function get( $name ) {
 		if( isset( $this->options[$name] ) ) {
