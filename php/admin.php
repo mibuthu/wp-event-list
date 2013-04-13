@@ -119,7 +119,6 @@ class el_admin {
 //		$out .= settings_fields( 'mfgigcal_settings' );
 //		$out .= do_settings_sections('mfgigcal');
 //		$out .= '<input name="Submit" type="submit" value="'.esc_attr__( 'Save Changes' ).'" />
-		/*
 		 if( !isset( $_GET['tab'] ) ) {
 			$_GET['tab'] = 'categories';
 		}
@@ -148,7 +147,7 @@ class el_admin {
 		ob_start();
 		submit_button();
 		$out .= ob_get_contents();
-		ob_end_clean();*/
+		ob_end_clean();
 		$out .='
 			</form>
 			</div>';
@@ -370,7 +369,7 @@ class el_admin {
 			$desc_new_line = true;
 		}
 		$out = '';
-		foreach( $this->options->options as $oname => $o ) {
+		/*foreach( $this->options->options as $oname => $o ) {
 			if( $o['section'] == $section ) {
 				$out .= '
 						<tr style="vertical-align:top;">
@@ -409,7 +408,7 @@ class el_admin {
 						<td class="description">'.$o['desc'].'</td>
 					</tr>';
 			}
-		}
+		}*/
 		return $out;
 	}
 
