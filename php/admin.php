@@ -14,7 +14,7 @@ class el_admin {
 	private $event_action_error = false;
 
 	public function __construct() {
-		$this->db = el_db::get_instance();
+		$this->db = &el_db::get_instance();
 		//$this->options = &el_options::get_instance();
 		$this->shortcode = &sc_event_list::get_instance();
 		$this->dateformat = __( 'Y/m/d' ); // similar date format than in list tables (e.g. post, pages, media)
@@ -32,7 +32,7 @@ class el_admin {
 		add_action( 'admin_print_scripts-'.$page, array( &$this, 'embed_admin_main_scripts' ) );
 		$page = add_submenu_page( 'el_admin_main', 'Add New Event', 'Add New', 'edit_posts', 'el_admin_new', array( &$this, 'show_new' ) );
 		add_action( 'admin_print_scripts-'.$page, array( &$this, 'embed_admin_new_scripts' ) );
-		//add_submenu_page( 'el_admin_main', 'Event List Settings', 'Settings', 'manage_options', 'el_admin_settings', array( &$this, 'show_settings' ) );
+		add_submenu_page( 'el_admin_main', 'Event List Settings', 'Settings', 'manage_options', 'el_admin_settings', array( &$this, 'show_settings' ) );
 		$page = add_submenu_page( 'el_admin_main', 'About Event List', 'About', 'edit_posts', 'el_admin_about', array( &$this, 'show_about' ) );
 		add_action( 'admin_print_scripts-'.$page, array( &$this, 'embed_admin_about_scripts' ) );
 	}
@@ -99,7 +99,7 @@ class el_admin {
 		$out .= '</div>';
 		echo $out;
 	}
-/*
+
 	public function show_settings () {
 		if (!current_user_can('manage_options'))  {
 			wp_die( __('You do not have sufficient permissions to access this page.') );
@@ -114,58 +114,47 @@ class el_admin {
 				<div class="wrap nosubsub" style="padding-bottom:15px">
 					<div id="icon-edit-pages" class="icon32"><br /></div><h2>Event List Settings</h2>
 				</div>
-				<form method="post" action="options.php">
-					Not available yet';
+				<form method="post" action="options.php">';
 		// TODO: Add settings to settings page
 //		$out .= settings_fields( 'mfgigcal_settings' );
 //		$out .= do_settings_sections('mfgigcal');
 //		$out .= '<input name="Submit" type="submit" value="'.esc_attr__( 'Save Changes' ).'" />
-//			</form>
-//		</div>';
 		/*
-		<h3>Comment Guestbook Settings</h3>';
-		if( !isset( $_GET['tab'] ) ) {
-			$_GET['tab'] = 'general';
+		 if( !isset( $_GET['tab'] ) ) {
+			$_GET['tab'] = 'categories';
 		}
-		$out .= cgb_admin::create_tabs( $_GET['tab'] );
+		$out .= $this->show_tabs( $_GET['tab'] );
 		$out .= '<div id="posttype-page" class="posttypediv">';
 		$out .= '
-						<form method="post" action="options.php">
-						';
+			<form method="post" action="options.php">
+			';
 		ob_start();
-		settings_fields( 'cgb_'.$_GET['tab'] );
+		settings_fields( 'el_'.$_GET['tab'] );
 		$out .= ob_get_contents();
 		ob_end_clean();
 		$out .= '
-						<div style="padding:0 10px">';
-		switch( $_GET['tab'] ) {
-			case 'comment_list' :
-				$out .= '
-							<table class="form-table">';
-				$out .= cgb_admin::show_options( 'comment_list' );
-				$out .= '
-								</table>';
-				break;
-			default : // 'general'
-				$out .= '
-							<table class="form-table">';
-				$out .= cgb_admin::show_options( 'general' );
-				$out .= '
-								</table>';
-				break;
+				<div style="padding:0 10px">';
+		// define the tab to display
+		$tab = $_GET['tab'];
+		if( 'categories' !== $tab ) {
+			$tab = 'categories';
 		}
-		$out .=
-				'</div>';
+		$out .= '
+				<table class="form-table">';
+		$out .= $this->show_options( $tab );
+		$out .= '
+				</table>
+				</div>';
 		ob_start();
 		submit_button();
 		$out .= ob_get_contents();
-		ob_end_clean();
+		ob_end_clean();*/
 		$out .='
-		</form>
-		</div>';
+			</form>
+			</div>';
 		echo $out;
 	}
-*/
+
 	public function show_about() {
 		$out = '<div class="wrap">
 				<div class="wrap nosubsub" style="padding-bottom:15px">
@@ -184,9 +173,9 @@ class el_admin {
 					Additonally you have to insert the correct Shortcode ID on the linked page. This ID describes which shortcode should be used on the given page or post if you have more than one.
 					So the standard value "1" is normally o.k., but you can check the ID if you have a look into the URL of an event link on your linked page or post.
 					The ID is given behind the "_" (e.g. <i>http://www.your-homepage.com/?page_id=99&event_id_<strong>1</strong>=11</i>).
-				</p>';
-				//<p>Be sure to also check the <a href="admin.php?page=el_admin_settings">settings page</a> to get Event List behaving just the way you want.</p>
-		$out .= '</div>';
+				</p>
+				<p>Be sure to also check the <a href="admin.php?page=el_admin_settings">settings page</a> to get Event List behaving just the way you want.</p>
+			</div>';
 		$out .= $this->html_atts();
 		echo $out;
 	}
@@ -363,10 +352,8 @@ class el_admin {
 		return $out;
 	}
 
-	// TODO: Function "create_tabs" not required yet, can be removed probably
-	private function create_tabs( $current = 'general' )  {
-		$tabs = array( 'general' => 'General settings', 'comment_list' => 'Comment-list settings', 'comment_form' => 'Comment-form settings',
-						'comment_form_html' => 'Comment-form html code', 'comment_html' => 'Comment html code' );
+	private function show_tabs( $current = 'categories' ) {
+		$tabs = array( 'categories' => 'Categories' );
 		$out = '<h3 class="nav-tab-wrapper">';
 		foreach( $tabs as $tab => $name ){
 			$class = ( $tab == $current ) ? ' nav-tab-active' : '';
