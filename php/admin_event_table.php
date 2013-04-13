@@ -117,8 +117,6 @@ class Admin_Event_Table extends WP_List_Table {
 			'pub_date' => array( 'pub_date', false )
 		);
 		return $sortable_columns;
-
-		return array();
 	}
 
 	/** ************************************************************************
