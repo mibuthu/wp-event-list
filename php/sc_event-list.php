@@ -2,7 +2,7 @@
 require_once( EL_PATH.'php/db.php' );
 
 // This class handles the shortcode [event-list]
-class sc_event_list {
+class SC_Event_List {
 	private static $instance;
 	private $db;
 	private $options;
@@ -13,7 +13,7 @@ class sc_event_list {
 	public static function &get_instance() {
 		// Create class instance if required
 		if( !isset( self::$instance ) ) {
-			self::$instance = new sc_event_list();
+			self::$instance = new SC_Event_List();
 		}
 		// Return class instance
 		return self::$instance;

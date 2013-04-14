@@ -67,7 +67,7 @@ class Event_List {
 	public function shortcode_event_list( $atts ) {
 		if( NULL == $this->shortcode ) {
 			require_once( 'php/sc_event-list.php' );
-			$this->shortcode = sc_event_list::get_instance();
+			$this->shortcode = SC_Event_List::get_instance();
 		}
 		return $this->shortcode->show_html( $atts );
 	}
