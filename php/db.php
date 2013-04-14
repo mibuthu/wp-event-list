@@ -1,5 +1,5 @@
 <?php
-//require_once( EL_PATH.'php/options.php' );
+require_once( EL_PATH.'php/options.php' );
 
 // Class for database access via wordpress functions
 class el_db {
@@ -21,13 +21,12 @@ class el_db {
 	private function __construct() {
 		global $wpdb;
 		$this->table = $wpdb->prefix.self::TABLE_NAME;
-		//$this->options = &lv_options::get_instance();
+		$this->options = &EL_Options::get_instance();
 	}
 
 	// UPDATE DB
 	public function upgrade_check() {
-		// TODO: added version checking
-//		if( el_options::get( 'el_db_version' ) != self::VERSION) {
+		if( $this->options->get( 'el_db_version' ) != self::VERSION ) {
 			$sql = 'CREATE TABLE '.$this->table.' (
 				id int(11) NOT NULL AUTO_INCREMENT,
 				pub_user bigint(20) NOT NULL,
@@ -41,12 +40,10 @@ class el_db {
 				history text,
 				PRIMARY KEY  (id) )
 				DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;';
-
 			require_once( ABSPATH.'wp-admin/includes/upgrade.php' );
 			dbDelta( $sql );
-
-//			el_options::set( 'el_db_version', self::VERSION );
-//		}
+			$this->options->set( 'el_db_version', self::VERSION );
+		}
 	}
 
 	public function get_events( $date_range='all', $num_events=0, $sort_array=array( 'start_date ASC', 'time ASC', 'end_date ASC') ) {
