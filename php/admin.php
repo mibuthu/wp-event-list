@@ -5,7 +5,7 @@ require_once( EL_PATH.'php/sc_event-list.php' );
 require_once( EL_PATH.'php/admin_event_table.php' );
 
 // This class handles all available admin pages
-class el_admin {
+class EL_Admin {
 	private $db;
 	private $options;
 	private $shortcode;

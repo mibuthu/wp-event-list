@@ -51,7 +51,7 @@ class Event_List {
 		if ( is_admin() ) {
 			// Include required php-files and initialize required objects
 			require_once( 'php/admin.php' );
-			$admin = new el_admin();
+			$admin = new EL_Admin();
 			// Register actions
 			add_action( 'admin_menu', array( &$admin, 'register_pages' ) );
 			add_action( 'plugins_loaded', array( &$this, 'db_upgrade_check' ) );
