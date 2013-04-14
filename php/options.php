@@ -1,7 +1,7 @@
 <?php
 
 // This class handles all available options
-class el_options {
+class EL_Options {
 
 	private static $instance;
 	public $group;
@@ -10,7 +10,7 @@ class el_options {
 	public static function &get_instance() {
 		// Create class instance if required
 		if( !isset( self::$instance ) ) {
-			self::$instance = new el_options();
+			self::$instance = new EL_Options();
 			self::$instance->init();
 		}
 		// Return class instance

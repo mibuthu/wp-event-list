@@ -21,7 +21,7 @@ class sc_event_list {
 
 	private function __construct() {
 		$this->db = el_db::get_instance();
-		//$this->options = &el_options::get_instance();
+		//$this->options = &EL_Options::get_instance();
 
 		// All available attributes
 		$this->atts = array(

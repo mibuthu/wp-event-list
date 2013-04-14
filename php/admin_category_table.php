@@ -10,7 +10,7 @@ class Admin_Category_Table extends WP_List_Table {
 	private $cat_array;
 
 	public function __construct() {
-		$this->options = el_options::get_instance();
+		$this->options = EL_Options::get_instance();
 		$this->initalize_cat_array();
 		//global $status, $page;
 		//Set parent defaults
