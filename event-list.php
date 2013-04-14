@@ -31,7 +31,7 @@ define( 'EL_PATH', plugin_dir_path( __FILE__ ) );
 
 
 // MAIN PLUGIN CLASS
-class event_list {
+class Event_List {
 	private $shortcode;
 
 	/**
@@ -92,5 +92,5 @@ class event_list {
 
 
 // create a class instance
-$event_list = new event_list();
+$event_list = new Event_List();
 ?>
