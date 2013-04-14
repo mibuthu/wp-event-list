@@ -2,7 +2,7 @@
 require_once( EL_PATH.'php/options.php' );
 
 // Class for database access via wordpress functions
-class el_db {
+class EL_Db {
 	const VERSION = "0.1";
 	const TABLE_NAME = "event_list";
 	private static $instance;
@@ -12,7 +12,7 @@ class el_db {
 	public static function &get_instance() {
 		// Create class instance if required
 		if( !isset( self::$instance ) ) {
-			self::$instance = new el_db();
+			self::$instance = new EL_Db();
 		}
 		// Return class instance
 		return self::$instance;

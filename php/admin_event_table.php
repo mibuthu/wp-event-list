@@ -9,7 +9,7 @@ class Admin_Event_Table extends WP_List_Table {
 	private $db;
 
 	public function __construct() {
-		$this->db = el_db::get_instance();
+		$this->db = EL_Db::get_instance();
 		global $status, $page;
 		//Set parent defaults
 		parent::__construct( array(

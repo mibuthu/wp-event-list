@@ -14,7 +14,7 @@ class el_admin {
 	private $event_action_error = false;
 
 	public function __construct() {
-		$this->db = &el_db::get_instance();
+		$this->db = &EL_Db::get_instance();
 		$this->options = &EL_Options::get_instance();
 		$this->shortcode = &sc_event_list::get_instance();
 		$this->dateformat = __( 'Y/m/d' ); // similar date format than in list tables (e.g. post, pages, media)

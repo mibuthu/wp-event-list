@@ -85,7 +85,7 @@ class event_list {
 
 	public function db_upgrade_check() {
 		require_once( 'php/db.php' );
-		$db = el_db::get_instance();
+		$db = EL_Db::get_instance();
 		$db->upgrade_check();
 	}
 } // end class linkview
