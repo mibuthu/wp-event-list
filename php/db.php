@@ -3,8 +3,8 @@ require_once( EL_PATH.'php/options.php' );
 
 // Class for database access via wordpress functions
 class EL_Db {
-	const VERSION = "0.1";
-	const TABLE_NAME = "event_list";
+	const VERSION = '0.2';
+	const TABLE_NAME = 'event_list';
 	private static $instance;
 	private $table;
 	private $options;
@@ -37,6 +37,7 @@ class EL_Db {
 				title text NOT NULL,
 				location text,
 				details text,
+				categories text,
 				history text,
 				PRIMARY KEY  (id) )
 				DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;';
