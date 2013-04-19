@@ -209,8 +209,14 @@ class EL_Admin {
 		// Add required data for javascript in a hidden field
 		$json = json_encode( array( 'el_url'         => EL_URL,
 		                            'el_date_format' => $this->datepicker_format( $this->dateformat ) ) );
-		$out = "<input type='hidden' id='json_for_js' value='".$json."' />";
-		$out .= '<form method="POST" action="?page=el_admin_main">';
+		$out = '
+				<form method="POST" action="?page=el_admin_main">';
+		$out .= "
+				<input type='hidden' id='json_for_js' value='".$json."' />"; // single quote required for value due to json layout
+		$out .= '
+				<div id="poststuff">
+				<div id="post-body" class="metabox-holder columns-2">
+				<div id="post-body-content">';
 		if( true === $edit ) {
 			$out .= '<input type="hidden" name="id" value="'.$_GET['id'].'" />';
 		}
@@ -246,7 +252,21 @@ class EL_Admin {
 		$out .= '<p class="note">NOTE: In the text editor, use RETURN to start a new paragraph - use SHIFT-RETURN to start a new line.</p></td>
 			</tr>
 			</table>';
-		$out .= '<p class="submit"><input type="submit" class="button-primary" name="publish" value="Publish" id="submitbutton"> <a href="?page=el_admin_main" class="button-secondary">Cancel</a></p></form>';
+		$out .= '<p class="submit"><input type="submit" class="button-primary" name="publish" value="Publish" id="submitbutton"> <a href="?page=el_admin_main" class="button-secondary">Cancel</a></p>
+				</div>
+				<div id="postbox-container-1" class="postbox-container">
+				<div id="side-sortables" class="meta-box-sortables ui-sortable">';
+		add_meta_box( 'event-categories', __( 'Categories' ), array( &$this, 'render_category_metabox' ), 'event-list');
+		ob_start();
+			do_meta_boxes('event-list', 'advanced', null);
+			$out .= ob_get_contents();
+		ob_end_clean();
+		$out .= '
+				</div>
+				</div>
+				</div>
+				</div>
+				</form>';
 		return $out;
 	}
 
@@ -464,6 +484,10 @@ class EL_Admin {
 		ob_end_clean();
 		$out .= '</form>';
 		return $out;
+	}
+
+	public function render_category_metabox() {
+		echo 'Category Metabox';
 	}
 
 	private function html_atts() {
