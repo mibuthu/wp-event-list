@@ -82,9 +82,7 @@ class EL_Admin {
 
 	public function show_new() {
 		$out = '<div class="wrap">
-				<div class="wrap nosubsub" style="padding-bottom:15px">
-					<div id="icon-edit-pages" class="icon32"><br /></div><h2>Add New Event</h2>
-				</div>';
+				<div id="icon-edit-pages" class="icon32"><br /></div><h2>Add New Event</h2>';
 		$out .= $this->edit_event();
 		$out .= '</div>';
 		echo $out;
@@ -92,9 +90,7 @@ class EL_Admin {
 
 	private function show_edit() {
 		$out = '<div class="wrap">
-				<div class="wrap nosubsub" style="padding-bottom:15px">
-					<div id="icon-edit-pages" class="icon32"><br /></div><h2>Edit Event</h2>
-				</div>';
+				<div id="icon-edit-pages" class="icon32"><br /></div><h2>Edit Event</h2>';
 		$out .= $this->edit_event();
 		$out .= '</div>';
 		echo $out;
@@ -111,9 +107,7 @@ class EL_Admin {
 			</div>';
 		}
 		$out.= '<div class="wrap">
-				<div class="wrap nosubsub" style="padding-bottom:15px">
-					<div id="icon-edit-pages" class="icon32"><br /></div><h2>Event List Settings</h2>
-				</div>';
+				<div id="icon-edit-pages" class="icon32"><br /></div><h2>Event List Settings</h2>';
 		if( !isset( $_GET['tab'] ) ) {
 			$_GET['tab'] = 'category';
 		}
@@ -128,9 +122,7 @@ class EL_Admin {
 
 	public function show_about() {
 		$out = '<div class="wrap">
-				<div class="wrap nosubsub" style="padding-bottom:15px">
-					<div id="icon-edit-pages" class="icon32"><br /></div><h2>About Event List</h2>
-				</div>
+				<div id="icon-edit-pages" class="icon32"><br /></div><h2>About Event List</h2>
 				<h3>Help and Instructions</h3>
 				<p>You can manage your events <a href="admin.php?page=el_admin_main">here</a>.</p>
 				<p>To show the events on your site you have two possibilities:
