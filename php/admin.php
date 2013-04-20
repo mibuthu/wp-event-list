@@ -502,7 +502,45 @@ class EL_Admin {
 	}
 
 	public function render_category_metabox() {
-		echo 'Category Metabox';
+		$out = '
+				<div id="taxonomy-category" class="categorydiv">
+				<div id="category-all" class="tabs-panel">';
+		$cat_array = (array) $this->options->get( 'el_categories' );
+		if( empty( $cat_array ) ) {
+			$out .= __( 'No categories available.' );
+		}
+		else {
+			$out .= '
+					<ul id="categorychecklist" class="categorychecklist form-no-clear">';
+			// TODO: Saved categories are not correctly selected yet
+			// TODO: Saving the selected categories is not working yet
+			foreach( $cat_array as $cat ) {
+				$out .= '
+						<li id="'.$cat['slug'].'" class="popular-catergory">
+							<label class="selectit">
+								<input value="1" type="checkbox" name="post_category[]" id="in-category-1" checked="checked" /> '.$cat['name'].'
+							</label>
+						</li>';
+			}
+			$out .= '
+					</ul>';
+		}
+		// TODO: Adding new categories is not working yet
+		$out .= '
+				</div>
+				<div id="category-adder" class="wp-hidden-children">
+					<h4><a id="category-add-toggle" href="#category-add" class="hide-if-no-js">'.__( '+ Add New Category' ).'</a></h4>
+					<p id="category-add" class="category-add wp-hidden-child">
+						<label class="screen-reader-text" for="newcategory">'.__( 'Category Name' ).'</label>
+						<input type="text" name="newcategory" id="newcategory" class="form-required form-input-tip" value="" aria-required="true"/>
+						<input type="button" id="category-add-submit" class="button category-add-submit" value="'.__( 'Add Category' ).'" />
+					</p>
+				</div>
+				<div id="category-manager">
+					<a id="category-manage-link" href="?page=el_admin_settings&amp;tab=category">'.__( 'Goto Category Settings' ).'</a>
+				</div>
+				</div>';
+		echo $out;
 	}
 
 	private function html_atts() {
