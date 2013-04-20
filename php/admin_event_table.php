@@ -37,6 +37,8 @@ class Admin_Event_Table extends WP_List_Table {
 				return get_userdata( $item->pub_user )->user_login;
 			case 'pub_date' :
 				return $this->format_pub_date( $item->pub_date );
+			case 'categories' :
+				return implode( ', ', explode( '|', substr( $item->$column_name, 1, -1 ) ) );
 			default :
 				return $item->$column_name;
 		}
