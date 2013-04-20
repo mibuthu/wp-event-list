@@ -191,6 +191,7 @@ class Admin_Category_Table extends WP_List_Table {
 	}
 
 	public function add_to_cat_array( $cat_data ) {
+		//TODO: Check for existing slug name required
 		if( !isset( $cat_data['name'] ) || '' == $cat_data['name'] ) {
 			return false;
 		}

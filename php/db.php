@@ -137,8 +137,12 @@ class EL_Db {
 		//details
 		if( !isset( $event_data['details'] ) ) { $sqldata['details'] = ''; }
 		else { $sqldata['details'] = stripslashes ($event_data['details'] ); }
+		//categories
+		print_r($_POST);
+		if( !isset( $event_data['categories'] ) ) { $sqldata['categories'] = ''; }
+		else { $sqldata['categories'] = '|'.implode( '|', $event_data['categories'] ).'|'; }
 		//types for sql data
-		$sqltypes = array( '%s', '%s', '%s', '%s', '%s', '%s', '%s' );
+		$sqltypes = array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );
 
 		if( isset( $event_data['id'] ) ) { // update event
 			$wpdb->update( $this->table, $sqldata, array( 'id' => $event_data['id'] ), $sqltypes );

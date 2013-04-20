@@ -262,7 +262,8 @@ class EL_Admin {
 				<div id="postbox-container-1" class="postbox-container">
 				<div id="side-sortables" class="meta-box-sortables ui-sortable">';
 		add_meta_box( 'event-publish', __( 'Publish' ), array( &$this, 'render_publish_metabox' ), 'event-list' );
-		add_meta_box( 'event-categories', __( 'Categories' ), array( &$this, 'render_category_metabox' ), 'event-list' );
+		$metabox_args = isset( $event->categories ) ? array( 'event_cats' => $event->categories ) : null;
+		add_meta_box( 'event-categories', __( 'Categories' ), array( &$this, 'render_category_metabox' ), 'event-list', 'advanced', 'default', $metabox_args );
 		ob_start();
 			do_meta_boxes('event-list', 'advanced', null);
 			$out .= ob_get_contents();
@@ -501,7 +502,7 @@ class EL_Admin {
 		echo $out;
 	}
 
-	public function render_category_metabox() {
+	public function render_category_metabox( $post, $metabox ) {
 		$out = '
 				<div id="taxonomy-category" class="categorydiv">
 				<div id="category-all" class="tabs-panel">';
@@ -512,13 +513,13 @@ class EL_Admin {
 		else {
 			$out .= '
 					<ul id="categorychecklist" class="categorychecklist form-no-clear">';
-			// TODO: Saved categories are not correctly selected yet
-			// TODO: Saving the selected categories is not working yet
+			$event_cats = explode( '|', $metabox['args']['event_cats'] );
 			foreach( $cat_array as $cat ) {
+				$checked = in_array( $cat['slug'], $event_cats ) ? 'checked="checked" ' : '';
 				$out .= '
 						<li id="'.$cat['slug'].'" class="popular-catergory">
 							<label class="selectit">
-								<input value="1" type="checkbox" name="post_category[]" id="in-category-1" checked="checked" /> '.$cat['name'].'
+								<input value="'.$cat['slug'].'" type="checkbox" name="categories[]" id="categories" '.$checked.'/> '.$cat['name'].'
 							</label>
 						</li>';
 			}
