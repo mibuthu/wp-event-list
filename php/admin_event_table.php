@@ -90,13 +90,14 @@ class Admin_Event_Table extends WP_List_Table {
 	***************************************************************************/
 	public function get_columns() {
 		return array(
-			'cb'       => '<input type="checkbox" />', //Render a checkbox instead of text
-			'date'     => 'Date',
-			'title'    => 'Event',
-			'location' => 'Location',
-			'details'  => 'Details',
-			'pub_user' => 'Author',
-			'pub_date' => 'Published'
+			'cb'          => '<input type="checkbox" />', //Render a checkbox instead of text
+			'date'        => __( 'Date' ),
+			'title'       => __( 'Event' ),
+			'location'    => __( 'Location' ),
+			'details'     => __( 'Details' ),
+			'categories'  => __( 'Categories' ),
+			'pub_user'    => __( 'Author' ),
+			'pub_date'    => __( 'Published' )
 		);
 	}
 
