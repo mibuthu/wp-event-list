@@ -187,7 +187,11 @@ class Admin_Category_Table extends WP_List_Table {
 	}
 
 	private function initalize_cat_array() {
-		$this->cat_array = (array) $this->options->get( 'el_categories' );
+		$cat_array = (array) $this->options->get( 'el_categories' );
+		$this->cat_array = array();
+		foreach( $cat_array as $cat ) {
+			$this->cat_array[$cat['slug']] = $cat;
+		}
 	}
 
 	public function add_to_cat_array( $cat_data ) {
@@ -221,6 +225,10 @@ class Admin_Category_Table extends WP_List_Table {
 			return false;
 		}
 		return true;
+	}
+
+	public function get_cat_array() {
+		return $this->cat_array;
 	}
 }
 

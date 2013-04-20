@@ -1,12 +1,14 @@
 <?php
 // load the base class (WP_List_Table class isn't automatically available)
 if(!class_exists('WP_List_Table')){
-    require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
 require_once( EL_PATH.'php/db.php' );
+require_once( EL_PATH.'php/admin_category_table.php' );
 
 class Admin_Event_Table extends WP_List_Table {
 	private $db;
+	private $category_array;
 
 	public function __construct() {
 		$this->db = EL_Db::get_instance();
@@ -17,6 +19,8 @@ class Admin_Event_Table extends WP_List_Table {
 			'plural'    => 'events',    //plural name of the listed records
 			'ajax'      => false        //does this table support ajax?
 		) );
+		$admin_category_table = new Admin_Category_Table();
+		$this->category_array = $admin_category_table->get_cat_array();
 	}
 
 	/** ************************************************************************
@@ -38,7 +42,7 @@ class Admin_Event_Table extends WP_List_Table {
 			case 'pub_date' :
 				return $this->format_pub_date( $item->pub_date );
 			case 'categories' :
-				return implode( ', ', explode( '|', substr( $item->$column_name, 1, -1 ) ) );
+				return $this->get_category_string( $item->$column_name );
 			default :
 				return $item->$column_name;
 		}
@@ -263,6 +267,18 @@ class Admin_Event_Table extends WP_List_Table {
 		}
 		$datetime = mysql2date( __( 'Y/m/d g:i:s A' ), $pub_date );
 		return '<abbr title="'.$datetime.'">'.$date.'</abbr>';
+	}
+
+	private function get_category_string( $slug_string ) {
+		if( 2 >= strlen( $slug_string ) ) {
+			return '';
+		}
+		$cats = explode( '|', substr( $slug_string, 1, -1 ) );
+		$cat_name_array = array();
+		foreach( $cats as $cat_slug ) {
+			$cat_name_array[] = $this->category_array[$cat_slug]['name'];
+		}
+		return implode( ', ', $cat_name_array );
 	}
 }
 
