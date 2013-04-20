@@ -252,11 +252,12 @@ class EL_Admin {
 		$out .= '<p class="note">NOTE: In the text editor, use RETURN to start a new paragraph - use SHIFT-RETURN to start a new line.</p></td>
 			</tr>
 			</table>';
-		$out .= '<p class="submit"><input type="submit" class="button-primary" name="publish" value="Publish" id="submitbutton"> <a href="?page=el_admin_main" class="button-secondary">Cancel</a></p>
+		$out .= '
 				</div>
 				<div id="postbox-container-1" class="postbox-container">
 				<div id="side-sortables" class="meta-box-sortables ui-sortable">';
-		add_meta_box( 'event-categories', __( 'Categories' ), array( &$this, 'render_category_metabox' ), 'event-list');
+		add_meta_box( 'event-publish', __( 'Publish' ), array( &$this, 'render_publish_metabox' ), 'event-list' );
+		add_meta_box( 'event-categories', __( 'Categories' ), array( &$this, 'render_category_metabox' ), 'event-list' );
 		ob_start();
 			do_meta_boxes('event-list', 'advanced', null);
 			$out .= ob_get_contents();
@@ -484,6 +485,14 @@ class EL_Admin {
 		ob_end_clean();
 		$out .= '</form>';
 		return $out;
+	}
+
+	public function render_publish_metabox() {
+		echo '<div class="submitbox">
+				<div id="delete-action"><a href="?page=el_admin_main" class="submitdelete deletion">'.__( 'Cancel' ).'</a></div>
+				<div id="publishing-action"><input type="submit" class="button button-primary button-large" name="publish" value="'.__( 'Publish' ).'" id="publish"></div>
+				<div class="clear"></div>
+			</div>';
 	}
 
 	public function render_category_metabox() {
