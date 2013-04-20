@@ -467,7 +467,7 @@ class EL_Admin {
 			}
 		}
 		$out .= '
-				<form method="POST" action="?page=el_admin_settings&tab=category">';
+				<form method="POST" action="?page=el_admin_settings&amp;tab=category">';
 		$out .= $this->show_text( 'name', '' );
 		$out .= $this->show_textarea( 'desc', '' );
 		$out .= $this->show_text( 'slug', '' );
@@ -488,11 +488,12 @@ class EL_Admin {
 	}
 
 	public function render_publish_metabox() {
-		echo '<div class="submitbox">
+		$out = '<div class="submitbox">
 				<div id="delete-action"><a href="?page=el_admin_main" class="submitdelete deletion">'.__( 'Cancel' ).'</a></div>
 				<div id="publishing-action"><input type="submit" class="button button-primary button-large" name="publish" value="'.__( 'Publish' ).'" id="publish"></div>
 				<div class="clear"></div>
 			</div>';
+		echo $out;
 	}
 
 	public function render_category_metabox() {
