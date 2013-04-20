@@ -513,7 +513,7 @@ class EL_Admin {
 		else {
 			$out .= '
 					<ul id="categorychecklist" class="categorychecklist form-no-clear">';
-			$event_cats = explode( '|', $metabox['args']['event_cats'] );
+			$event_cats = explode( '|', substr($metabox['args']['event_cats'], 1, -1 ) );
 			foreach( $cat_array as $cat ) {
 				$checked = in_array( $cat['slug'], $event_cats ) ? 'checked="checked" ' : '';
 				$out .= '
