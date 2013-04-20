@@ -462,14 +462,14 @@ class EL_Admin {
 		if( !empty( $_POST ) ) {
 			if( $table->add_to_cat_array( $_POST ) ) {
 				if( $table->update_cat_option() ) {
-					$out .= '<div id="message" class="updated below-h2"><p><strong>New Event "'.$_POST['name'].'" was added.</strong></p></div>';
+					$out .= '<div id="message" class="updated below-h2"><p><strong>New Category "'.$_POST['name'].'" was added.</strong></p></div>';
 				}
 				else {
-					$out .= '<div id="message" class="error below-h2"><p><strong>Error: New Event "'.$_POST['name'].'" has a wrong format.</strong></p></div>';
+					$out .= '<div id="message" class="error below-h2"><p><strong>Error: New Category "'.$_POST['name'].'" has a wrong format.</strong></p></div>';
 				}
 			}
 			else {
-				$out .= '<div id="message" class="error below-h2"><p><strong>Error: New Event "'.$_POST['name'].'" could not be added.</strong></p></div>';
+				$out .= '<div id="message" class="error below-h2"><p><strong>Error: New Category "'.$_POST['name'].'" could not be added.</strong></p></div>';
 			}
 		}
 		$out .= '
