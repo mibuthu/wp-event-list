@@ -156,7 +156,8 @@ class EL_Admin {
 	}
 
 	public function embed_admin_new_scripts() {
-		wp_print_scripts( 'jquery-ui-datepicker' );
+		wp_enqueue_script( 'jquery-ui-datepicker' );
+		wp_enqueue_script( 'link' );
 		wp_enqueue_script( 'eventlist_admin_new_js', EL_URL.'js/admin_new.js' );
 		wp_enqueue_style( 'eventlist_admin_new', EL_URL.'css/admin_new.css' );
 	}
@@ -213,6 +214,10 @@ class EL_Admin {
 				<form method="POST" action="?page=el_admin_main">';
 		$out .= "
 				<input type='hidden' id='json_for_js' value='".$json."' />"; // single quote required for value due to json layout
+		// TODO: saving changed metaboxes is not working yet
+		$out .= wp_nonce_field('autosavenonce', 'autosavenonce', false, false );
+		$out .= wp_nonce_field('closedpostboxesnonce', 'closedpostboxesnonce', false, false );
+		$out .= wp_nonce_field('meta-box-order-nonce', 'meta-box-order-nonce', false, false );
 		$out .= '
 				<div id="poststuff">
 				<div id="post-body" class="metabox-holder columns-2">
