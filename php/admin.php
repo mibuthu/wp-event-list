@@ -214,7 +214,7 @@ class EL_Admin {
 				<form method="POST" action="?page=el_admin_main">';
 		$out .= "
 				<input type='hidden' id='json_for_js' value='".$json."' />"; // single quote required for value due to json layout
-		// TODO: saving changed metaboxes is not working yet
+		// TODO: saving changed metabox status and order is not working yet
 		$out .= wp_nonce_field('autosavenonce', 'autosavenonce', false, false );
 		$out .= wp_nonce_field('closedpostboxesnonce', 'closedpostboxesnonce', false, false );
 		$out .= wp_nonce_field('meta-box-order-nonce', 'meta-box-order-nonce', false, false );

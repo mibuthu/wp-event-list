@@ -21,7 +21,6 @@ class EL_Options {
 		$this->group = 'event-list';
 
 		$this->options = array(
-			// TODO: DB-Version Check must be integrated
 			'el_db_version' => array( 'section' => 'system',
 			                          'type'    => 'text',
 			                          'std_val' => '',
