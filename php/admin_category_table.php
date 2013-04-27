@@ -48,18 +48,18 @@ class Admin_Category_Table extends WP_List_Table {
 
 	/** ************************************************************************
 	* This is a custom column method and is responsible for what is
-	* rendered in any column with a name/slug of 'title'.
+	* rendered in any column with a name/slug of 'name'.
 	*
 	* @see WP_List_Table::::single_row_columns()
 	* @param array $item A singular item (one full row's worth of data)
 	* @return string Text to be placed inside the column <td> (movie title only)
 	***************************************************************************/
-	protected function column_title($item) {
+	protected function column_name($item) {
 		// TODO: custom column method not working yet
 		//Prepare Columns
 		$actions = array(
-			'edit'      => '<a href="?page='.$_REQUEST['page'].'&amp;id='.$item['slug'].'&amp;action=edit">Edit</a>',
-			'delete'    => '<a href="#" onClick="eventlist_deleteEvent('.$item['slug'].');return false;">Delete</a>'
+			/*'edit'      => '<a href="?page='.$_REQUEST['page'].'&amp;id='.$item['slug'].'&amp;action=edit">Edit</a>',*/
+			'delete'    => '<a href="#" onClick="eventlist_deleteCategory(\''.$item['slug'].'\');return false;">Delete</a>'
 		);
 
 		//Return the title contents
@@ -147,7 +147,7 @@ class Admin_Category_Table extends WP_List_Table {
 		//TODO: bulk action not working yet
 		if( 'delete_bulk' === $this->current_action() ) {
 			// Show confirmation window before deleting
-			echo '<script language="JavaScript">eventlist_deleteEvent ("'.implode( ', ', $_GET['slug'] ).'");</script>';
+			echo '<script language="JavaScript">eventlist_deleteCategory ("'.implode( ', ', $_GET['slug'] ).'");</script>';
 		}
 	}
 
@@ -209,8 +209,8 @@ class Admin_Category_Table extends WP_List_Table {
 		return true;
 	}
 
-	private function removed_from_cat_array( $slug ) {
-		//TODO: missing function: removed_from_cat_array
+	private function remove_from_cat_array( $slug ) {
+		//TODO: missing function: remove_from_cat_array
 	}
 
 	private function edit_cat_array( $slug, $item ) {

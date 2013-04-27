@@ -32,7 +32,8 @@ class EL_Admin {
 		add_action( 'admin_print_scripts-'.$page, array( &$this, 'embed_admin_main_scripts' ) );
 		$page = add_submenu_page( 'el_admin_main', 'Add New Event', 'Add New', 'edit_posts', 'el_admin_new', array( &$this, 'show_new' ) );
 		add_action( 'admin_print_scripts-'.$page, array( &$this, 'embed_admin_new_scripts' ) );
-		add_submenu_page( 'el_admin_main', 'Event List Settings', 'Settings', 'manage_options', 'el_admin_settings', array( &$this, 'show_settings' ) );
+		$page = add_submenu_page( 'el_admin_main', 'Event List Settings', 'Settings', 'manage_options', 'el_admin_settings', array( &$this, 'show_settings' ) );
+		add_action( 'admin_print_scripts-'.$page, array( &$this, 'embed_admin_settings_scripts' ) );
 		$page = add_submenu_page( 'el_admin_main', 'About Event List', 'About', 'edit_posts', 'el_admin_about', array( &$this, 'show_about' ) );
 		add_action( 'admin_print_scripts-'.$page, array( &$this, 'embed_admin_about_scripts' ) );
 	}
@@ -106,6 +107,22 @@ class EL_Admin {
 				<p><strong>'.__( 'Settings saved.' ).'</strong></p>
 			</div>';
 		}
+
+		// get action
+		$action = '';
+		if( isset( $_GET['action'] ) ) {
+			$action = $_GET['action'];
+		}
+		// delete categories if required
+		if( $action === 'delete' && isset( $_GET['slug'] ) ) {
+			//$this->event_action_error = !$this->db->delete_events( explode(',', $_GET['id'] ) );
+			//$this->event_action = 'deleted';
+			//TODO: Delete Categories
+			$out .= '<div id="message" class="updated">
+				<p><strong>'.__( 'Category '.$_GET['slug'].' must be delete (Not implemented yet!).' ).'</strong></p>
+			</div>';
+		}
+
 		$out.= '<div class="wrap">
 				<div id="icon-edit-pages" class="icon32"><br /></div><h2>Event List Settings</h2>';
 		if( !isset( $_GET['tab'] ) ) {
@@ -160,6 +177,10 @@ class EL_Admin {
 		wp_enqueue_script( 'link' );
 		wp_enqueue_script( 'eventlist_admin_new_js', EL_URL.'js/admin_new.js' );
 		wp_enqueue_style( 'eventlist_admin_new', EL_URL.'css/admin_new.css' );
+	}
+
+	public function embed_admin_settings_scripts() {
+		wp_enqueue_script( 'eventlist_admin_settings_js', EL_URL.'js/admin_settings.js' );
 	}
 
 	public function embed_admin_about_scripts() {
