@@ -168,7 +168,7 @@ class SC_Event_List {
 		// generate output
 		$out .= $this->html_calendar_nav( $a );
 		// TODO: Setting missing
-		if( empty( $events ) /*&& $mfgigcal_settings['no-events'] == "text"*/ ) {
+		if( empty( $events ) ) {
 			// no events found
 			$out .= "<p>" . 'no event' /*$mfgigcal_settings['message'] */. "</p>";
 		}
