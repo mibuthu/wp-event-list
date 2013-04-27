@@ -472,24 +472,38 @@ class EL_Admin {
 				$out .= '<div id="message" class="error below-h2"><p><strong>Error: New Category "'.$_POST['name'].'" could not be added.</strong></p></div>';
 			}
 		}
-		$out .= '
-				<form method="POST" action="?page=el_admin_settings&amp;tab=category">';
-		$out .= $this->show_text( 'name', '' );
-		$out .= $this->show_textarea( 'desc', '' );
-		$out .= $this->show_text( 'slug', '' );
-		$out .= '<p class="submit"><input type="submit" class="button-primary" name="add_cat" value="Add Category" id="submitbutton"></p>';
-		$out .= '
-				</form>';
 		// show category table
-		$out .= '<form id="category-filter" method="get">
-				<input type="hidden" name="page" value="'.$_REQUEST['page'].'" />';
+		$out .= '
+				<div id="col-container">
+					<div id="col-right">
+						<div class="col-wrap">
+							<form id="category-filter" method="get">
+								<input type="hidden" name="page" value="'.$_REQUEST['page'].'" />';
 		// show table
 		$table->prepare_items();
 		ob_start();
 		$table->display();
 		$out .= ob_get_contents();
 		ob_end_clean();
-		$out .= '</form>';
+		$out .= '
+							</form>
+						</div>
+					</div>';
+		// show add category form
+		$out .= '
+					<div id="col-left">
+						<div class="col-wrap">
+							<h3>'.__( 'Add New Category' ).'</h3>
+							<form id="addtag" method="POST" action="?page=el_admin_settings&amp;tab=category">';
+		$out .= $this->show_text( 'name', '' );
+		$out .= $this->show_textarea( 'desc', '' );
+		$out .= $this->show_text( 'slug', '' );
+		$out .= '<p class="submit"><input type="submit" class="button-primary" name="add_cat" value="Add Category" id="submitbutton"></p>';
+		$out .= '
+							</form>
+						</div>
+					</div>
+				</div>';
 		return $out;
 	}
 
