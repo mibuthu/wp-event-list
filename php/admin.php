@@ -450,7 +450,7 @@ class EL_Admin {
 
 	private function show_textarea( $name, $value ) {
 		$out = '
-							<textarea name="'.$name.'" id="'.$name.'" rows="20" class="large-text code">'.$value.'</textarea>';
+							<textarea name="'.$name.'" id="'.$name.'" rows="5" class="large-text code">'.$value.'</textarea>';
 		return $out;
 	}
 
@@ -493,14 +493,23 @@ class EL_Admin {
 		$out .= '
 					<div id="col-left">
 						<div class="col-wrap">
+							<div class="form-wrap">
 							<h3>'.__( 'Add New Category' ).'</h3>
 							<form id="addtag" method="POST" action="?page=el_admin_settings&amp;tab=category">';
+		$out .= '
+				<div class="form-field form-required"><label for="name">Name: </label>';
 		$out .= $this->show_text( 'name', '' );
-		$out .= $this->show_textarea( 'desc', '' );
+		$out .= '<p>'.__( 'The name is how it appears on your site.' ).'</p></div>
+				<div class="form-field"><label for="name">Slug: </label>';
 		$out .= $this->show_text( 'slug', '' );
-		$out .= '<p class="submit"><input type="submit" class="button-primary" name="add_cat" value="Add Category" id="submitbutton"></p>';
+		$out .= '<p>'.__( 'The “slug” is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens.' ).'</p></div>
+				<div class="form-field"><label for="name">Description: </label>';
+		$out .= $this->show_textarea( 'desc', '' );
+		$out .= '</div>
+				<p class="submit"><input type="submit" class="button-primary" name="add_cat" value="'.__( 'Add New Category' ).'" id="submitbutton"></p>';
 		$out .= '
 							</form>
+							</div>
 						</div>
 					</div>
 				</div>';
