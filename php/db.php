@@ -106,9 +106,9 @@ class EL_Db {
 		// prepare and validate sqldata
 		$sqldata = array();
 		//pub_user
-		$sqldata['pub_user'] = wp_get_current_user()->ID;
+		$sqldata['pub_user'] = isset( $event_data['pub_user'] ) ? $event_data['pub_user'] : wp_get_current_user()->ID;
 		//pub_date
-		$sqldata['pub_date'] = date( "Y-m-d H:i:s" );
+		$sqldata['pub_date'] = isset( $event_data['pub_date'] ) ? $event_data['pub_date'] : date( "Y-m-d H:i:s" );
 		//start_date
 		if( !isset( $event_data['start_date']) ) { return false; }
 		$start_timestamp = 0;
@@ -138,7 +138,6 @@ class EL_Db {
 		if( !isset( $event_data['details'] ) ) { $sqldata['details'] = ''; }
 		else { $sqldata['details'] = stripslashes ($event_data['details'] ); }
 		//categories
-		print_r($_POST);
 		if( !isset( $event_data['categories'] ) ) { $sqldata['categories'] = ''; }
 		else { $sqldata['categories'] = '|'.implode( '|', $event_data['categories'] ).'|'; }
 		//types for sql data
