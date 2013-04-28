@@ -142,11 +142,10 @@ class EL_Db {
 		if( !isset( $event_data['details'] ) ) { $sqldata['details'] = ''; }
 		else { $sqldata['details'] = stripslashes ($event_data['details'] ); }
 		//categories
-		if( !isset( $event_data['categories'] ) ) { $sqldata['categories'] = ''; }
+		if( !isset( $event_data['categories'] ) || !is_array( $event_data['categories'] ) || empty( $event_data['categories'] ) ) { $sqldata['categories'] = ''; }
 		else { $sqldata['categories'] = '|'.implode( '|', $event_data['categories'] ).'|'; }
 		//types for sql data
 		$sqltypes = array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );
-
 		if( isset( $event_data['id'] ) ) { // update event
 			$wpdb->update( $this->table, $sqldata, array( 'id' => $event_data['id'] ), $sqltypes );
 		}
@@ -173,6 +172,27 @@ class EL_Db {
 		else {
 			return false;
 		}
+	}
+
+	public function remove_category_in_events( $category_slugs ) {
+		global $wpdb;
+		$sql = 'SELECT * FROM '.$this->table.' WHERE categories LIKE "%|'.implode( '|%" OR categories LIKE "%|', $category_slugs ).'|%"';
+		$affected_events = $wpdb->get_results($sql, ARRAY_A);
+		foreach( $affected_events as $event ) {
+			// remove category from categorystring
+			foreach( $category_slugs as $slug ) {
+				$event['categories'] = str_replace('|'.$slug, '', $event['categories']);
+			}
+			if( 3 > strlen( $event['categories'] ) ) {
+				$event['categories'] = '';
+			}
+			else {
+				$event['categories'] = explode( '|', substr($event['categories'], 1, -1 ) );
+			}
+			print_r( $event['categories']);
+			$this->update_event( $event );
+			}
+		return count( $affected_events );
 	}
 
 	private function extract_date( $datestring, $ret_format, $dateformat=NULL, &$ret_timestamp=NULL, &$ret_datearray=NULL ) {

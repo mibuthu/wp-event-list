@@ -213,8 +213,11 @@ class Admin_Category_Table extends WP_List_Table {
 		return true;
 	}
 
-	private function remove_from_cat_array( $slug ) {
-		//TODO: missing function: remove_from_cat_array
+	public function remove_from_cat_array( $slugs ) {
+		foreach( $slugs as $slug ) {
+			unset( $this->cat_array[$slug] );
+		}
+		return $this->update_cat_option();
 	}
 
 	private function edit_cat_array( $slug, $item ) {

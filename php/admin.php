@@ -115,12 +115,18 @@ class EL_Admin {
 		}
 		// delete categories if required
 		if( $action === 'delete' && isset( $_GET['slug'] ) ) {
-			//$this->event_action_error = !$this->db->delete_events( explode(',', $_GET['id'] ) );
-			//$this->event_action = 'deleted';
-			//TODO: Delete Categories
-			$out .= '<div id="message" class="updated">
-				<p><strong>'.__( 'Category '.$_GET['slug'].' must be delete (Not implemented yet!).' ).'</strong></p>
-			</div>';
+			$slug_array = explode(', ', $_GET['slug'] );
+			$num_affected_events = $this->db->remove_category_in_events( $slug_array );
+			require_once( EL_PATH.'php/admin_category_table.php' );
+			$table = new Admin_Category_Table();
+			if( $table->remove_from_cat_array( $slug_array ) ) {
+				$out .= '<div id="message" class="updated">
+					<p><strong>'.sprintf( __( 'Category %s was deleted).<br />This Category was also removed in %d events.' ), $_GET['slug'], $num_affected_events ).'</strong></p>
+				</div>';
+			}
+			else {
+				$out .= '<div id="message" class="error below-h2"><p><strong>Error while deleting category "'.$_GET['slug'].'".</strong></p></div>';
+			}
 		}
 
 		$out.= '<div class="wrap">
