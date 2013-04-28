@@ -4,13 +4,16 @@ if(!class_exists('WP_List_Table')){
 	require_once( ABSPATH.'wp-admin/includes/class-wp-list-table.php' );
 }
 require_once( EL_PATH.'php/options.php' );
+require_once( EL_PATH.'php/db.php' );
 
 class Admin_Category_Table extends WP_List_Table {
 	private $options;
+	private $db;
 	private $cat_array;
 
 	public function __construct() {
 		$this->options = EL_Options::get_instance();
+		$this->db = EL_Db::get_instance();
 		$this->initalize_cat_array();
 		//global $status, $page;
 		//Set parent defaults
@@ -39,7 +42,7 @@ class Admin_Category_Table extends WP_List_Table {
 			case 'slug' :
 				return $item[$column_name];
 			case 'num_events' :
-				return 0;
+				return $this->count_events( $item['slug'] );
 			default :
 				echo $column_name;
 				return $item[$column_name];
@@ -184,6 +187,12 @@ class Admin_Category_Table extends WP_List_Table {
 		) );
 		// setup items which are used by the rest of the class
 		$this->items = $data;
+	}
+
+	private function count_events( $slug ) {
+		global $wpdb;
+		$sql = 'SELECT COUNT(*) FROM '.$this->db->get_table_name().' WHERE categories LIKE "%|'.$slug.'|%"';
+		return $wpdb->get_var( $sql );
 	}
 
 	private function initalize_cat_array() {

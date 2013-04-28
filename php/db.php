@@ -47,6 +47,10 @@ class EL_Db {
 		}
 	}
 
+	public function get_table_name() {
+		return $this->table;
+	}
+
 	public function get_events( $date_range='all', $num_events=0, $sort_array=array( 'start_date ASC', 'time ASC', 'end_date ASC') ) {
 		global $wpdb;
 
