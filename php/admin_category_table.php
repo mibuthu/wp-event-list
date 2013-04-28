@@ -58,19 +58,14 @@ class Admin_Category_Table extends WP_List_Table {
 	* @return string Text to be placed inside the column <td> (movie title only)
 	***************************************************************************/
 	protected function column_name($item) {
-		// TODO: custom column method not working yet
 		//Prepare Columns
 		$actions = array(
+			// TODO: edit category not implemented yet
 			/*'edit'      => '<a href="?page='.$_REQUEST['page'].'&amp;id='.$item['slug'].'&amp;action=edit">Edit</a>',*/
 			'delete'    => '<a href="#" onClick="eventlist_deleteCategory(\''.$item['slug'].'\');return false;">Delete</a>'
 		);
-
 		//Return the title contents
-		return sprintf( '<b>%1$s</b> <span style="color:silver">(id:%2$s)</span>%3$s',
-			$item['name'],
-			$item['slug'],
-			$this->row_actions( $actions )
-		);
+		return '<b>'.$item['name'].'</b>'.$this->row_actions( $actions );
 	}
 
 	/** ************************************************************************
