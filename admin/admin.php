@@ -372,7 +372,7 @@ class EL_Admin {
 	}
 
 	private function show_tabs( $current = 'category' ) {
-		$tabs = array( 'category' => 'Categories', 'test' => 'Test' );
+		$tabs = array( 'category' => 'Categories', 'general' => 'General' );
 		$out = '<h3 class="nav-tab-wrapper">';
 		foreach( $tabs as $tab => $name ){
 			$class = ( $tab == $current ) ? ' nav-tab-active' : '';

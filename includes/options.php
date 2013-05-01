@@ -21,19 +21,26 @@ class EL_Options {
 		$this->group = 'event-list';
 
 		$this->options = array(
-			'el_db_version' => array( 'section' => 'system',
-			                          'type'    => 'text',
-			                          'std_val' => '',
-			                          'label'   => '',
-			                          'caption' => '',
-			                          'desc'    => 'Database version' ),
+			'el_db_version'    => array( 'section' => 'system',
+			                             'type'    => 'text',
+			                             'std_val' => '',
+			                             'label'   => '',
+			                             'caption' => '',
+			                             'desc'    => 'Database version' ),
 
-			'el_categories' => array( 'section' => 'categories',
-			                          'type'    => 'category',
-			                          'std_val' => null,
-			                          'label'   => 'Event Categories',
-			                          'caption' => '',
-			                          'desc'    => '' )
+			'el_categories'    => array( 'section' => 'categories',
+			                             'type'    => 'category',
+			                             'std_val' => null,
+			                             'label'   => 'Event Categories',
+			                             'caption' => '',
+			                             'desc'    => 'This option specifies all event category data.' ),
+
+			'el_no_event_text' => array( 'section' => 'general',
+			                             'type'    => 'text',
+			                             'std_val' => 'no event',
+			                             'label'   => 'Text for no events',
+			                             'caption' => '',
+			                             'desc'    => 'This option defines the text which is displayed instead of the events, if no events are available for the selected view.' )
 		);
 	}
 

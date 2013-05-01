@@ -1,5 +1,6 @@
 <?php
 require_once( EL_PATH.'includes/db.php' );
+require_once( EL_PATH.'includes/options.php' );
 
 // This class handles the shortcode [event-list]
 class SC_Event_List {
@@ -20,8 +21,8 @@ class SC_Event_List {
 	}
 
 	private function __construct() {
-		$this->db = EL_Db::get_instance();
-		//$this->options = &EL_Options::get_instance();
+		$this->db = &EL_Db::get_instance();
+		$this->options = &EL_Options::get_instance();
 
 		// All available attributes
 		$this->atts = array(
@@ -167,10 +168,9 @@ class SC_Event_List {
 
 		// generate output
 		$out .= $this->html_calendar_nav( $a );
-		// TODO: Setting missing
 		if( empty( $events ) ) {
 			// no events found
-			$out .= "<p>" . 'no event' /*$mfgigcal_settings['message'] */. "</p>";
+			$out .= '<p>'.$this->options->get( 'el_no_event_text' ).'</p>';
 		}
 		else {
 			// print available events
