@@ -2,6 +2,7 @@
 require_once( EL_PATH.'includes/db.php' );
 require_once( EL_PATH.'includes/options.php' );
 require_once( EL_PATH.'includes/sc_event-list.php' );
+require_once( EL_PATH.'includes/categories.php' );
 require_once( EL_PATH.'admin/includes/event_table.php' );
 
 // This class handles all available admin pages
@@ -9,6 +10,7 @@ class EL_Admin {
 	private $db;
 	private $options;
 	private $shortcode;
+	private $categories;
 	private $dateformat;
 	private $event_action = false;
 	private $event_action_error = false;
@@ -17,6 +19,7 @@ class EL_Admin {
 		$this->db = &EL_Db::get_instance();
 		$this->options = &EL_Options::get_instance();
 		$this->shortcode = &SC_Event_List::get_instance();
+		$this->categories = &EL_Categories::get_instance();
 		$this->dateformat = __( 'Y/m/d' ); // similar date format than in list tables (e.g. post, pages, media)
 		// $this->dateformat = 'd/m/Y'; // for debugging only
 		$this->event_action = null;
@@ -118,8 +121,7 @@ class EL_Admin {
 			$slug_array = explode(', ', $_GET['slug'] );
 			$num_affected_events = $this->db->remove_category_in_events( $slug_array );
 			require_once( EL_PATH.'admin/includes/category_table.php' );
-			$table = new Admin_Category_Table();
-			if( $table->remove_from_cat_array( $slug_array ) ) {
+			if( $this->categories->remove_category( $slug_array ) ) {
 				$out .= '<div id="message" class="updated">
 					<p><strong>'.sprintf( __( 'Category %s was deleted).<br />This Category was also removed in %d events.' ), $_GET['slug'], $num_affected_events ).'</strong></p>
 				</div>';
@@ -482,18 +484,11 @@ class EL_Admin {
 	}
 
 	private function show_category() {
-		require_once( EL_PATH.'admin/includes/category_table.php' );
-		$table = new Admin_Category_Table();
 		$out = '';
 		// Check if a category was added
 		if( !empty( $_POST ) ) {
-			if( $table->add_to_cat_array( $_POST ) ) {
-				if( $table->safe_categories() ) {
-					$out .= '<div id="message" class="updated below-h2"><p><strong>New Category "'.$_POST['name'].'" was added.</strong></p></div>';
-				}
-				else {
-					$out .= '<div id="message" class="error below-h2"><p><strong>Error: New Category "'.$_POST['name'].'" has a wrong format.</strong></p></div>';
-				}
+			if( $this->categories->add_category( $_POST ) ) {
+				$out .= '<div id="message" class="updated below-h2"><p><strong>New Category "'.$_POST['name'].'" was added.</strong></p></div>';
 			}
 			else {
 				$out .= '<div id="message" class="error below-h2"><p><strong>Error: New Category "'.$_POST['name'].'" could not be added.</strong></p></div>';
@@ -507,9 +502,11 @@ class EL_Admin {
 							<form id="category-filter" method="get">
 								<input type="hidden" name="page" value="'.$_REQUEST['page'].'" />';
 		// show table
-		$table->prepare_items();
+		require_once( EL_PATH.'admin/includes/category_table.php' );
+		$category_table = new Admin_Category_Table();
+		$category_table->prepare_items();
 		ob_start();
-		$table->display();
+		$category_table->display();
 		$out .= ob_get_contents();
 		ob_end_clean();
 		$out .= '

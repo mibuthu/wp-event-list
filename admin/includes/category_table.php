@@ -5,16 +5,17 @@ if(!class_exists('WP_List_Table')){
 }
 require_once( EL_PATH.'includes/options.php' );
 require_once( EL_PATH.'includes/db.php' );
+require_once( EL_PATH.'includes/categories.php' );
 
 class Admin_Category_Table extends WP_List_Table {
 	private $options;
 	private $db;
-	private $cat_array;
+	private $categories;
 
 	public function __construct() {
-		$this->options = EL_Options::get_instance();
-		$this->db = EL_Db::get_instance();
-		$this->initalize_cat_array();
+		$this->options = &EL_Options::get_instance();
+		$this->db = &EL_Db::get_instance();
+		$this->categories = &EL_Categories::get_instance();
 		//global $status, $page;
 		//Set parent defaults
 		parent::__construct( array(
@@ -42,7 +43,7 @@ class Admin_Category_Table extends WP_List_Table {
 			case 'slug' :
 				return $item[$column_name];
 			case 'num_events' :
-				return $this->count_events( $item['slug'] );
+				return $this->db->count_events( $item['slug'] );
 			default :
 				echo $column_name;
 				return $item[$column_name];
@@ -170,7 +171,7 @@ class Admin_Category_Table extends WP_List_Table {
 		// handle the bulk actions
 		$this->process_bulk_action();
 		// get the required event data
-		$data = $this->cat_array;
+		$data = $this->categories->get_cat_array();
 		// setup pagination
 		$current_page = $this->get_pagenum();
 		$total_items = count( $data );
@@ -182,60 +183,6 @@ class Admin_Category_Table extends WP_List_Table {
 		) );
 		// setup items which are used by the rest of the class
 		$this->items = $data;
-	}
-
-	private function count_events( $slug ) {
-		global $wpdb;
-		$sql = 'SELECT COUNT(*) FROM '.$this->db->get_table_name().' WHERE categories LIKE "%|'.$slug.'|%"';
-		return $wpdb->get_var( $sql );
-	}
-
-	private function initalize_cat_array() {
-		$cat_array = (array) $this->options->get( 'el_categories' );
-		$this->cat_array = array();
-		foreach( $cat_array as $cat ) {
-			$this->cat_array[$cat['slug']] = $cat;
-		}
-	}
-
-	public function add_to_cat_array( $cat_data ) {
-		//TODO: Check for existing slug name required
-		if( !isset( $cat_data['name'] ) || '' == $cat_data['name'] ) {
-			return false;
-		}
-		if( !isset( $cat_data['slug'] ) || '' == $cat_data['slug'] ) {
-			$cat_data['slug'] = $cat_data['name'];
-		}
-		$cat['name'] = trim( $cat_data['name'] );
-		$cat['desc'] = isset( $cat_data['desc'] ) ? trim( $cat_data['desc'] ) : '';
-		$cat['slug'] = sanitize_title( $cat_data['slug'] );
-		$this->cat_array[$cat['slug']] = $cat;
-		return true;
-	}
-
-	public function remove_from_cat_array( $slugs ) {
-		foreach( $slugs as $slug ) {
-			unset( $this->cat_array[$slug] );
-		}
-		return $this->safe_categories();
-	}
-
-	private function edit_cat_array( $slug, $item ) {
-		//TODO: missing function: edit_cat_array
-	}
-
-	public function safe_categories() {
-		if( !sort( $this->cat_array ) ) {
-			return false;
-		}
-		if( !$this->options->set( 'el_categories', $this->cat_array ) ) {
-			return false;
-		}
-		return true;
-	}
-
-	public function get_cat_array() {
-		return $this->cat_array;
 	}
 }
 

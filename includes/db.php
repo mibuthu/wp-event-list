@@ -47,10 +47,6 @@ class EL_Db {
 		}
 	}
 
-	public function get_table_name() {
-		return $this->table;
-	}
-
 	public function get_events( $date_range='all', $num_events=0, $sort_array=array( 'start_date ASC', 'time ASC', 'end_date ASC') ) {
 		global $wpdb;
 
@@ -193,6 +189,12 @@ class EL_Db {
 			$this->update_event( $event );
 			}
 		return count( $affected_events );
+	}
+
+	public function count_events( $slug ) {
+		global $wpdb;
+		$sql = 'SELECT COUNT(*) FROM '.$this->table.' WHERE categories LIKE "%|'.$slug.'|%"';
+		return $wpdb->get_var( $sql );
 	}
 
 	private function extract_date( $datestring, $ret_format, $dateformat=NULL, &$ret_timestamp=NULL, &$ret_datearray=NULL ) {
