@@ -34,12 +34,11 @@ class EL_Category_Table extends WP_List_Table {
 	* @return string Text or HTML to be placed inside the column <td>
 	***************************************************************************/
 	protected function column_default($item, $column_name) {
-		//TODO: check values in detail
 		switch($column_name){
 			case 'name' :
 				return $item[$column_name];
 			case 'desc' :
-				return '<div>'./*$this->truncate( 80,*/ $item[$column_name] /*)*/.'</div>';
+				return '<div>'.$item[$column_name].'</div>';
 			case 'slug' :
 				return $item[$column_name];
 			case 'num_events' :
@@ -143,7 +142,6 @@ class EL_Category_Table extends WP_List_Table {
 	***************************************************************************/
 	private function process_bulk_action() {
 		//Detect when a bulk action is being triggered...
-		//TODO: bulk action not working yet
 		if( 'delete_bulk' === $this->current_action() ) {
 			// Show confirmation window before deleting
 			echo '<script language="JavaScript">eventlist_deleteCategory ("'.implode( ', ', $_GET['slug'] ).'");</script>';
