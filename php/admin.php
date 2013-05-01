@@ -488,7 +488,7 @@ class EL_Admin {
 		// Check if a category was added
 		if( !empty( $_POST ) ) {
 			if( $table->add_to_cat_array( $_POST ) ) {
-				if( $table->update_cat_option() ) {
+				if( $table->safe_categories() ) {
 					$out .= '<div id="message" class="updated below-h2"><p><strong>New Category "'.$_POST['name'].'" was added.</strong></p></div>';
 				}
 				else {

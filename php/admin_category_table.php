@@ -217,14 +217,14 @@ class Admin_Category_Table extends WP_List_Table {
 		foreach( $slugs as $slug ) {
 			unset( $this->cat_array[$slug] );
 		}
-		return $this->update_cat_option();
+		return $this->safe_categories();
 	}
 
 	private function edit_cat_array( $slug, $item ) {
 		//TODO: missing function: edit_cat_array
 	}
 
-	public function update_cat_option() {
+	public function safe_categories() {
 		if( !sort( $this->cat_array ) ) {
 			return false;
 		}
