@@ -32,16 +32,28 @@ class EL_Categories {
 	}
 
 	public function add_category( $cat_data ) {
-		//TODO: Check for existing slug name required
+		// check if name was set
 		if( !isset( $cat_data['name'] ) || '' == $cat_data['name'] ) {
 			return false;
+		}
+		// check if name already exists
+		foreach( $this->cat_array as $cat ) {
+			if( $cat['name'] == $cat_data['name'] ) {
+				return false;
+			}
 		}
 		if( !isset( $cat_data['slug'] ) || '' == $cat_data['slug'] ) {
 			$cat_data['slug'] = $cat_data['name'];
 		}
 		$cat['name'] = trim( $cat_data['name'] );
 		$cat['desc'] = isset( $cat_data['desc'] ) ? trim( $cat_data['desc'] ) : '';
-		$cat['slug'] = sanitize_title( $cat_data['slug'] );
+		// make slug unique
+		$cat['slug'] = $slug = sanitize_title( $cat_data['slug'] );
+		$num = 1;
+		while( isset( $this->cat_array[$cat['slug']] ) ) {
+			$num++;
+			$cat['slug'] = $slug.'-'.$num;
+		}
 		$this->cat_array[$cat['slug']] = $cat;
 		return $this->safe_categories();
 	}
