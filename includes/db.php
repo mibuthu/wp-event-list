@@ -1,5 +1,5 @@
 <?php
-require_once( EL_PATH.'php/options.php' );
+require_once( EL_PATH.'includes/options.php' );
 
 // Class for database access via wordpress functions
 class EL_Db {

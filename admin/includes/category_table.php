@@ -3,8 +3,8 @@
 if(!class_exists('WP_List_Table')){
 	require_once( ABSPATH.'wp-admin/includes/class-wp-list-table.php' );
 }
-require_once( EL_PATH.'php/options.php' );
-require_once( EL_PATH.'php/db.php' );
+require_once( EL_PATH.'includes/options.php' );
+require_once( EL_PATH.'includes/db.php' );
 
 class Admin_Category_Table extends WP_List_Table {
 	private $options;

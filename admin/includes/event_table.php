@@ -3,8 +3,8 @@
 if(!class_exists('WP_List_Table')){
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
-require_once( EL_PATH.'php/db.php' );
-require_once( EL_PATH.'php/admin_category_table.php' );
+require_once( EL_PATH.'includes/db.php' );
+require_once( EL_PATH.'admin/includes/category_table.php' );
 
 class Admin_Event_Table extends WP_List_Table {
 	private $db;

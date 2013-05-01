@@ -1,8 +1,8 @@
 <?php
-require_once( EL_PATH.'php/db.php' );
-require_once( EL_PATH.'php/options.php' );
-require_once( EL_PATH.'php/sc_event-list.php' );
-require_once( EL_PATH.'php/admin_event_table.php' );
+require_once( EL_PATH.'includes/db.php' );
+require_once( EL_PATH.'includes/options.php' );
+require_once( EL_PATH.'includes/sc_event-list.php' );
+require_once( EL_PATH.'admin/includes/event_table.php' );
 
 // This class handles all available admin pages
 class EL_Admin {
@@ -117,7 +117,7 @@ class EL_Admin {
 		if( $action === 'delete' && isset( $_GET['slug'] ) ) {
 			$slug_array = explode(', ', $_GET['slug'] );
 			$num_affected_events = $this->db->remove_category_in_events( $slug_array );
-			require_once( EL_PATH.'php/admin_category_table.php' );
+			require_once( EL_PATH.'admin/includes/category_table.php' );
 			$table = new Admin_Category_Table();
 			if( $table->remove_from_cat_array( $slug_array ) ) {
 				$out .= '<div id="message" class="updated">
@@ -173,24 +173,24 @@ class EL_Admin {
 		}
 		else {
 			// Proceed with embedding for admin_main
-			wp_enqueue_script( 'eventlist_admin_main_js', EL_URL.'js/admin_main.js' );
-			wp_enqueue_style( 'eventlist_admin_main', EL_URL.'css/admin_main.css' );
+			wp_enqueue_script( 'eventlist_admin_main_js', EL_URL.'admin/js/admin_main.js' );
+			wp_enqueue_style( 'eventlist_admin_main', EL_URL.'admin/css/admin_main.css' );
 		}
 	}
 
 	public function embed_admin_new_scripts() {
 		wp_enqueue_script( 'jquery-ui-datepicker' );
 		wp_enqueue_script( 'link' );
-		wp_enqueue_script( 'eventlist_admin_new_js', EL_URL.'js/admin_new.js' );
-		wp_enqueue_style( 'eventlist_admin_new', EL_URL.'css/admin_new.css' );
+		wp_enqueue_script( 'eventlist_admin_new_js', EL_URL.'admin/js/admin_new.js' );
+		wp_enqueue_style( 'eventlist_admin_new', EL_URL.'admin/css/admin_new.css' );
 	}
 
 	public function embed_admin_settings_scripts() {
-		wp_enqueue_script( 'eventlist_admin_settings_js', EL_URL.'js/admin_settings.js' );
+		wp_enqueue_script( 'eventlist_admin_settings_js', EL_URL.'admin/js/admin_settings.js' );
 	}
 
 	public function embed_admin_about_scripts() {
-		wp_enqueue_style( 'eventlist_admin_about', EL_URL.'css/admin_about.css' );
+		wp_enqueue_style( 'eventlist_admin_about', EL_URL.'admin/css/admin_about.css' );
 	}
 
 	private function list_events() {
@@ -482,7 +482,7 @@ class EL_Admin {
 	}
 
 	private function show_category() {
-		require_once( EL_PATH.'php/admin_category_table.php' );
+		require_once( EL_PATH.'admin/includes/category_table.php' );
 		$table = new Admin_Category_Table();
 		$out = '';
 		// Check if a category was added

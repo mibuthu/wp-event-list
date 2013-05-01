@@ -50,7 +50,7 @@ class Event_List {
 		// ADMIN PAGE:
 		if ( is_admin() ) {
 			// Include required php-files and initialize required objects
-			require_once( 'php/admin.php' );
+			require_once( EL_PATH.'admin/admin.php' );
 			$admin = new EL_Admin();
 			// Register actions
 			add_action( 'admin_menu', array( &$admin, 'register_pages' ) );
@@ -66,7 +66,7 @@ class Event_List {
 
 	public function shortcode_event_list( $atts ) {
 		if( NULL == $this->shortcode ) {
-			require_once( 'php/sc_event-list.php' );
+			require_once( EL_PATH.'includes/sc_event-list.php' );
 			$this->shortcode = SC_Event_List::get_instance();
 		}
 		return $this->shortcode->show_html( $atts );
@@ -74,17 +74,17 @@ class Event_List {
 
 	public function widget_init() {
 		// Widget "event-list"
-		require_once( 'php/event-list_widget.php' );
+		require_once( EL_PATH.'includes/widget.php' );
 		return register_widget( 'event_list_widget' );
 	}
 
 	public function print_styles() {
-		wp_register_style('event-list_css', EL_URL.'css/event-list.css');
+		wp_register_style('event-list_css', EL_URL.'/includes/css/event-list.css');
 		wp_enqueue_style( 'event-list_css');
 	}
 
 	public function db_upgrade_check() {
-		require_once( 'php/db.php' );
+		require_once( EL_PATH.'includes/db.php' );
 		$db = EL_Db::get_instance();
 		$db->upgrade_check();
 	}

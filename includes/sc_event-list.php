@@ -1,5 +1,5 @@
 <?php
-require_once( EL_PATH.'php/db.php' );
+require_once( EL_PATH.'includes/db.php' );
 
 // This class handles the shortcode [event-list]
 class SC_Event_List {
