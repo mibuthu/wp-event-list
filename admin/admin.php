@@ -573,17 +573,19 @@ class EL_Admin {
 			$out .= '
 					</ul>';
 		}
-		// TODO: Adding new categories is not working yet
+
 		$out .= '
-				</div>
-				<div id="category-adder" class="wp-hidden-children">
+				</div>';
+		// TODO: Adding new categories in edit event form
+		/*		<div id="category-adder" class="wp-hidden-children">
 					<h4><a id="category-add-toggle" href="#category-add" class="hide-if-no-js">'.__( '+ Add New Category' ).'</a></h4>
 					<p id="category-add" class="category-add wp-hidden-child">
 						<label class="screen-reader-text" for="newcategory">'.__( 'Category Name' ).'</label>
 						<input type="text" name="newcategory" id="newcategory" class="form-required form-input-tip" value="" aria-required="true"/>
 						<input type="button" id="category-add-submit" class="button category-add-submit" value="'.__( 'Add Category' ).'" />
 					</p>
-				</div>
+				</div>*/
+		$out .= '
 				<div id="category-manager">
 					<a id="category-manage-link" href="?page=el_admin_settings&amp;tab=category">'.__( 'Goto Category Settings' ).'</a>
 				</div>
