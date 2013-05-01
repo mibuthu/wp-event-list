@@ -7,7 +7,7 @@ require_once( EL_PATH.'includes/options.php' );
 require_once( EL_PATH.'includes/db.php' );
 require_once( EL_PATH.'includes/categories.php' );
 
-class Admin_Category_Table extends WP_List_Table {
+class EL_Category_Table extends WP_List_Table {
 	private $options;
 	private $db;
 	private $categories;

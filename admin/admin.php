@@ -208,7 +208,7 @@ class EL_Admin {
 		$out .= '<form id="event-filter" method="get">
 				<input type="hidden" name="page" value="'.$_REQUEST['page'].'" />';
 		// show table
-		$table = new Admin_Event_Table();
+		$table = new EL_Event_Table();
 		$table->prepare_items( $date_range );
 		ob_start();
 			$table->display();
@@ -503,7 +503,7 @@ class EL_Admin {
 								<input type="hidden" name="page" value="'.$_REQUEST['page'].'" />';
 		// show table
 		require_once( EL_PATH.'admin/includes/category_table.php' );
-		$category_table = new Admin_Category_Table();
+		$category_table = new EL_Category_Table();
 		$category_table->prepare_items();
 		ob_start();
 		$category_table->display();
