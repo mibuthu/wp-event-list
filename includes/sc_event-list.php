@@ -243,7 +243,7 @@ class SC_Event_List {
 			else {
 				$details = $this->db->truncate( $a['details_length'], $event->details );
 			}
-			$out .= '<div class="event-details">'.$details.'</div>';
+			$out .= '<div class="event-details">'.do_shortcode( $details ).'</div>';
 		}
 		$out .= '</div>
 				</li>';
