@@ -23,6 +23,7 @@ The purpose of this plugin is to to show a list of events with date, time, descr
 * Wordpress's WYSIWYG editor for the event details. So you can include styled text, links, images and other media in your event list.
 * A duplicate function for events
 * Event navigation to view only upcoming events or past/future events filtered by year
+* Event categories
 
 The event list can be placed in any page or post on your Wordpress site. Just include the following short code where you want the calendar to appear:
 
@@ -56,10 +57,11 @@ Yes, you can create an instance of the "SC_Event_List" class which located in "p
 == Screenshots ==
 
 1. Admin page: Main page with the event list table
-2. Admin page: New event form
-3. Admin page: About page with help and available attributes list
-4. Admin page: Widget with the available options
-5. Example page created with [event-list] shortcode
+2. Admin page: New/edit event form
+3. Admin page: Settings page (category tab)
+4. Admin page: About page with help and shortcode attributes list
+5. Admin page: Widget with the available options
+6. Example page created with [event-list] shortcode
 
 
 == Changelog ==
