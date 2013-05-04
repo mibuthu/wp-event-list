@@ -1,15 +1,19 @@
 <?php
 // load the base class (WP_List_Table class isn't automatically available)
 if(!class_exists('WP_List_Table')){
-    require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
-require_once( EL_PATH.'php/db.php' );
+require_once( EL_PATH.'includes/db.php' );
+require_once( EL_PATH.'includes/categories.php' );
 
-class Admin_Event_Table extends WP_List_Table {
+class EL_Event_Table extends WP_List_Table {
 	private $db;
+	private $categories;
 
 	public function __construct() {
-		$this->db = el_db::get_instance();
+		$this->db = &EL_Db::get_instance();
+		$this->categories = &EL_Categories::get_instance();
+
 		global $status, $page;
 		//Set parent defaults
 		parent::__construct( array(
@@ -37,6 +41,8 @@ class Admin_Event_Table extends WP_List_Table {
 				return get_userdata( $item->pub_user )->user_login;
 			case 'pub_date' :
 				return $this->format_pub_date( $item->pub_date );
+			case 'categories' :
+				return $this->categories->get_category_string( $item->$column_name );
 			default :
 				return $item->$column_name;
 		}
@@ -90,13 +96,14 @@ class Admin_Event_Table extends WP_List_Table {
 	***************************************************************************/
 	public function get_columns() {
 		return array(
-			'cb'       => '<input type="checkbox" />', //Render a checkbox instead of text
-			'date'     => 'Date',
-			'title'    => 'Event',
-			'location' => 'Location',
-			'details'  => 'Details',
-			'pub_user' => 'Author',
-			'pub_date' => 'Published'
+			'cb'          => '<input type="checkbox" />', //Render a checkbox instead of text
+			'date'        => __( 'Date' ),
+			'title'       => __( 'Event' ),
+			'location'    => __( 'Location' ),
+			'details'     => __( 'Details' ),
+			'categories'  => __( 'Categories' ),
+			'pub_user'    => __( 'Author' ),
+			'pub_date'    => __( 'Published' )
 		);
 	}
 
@@ -117,8 +124,6 @@ class Admin_Event_Table extends WP_List_Table {
 			'pub_date' => array( 'pub_date', false )
 		);
 		return $sortable_columns;
-
-		return array();
 	}
 
 	/** ************************************************************************
@@ -218,7 +223,7 @@ class Admin_Event_Table extends WP_List_Table {
 				break;
 		}
 		// get and return events in the correct order
-		return $this->db->get_events( $date_range, 0, $sort_array );
+		return $this->db->get_events( $date_range, 0, null, $sort_array );
 	}
 
 	/** ************************************************************************

@@ -2,7 +2,7 @@
 /**
  * Event List Widget
 */
-class event_list_widget extends WP_Widget {
+class EL_Widget extends WP_Widget {
 
 	/**
 	 * Register widget with WordPress.
@@ -43,7 +43,6 @@ class event_list_widget extends WP_Widget {
 			echo '<div style="clear:both"><a title="'.$instance['link_to_page_caption'].'" href="'.$instance[ 'url_to_page'].'">'.$instance['link_to_page_caption'].'</a></div>';
 		}
 		echo $after_widget;
-		extract( $args );
 	}
 
 	/**
@@ -101,7 +100,7 @@ class event_list_widget extends WP_Widget {
 			<label><input class="widefat" id="'.$this->get_field_id( 'show_location' ).'" name="'.$this->get_field_name( 'show_location' ).'" type="checkbox" '.$show_location_checked.'value="1" /> '.__( 'Show location' ).'</label>
 		</p>
 		<p style="margin:0 0 0.4em 0">
-			<label for="'.$this->get_field_id( 'link_to_page_url' ).'">'.__( 'URL to the linked eventlist page:' ).'</label>
+			<label for="'.$this->get_field_id( 'url_to_page' ).'">'.__( 'URL to the linked eventlist page:' ).'</label>
 			<input class="widefat" id="'.$this->get_field_id( 'url_to_page' ).'" name="'.$this->get_field_name( 'url_to_page' ).'" type="text" value="'.esc_attr( $url_to_page ).'" />
 		</p>
 		<p>

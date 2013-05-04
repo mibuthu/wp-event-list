@@ -28,6 +28,7 @@
 			<h3 class="event-title"></h3>
 			<span class="event-time"></span>
 			<span class="event-location"></span>
+			<div class="event-cat"></div>
 			<div class="event-details"></div>
 		</div>
 	</li>
@@ -125,6 +126,10 @@ li.event {
 .event-time {
 	font-weight: bold;
 	padding-right: 0.8em;
+}
+
+.event-cat {
+	font-size: 0.95em;
 }
 
 .event-details {

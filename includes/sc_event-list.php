@@ -1,11 +1,14 @@
 <?php
-require_once( EL_PATH.'php/db.php' );
+require_once( EL_PATH.'includes/db.php' );
+require_once( EL_PATH.'includes/options.php' );
+require_once( EL_PATH.'includes/categories.php' );
 
 // This class handles the shortcode [event-list]
-class sc_event_list {
+class SC_Event_List {
 	private static $instance;
 	private $db;
 	private $options;
+	private $categories;
 	private $atts;
 	private $num_sc_loaded;
 	private $single_event;
@@ -13,15 +16,16 @@ class sc_event_list {
 	public static function &get_instance() {
 		// Create class instance if required
 		if( !isset( self::$instance ) ) {
-			self::$instance = new sc_event_list();
+			self::$instance = new SC_Event_List();
 		}
 		// Return class instance
 		return self::$instance;
 	}
 
 	private function __construct() {
-		$this->db = el_db::get_instance();
-		//$this->options = &el_options::get_instance();
+		$this->db = &EL_Db::get_instance();
+		$this->options = &EL_Options::get_instance();
+		$this->categories = &EL_Categories::get_instance();
 
 		// All available attributes
 		$this->atts = array(
@@ -31,6 +35,12 @@ class sc_event_list {
 			                           'visible' => true,
 			                           'desc'    => 'This attribute specifies which events are initially shown. The standard is to show the upcoming events.<br />
 			                                         Specify a year e.g. "2013" to change this behavior.' ),
+
+			'cat_filter'     => array( 'val'     => 'none<br />category slug',
+			                           'std_val' => 'none',
+			                           'visible' => true,
+			                           'desc'    => 'This attribute specifies events of which categories are shown. The standard is "none" to show all events.<br />
+			                                         Specify a category slug or a list of category slugs separated by a comma "," e.g. "tennis,hockey" to only show events of the specified categories.' ),
 
 			'num_events'     => array( 'val'     => 'number',
 			                           'std_val' => '0',
@@ -51,6 +61,13 @@ class sc_event_list {
 			                           'desc'    => 'This attribute specifies if the location is displayed in the event list.<br />
 			                                         Choose "false" to always hide and "true" to always show the location.<br />
 			                                         With "event_list_only" the location is only visible in the event list and with "single_event_only" only for a single event'),
+
+			'show_cat'       => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
+			                           'std_val' => 'false',
+			                           'visible' => true,
+			                           'desc'    => 'This attribute specifies if the categories are displayed in the event list.<br />
+			                                         Choose "false" to always hide and "true" to always show the category.<br />
+			                                         With "event_list_only" the categories are only visible in the event list and with "single_event_only" only for a single event'),
 
 			'show_details'   => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
 			                           'std_val' => 'true',
@@ -157,7 +174,8 @@ class sc_event_list {
 		if( is_numeric( $a['ytd'] ) ) {
 			$a['num_events'] = 0;
 		}
-		$events = $this->db->get_events( $a['ytd'], $a['num_events'] );
+		$cat_filter = 'none' === $a['cat_filter'] ? null : explode( ',', $a['cat_filter'] );
+		$events = $this->db->get_events( $a['ytd'], $a['num_events'], $cat_filter );
 		$out = '';
 		// TODO: add rss feed
 		//		if ($mfgigcal_settings['rss']) {
@@ -167,10 +185,9 @@ class sc_event_list {
 
 		// generate output
 		$out .= $this->html_calendar_nav( $a );
-		// TODO: Setting missing
-		if( empty( $events ) /*&& $mfgigcal_settings['no-events'] == "text"*/ ) {
+		if( empty( $events ) ) {
 			// no events found
-			$out .= "<p>" . 'no event' /*$mfgigcal_settings['message'] */. "</p>";
+			$out .= '<p>'.$this->options->get( 'el_no_event_text' ).'</p>';
 		}
 		else {
 			// print available events
@@ -216,6 +233,9 @@ class sc_event_list {
 		if( $this->is_visible( $a['show_location'] ) ) {
 			$out .= '<span class="event-location">'.$event->location.'</span>';
 		}
+		if( $this->is_visible( $a['show_cat'] ) ) {
+			$out .= '<div class="event-cat">'.$this->categories->get_category_string( $event->categories ).'</div>';
+		}
 		if( $this->is_visible( $a['show_details'] ) ) {
 			if( is_numeric( $a['event_id'] ) || 0 >= $a['details_length'] ) {
 				$details = $event->details;
@@ -223,7 +243,7 @@ class sc_event_list {
 			else {
 				$details = $this->db->truncate( $a['details_length'], $event->details );
 			}
-			$out .= '<div class="event-details">'.$details.'</div>';
+			$out .= '<div class="event-details">'.do_shortcode( $details ).'</div>';
 		}
 		$out .= '</div>
 				</li>';
@@ -279,7 +299,6 @@ class sc_event_list {
 		$url = $this->get_url( $a );
 		$out .= '<div class="subsubsub">';
 		if( is_numeric( $a['ytd'] ) || is_numeric( $a['event_id'] ) ) {
-			$ytd = isset( $a['initial_date'] ) && is_numeric( $a['initial_date'] ) ? 'ytd_'.$a['sc_id_for_url'].'=upcoming' : '';
 			$out .= '<a href="'.$url.'ytd_'.$a['sc_id_for_url'].'=upcoming">Upcoming</a>';
 		}
 		else {

@@ -3,13 +3,13 @@
 Plugin Name: Event List
 Plugin URI: http://wordpress.org/extend/plugins/event-list/
 Description: Manage your events and show them in a list view on your site.
-Version: 0.3.4
+Version: 0.4.0
 Author: Michael Burtscher
 Author URI: http://wordpress.org/extend/plugins/event-list/
 License: GPLv2
 
 A plugin for the blogging MySQL/PHP-based WordPress.
-Copyright 2012 Michael Burtscher
+Copyright 2012-2013 Michael Burtscher
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNUs General Public License
@@ -31,7 +31,7 @@ define( 'EL_PATH', plugin_dir_path( __FILE__ ) );
 
 
 // MAIN PLUGIN CLASS
-class event_list {
+class Event_List {
 	private $shortcode;
 
 	/**
@@ -50,8 +50,8 @@ class event_list {
 		// ADMIN PAGE:
 		if ( is_admin() ) {
 			// Include required php-files and initialize required objects
-			require_once( 'php/admin.php' );
-			$admin = new el_admin();
+			require_once( EL_PATH.'admin/admin.php' );
+			$admin = new EL_Admin();
 			// Register actions
 			add_action( 'admin_menu', array( &$admin, 'register_pages' ) );
 			add_action( 'plugins_loaded', array( &$this, 'db_upgrade_check' ) );
@@ -66,31 +66,31 @@ class event_list {
 
 	public function shortcode_event_list( $atts ) {
 		if( NULL == $this->shortcode ) {
-			require_once( 'php/sc_event-list.php' );
-			$this->shortcode = sc_event_list::get_instance();
+			require_once( EL_PATH.'includes/sc_event-list.php' );
+			$this->shortcode = SC_Event_List::get_instance();
 		}
 		return $this->shortcode->show_html( $atts );
 	}
 
 	public function widget_init() {
 		// Widget "event-list"
-		require_once( 'php/event-list_widget.php' );
-		return register_widget( 'event_list_widget' );
+		require_once( EL_PATH.'includes/widget.php' );
+		return register_widget( 'EL_Widget' );
 	}
 
 	public function print_styles() {
-		wp_register_style('event-list_css', EL_URL.'css/event-list.css');
+		wp_register_style('event-list_css', EL_URL.'/includes/css/event-list.css');
 		wp_enqueue_style( 'event-list_css');
 	}
 
 	public function db_upgrade_check() {
-		require_once( 'php/db.php' );
-		$db = el_db::get_instance();
+		require_once( EL_PATH.'includes/db.php' );
+		$db = EL_Db::get_instance();
 		$db->upgrade_check();
 	}
 } // end class linkview
 
 
 // create a class instance
-$event_list = new event_list();
+$event_list = new Event_List();
 ?>

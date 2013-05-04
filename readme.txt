@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, admin, attribute, widget, sidebar
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 0.3.4
+Stable tag: 0.4.0
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -23,6 +23,7 @@ The purpose of this plugin is to to show a list of events with date, time, descr
 * Wordpress's WYSIWYG editor for the event details. So you can include styled text, links, images and other media in your event list.
 * A duplicate function for events
 * Event navigation to view only upcoming events or past/future events filtered by year
+* Event categories
 
 The event list can be placed in any page or post on your Wordpress site. Just include the following short code where you want the calendar to appear:
 
@@ -50,19 +51,31 @@ Insert the shortcode [event-list] in your page.
 Event List uses the built-in Wordpress WYSIWYG editor. It's exactly the same process you use when creating Posts or Pages.
 
 = Can I call the shortcode directly via php e.g. for my own template, theme or plugin? =
-Yes, you can create an instance of the "sc_event_list" class which located in "php/sc_event-list.php" in the plugin folder and call the function show_html($atts).With $atts you can specify all the shortcode attributes you require. Another possibility would be to call the wordpress function "do_shortcode()".
+Yes, you can create an instance of the "SC_Event_List" class which located in "php/sc_event-list.php" in the plugin folder and call the function show_html($atts).With $atts you can specify all the shortcode attributes you require. Another possibility would be to call the wordpress function "do_shortcode()".
 
 
 == Screenshots ==
 
 1. Admin page: Main page with the event list table
-2. Admin page: New event form
-3. Admin page: About page with help and available attributes list
-4. Admin page: Widget with the available options
-5. Example page created with [event-list] shortcode
+2. Admin page: New/edit event form
+3. Admin page: Settings page (category tab)
+4. Admin page: About page with help and shortcode attributes list
+5. Admin page: Widget with the available options
+6. Example page created with [event-list] shortcode
 
 
 == Changelog ==
+
+= 0.4.0 (2013-05-04) =
+
+* added category support
+* added settings page
+* small changes in add/edit event admin page
+* added settings page
+* added option "no_event_text"
+* execute shortcodes in event details field on front page
+* change of plugin folder structure and file names
+* small fixes in widget code
 
 = 0.3.4 (2013-03-16) =
 

@@ -1,10 +1,10 @@
 <?php
-//require_once( EL_PATH.'php/options.php' );
+require_once( EL_PATH.'includes/options.php' );
 
 // Class for database access via wordpress functions
-class el_db {
-	const VERSION = "0.1";
-	const TABLE_NAME = "event_list";
+class EL_Db {
+	const VERSION = '0.2';
+	const TABLE_NAME = 'event_list';
 	private static $instance;
 	private $table;
 	private $options;
@@ -12,7 +12,7 @@ class el_db {
 	public static function &get_instance() {
 		// Create class instance if required
 		if( !isset( self::$instance ) ) {
-			self::$instance = new el_db();
+			self::$instance = new EL_Db();
 		}
 		// Return class instance
 		return self::$instance;
@@ -21,13 +21,12 @@ class el_db {
 	private function __construct() {
 		global $wpdb;
 		$this->table = $wpdb->prefix.self::TABLE_NAME;
-		//$this->options = &lv_options::get_instance();
+		$this->options = &EL_Options::get_instance();
 	}
 
 	// UPDATE DB
 	public function upgrade_check() {
-		// TODO: added version checking
-//		if( el_options::get( 'el_db_version' ) != self::VERSION) {
+		if( $this->options->get( 'el_db_version' ) != self::VERSION ) {
 			$sql = 'CREATE TABLE '.$this->table.' (
 				id int(11) NOT NULL AUTO_INCREMENT,
 				pub_user bigint(20) NOT NULL,
@@ -38,18 +37,17 @@ class el_db {
 				title text NOT NULL,
 				location text,
 				details text,
+				categories text,
 				history text,
 				PRIMARY KEY  (id) )
 				DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;';
-
 			require_once( ABSPATH.'wp-admin/includes/upgrade.php' );
 			dbDelta( $sql );
-
-//			el_options::set( 'el_db_version', self::VERSION );
-//		}
+			$this->options->set( 'el_db_version', self::VERSION );
+		}
 	}
 
-	public function get_events( $date_range='all', $num_events=0, $sort_array=array( 'start_date ASC', 'time ASC', 'end_date ASC') ) {
+	public function get_events( $date_range='all', $num_events=0, $cat_filter=null, $sort_array=array( 'start_date ASC', 'time ASC', 'end_date ASC') ) {
 		global $wpdb;
 
 		// set date for data base query
@@ -68,7 +66,9 @@ class el_db {
 			$range_start = date( 'Y-m-d' );
 			$range_end = '9999-12-31';
 		}
-		$sql = 'SELECT * FROM '.$this->table.' WHERE (end_date >= "'.$range_start.'" AND start_date <= "'.$range_end.'") ORDER BY '.implode( ', ', $sort_array );
+		// set category filter
+		$sql_cat_filter = empty( $cat_filter ) ? '' : ' AND ( categories LIKE "%|'.implode( '|%" OR categories LIKE "%|', $cat_filter ).'|%" )';
+		$sql = 'SELECT * FROM '.$this->table.' WHERE end_date >= "'.$range_start.'" AND start_date <= "'.$range_end.'"'.$sql_cat_filter.' ORDER BY '.implode( ', ', $sort_array );
 		if( 'upcoming' === $date_range && is_numeric($num_events) && 0 < $num_events ) {
 			$sql .= ' LIMIT '.$num_events;
 		}
@@ -108,9 +108,9 @@ class el_db {
 		// prepare and validate sqldata
 		$sqldata = array();
 		//pub_user
-		$sqldata['pub_user'] = wp_get_current_user()->ID;
+		$sqldata['pub_user'] = isset( $event_data['pub_user'] ) ? $event_data['pub_user'] : wp_get_current_user()->ID;
 		//pub_date
-		$sqldata['pub_date'] = date( "Y-m-d H:i:s" );
+		$sqldata['pub_date'] = isset( $event_data['pub_date'] ) ? $event_data['pub_date'] : date( "Y-m-d H:i:s" );
 		//start_date
 		if( !isset( $event_data['start_date']) ) { return false; }
 		$start_timestamp = 0;
@@ -139,9 +139,11 @@ class el_db {
 		//details
 		if( !isset( $event_data['details'] ) ) { $sqldata['details'] = ''; }
 		else { $sqldata['details'] = stripslashes ($event_data['details'] ); }
+		//categories
+		if( !isset( $event_data['categories'] ) || !is_array( $event_data['categories'] ) || empty( $event_data['categories'] ) ) { $sqldata['categories'] = ''; }
+		else { $sqldata['categories'] = '|'.implode( '|', $event_data['categories'] ).'|'; }
 		//types for sql data
-		$sqltypes = array( '%s', '%s', '%s', '%s', '%s', '%s', '%s' );
-
+		$sqltypes = array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );
 		if( isset( $event_data['id'] ) ) { // update event
 			$wpdb->update( $this->table, $sqldata, array( 'id' => $event_data['id'] ), $sqltypes );
 		}
@@ -168,6 +170,33 @@ class el_db {
 		else {
 			return false;
 		}
+	}
+
+	public function remove_category_in_events( $category_slugs ) {
+		global $wpdb;
+		$sql = 'SELECT * FROM '.$this->table.' WHERE categories LIKE "%|'.implode( '|%" OR categories LIKE "%|', $category_slugs ).'|%"';
+		$affected_events = $wpdb->get_results($sql, ARRAY_A);
+		foreach( $affected_events as $event ) {
+			// remove category from categorystring
+			foreach( $category_slugs as $slug ) {
+				$event['categories'] = str_replace('|'.$slug, '', $event['categories']);
+			}
+			if( 3 > strlen( $event['categories'] ) ) {
+				$event['categories'] = '';
+			}
+			else {
+				$event['categories'] = explode( '|', substr($event['categories'], 1, -1 ) );
+			}
+			print_r( $event['categories']);
+			$this->update_event( $event );
+			}
+		return count( $affected_events );
+	}
+
+	public function count_events( $slug ) {
+		global $wpdb;
+		$sql = 'SELECT COUNT(*) FROM '.$this->table.' WHERE categories LIKE "%|'.$slug.'|%"';
+		return $wpdb->get_var( $sql );
 	}
 
 	private function extract_date( $datestring, $ret_format, $dateformat=NULL, &$ret_timestamp=NULL, &$ret_datearray=NULL ) {
@@ -200,7 +229,7 @@ class el_db {
 	 * @param string $html The html code which should be shortened
 	 ***************************************************************************/
 	public function truncate( $max_length, $html ) {
-		if( strlen( $html ) > $max_length ) {
+		if( $max_length > 0 && strlen( $html ) > $max_length ) {
 			$printedLength = 0;
 			$position = 0;
 			$tags = array();
