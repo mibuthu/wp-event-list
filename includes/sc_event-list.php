@@ -1,12 +1,14 @@
 <?php
 require_once( EL_PATH.'includes/db.php' );
 require_once( EL_PATH.'includes/options.php' );
+require_once( EL_PATH.'includes/categories.php' );
 
 // This class handles the shortcode [event-list]
 class SC_Event_List {
 	private static $instance;
 	private $db;
 	private $options;
+	private $categories;
 	private $atts;
 	private $num_sc_loaded;
 	private $single_event;
@@ -23,6 +25,7 @@ class SC_Event_List {
 	private function __construct() {
 		$this->db = &EL_Db::get_instance();
 		$this->options = &EL_Options::get_instance();
+		$this->categories = &EL_Categories::get_instance();
 
 		// All available attributes
 		$this->atts = array(
@@ -52,6 +55,13 @@ class SC_Event_List {
 			                           'desc'    => 'This attribute specifies if the location is displayed in the event list.<br />
 			                                         Choose "false" to always hide and "true" to always show the location.<br />
 			                                         With "event_list_only" the location is only visible in the event list and with "single_event_only" only for a single event'),
+
+			'show_cat'       => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
+			                           'std_val' => 'false',
+			                           'visible' => true,
+			                           'desc'    => 'This attribute specifies if the categories are displayed in the event list.<br />
+			                                         Choose "false" to always hide and "true" to always show the category.<br />
+			                                         With "event_list_only" the categories are only visible in the event list and with "single_event_only" only for a single event'),
 
 			'show_details'   => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
 			                           'std_val' => 'true',
@@ -215,6 +225,9 @@ class SC_Event_List {
 		}
 		if( $this->is_visible( $a['show_location'] ) ) {
 			$out .= '<span class="event-location">'.$event->location.'</span>';
+		}
+		if( $this->is_visible( $a['show_cat'] ) ) {
+			$out .= '<div class="event-cat">'.$this->categories->get_category_string( $event->categories ).'</div>';
 		}
 		if( $this->is_visible( $a['show_details'] ) ) {
 			if( is_numeric( $a['event_id'] ) || 0 >= $a['details_length'] ) {
