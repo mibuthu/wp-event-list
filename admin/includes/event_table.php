@@ -223,7 +223,7 @@ class EL_Event_Table extends WP_List_Table {
 				break;
 		}
 		// get and return events in the correct order
-		return $this->db->get_events( $date_range, 0, $sort_array );
+		return $this->db->get_events( $date_range, 0, null, $sort_array );
 	}
 
 	/** ************************************************************************

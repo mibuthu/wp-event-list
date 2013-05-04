@@ -36,6 +36,12 @@ class SC_Event_List {
 			                           'desc'    => 'This attribute specifies which events are initially shown. The standard is to show the upcoming events.<br />
 			                                         Specify a year e.g. "2013" to change this behavior.' ),
 
+			'cat_filter'     => array( 'val'     => 'none<br />category slug',
+			                           'std_val' => 'none',
+			                           'visible' => true,
+			                           'desc'    => 'This attribute specifies events of which categories are shown. The standard is "none" to show all events.<br />
+			                                         Specify a category slug or a list of category slugs separated by a comma "," e.g. "tennis,hockey" to only show events of the specified categories.' ),
+
 			'num_events'     => array( 'val'     => 'number',
 			                           'std_val' => '0',
 			                           'visible' => true,
@@ -168,7 +174,8 @@ class SC_Event_List {
 		if( is_numeric( $a['ytd'] ) ) {
 			$a['num_events'] = 0;
 		}
-		$events = $this->db->get_events( $a['ytd'], $a['num_events'] );
+		$cat_filter = 'none' === $a['cat_filter'] ? null : explode( ',', $a['cat_filter'] );
+		$events = $this->db->get_events( $a['ytd'], $a['num_events'], $cat_filter );
 		$out = '';
 		// TODO: add rss feed
 		//		if ($mfgigcal_settings['rss']) {

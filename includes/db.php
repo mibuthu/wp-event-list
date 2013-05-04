@@ -47,7 +47,7 @@ class EL_Db {
 		}
 	}
 
-	public function get_events( $date_range='all', $num_events=0, $sort_array=array( 'start_date ASC', 'time ASC', 'end_date ASC') ) {
+	public function get_events( $date_range='all', $num_events=0, $cat_filter=null, $sort_array=array( 'start_date ASC', 'time ASC', 'end_date ASC') ) {
 		global $wpdb;
 
 		// set date for data base query
@@ -66,7 +66,9 @@ class EL_Db {
 			$range_start = date( 'Y-m-d' );
 			$range_end = '9999-12-31';
 		}
-		$sql = 'SELECT * FROM '.$this->table.' WHERE (end_date >= "'.$range_start.'" AND start_date <= "'.$range_end.'") ORDER BY '.implode( ', ', $sort_array );
+		// set category filter
+		$sql_cat_filter = empty( $cat_filter ) ? '' : ' AND ( categories LIKE "%|'.implode( '|%" OR categories LIKE "%|', $cat_filter ).'|%" )';
+		$sql = 'SELECT * FROM '.$this->table.' WHERE end_date >= "'.$range_start.'" AND start_date <= "'.$range_end.'"'.$sql_cat_filter.' ORDER BY '.implode( ', ', $sort_array );
 		if( 'upcoming' === $date_range && is_numeric($num_events) && 0 < $num_events ) {
 			$sql .= ' LIMIT '.$num_events;
 		}
