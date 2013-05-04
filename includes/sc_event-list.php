@@ -292,7 +292,6 @@ class SC_Event_List {
 		$url = $this->get_url( $a );
 		$out .= '<div class="subsubsub">';
 		if( is_numeric( $a['ytd'] ) || is_numeric( $a['event_id'] ) ) {
-			$ytd = isset( $a['initial_date'] ) && is_numeric( $a['initial_date'] ) ? 'ytd_'.$a['sc_id_for_url'].'=upcoming' : '';
 			$out .= '<a href="'.$url.'ytd_'.$a['sc_id_for_url'].'=upcoming">Upcoming</a>';
 		}
 		else {
