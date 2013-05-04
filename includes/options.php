@@ -40,7 +40,7 @@ class EL_Options {
 			                             'std_val' => 'no event',
 			                             'label'   => 'Text for no events',
 			                             'caption' => '',
-			                             'desc'    => 'This option defines the text which is displayed instead of the events, if no events are available for the selected view.' )
+			                             'desc'    => 'This option defines the text which is displayed if no events are available for the selected view.' )
 		);
 	}
 
