@@ -75,7 +75,7 @@ class Event_List {
 	public function widget_init() {
 		// Widget "event-list"
 		require_once( EL_PATH.'includes/widget.php' );
-		return register_widget( 'event_list_widget' );
+		return register_widget( 'EL_Widget' );
 	}
 
 	public function print_styles() {

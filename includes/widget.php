@@ -2,7 +2,7 @@
 /**
  * Event List Widget
 */
-class event_list_widget extends WP_Widget {
+class EL_Widget extends WP_Widget {
 
 	/**
 	 * Register widget with WordPress.
