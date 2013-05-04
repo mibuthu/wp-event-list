@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, admin, attribute, widget, sidebar
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 0.3.4
+Stable tag: 0.4.0
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -65,6 +65,17 @@ Yes, you can create an instance of the "SC_Event_List" class which located in "p
 
 
 == Changelog ==
+
+= 0.4.0 (2013-05-04) =
+
+* added category support
+* added settings page
+* small changes in add/edit event admin page
+* added settings page
+* added option "no_event_text"
+* execute shortcodes in event details field on front page
+* change of plugin folder structure and file names
+* small fixes in widget code
 
 = 0.3.4 (2013-03-16) =
 
