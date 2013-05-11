@@ -22,7 +22,7 @@ jQuery(document).ready(function( $ ) {
 		changeYear: true,
 		numberOfMonths: 3,
 		showOn: "both",
-		buttonImage: conf.el_url + "images/calendar-icon.png",
+		buttonImage: conf.el_url + "admin/images/calendar-icon.png",
 		buttonImageOnly: true,
 		constrainInput: true,
 		onClose: function(selectedDate) {
@@ -39,7 +39,7 @@ jQuery(document).ready(function( $ ) {
 		changeYear: true,
 		numberOfMonths: 3,
 		showOn: "both",
-		buttonImage: conf.el_url + "images/calendar-icon.png",
+		buttonImage: conf.el_url + "admin/images/calendar-icon.png",
 		buttonImageOnly: true,
 		constrainInput: true
 	});
