@@ -1,4 +1,7 @@
 <?php
+if( !defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 // This class handles all available options
 class EL_Options {

@@ -1,4 +1,8 @@
 <?php
+if( !defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 require_once( EL_PATH.'includes/db.php' );
 require_once( EL_PATH.'includes/options.php' );
 require_once( EL_PATH.'includes/sc_event-list.php' );
