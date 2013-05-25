@@ -265,7 +265,7 @@ class SC_Event_List {
 			$out .= '<div class="event-cat">'.$this->categories->get_category_string( $event->categories ).'</div>';
 		}
 		if( $this->is_visible( $a['show_details'] ) ) {
-			$out .= '<div class="event-details">'.do_shortcode( $this->db->truncate( min( $max_length, $a['details_length'] ), $event->details ) ).'</div>';
+			$out .= '<div class="event-details">'.$this->db->truncate( min( $max_length, $a['details_length'] ), do_shortcode( $event->details ) ).'</div>';
 		}
 		$out .= '</div>
 				</li>';
