@@ -59,6 +59,13 @@ class SC_Event_List {
 			                                         Choose "false" to always hide and "true" to always show the navigation.<br />
 			                                         With "event_list_only" the navigation is only visible in the event list and with "single_event_only" only for a single event'),
 
+			'show_starttime' => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
+			                           'std_val' => 'true',
+			                           'visible' => true,
+			                           'desc'    => 'This attribute specifies if the starttime is displayed in the event list.<br />
+			                                         Choose "false" to always hide and "true" to always show the starttime.<br />
+			                                         With "event_list_only" the starttime is only visible in the event list and with "single_event_only" only for a single event'),
+
 			'show_location'  => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
 			                           'std_val' => 'true',
 			                           'visible' => true,
@@ -105,7 +112,7 @@ class SC_Event_List {
 			                           'std_val' => '',
 			                           'visible' => false,
 			                           'desc'    => 'This attribute the specifies shortcode id of the used shortcode on the page specified with "url_to_page" attribute.<br />
-			                                         The empty standard value is o.k. for the normal use. This attribute is normally only required for the event-list widget.' )
+			                                         The empty standard value is o.k. for the normal use. This attribute is normally only required for the event-list widget.' ),
 			// Internal attributes: This parameters will be added by the script and are not available in the shortcode
 			//   'sc_id'
 			//   'ytd'
@@ -226,7 +233,7 @@ class SC_Event_List {
 			$out .= $event->title;
 		}
 		$out .= '</h3>';
-		if( $event->time != '' ) {
+		if( $event->time != '' && $this->is_visible( $a['show_starttime'] ) ) {
 			// set time format if a known format is available, else only show the text
 			$date_array = date_parse( $event->time );
 			if( empty( $date_array['errors']) && is_numeric( $date_array['hour'] ) && is_numeric( $date_array['minute'] ) ) {
