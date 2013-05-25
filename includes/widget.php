@@ -36,12 +36,47 @@ class EL_Widget extends WP_Widget {
 			                                 'form_style'    => null,
 			                                 'form_width'    => 30 ),
 
-			'show_location' =>        array( 'type'          => 'checkbox',
-			                                 'std_value'     => 'false',
-			                                 'caption'       => __( 'Show location' ),
+			'title_length' =>         array( 'type'          => 'text',
+			                                 'std_value'     => '0',
+			                                 'caption'       => __( 'Truncate event title to' ),
+			                                 'caption_after' => __( 'chars' ),
+			                                 'form_style'    => null,
+			                                 'form_width'    => 30 ),
+
+			'show_starttime' =>       array( 'type'          => 'checkbox',
+			                                 'std_value'     => 'true',
+			                                 'caption'       => __( 'Show event starttime' ),
 			                                 'caption_after' => null,
 			                                 'form_style'    => null,
 			                                 'form_width'    => null ),
+
+			'show_location' =>        array( 'type'          => 'checkbox',
+			                                 'std_value'     => 'false',
+			                                 'caption'       => __( 'Show event location' ),
+			                                 'caption_after' => null,
+			                                 'form_style'    => 'margin:0 0 0.2em 0',
+			                                 'form_width'    => null ),
+
+			'location_length' =>      array( 'type'          => 'text',
+			                                 'std_value'     => '0',
+			                                 'caption'       => __( 'Truncate location to' ),
+			                                 'caption_after' => __( 'chars' ),
+			                                 'form_style'    => 'margin:0 0 0.6em 0.9em',
+			                                 'form_width'    => 30 ),
+
+			'show_details' =>         array( 'type'          => 'checkbox',
+			                                 'std_value'     => 'false',
+			                                 'caption'       => __( 'Show event details' ),
+			                                 'caption_after' => null,
+			                                 'form_style'    => 'margin:0 0 0.2em 0',
+			                                 'form_width'    => null ),
+
+			'details_length' =>       array( 'type'          => 'text',
+			                                 'std_value'     => '0',
+			                                 'caption'       => __( 'Truncate details to' ),
+			                                 'caption_after' => __( 'characters' ),
+			                                 'form_style'    => 'margin:0 0 0.6em 0.9em',
+			                                 'form_width'    => 30 ),
 
 			'url_to_page' =>          array( 'type'          => 'text',
 			                                 'std_value'     => '',
@@ -99,8 +134,12 @@ class EL_Widget extends WP_Widget {
 		}
 		echo do_shortcode( '[event-list num_events="'.$instance['num_events'].'" '
 		                              .'show_nav=false '
-		                              .'show_details=false '
+		                              .'title_length='.$instance['title_length'].' '
+		                              .'show_starttime='.$instance['show_starttime'].' '
 		                              .'show_location='.$instance['show_location'].' '
+		                              .'location_length='.$instance['location_length'].' '
+		                              .'show_details='.$instance['show_details'].' '
+		                              .'details_length='.$instance['details_length'].' '
 		                              .'link_to_event='.$instance['link_to_event'].' '
 		                              .'url_to_page="'.$instance['url_to_page'].'" '
 		                              .'sc_id_for_url="'.$instance['sc_id_for_url'].'"]' );
