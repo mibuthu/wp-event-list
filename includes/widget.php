@@ -126,24 +126,32 @@ class EL_Widget extends WP_Widget {
 	public function widget( $args, $instance ) {
 		extract( $args );
 		$title = apply_filters( 'widget_title', $instance['title'] );
-
 		echo $before_widget;
 		if ( ! empty( $title ) )
 		{
 			echo $before_title . $title . $after_title;
 		}
-		echo do_shortcode( '[event-list num_events="'.$instance['num_events'].'" '
-		                              .'show_nav=false '
-		                              .'title_length='.$instance['title_length'].' '
-		                              .'show_starttime='.$instance['show_starttime'].' '
-		                              .'show_location='.$instance['show_location'].' '
-		                              .'location_length='.$instance['location_length'].' '
-		                              .'show_details='.$instance['show_details'].' '
-		                              .'details_length='.$instance['details_length'].' '
-		                              .'link_to_event='.$instance['link_to_event'].' '
-		                              .'url_to_page="'.$instance['url_to_page'].'" '
-		                              .'sc_id_for_url="'.$instance['sc_id_for_url'].'"]' );
-		if( 'true' === $instance['link_to_page'] ) {
+		$linked_page_is_set = 0 < strlen( $instance['url_to_page'] );
+		$linked_page_id_is_set = 0 < (int)$instance['sc_id_for_url'];
+		$shortcode = '[event-list show_nav=false';
+		$shortcode .= ' num_events="'.$instance['num_events'].'"';
+		$shortcode .= ' title_length='.$instance['title_length'];
+		$shortcode .= ' show_starttime='.$instance['show_starttime'];
+		$shortcode .= ' show_location='.$instance['show_location'];
+		$shortcode .= ' location_length='.$instance['location_length'];
+		$shortcode .= ' show_details='.$instance['show_details'];
+		$shortcode .= ' details_length='.$instance['details_length'];
+		if( $linked_page_is_set && $linked_page_id_is_set ) {
+			$shortcode .= ' link_to_event='.$instance['link_to_event'];
+			$shortcode .= ' url_to_page="'.$instance['url_to_page'];
+			$shortcode .= ' sc_id_for_url="'.$instance['sc_id_for_url'];
+		}
+		else {
+			$shortcode .= ' link_to_event=false';
+		}
+		$shortcode .= ']';
+		echo do_shortcode( $shortcode );
+		if( 'true' === $instance['link_to_page'] && $linked_page_is_set ) {
 			echo '<div style="clear:both"><a title="'.$instance['link_to_page_caption'].'" href="'.$instance[ 'url_to_page'].'">'.$instance['link_to_page_caption'].'</a></div>';
 		}
 		echo $after_widget;
