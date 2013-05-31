@@ -1,4 +1,8 @@
 <?php
+if( !defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 // load the base class (WP_List_Table class isn't automatically available)
 if(!class_exists('WP_List_Table')){
 	require_once( ABSPATH.'wp-admin/includes/class-wp-list-table.php' );

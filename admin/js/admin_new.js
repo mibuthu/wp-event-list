@@ -22,13 +22,12 @@ jQuery(document).ready(function( $ ) {
 		changeYear: true,
 		numberOfMonths: 3,
 		showOn: "both",
-		buttonImage: conf.el_url + "images/calendar-icon.png",
+		buttonImage: conf.el_url + "admin/images/calendar-icon.png",
 		buttonImageOnly: true,
 		constrainInput: true,
 		onClose: function(selectedDate) {
-			minDate = new Date(selectedDate);
-			timestamp = minDate.getTime() + 1*24*60*60*1000;
-			minDate.setTime(timestamp);
+			minDate = $.datepicker.parseDate( conf.el_date_format, selectedDate );
+			minDate.setDate(minDate.getDate()+1);
 			$("#end_date").datepicker("option", "minDate", minDate);
 		}
 	});
@@ -39,7 +38,7 @@ jQuery(document).ready(function( $ ) {
 		changeYear: true,
 		numberOfMonths: 3,
 		showOn: "both",
-		buttonImage: conf.el_url + "images/calendar-icon.png",
+		buttonImage: conf.el_url + "admin/images/calendar-icon.png",
 		buttonImageOnly: true,
 		constrainInput: true
 	});

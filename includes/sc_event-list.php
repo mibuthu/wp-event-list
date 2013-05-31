@@ -1,4 +1,8 @@
 <?php
+if( !defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 require_once( EL_PATH.'includes/db.php' );
 require_once( EL_PATH.'includes/options.php' );
 require_once( EL_PATH.'includes/categories.php' );
@@ -30,78 +34,99 @@ class SC_Event_List {
 		// All available attributes
 		$this->atts = array(
 
-			'initial_date'   => array( 'val'     => 'upcoming<br />year e.g. "2013"',
-			                           'std_val' => 'upcoming',
-			                           'visible' => true,
-			                           'desc'    => 'This attribute specifies which events are initially shown. The standard is to show the upcoming events.<br />
-			                                         Specify a year e.g. "2013" to change this behavior.' ),
+			'initial_date'    => array( 'val'     => 'upcoming<br />year e.g. "2013"',
+			                            'std_val' => 'upcoming',
+			                            'visible' => true,
+			                            'desc'    => 'This attribute specifies which events are initially shown. The standard is to show the upcoming events.<br />
+			                                          Specify a year e.g. "2013" to change this behavior.' ),
 
-			'cat_filter'     => array( 'val'     => 'none<br />category slug',
-			                           'std_val' => 'none',
-			                           'visible' => true,
-			                           'desc'    => 'This attribute specifies events of which categories are shown. The standard is "none" to show all events.<br />
-			                                         Specify a category slug or a list of category slugs separated by a comma "," e.g. "tennis,hockey" to only show events of the specified categories.' ),
+			'cat_filter'      => array( 'val'     => 'none<br />category slug',
+			                            'std_val' => 'none',
+			                            'visible' => true,
+			                            'desc'    => 'This attribute specifies events of which categories are shown. The standard is "none" to show all events.<br />
+			                                          Specify a category slug or a list of category slugs separated by a comma "," e.g. "tennis,hockey" to only show events of the specified categories.' ),
 
-			'num_events'     => array( 'val'     => 'number',
-			                           'std_val' => '0',
-			                           'visible' => true,
-			                           'desc'    => 'This attribute specifies how many events should be displayed if upcoming events is selected.<br />
-			                                         0 is the standard value which means that all events will be displayed.' ),
+			'num_events'      => array( 'val'     => 'number',
+			                            'std_val' => '0',
+			                            'visible' => true,
+			                            'desc'    => 'This attribute specifies how many events should be displayed if upcoming events is selected.<br />
+			                                          0 is the standard value which means that all events will be displayed.' ),
 
-			'show_nav'       => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
-			                           'std_val' => 'true',
-			                           'visible' => true,
-			                           'desc'    => 'This attribute specifies if the calendar navigation should be displayed.<br />
-			                                         Choose "false" to always hide and "true" to always show the navigation.<br />
-			                                         With "event_list_only" the navigation is only visible in the event list and with "single_event_only" only for a single event'),
+			'show_nav'        => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
+			                            'std_val' => 'true',
+			                            'visible' => true,
+			                            'desc'    => 'This attribute specifies if the calendar navigation should be displayed.<br />
+			                                          Choose "false" to always hide and "true" to always show the navigation.<br />
+			                                          With "event_list_only" the navigation is only visible in the event list and with "single_event_only" only for a single event'),
 
-			'show_location'  => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
-			                           'std_val' => 'true',
-			                           'visible' => true,
-			                           'desc'    => 'This attribute specifies if the location is displayed in the event list.<br />
-			                                         Choose "false" to always hide and "true" to always show the location.<br />
-			                                         With "event_list_only" the location is only visible in the event list and with "single_event_only" only for a single event'),
+			'show_starttime'  => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
+			                            'std_val' => 'true',
+			                            'visible' => true,
+			                            'desc'    => 'This attribute specifies if the starttime is displayed in the event list.<br />
+			                                          Choose "false" to always hide and "true" to always show the starttime.<br />
+			                                          With "event_list_only" the starttime is only visible in the event list and with "single_event_only" only for a single event'),
 
-			'show_cat'       => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
-			                           'std_val' => 'false',
-			                           'visible' => true,
-			                           'desc'    => 'This attribute specifies if the categories are displayed in the event list.<br />
-			                                         Choose "false" to always hide and "true" to always show the category.<br />
-			                                         With "event_list_only" the categories are only visible in the event list and with "single_event_only" only for a single event'),
+			'show_location'   => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
+			                            'std_val' => 'true',
+			                            'visible' => true,
+			                            'desc'    => 'This attribute specifies if the location is displayed in the event list.<br />
+			                                          Choose "false" to always hide and "true" to always show the location.<br />
+			                                          With "event_list_only" the location is only visible in the event list and with "single_event_only" only for a single event'),
 
-			'show_details'   => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
-			                           'std_val' => 'true',
-			                           'visible' => true,
-			                           'desc'    => 'This attribute specifies if the details are displayed in the event list.<br />
-			                                         Choose "false" to always hide and "true" to always show the details.<br />
-			                                         With "event_list_only" the details are only visible in the event list and with "single_event_only" only for a single event'),
+			'show_cat'        => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
+			                            'std_val' => 'false',
+			                            'visible' => true,
+			                            'desc'    => 'This attribute specifies if the categories are displayed in the event list.<br />
+			                                          Choose "false" to always hide and "true" to always show the category.<br />
+			                                          With "event_list_only" the categories are only visible in the event list and with "single_event_only" only for a single event'),
 
-			'details_length' => array( 'val'     => 'number',
-			                           'std_val' => '0',
-			                           'visible' => true,
-			                           'desc'    => 'This attribute specifies if the details should be truncate to the given number of character in the event list.<br />
-			                                         With the standard value 0 the full details are displayed.<br />
-			                                         This attribute has no influence if only a single event is shown.'),
+			'show_details'    => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
+			                            'std_val' => 'true',
+			                            'visible' => true,
+			                            'desc'    => 'This attribute specifies if the details are displayed in the event list.<br />
+			                                          Choose "false" to always hide and "true" to always show the details.<br />
+			                                          With "event_list_only" the details are only visible in the event list and with "single_event_only" only for a single event'),
 
-			'link_to_event'  => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
-			                           'std_val' => 'event_list_only',
-			                           'visible' => true,
-			                           'desc'    => 'This attribute specifies if a link to the single event should be added onto the event name in the event list.<br />
-			                                         Choose "false" to never add and "true" to always add the link.<br />
-			                                         With "event_list_only" the link is only added in the event list and with "single_event_only" only for a single event'),
+			'details_length'  => array( 'val'     => 'number',
+			                            'std_val' => '0',
+			                            'visible' => true,
+			                            'desc'    => 'This attribute specifies if the details should be truncate to the given number of character in the event list.<br />
+			                                          With the standard value 0 the full details are displayed.<br />
+			                                          This attribute has no influence if only a single event is shown.'),
+
+			'link_to_event'   => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
+			                            'std_val' => 'event_list_only',
+			                            'visible' => true,
+			                            'desc'    => 'This attribute specifies if a link to the single event should be added onto the event name in the event list.<br />
+			                                          Choose "false" to never add and "true" to always add the link.<br />
+			                                          With "event_list_only" the link is only added in the event list and with "single_event_only" only for a single event'),
 			// Invisible attributes ('visibe' = false): This attributes are required for the widget but will not be listed in the attributes table on the admin info page
-			'url_to_page'    => array( 'val'     => 'url',
-			                           'std_val' => '',
-			                           'visible' => false,
-			                           'desc'    => 'This attribute specifies that the link should follow the given url.<br />
-			                                         The standard is to leave this attribute empty, then the url will be calculated automatically from the actual page or post url.<br />
-			                                         This is o.k. for the normal use of the shortcode. This attribute is normally only required for the event-list widget.' ),
+			'title_length'    => array( 'val'     => 'number',
+			                            'std_val' => '0',
+			                            'visible' => false,
+			                            'desc'    => 'This attribute specifies if the title should be truncate to the given number of character in the event list.<br />
+			                                          With the standard value 0 the full details are displayed.<br />
+			                                          This attribute has no influence if only a single event is shown.'),
 
-			'sc_id_for_url'  => array( 'val'     => 'number',
-			                           'std_val' => '',
-			                           'visible' => false,
-			                           'desc'    => 'This attribute the specifies shortcode id of the used shortcode on the page specified with "url_to_page" attribute.<br />
-			                                         The empty standard value is o.k. for the normal use. This attribute is normally only required for the event-list widget.' )
+			'location_length' => array( 'val'     => 'number',
+			                            'std_val' => '0',
+			                            'visible' => false,
+			                            'desc'    => 'This attribute specifies if the title should be truncate to the given number of character in the event list.<br />
+			                                          With the standard value 0 the full details are displayed.<br />
+			                                          This attribute has no influence if only a single event is shown.'),
+
+			'url_to_page'     => array( 'val'     => 'url',
+			                            'std_val' => '',
+			                            'visible' => false,
+			                            'desc'    => 'This attribute specifies that the link should follow the given url.<br />
+			                                          The standard is to leave this attribute empty, then the url will be calculated automatically from the actual page or post url.<br />
+			                                          This is o.k. for the normal use of the shortcode. This attribute is normally only required for the event-list widget.' ),
+
+			'sc_id_for_url'   => array( 'val'     => 'number',
+			                            'std_val' => '',
+			                            'visible' => false,
+			                            'desc'    => 'This attribute the specifies shortcode id of the used shortcode on the page specified with "url_to_page" attribute.<br />
+			                                          The empty standard value is o.k. for the normal use. This attribute is normally only required for the event-list widget.' ),
 			// Internal attributes: This parameters will be added by the script and are not available in the shortcode
 			//   'sc_id'
 			//   'ytd'
@@ -203,6 +228,7 @@ class SC_Event_List {
 	}
 
 	private function html_event( &$event, &$a, $single_day_only=false ) {
+		$max_length = is_numeric( $a['event_id'] ) ? 0 : 999999;
 		$out = '
 			 	<li class="event">';
 		$out .= $this->html_fulldate( $event->start_date, $event->end_date, $single_day_only );
@@ -215,14 +241,16 @@ class SC_Event_List {
 			$out .= ' multi-day';
 		}
 		$out .= '"><h3>';
+
+		$title = $this->db->truncate( min( $max_length, $a['title_length'] ), $event->title );
 		if( $this->is_visible( $a['link_to_event'] ) ) {
-			$out .= '<a href="'.$this->get_url( $a ).'event_id_'.$a['sc_id_for_url'].'='.$event->id.'">'.$event->title.'</a>';
+			$out .= '<a href="'.$this->get_url( $a ).'event_id_'.$a['sc_id_for_url'].'='.$event->id.'">'.$title.'</a>';
 		}
 		else {
-			$out .= $event->title;
+			$out .= $title;
 		}
 		$out .= '</h3>';
-		if( $event->time != '' ) {
+		if( $event->time != '' && $this->is_visible( $a['show_starttime'] ) ) {
 			// set time format if a known format is available, else only show the text
 			$date_array = date_parse( $event->time );
 			if( empty( $date_array['errors']) && is_numeric( $date_array['hour'] ) && is_numeric( $date_array['minute'] ) ) {
@@ -231,19 +259,13 @@ class SC_Event_List {
 			$out .= '<span class="event-time">'.$event->time.'</span>';
 		}
 		if( $this->is_visible( $a['show_location'] ) ) {
-			$out .= '<span class="event-location">'.$event->location.'</span>';
+			$out .= '<span class="event-location">'.$this->db->truncate( min( $max_length, $a['location_length'] ), $event->location ).'</span>';
 		}
 		if( $this->is_visible( $a['show_cat'] ) ) {
 			$out .= '<div class="event-cat">'.$this->categories->get_category_string( $event->categories ).'</div>';
 		}
 		if( $this->is_visible( $a['show_details'] ) ) {
-			if( is_numeric( $a['event_id'] ) || 0 >= $a['details_length'] ) {
-				$details = $event->details;
-			}
-			else {
-				$details = $this->db->truncate( $a['details_length'], $event->details );
-			}
-			$out .= '<div class="event-details">'.do_shortcode( $details ).'</div>';
+			$out .= '<div class="event-details">'.$this->db->truncate( min( $max_length, $a['details_length'] ), do_shortcode( $event->details ) ).'</div>';
 		}
 		$out .= '</div>
 				</li>';

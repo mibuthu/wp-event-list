@@ -1,4 +1,8 @@
 <?php
+if( !defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 require_once( EL_PATH.'includes/db.php' );
 require_once( EL_PATH.'includes/options.php' );
 require_once( EL_PATH.'includes/sc_event-list.php' );
@@ -11,7 +15,6 @@ class EL_Admin {
 	private $options;
 	private $shortcode;
 	private $categories;
-	private $dateformat;
 	private $event_action = false;
 	private $event_action_error = false;
 
@@ -20,8 +23,6 @@ class EL_Admin {
 		$this->options = &EL_Options::get_instance();
 		$this->shortcode = &SC_Event_List::get_instance();
 		$this->categories = &EL_Categories::get_instance();
-		$this->dateformat = __( 'Y/m/d' ); // similar date format than in list tables (e.g. post, pages, media)
-		// $this->dateformat = 'd/m/Y'; // for debugging only
 		$this->event_action = null;
 		$this->event_action_error = null;
 	}
@@ -49,7 +50,7 @@ class EL_Admin {
 		$action = '';
 		// is there POST data an event was edited must be updated
 		if( !empty( $_POST ) ) {
-			$this->event_action_error = !$this->db->update_event( $_POST, $this->dateformat );
+			$this->event_action_error = !$this->db->update_event( $_POST, __( 'Y/m/d' ) );
 			$this->event_action = isset( $_POST['id'] ) ? 'modified' : 'added';
 		}
 		// get action
@@ -121,7 +122,7 @@ class EL_Admin {
 			$slug_array = explode(', ', $_GET['slug'] );
 			$num_affected_events = $this->db->remove_category_in_events( $slug_array );
 			require_once( EL_PATH.'admin/includes/category_table.php' );
-			if( $this->categories->remove_category( $slug_array ) ) {
+			if( $this->categories->remove_categories( $slug_array ) ) {
 				$out .= '<div id="message" class="updated">
 					<p><strong>'.sprintf( __( 'Category %s was deleted).<br />This Category was also removed in %d events.' ), $_GET['slug'], $num_affected_events ).'</strong></p>
 				</div>';
@@ -238,7 +239,7 @@ class EL_Admin {
 
 		// Add required data for javascript in a hidden field
 		$json = json_encode( array( 'el_url'         => EL_URL,
-		                            'el_date_format' => $this->datepicker_format( $this->dateformat ) ) );
+		                            'el_date_format' => $this->datepicker_format( __( 'Y/m/d' ) ) ) );
 		$out = '
 				<form method="POST" action="?page=el_admin_main">';
 		$out .= "
@@ -261,8 +262,8 @@ class EL_Admin {
 			</tr>
 			<tr>
 				<th><label>Event Date (required)</label></th>
-				<td><input type="text" class="text datepicker form-required" name="start_date" id="start_date" value="'.date_i18n( $this->dateformat, $start_date ).'" />
-						<span id="end_date_area"> - <input type="text" class="text datepicker" name="end_date" id="end_date" value="'.date_i18n( $this->dateformat, $end_date ).'" /></span>
+				<td><input type="text" class="text datepicker form-required" name="start_date" id="start_date" value="'.date_i18n( __( 'Y/m/d' ), $start_date ).'" />
+						<span id="end_date_area"> - <input type="text" class="text datepicker" name="end_date" id="end_date" value="'.date_i18n( __( 'Y/m/d' ), $end_date ).'" /></span>
 						<label><input type="checkbox" name="multiday" id="multiday" value="1" /> Multi-Day Event</label></td>
 			</tr>
 			<tr>

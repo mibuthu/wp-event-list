@@ -1,4 +1,8 @@
 <?php
+if( !defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 require_once( EL_PATH.'includes/options.php' );
 
 // Class for database access via wordpress functions
