@@ -244,7 +244,7 @@ class SC_Event_List {
 
 		$title = $this->db->truncate( min( $max_length, $a['title_length'] ), $event->title );
 		if( $this->is_visible( $a['link_to_event'] ) ) {
-			$out .= '<a href="'.$this->get_url( $a ).'event_id_'.$a['sc_id_for_url'].'='.$event->id.'">'.$title.'</a>';
+			$out .= '<a href="'.add_query_arg( 'event_id_'.$a['sc_id_for_url'], $event->id, $this->get_url( $a ) ).'">'.$title.'</a>';
 		}
 		else {
 			$out .= $title;
@@ -321,7 +321,7 @@ class SC_Event_List {
 		$url = $this->get_url( $a );
 		$out .= '<div class="subsubsub">';
 		if( is_numeric( $a['ytd'] ) || is_numeric( $a['event_id'] ) ) {
-			$out .= '<a href="'.$url.'ytd_'.$a['sc_id_for_url'].'=upcoming">Upcoming</a>';
+			$out .= '<a href="'.add_query_arg( 'ytd_'.$a['sc_id_for_url'], 'upcoming', $url ).'">Upcoming</a>';
 		}
 		else {
 			$out .= '<strong>Upcoming</strong>';
@@ -332,7 +332,7 @@ class SC_Event_List {
 				$out .= '<strong>'.$year.'</strong>';
 			}
 			else {
-				$out .= '<a href="'.$url.'ytd_'.$a['sc_id_for_url'].'='.$year.'">'.$year.'</a>';
+				$out .= '<a href="'.add_query_arg( 'ytd_'.$a['sc_id_for_url'], $year, $url ).'">'.$year.'</a>';
 			}
 		}
 		$out .= '</div><br />';
@@ -362,18 +362,13 @@ class SC_Event_List {
 		if( '' !== $a['url_to_page'] ) {
 			// use given url
 			$url = $a['url_to_page'];
-			$url .= get_option( 'permalink_structure' ) ? '?' : '&amp;';
-		}
-		elseif( get_option( 'permalink_structure' ) ) {
-			// permalink structure
-			$url = get_permalink().'?';
 		}
 		else {
-			// no permalink structure
-			$url ='?';
+			// use actual page
+			$url = get_permalink();
 			foreach( $_GET as  $k => $v ) {
 				if( 'ytd_'.$a['sc_id'] !== $k && 'event_id_'.$a['sc_id'] !== $k && 'link_'.$a['sc_id'] !== $k ) {
-					$url .= $k.'='.$v.'&amp;';
+					$url = add_query_arg( $k, $v, $url );
 				}
 			}
 		}
