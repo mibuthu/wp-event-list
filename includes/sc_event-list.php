@@ -200,7 +200,15 @@ class SC_Event_List {
 			$a['num_events'] = 0;
 		}
 		$cat_filter = 'none' === $a['cat_filter'] ? null : explode( ',', $a['cat_filter'] );
-		$events = $this->db->get_events( $a['ytd'], $a['num_events'], $cat_filter );
+		if( '1' !== $this->options->get( 'el_date_once_per_day' ) ) {
+			// normal sort
+			$sort_array = array( 'start_date ASC', 'time ASC', 'end_date ASC' );
+		}
+		else {
+			// sort according end_date before start time (required for option el_date_once_per_day)
+			$sort_array = array( 'start_date ASC', 'end_date ASC', 'time ASC' );
+		}
+		$events = $this->db->get_events( $a['ytd'], $a['num_events'], $cat_filter, $sort_array );
 		$out = '';
 		// TODO: add rss feed
 		//		if ($mfgigcal_settings['rss']) {
@@ -228,10 +236,14 @@ class SC_Event_List {
 	}
 
 	private function html_event( &$event, &$a, $single_day_only=false ) {
+		static $last_event_startdate, $last_event_enddate;
+		error_log( $last_event_startdate.', '.$last_event_enddate );
 		$max_length = is_numeric( $a['event_id'] ) ? 0 : 999999;
 		$out = '
 			 	<li class="event">';
-		$out .= $this->html_fulldate( $event->start_date, $event->end_date, $single_day_only );
+		if( '1' !== $this->options->get( 'el_date_once_per_day' ) || $last_event_startdate !== $event->start_date || $last_event_enddate !== $event->end_date ) {
+			$out .= $this->html_fulldate( $event->start_date, $event->end_date, $single_day_only );
+		}
 		$out .= '
 					<div class="event-info';
 		if( $single_day_only ) {
@@ -269,6 +281,8 @@ class SC_Event_List {
 		}
 		$out .= '</div>
 				</li>';
+		$last_event_startdate = $event->start_date;
+		$last_event_enddate = $event->end_date;
 		return $out;
 	}
 
