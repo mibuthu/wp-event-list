@@ -237,7 +237,6 @@ class SC_Event_List {
 
 	private function html_event( &$event, &$a, $single_day_only=false ) {
 		static $last_event_startdate, $last_event_enddate;
-		error_log( $last_event_startdate.', '.$last_event_enddate );
 		$max_length = is_numeric( $a['event_id'] ) ? 0 : 999999;
 		$out = '
 			 	<li class="event">';
