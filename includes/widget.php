@@ -143,8 +143,8 @@ class EL_Widget extends WP_Widget {
 		$shortcode .= ' details_length='.$instance['details_length'];
 		if( $linked_page_is_set && $linked_page_id_is_set ) {
 			$shortcode .= ' link_to_event='.$instance['link_to_event'];
-			$shortcode .= ' url_to_page="'.$instance['url_to_page'];
-			$shortcode .= ' sc_id_for_url="'.$instance['sc_id_for_url'];
+			$shortcode .= ' url_to_page="'.$instance['url_to_page'].'"';
+			$shortcode .= ' sc_id_for_url='.$instance['sc_id_for_url'];
 		}
 		else {
 			$shortcode .= ' link_to_event=false';
