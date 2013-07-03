@@ -170,16 +170,20 @@ class SC_Event_List {
 			$a['sc_id_for_url'] = $a['sc_id'];
 		}
 
+		$out = '
+				<div class="event-list">';
 		if( is_numeric( $a['event_id'] ) ) {
 			// show events details if event_id is set
 			$this->single_event = true;
-			$out = $this->html_event_details( $a );
+			$out .= $this->html_event_details( $a );
 		}
 		else {
 			// show full event list
 			$this->single_event = false;
-			$out = $this->html_events( $a );
+			$out .= $this->html_events( $a );
 		}
+		$out .= '
+				</div>';
 		return $out;
 	}
 
@@ -188,7 +192,7 @@ class SC_Event_List {
 		$out = $this->html_calendar_nav( $a );
 		$out .= '
 			<h2>Event Information:</h2>
-			<ul class="event-list">';
+			<ul class="single-event-view">';
 		$out .= $this->html_event( $event, $a );
 		$out .= '</ul>';
 		return $out;
@@ -225,7 +229,7 @@ class SC_Event_List {
 		else {
 			// print available events
 			$out .= '
-				<ul class="event-list">';
+				<ul class="event-list-view">';
 			$single_day_only = $this->is_single_day_only( $events );
 			foreach ($events as $event) {
 				$out .= $this->html_event( $event, $a, $single_day_only );
