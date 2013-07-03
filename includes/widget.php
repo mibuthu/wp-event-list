@@ -26,6 +26,7 @@ class EL_Widget extends WP_Widget {
 			                                 'std_value'     => __( 'Upcoming events', 'text_domain' ),
 			                                 'caption'       => __( 'Title:' ),
 			                                 'caption_after' => null,
+			                                 'tooltip'       => __( 'The title for the widget' ),
 			                                 'form_style'    => null,
 			                                 'form_width'    => null ),
 
@@ -33,6 +34,7 @@ class EL_Widget extends WP_Widget {
 			                                 'std_value'     => '3',
 			                                 'caption'       => __( 'Number of upcoming events:' ),
 			                                 'caption_after' => null,
+			                                 'tooltip'       => __( 'The number of events to display' ),
 			                                 'form_style'    => null,
 			                                 'form_width'    => 30 ),
 
@@ -40,6 +42,7 @@ class EL_Widget extends WP_Widget {
 			                                 'std_value'     => '0',
 			                                 'caption'       => __( 'Truncate event title to' ),
 			                                 'caption_after' => __( 'chars' ),
+			                                 'tooltip'       => __( 'This option specifies the number of displayed characters for the event title. Set this value to 0 to view the full title.' ),
 			                                 'form_style'    => null,
 			                                 'form_width'    => 30 ),
 
@@ -47,6 +50,7 @@ class EL_Widget extends WP_Widget {
 			                                 'std_value'     => 'true',
 			                                 'caption'       => __( 'Show event starttime' ),
 			                                 'caption_after' => null,
+			                                 'tooltip'       => __( 'This option defines if the event start time will be displayed.' ),
 			                                 'form_style'    => null,
 			                                 'form_width'    => null ),
 
@@ -54,6 +58,7 @@ class EL_Widget extends WP_Widget {
 			                                 'std_value'     => 'false',
 			                                 'caption'       => __( 'Show event location' ),
 			                                 'caption_after' => null,
+			                                 'tooltip'       => __( 'This option defines if the event location will be displayed.' ),
 			                                 'form_style'    => 'margin:0 0 0.2em 0',
 			                                 'form_width'    => null ),
 
@@ -61,6 +66,7 @@ class EL_Widget extends WP_Widget {
 			                                 'std_value'     => '0',
 			                                 'caption'       => __( 'Truncate location to' ),
 			                                 'caption_after' => __( 'chars' ),
+			                                 'tooltip'       => __( 'If the event location is diplayed this option specifies the number of displayed characters. Set this value to 0 to view the full location.' ),
 			                                 'form_style'    => 'margin:0 0 0.6em 0.9em',
 			                                 'form_width'    => 30 ),
 
@@ -68,6 +74,7 @@ class EL_Widget extends WP_Widget {
 			                                 'std_value'     => 'false',
 			                                 'caption'       => __( 'Show event details' ),
 			                                 'caption_after' => null,
+			                                 'tooltip'       => __( 'This option defines if the event details will be displayed.' ),
 			                                 'form_style'    => 'margin:0 0 0.2em 0',
 			                                 'form_width'    => null ),
 
@@ -75,6 +82,7 @@ class EL_Widget extends WP_Widget {
 			                                 'std_value'     => '0',
 			                                 'caption'       => __( 'Truncate details to' ),
 			                                 'caption_after' => __( 'characters' ),
+			                                 'tooltip'       => __( 'If the event details are diplayed this option specifies the number of diplayed characters. Set this value to 0 to view the full details.' ),
 			                                 'form_style'    => 'margin:0 0 0.6em 0.9em',
 			                                 'form_width'    => 30 ),
 
@@ -82,6 +90,7 @@ class EL_Widget extends WP_Widget {
 			                                 'std_value'     => '',
 			                                 'caption'       => __( 'URL to the linked eventlist page:' ),
 			                                 'caption_after' => null,
+			                                 'tooltip'       => __( 'This options specifies the url to the linked event-list page. This option is required if you want to use one of the options below.' ),
 			                                 'form_style'    => 'margin:0 0 0.4em 0',
 			                                 'form_width'    => null ),
 
@@ -89,6 +98,7 @@ class EL_Widget extends WP_Widget {
 			                                 'std_value'     => '1',
 			                                 'caption'       => __( 'Shortcode ID on linked page:' ),
 			                                 'caption_after' => null,
+			                                 'tooltip'       => __( 'This option specifies the shortcode-id for the event-list on the linked page. Normally the standard value 1 is correct, you only have to change it if you use multiple event-list shortcodes on the linked page.' ),
 			                                 'form_style'    => null,
 			                                 'form_width'    => 30 ),
 
@@ -96,6 +106,7 @@ class EL_Widget extends WP_Widget {
 			                                 'std_value'     => 'false',
 			                                 'caption'       => __( 'Add links to the single events' ),
 			                                 'caption_after' => null,
+			                                 'tooltip'       => __( 'With this option you can add a link to the single event page for every displayed event. You have to specify the url to the page and the shortcode id option if you want to use it.' ),
 			                                 'form_style'    => 'margin-left:0.8em',
 			                                 'form_width'    => null ),
 
@@ -103,6 +114,7 @@ class EL_Widget extends WP_Widget {
 			                                 'std_value'     => 'false',
 			                                 'caption'       => __( 'Add a link to an event page' ),
 			                                 'caption_after' => null,
+			                                 'tooltip'       => __( 'With this option you can add a link to the event-list page below the diplayed events. You have to specify the url to page option if you want to use it.' ),
 			                                 'form_style'    => 'margin:0 0 0.2em 0.8em',
 			                                 'form_width'    => null ),
 
@@ -110,6 +122,7 @@ class EL_Widget extends WP_Widget {
 			                                 'std_value'     => __( 'show event-list page', 'text_domain' ),
 			                                 'caption'       => __( 'Caption for the link:' ),
 			                                 'caption_after' => null,
+			                                 'tooltip'       => __( 'This option specifies the text for the link to the event-list page if the approriate option is selected.' ),
 			                                 'form_style'    => 'margin:0 0 1em 2.5em',
 			                                 'form_width'    => null ),
 		);
@@ -197,7 +210,7 @@ class EL_Widget extends WP_Widget {
 			if( 'checkbox' === $item['type'] ) {
 				$checked_text = ( 'true'===$instance[$itemname] || 1==$instance[$itemname] ) ? 'checked = "checked" ' : '';
 				$out .= '
-					<p'.$style_text.'>
+					<p'.$style_text.' title="'.$item['tooltip'].'">
 						<label><input class="widefat" id="'.$this->get_field_id( $itemname ).'" name="'.$this->get_field_name( $itemname ).'" type="checkbox" '.$checked_text.'value="1" /> '.$item['caption'].'</label>
 					</p>';
 			}
@@ -205,7 +218,7 @@ class EL_Widget extends WP_Widget {
 				$width_text = ( null === $item['form_width'] ) ? '' : 'style="width:'.$item['form_width'].'px" ';
 				$caption_after_text = ( null === $item['caption_after'] ) ? '' : '<label>'.$item['caption_after'].'</label>';
 				$out .= '
-					<p'.$style_text.'>
+					<p'.$style_text.' title="'.$item['tooltip'].'">
 						<label for="'.$this->get_field_id( $itemname ).'">'.$item['caption'].' </label>
 						<input '.$width_text.'class="widefat" id="'.$this->get_field_id( $itemname ).'" name="'.$this->get_field_name( $itemname ).'" type="text" value="'.esc_attr( $instance[$itemname] ).'" />'.$caption_after_text.'
 					</p>';
