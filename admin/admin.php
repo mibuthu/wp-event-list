@@ -340,19 +340,19 @@ class EL_Admin {
 		// event added
 		if( 'added' === $this->event_action ) {
 			if( false === $this->event_action_error ) {
-				$out .= '<div id="message" class="updated below-h2"><p><strong>New Event "'.$_POST['title'].'" was added.</strong></p></div>';
+				$out .= '<div id="message" class="updated below-h2"><p><strong>New Event "'.stripslashes( $_POST['title'] ).'" was added.</strong></p></div>';
 			}
 			else {
-				$out .= '<div id="message" class="error below-h2"><p><strong>Error: New Event "'.$_POST['title'].'" could not be added.</strong></p></div>';
+				$out .= '<div id="message" class="error below-h2"><p><strong>Error: New Event "'.stripslashes( $_POST['title'] ).'" could not be added.</strong></p></div>';
 			}
 		}
 		// event modified
 		elseif( 'modified' === $this->event_action ) {
 			if( false === $this->event_action_error ) {
-				$out .= '<div id="message" class="updated below-h2"><p><strong>Event "'.$_POST['title'].'" (id: '.$_POST['id'].') was modified.</strong></p></div>';
+				$out .= '<div id="message" class="updated below-h2"><p><strong>Event "'.stripslashes( $_POST['title'] ).'" (id: '.$_POST['id'].') was modified.</strong></p></div>';
 			}
 			else {
-				$out .= '<div id="message" class="error below-h2"><p><strong>Error: Event "'.$_POST['title'].'" (id: '.$_POST['id'].') could not be modified.</strong></p></div>';
+				$out .= '<div id="message" class="error below-h2"><p><strong>Error: Event "'.stripslashes( $_POST['title'] ).'" (id: '.$_POST['id'].') could not be modified.</strong></p></div>';
 			}
 		}
 		// event deleted
