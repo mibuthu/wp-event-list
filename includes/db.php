@@ -191,9 +191,21 @@ class EL_Db {
 			else {
 				$event['categories'] = explode( '|', substr($event['categories'], 1, -1 ) );
 			}
-			print_r( $event['categories']);
 			$this->update_event( $event );
 			}
+		return count( $affected_events );
+	}
+
+	public function change_category_slug_in_events($old_slug, $new_slug) {
+		global $wpdb;
+		$sql = 'SELECT * FROM '.$this->table.' WHERE categories LIKE "%|'.$old_slug.'|%"';
+		$affected_events = $wpdb->get_results($sql, ARRAY_A);
+		foreach( $affected_events as $event ) {
+			// replace slug in categorystring
+			$event['categories'] = str_replace('|'.$old_slug.'|', '|'.$new_slug.'|', $event['categories']);
+			$event['categories'] = explode( '|', substr($event['categories'], 1, -1 ) );
+			$this->update_event( $event );
+		}
 		return count( $affected_events );
 	}
 

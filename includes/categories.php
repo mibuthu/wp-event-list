@@ -62,18 +62,21 @@ class EL_Categories {
 		return $this->safe_categories();
 	}
 
+	public function edit_category( $cat_data, $old_slug ) {
+		// check if slug already exists
+		if(!isset($this->cat_array[$old_slug])) {
+			return false;
+		}
+		unset($this->cat_array[$old_slug]);
+		return $this->add_category($cat_data);
+	}
+
 	public function remove_categories( $slugs ) {
 		foreach( $slugs as $slug ) {
 			unset( $this->cat_array[$slug] );
 		}
 		return $this->safe_categories();
 	}
-
-	//TODO: missing function: edit_category
-	/*
-	public function edit_category( $slug, $item ) {
-
-	}*/
 
 	private function safe_categories() {
 		if( !sort( $this->cat_array ) ) {
@@ -87,6 +90,10 @@ class EL_Categories {
 
 	public function get_cat_array() {
 		return $this->cat_array;
+	}
+
+	public function get_category_data($slug) {
+		return $this->cat_array[$slug];
 	}
 
 	public function get_category_string( $slugs ) {
