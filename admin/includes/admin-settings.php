@@ -60,6 +60,7 @@ class EL_Admin_Settings {
 			}
 		}
 
+		// normal output
 		$out.= '<div class="wrap">
 				<div id="icon-edit-pages" class="icon32"><br /></div><h2>Event List Settings</h2>';
 		if(!isset($_GET['tab'])) {
@@ -67,7 +68,12 @@ class EL_Admin_Settings {
 		}
 		$out .= $this->show_tabs($_GET['tab']);
 		$out .= '<div id="posttype-page" class="posttypediv">';
-		$out .= $this->show_options($_GET['tab']);
+		if('category' === $_GET['tab']) {
+			$out .= $this->show_category_tab();
+		}
+		else {
+			$out .= $this->show_option_tab($_GET['tab']);
+		}
 		$out .= '
 				</div>
 			</div>';
@@ -89,62 +95,123 @@ class EL_Admin_Settings {
 		return $out;
 	}
 
-	private function show_options($section) {
+	private function show_category_tab() {
 		$out = '';
-		if('category' === $section) {
-			$out .= $this->show_category();
-		}
-		else {
-			$out .= '
-				<form method="post" action="options.php">
-				';
-			ob_start();
-			settings_fields('el_'.$_GET['tab']);
-			$out .= ob_get_contents();
-			ob_end_clean();
-			$out .= '
-					<div style="padding:0 10px">
-					<table class="form-table">';
-			foreach($this->options->options as $oname => $o) {
-				if($o['section'] == $section) {
-					$out .= '
-							<tr style="vertical-align:top;">
-								<th>';
-					if($o['label'] != '') {
-						$out .= '<label for="'.$oname.'">'.$o['label'].':</label>';
-					}
-					$out .= '</th>
-							<td>';
-					switch($o['type']) {
-						case 'checkbox':
-							$out .= $this->show_checkbox($oname, $this->options->get($oname), $o['caption']);
-							break;
-						case 'radio':
-							$out .= $this->show_radio($oname, $this->options->get($oname), $o['caption']);
-							break;
-						case 'text':
-							$out .= $this->show_text($oname, $this->options->get($oname));
-							break;
-						case 'textarea':
-							$out .= $this->show_textarea($oname, $this->options->get($oname));
-							break;
-					}
-					$out .= '
-							</td>
-							<td class="description">'.$o['desc'].'</td>
-						</tr>';
-				}
+		// Check if a category was added
+		if(!empty($_POST)) {
+			if($this->categories->add_category($_POST)) {
+				$out .= '<div id="message" class="updated below-h2"><p><strong>New Category "'.$_POST['name'].'" was added.</strong></p></div>';
 			}
-			$out .= '
-				</table>
-				</div>';
-			ob_start();
-			submit_button();
-			$out .= ob_get_contents();
-			ob_end_clean();
-			$out .='
-			</form>';
+			else {
+				$out .= '<div id="message" class="error below-h2"><p><strong>Error: New Category "'.$_POST['name'].'" could not be added.</strong></p></div>';
+			}
 		}
+		// show category table
+		$out .= '
+				<div id="col-container">
+					<div id="col-right">
+						<div class="col-wrap">
+							<form id="category-filter" method="get">
+								<input type="hidden" name="page" value="'.$_REQUEST['page'].'" />';
+		// show table
+		$out .= $this->show_category_table();
+		// show add category form
+		$out .= $this->show_edit_category_form(__('Add New Category'));
+		return $out;
+	}
+
+	private function show_edit_category_form($caption) {
+		$out = '
+					<div id="col-left">
+						<div class="col-wrap">
+							<div class="form-wrap">
+							<h3>'.$caption.'</h3>
+							<form id="addtag" method="POST" action="?page=el_admin_settings&amp;tab=category">';
+		$out .= '
+				<div class="form-field form-required"><label for="name">Name: </label>';
+		$out .= $this->show_text('name', '');
+		$out .= '<p>'.__('The name is how it appears on your site.').'</p></div>
+				<div class="form-field"><label for="name">Slug: </label>';
+		$out .= $this->show_text('slug', '');
+		$out .= '<p>'.__('The “slug” is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens.').'</p></div>
+				<div class="form-field"><label for="name">Description: </label>';
+		$out .= $this->show_textarea('desc', '');
+		$out .= '</div>
+				<p class="submit"><input type="submit" class="button-primary" name="add_cat" value="'.__('Add New Category').'" id="submitbutton"></p>';
+		$out .= '
+							</form>
+							</div>
+						</div>
+					</div>
+				</div>';
+		return $out;
+	}
+
+	private function show_category_table() {
+		require_once(EL_PATH.'admin/includes/category_table.php');
+		$category_table = new EL_Category_Table();
+		$category_table->prepare_items();
+		ob_start();
+		$category_table->display();
+		$out = ob_get_contents();
+		ob_end_clean();
+		$out .= '
+							</form>
+						</div>
+					</div>';
+		return $out;
+	}
+
+	private function show_option_tab($section) {
+		$out = '
+			<form method="post" action="options.php">
+			';
+		ob_start();
+		settings_fields('el_'.$_GET['tab']);
+		$out .= ob_get_contents();
+		ob_end_clean();
+		$out .= '
+				<div style="padding:0 10px">
+				<table class="form-table">';
+		foreach($this->options->options as $oname => $o) {
+			if($o['section'] == $section) {
+				$out .= '
+						<tr style="vertical-align:top;">
+							<th>';
+				if($o['label'] != '') {
+					$out .= '<label for="'.$oname.'">'.$o['label'].':</label>';
+				}
+				$out .= '</th>
+						<td>';
+				switch($o['type']) {
+					case 'checkbox':
+						$out .= $this->show_checkbox($oname, $this->options->get($oname), $o['caption']);
+						break;
+					case 'radio':
+						$out .= $this->show_radio($oname, $this->options->get($oname), $o['caption']);
+						break;
+					case 'text':
+						$out .= $this->show_text($oname, $this->options->get($oname));
+						break;
+					case 'textarea':
+						$out .= $this->show_textarea($oname, $this->options->get($oname));
+						break;
+				}
+				$out .= '
+						</td>
+						<td class="description">'.$o['desc'].'</td>
+					</tr>';
+			}
+		}
+		$out .= '
+			</table>
+			</div>';
+		ob_start();
+		submit_button();
+		$out .= ob_get_contents();
+		ob_end_clean();
+		$out .='
+		</form>';
 		return $out;
 	}
 
@@ -187,63 +254,6 @@ class EL_Admin_Settings {
 	private function show_textarea($name, $value) {
 		$out = '
 							<textarea name="'.$name.'" id="'.$name.'" rows="5" class="large-text code">'.$value.'</textarea>';
-		return $out;
-	}
-
-	private function show_category() {
-		$out = '';
-		// Check if a category was added
-		if(!empty($_POST)) {
-			if($this->categories->add_category($_POST)) {
-				$out .= '<div id="message" class="updated below-h2"><p><strong>New Category "'.$_POST['name'].'" was added.</strong></p></div>';
-			}
-			else {
-				$out .= '<div id="message" class="error below-h2"><p><strong>Error: New Category "'.$_POST['name'].'" could not be added.</strong></p></div>';
-			}
-		}
-		// show category table
-		$out .= '
-				<div id="col-container">
-					<div id="col-right">
-						<div class="col-wrap">
-							<form id="category-filter" method="get">
-								<input type="hidden" name="page" value="'.$_REQUEST['page'].'" />';
-		// show table
-		require_once(EL_PATH.'admin/includes/category_table.php');
-		$category_table = new EL_Category_Table();
-		$category_table->prepare_items();
-		ob_start();
-		$category_table->display();
-		$out .= ob_get_contents();
-		ob_end_clean();
-		$out .= '
-							</form>
-						</div>
-					</div>';
-		// show add category form
-		$out .= '
-					<div id="col-left">
-						<div class="col-wrap">
-							<div class="form-wrap">
-							<h3>'.__('Add New Category').'</h3>
-							<form id="addtag" method="POST" action="?page=el_admin_settings&amp;tab=category">';
-		$out .= '
-				<div class="form-field form-required"><label for="name">Name: </label>';
-		$out .= $this->show_text('name', '');
-		$out .= '<p>'.__('The name is how it appears on your site.').'</p></div>
-				<div class="form-field"><label for="name">Slug: </label>';
-		$out .= $this->show_text('slug', '');
-		$out .= '<p>'.__('The “slug” is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens.').'</p></div>
-				<div class="form-field"><label for="name">Description: </label>';
-		$out .= $this->show_textarea('desc', '');
-		$out .= '</div>
-				<p class="submit"><input type="submit" class="button-primary" name="add_cat" value="'.__('Add New Category').'" id="submitbutton"></p>';
-		$out .= '
-							</form>
-							</div>
-						</div>
-					</div>
-				</div>';
 		return $out;
 	}
 }
