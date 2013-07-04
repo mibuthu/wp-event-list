@@ -27,6 +27,9 @@ class EL_Admin_New {
 	}
 
 	public function show_new() {
+		if(!current_user_can('edit_posts')) {
+			wp_die(__('You do not have sufficient permissions to access this page.'));
+		}
 		$out = '<div class="wrap">
 				<div id="icon-edit-pages" class="icon32"><br /></div><h2>Add New Event</h2>';
 		$out .= $this->edit_event();
