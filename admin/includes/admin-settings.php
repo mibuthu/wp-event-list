@@ -111,13 +111,6 @@ class EL_Admin_Settings {
 			}
 		}
 		// show category table
-		$out .= '
-				<div id="col-container">
-					<div id="col-right">
-						<div class="col-wrap">
-							<form id="category-filter" method="get">
-								<input type="hidden" name="page" value="'.$_REQUEST['page'].'" />';
-		// show table
 		$out .= $this->show_category_table();
 		// show add category form
 		$out .= $this->show_edit_category_form(__('Add New Category'));
@@ -152,12 +145,18 @@ class EL_Admin_Settings {
 	}
 
 	private function show_category_table() {
+		$out = '
+				<div id="col-container">
+					<div id="col-right">
+						<div class="col-wrap">
+							<form id="category-filter" method="get">
+								<input type="hidden" name="page" value="'.$_REQUEST['page'].'" />';
 		require_once(EL_PATH.'admin/includes/category_table.php');
 		$category_table = new EL_Category_Table();
 		$category_table->prepare_items();
 		ob_start();
 		$category_table->display();
-		$out = ob_get_contents();
+		$out .= ob_get_contents();
 		ob_end_clean();
 		$out .= '
 							</form>
