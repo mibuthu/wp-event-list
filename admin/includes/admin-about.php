@@ -46,7 +46,7 @@ class EL_Admin_About {
 		echo $out;
 	}
 
-	public function embed_admin_about_scripts() {
+	public function embed_about_scripts() {
 		wp_enqueue_style('eventlist_admin_about', EL_URL.'admin/css/admin_about.css');
 	}
 

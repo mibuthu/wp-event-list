@@ -37,7 +37,7 @@ class EL_Admin_New {
 		echo $out;
 	}
 
-	public function embed_admin_new_scripts() {
+	public function embed_new_scripts() {
 		wp_enqueue_script('jquery-ui-datepicker');
 		wp_enqueue_script('link');
 		wp_enqueue_script('eventlist_admin_new_js', EL_URL.'admin/js/admin_new.js');

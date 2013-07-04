@@ -80,11 +80,11 @@ class EL_Admin_Main {
 		echo $out;
 	}
 
-	public function embed_admin_main_scripts() {
+	public function embed_main_scripts() {
 		// If edit event is selected switch to embed admin_new
 		if(isset($_GET['action']) && 'edit' === $_GET['action']) {
 			require_once(EL_PATH.'admin/includes/admin-new.php');
-			EL_Admin_New::get_instance()->embed_admin_new_scripts();
+			EL_Admin_New::get_instance()->embed_new_scripts();
 		}
 		else {
 			// Proceed with embedding for admin_main

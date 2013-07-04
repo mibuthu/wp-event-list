@@ -74,7 +74,7 @@ class EL_Admin_Settings {
 		echo $out;
 	}
 
-	public function embed_admin_settings_scripts() {
+	public function embed_settings_scripts() {
 		wp_enqueue_script('eventlist_admin_settings_js', EL_URL.'admin/js/admin_settings.js');
 	}
 
