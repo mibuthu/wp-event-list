@@ -9,7 +9,7 @@ class EL_Admin_About {
 
 	public static function &get_instance() {
 		// Create class instance if required
-		if( !isset( self::$instance ) ) {
+		if(!isset(self::$instance)) {
 			self::$instance = new EL_Admin_About();
 		}
 		// Return class instance
