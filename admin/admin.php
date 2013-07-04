@@ -5,22 +5,20 @@ if( !defined( 'ABSPATH' ) ) {
 
 require_once( EL_PATH.'includes/db.php' );
 require_once( EL_PATH.'includes/options.php' );
-require_once( EL_PATH.'includes/categories.php' );
 require_once( EL_PATH.'admin/includes/event_table.php' );
+require_once( EL_PATH.'admin/includes/admin-settings.php' );
 require_once( EL_PATH.'admin/includes/admin-about.php' );
 
 // This class handles all available admin pages
 class EL_Admin {
 	private $db;
 	private $options;
-	private $categories;
 	private $event_action = false;
 	private $event_action_error = false;
 
 	public function __construct() {
 		$this->db = &EL_Db::get_instance();
 		$this->options = &EL_Options::get_instance();
-		$this->categories = &EL_Categories::get_instance();
 		$this->event_action = null;
 		$this->event_action_error = null;
 	}
@@ -34,8 +32,8 @@ class EL_Admin {
 		add_action( 'admin_print_scripts-'.$page, array( &$this, 'embed_admin_main_scripts' ) );
 		$page = add_submenu_page( 'el_admin_main', 'Add New Event', 'Add New', 'edit_posts', 'el_admin_new', array( &$this, 'show_new' ) );
 		add_action( 'admin_print_scripts-'.$page, array( &$this, 'embed_admin_new_scripts' ) );
-		$page = add_submenu_page( 'el_admin_main', 'Event List Settings', 'Settings', 'manage_options', 'el_admin_settings', array( &$this, 'show_settings' ) );
-		add_action( 'admin_print_scripts-'.$page, array( &$this, 'embed_admin_settings_scripts' ) );
+		$page = add_submenu_page( 'el_admin_main', 'Event List Settings', 'Settings', 'manage_options', 'el_admin_settings', array( EL_Admin_Settings::get_instance(), 'show_settings' ) );
+		add_action( 'admin_print_scripts-'.$page, array( EL_Admin_Settings::get_instance(), 'embed_admin_settings_scripts' ) );
 		$page = add_submenu_page( 'el_admin_main', 'About Event List', 'About', 'edit_posts', 'el_admin_about', array( EL_Admin_About::get_instance(), 'show_about' ) );
 		add_action( 'admin_print_scripts-'.$page, array( EL_Admin_About::get_instance(), 'embed_admin_about_scripts' ) );
 	}
@@ -99,51 +97,6 @@ class EL_Admin {
 		echo $out;
 	}
 
-	public function show_settings () {
-		if (!current_user_can('manage_options'))  {
-			wp_die( __('You do not have sufficient permissions to access this page.') );
-		}
-		$out = '';
-		if( isset( $_GET['settings-updated'] ) ) {
-			$out .= '<div id="message" class="updated">
-				<p><strong>'.__( 'Settings saved.' ).'</strong></p>
-			</div>';
-		}
-
-		// get action
-		$action = '';
-		if( isset( $_GET['action'] ) ) {
-			$action = $_GET['action'];
-		}
-		// delete categories if required
-		if( $action === 'delete' && isset( $_GET['slug'] ) ) {
-			$slug_array = explode(', ', $_GET['slug'] );
-			$num_affected_events = $this->db->remove_category_in_events( $slug_array );
-			require_once( EL_PATH.'admin/includes/category_table.php' );
-			if( $this->categories->remove_categories( $slug_array ) ) {
-				$out .= '<div id="message" class="updated">
-					<p><strong>'.sprintf( __( 'Category %s was deleted).<br />This Category was also removed in %d events.' ), $_GET['slug'], $num_affected_events ).'</strong></p>
-				</div>';
-			}
-			else {
-				$out .= '<div id="message" class="error below-h2"><p><strong>Error while deleting category "'.$_GET['slug'].'".</strong></p></div>';
-			}
-		}
-
-		$out.= '<div class="wrap">
-				<div id="icon-edit-pages" class="icon32"><br /></div><h2>Event List Settings</h2>';
-		if( !isset( $_GET['tab'] ) ) {
-			$_GET['tab'] = 'category';
-		}
-		$out .= $this->show_tabs( $_GET['tab'] );
-		$out .= '<div id="posttype-page" class="posttypediv">';
-		$out .= $this->show_options( $_GET['tab'] );
-		$out .= '
-				</div>
-			</div>';
-		echo $out;
-	}
-
 	public function embed_admin_main_scripts() {
 		// If edit event is selected switch to embed admin_new
 		if( isset( $_GET['action'] ) && 'edit' === $_GET['action'] ) {
@@ -161,10 +114,6 @@ class EL_Admin {
 		wp_enqueue_script( 'link' );
 		wp_enqueue_script( 'eventlist_admin_new_js', EL_URL.'admin/js/admin_new.js' );
 		wp_enqueue_style( 'eventlist_admin_new', EL_URL.'admin/css/admin_new.css' );
-	}
-
-	public function embed_admin_settings_scripts() {
-		wp_enqueue_script( 'eventlist_admin_settings_js', EL_URL.'admin/js/admin_settings.js' );
 	}
 
 	private function list_events() {
@@ -340,175 +289,6 @@ class EL_Admin {
 				$out .= '<div id="message" class="error below-h2"><p><strong>Error while deleting '.$num_deleted.' Event'.$plural.'.</strong></p></div>';
 			}
 		}
-		return $out;
-	}
-
-	private function show_tabs( $current = 'category' ) {
-		$tabs = array( 'category' => 'Categories', 'general' => 'General' );
-		$out = '<h3 class="nav-tab-wrapper">';
-		foreach( $tabs as $tab => $name ){
-			$class = ( $tab == $current ) ? ' nav-tab-active' : '';
-			$out .= "<a class='nav-tab$class' href='?page=el_admin_settings&amp;tab=$tab'>$name</a>";
-		}
-		$out .= '</h3>';
-		return $out;
-	}
-
-	private function show_options( $section ) {
-		$out = '';
-		if( 'category' === $section ) {
-			$out .= $this->show_category();
-		}
-		else {
-			$out .= '
-				<form method="post" action="options.php">
-				';
-			ob_start();
-			settings_fields( 'el_'.$_GET['tab'] );
-			$out .= ob_get_contents();
-			ob_end_clean();
-			$out .= '
-					<div style="padding:0 10px">
-					<table class="form-table">';
-			foreach( $this->options->options as $oname => $o ) {
-				if( $o['section'] == $section ) {
-					$out .= '
-							<tr style="vertical-align:top;">
-								<th>';
-					if( $o['label'] != '' ) {
-						$out .= '<label for="'.$oname.'">'.$o['label'].':</label>';
-					}
-					$out .= '</th>
-							<td>';
-					switch( $o['type'] ) {
-						case 'checkbox':
-							$out .= $this->show_checkbox( $oname, $this->options->get( $oname ), $o['caption'] );
-							break;
-						case 'radio':
-							$out .= $this->show_radio( $oname, $this->options->get( $oname ), $o['caption'] );
-							break;
-						case 'text':
-							$out .= $this->show_text( $oname, $this->options->get( $oname ) );
-							break;
-						case 'textarea':
-							$out .= $this->show_textarea( $oname, $this->options->get( $oname ) );
-							break;
-					}
-					$out .= '
-							</td>
-							<td class="description">'.$o['desc'].'</td>
-						</tr>';
-				}
-			}
-			$out .= '
-				</table>
-				</div>';
-			ob_start();
-			submit_button();
-			$out .= ob_get_contents();
-			ob_end_clean();
-			$out .='
-			</form>';
-		}
-		return $out;
-	}
-
-	private function show_checkbox( $name, $value, $caption ) {
-		$out = '
-							<label for="'.$name.'">
-								<input name="'.$name.'" type="checkbox" id="'.$name.'" value="1"';
-		if( $value == 1 ) {
-			$out .= ' checked="checked"';
-		}
-		$out .= ' />
-								'.$caption.'
-							</label>';
-		return $out;
-	}
-
-	private function show_radio( $name, $value, $caption ) {
-		$out = '
-							<fieldset>';
-		foreach( $caption as $okey => $ocaption ) {
-			$checked = ($value === $okey) ? 'checked="checked" ' : '';
-			$out .= '
-								<label title="'.$ocaption.'">
-									<input type="radio" '.$checked.'value="'.$okey.'" name="'.$name.'">
-									<span>'.$ocaption.'</span>
-								</label>
-								<br />';
-		}
-		$out .= '
-							</fieldset>';
-		return $out;
-	}
-
-	private function show_text( $name, $value ) {
-		$out = '
-							<input name="'.$name.'" type="text" id="'.$name.'" value="'.$value.'" />';
-		return $out;
-	}
-
-	private function show_textarea( $name, $value ) {
-		$out = '
-							<textarea name="'.$name.'" id="'.$name.'" rows="5" class="large-text code">'.$value.'</textarea>';
-		return $out;
-	}
-
-	private function show_category() {
-		$out = '';
-		// Check if a category was added
-		if( !empty( $_POST ) ) {
-			if( $this->categories->add_category( $_POST ) ) {
-				$out .= '<div id="message" class="updated below-h2"><p><strong>New Category "'.$_POST['name'].'" was added.</strong></p></div>';
-			}
-			else {
-				$out .= '<div id="message" class="error below-h2"><p><strong>Error: New Category "'.$_POST['name'].'" could not be added.</strong></p></div>';
-			}
-		}
-		// show category table
-		$out .= '
-				<div id="col-container">
-					<div id="col-right">
-						<div class="col-wrap">
-							<form id="category-filter" method="get">
-								<input type="hidden" name="page" value="'.$_REQUEST['page'].'" />';
-		// show table
-		require_once( EL_PATH.'admin/includes/category_table.php' );
-		$category_table = new EL_Category_Table();
-		$category_table->prepare_items();
-		ob_start();
-		$category_table->display();
-		$out .= ob_get_contents();
-		ob_end_clean();
-		$out .= '
-							</form>
-						</div>
-					</div>';
-		// show add category form
-		$out .= '
-					<div id="col-left">
-						<div class="col-wrap">
-							<div class="form-wrap">
-							<h3>'.__( 'Add New Category' ).'</h3>
-							<form id="addtag" method="POST" action="?page=el_admin_settings&amp;tab=category">';
-		$out .= '
-				<div class="form-field form-required"><label for="name">Name: </label>';
-		$out .= $this->show_text( 'name', '' );
-		$out .= '<p>'.__( 'The name is how it appears on your site.' ).'</p></div>
-				<div class="form-field"><label for="name">Slug: </label>';
-		$out .= $this->show_text( 'slug', '' );
-		$out .= '<p>'.__( 'The “slug” is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens.' ).'</p></div>
-				<div class="form-field"><label for="name">Description: </label>';
-		$out .= $this->show_textarea( 'desc', '' );
-		$out .= '</div>
-				<p class="submit"><input type="submit" class="button-primary" name="add_cat" value="'.__( 'Add New Category' ).'" id="submitbutton"></p>';
-		$out .= '
-							</form>
-							</div>
-						</div>
-					</div>
-				</div>';
 		return $out;
 	}
 
