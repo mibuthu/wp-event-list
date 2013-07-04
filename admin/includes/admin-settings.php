@@ -46,13 +46,17 @@ class EL_Admin_Settings {
 			$action = $_GET['action'];
 		}
 		// delete categories if required
-		if($action === 'delete' && isset($_GET['slug'])) {
+		if('delete' === $action && isset($_GET['slug'])) {
 			$slug_array = explode(', ', $_GET['slug']);
 			$num_affected_events = $this->db->remove_category_in_events($slug_array);
 			require_once(EL_PATH.'admin/includes/category_table.php');
 			if($this->categories->remove_categories($slug_array)) {
 				$out .= '<div id="message" class="updated">
-					<p><strong>'.sprintf(__('Category %s was deleted).<br />This Category was also removed in %d events.'), $_GET['slug'], $num_affected_events).'</strong></p>
+					<p><strong>'.sprintf(__('Category "%s" deleted.'), $_GET['slug']);
+				if($num_affected_events > 0) {
+					$out .= '<br />'.sprintf(__('This Category was also removed from %d events.'), $num_affected_events);
+				}
+				$out .= '</strong></p>
 				</div>';
 			}
 			else {
