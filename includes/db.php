@@ -111,10 +111,13 @@ class EL_Db {
 		global $wpdb;
 		// prepare and validate sqldata
 		$sqldata = array();
-		//pub_user
-		$sqldata['pub_user'] = isset( $event_data['pub_user'] ) ? $event_data['pub_user'] : wp_get_current_user()->ID;
-		//pub_date
-		$sqldata['pub_date'] = isset( $event_data['pub_date'] ) ? $event_data['pub_date'] : date( "Y-m-d H:i:s" );
+		if(!isset($event_data['id'])) {
+			// for new events only:
+			//pub_user
+			$sqldata['pub_user'] = isset($event_data['id']) ? $event_data['pub_user'] : wp_get_current_user()->ID;
+			//pub_date
+			$sqldata['pub_date'] = isset($event_data['pub_date']) ? $event_data['pub_date'] : date("Y-m-d H:i:s");
+		}
 		//start_date
 		if( !isset( $event_data['start_date']) ) { return false; }
 		$start_timestamp = 0;
