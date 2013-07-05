@@ -157,13 +157,18 @@ class EL_Admin_Settings {
 			$out .= '
 				<input type="hidden" name="id" value="'.$cat_data['slug'].'">';
 		}
+		// Category Name
 		$out .= '
 				<div class="form-field form-required"><label for="name">Name: </label>';
 		$out .= $this->show_text('name', $cat_data['name']);
-		$out .= '<p>'.__('The name is how it appears on your site.').'</p></div>
+		$out .= '<p>'.__('The name is how it appears on your site.').'</p></div>';
+		// Category Slug
+		$out .= '
 				<div class="form-field"><label for="name">Slug: </label>';
 		$out .= $this->show_text('slug', $cat_data['slug']);
-		$out .= '<p>'.__('The “slug” is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens.').'</p></div>
+		$out .= '<p>'.__('The “slug” is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens.').'</p></div>';
+		// Category Description
+		$out .= '
 				<div class="form-field"><label for="name">Description: </label>';
 		$out .= $this->show_textarea('desc', $cat_data['desc']);
 		$out .= '</div>
