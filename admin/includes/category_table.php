@@ -64,8 +64,7 @@ class EL_Category_Table extends WP_List_Table {
 	protected function column_name($item) {
 		//Prepare Columns
 		$actions = array(
-			// TODO: edit category not implemented yet
-			/*'edit'      => '<a href="?page='.$_REQUEST['page'].'&amp;id='.$item['slug'].'&amp;action=edit">Edit</a>',*/
+			'edit'      => '<a href="?page='.$_REQUEST['page'].'&amp;id='.$item['slug'].'&amp;action=edit">Edit</a>',
 			'delete'    => '<a href="#" onClick="eventlist_deleteCategory(\''.$item['slug'].'\');return false;">Delete</a>'
 		);
 		//Return the title contents

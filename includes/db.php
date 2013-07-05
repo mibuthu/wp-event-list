@@ -111,10 +111,13 @@ class EL_Db {
 		global $wpdb;
 		// prepare and validate sqldata
 		$sqldata = array();
-		//pub_user
-		$sqldata['pub_user'] = isset( $event_data['pub_user'] ) ? $event_data['pub_user'] : wp_get_current_user()->ID;
-		//pub_date
-		$sqldata['pub_date'] = isset( $event_data['pub_date'] ) ? $event_data['pub_date'] : date( "Y-m-d H:i:s" );
+		if(!isset($event_data['id'])) {
+			// for new events only:
+			//pub_user
+			$sqldata['pub_user'] = isset($event_data['id']) ? $event_data['pub_user'] : wp_get_current_user()->ID;
+			//pub_date
+			$sqldata['pub_date'] = isset($event_data['pub_date']) ? $event_data['pub_date'] : date("Y-m-d H:i:s");
+		}
 		//start_date
 		if( !isset( $event_data['start_date']) ) { return false; }
 		$start_timestamp = 0;
@@ -191,9 +194,21 @@ class EL_Db {
 			else {
 				$event['categories'] = explode( '|', substr($event['categories'], 1, -1 ) );
 			}
-			print_r( $event['categories']);
 			$this->update_event( $event );
 			}
+		return count( $affected_events );
+	}
+
+	public function change_category_slug_in_events($old_slug, $new_slug) {
+		global $wpdb;
+		$sql = 'SELECT * FROM '.$this->table.' WHERE categories LIKE "%|'.$old_slug.'|%"';
+		$affected_events = $wpdb->get_results($sql, ARRAY_A);
+		foreach( $affected_events as $event ) {
+			// replace slug in categorystring
+			$event['categories'] = str_replace('|'.$old_slug.'|', '|'.$new_slug.'|', $event['categories']);
+			$event['categories'] = explode( '|', substr($event['categories'], 1, -1 ) );
+			$this->update_event( $event );
+		}
 		return count( $affected_events );
 	}
 

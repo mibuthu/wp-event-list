@@ -3,8 +3,8 @@ Contributors: mibuthu
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W54LNZMWF9KW2
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, admin, attribute, widget, sidebar
 Requires at least: 3.3
-Tested up to: 3.5.1
-Stable tag: 0.4.2
+Tested up to: 3.5.2
+Stable tag: 0.4.3
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -51,7 +51,7 @@ Insert the shortcode [event-list] in your page.
 Event List uses the built-in Wordpress WYSIWYG editor. It's exactly the same process you use when creating Posts or Pages.
 
 = Can I call the shortcode directly via php e.g. for my own template, theme or plugin? =
-Yes, you can create an instance of the "SC_Event_List" class which located in "php/sc_event-list.php" in the plugin folder and call the function show_html($atts).With $atts you can specify all the shortcode attributes you require. Another possibility would be to call the wordpress function "do_shortcode()".
+Yes, you can create an instance of the "SC_Event_List" class which located in "includes/sc_event-list.php" in the plugin folder and call the function show_html($atts).With $atts you can specify all the shortcode attributes you require. Another possibility would be to call the wordpress function "do_shortcode()".
 
 
 == Screenshots ==
@@ -65,6 +65,16 @@ Yes, you can create an instance of the "SC_Event_List" class which located in "p
 
 
 == Changelog ==
+
+= 0.4.3 (2013-07-05) =
+
+* added possibility to edit existing categories
+* added tooptip texts for the widget option
+* changed css classes to differ between event-list-view and single-event-view
+* added missing permission check for new events and about page
+* do not change publish date and user when an event is modified
+* fixed a small issue in info messages
+* code improvements and cleanup in admin pages
 
 = 0.4.2 (2013-06-09) =
 
