@@ -45,7 +45,7 @@ class EL_Admin_Settings {
 		if(isset($_GET['action'])) {
 			$action = $_GET['action'];
 		}
-		$out .= $this->check_for_actions_and_show_messages($action);
+		$out .= $this->check_actions_and_show_messages($action);
 
 		// normal output
 		$out.= '<div class="wrap">
@@ -96,7 +96,7 @@ class EL_Admin_Settings {
 		return $out;
 	}
 
-	private function check_for_actions_and_show_messages($action) {
+	private function check_actions_and_show_messages($action) {
 		$out = '';
 		if('delete' === $action && isset($_GET['slug'])) {
 			// delete categories
@@ -167,6 +167,12 @@ class EL_Admin_Settings {
 				<div class="form-field"><label for="name">Slug: </label>';
 		$out .= $this->show_text('slug', $cat_data['slug']);
 		$out .= '<p>'.__('The “slug” is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens.').'</p></div>';
+		// Category Parent
+		$out .= '
+				<div class="form-field"><label for="parent">Parent: </label>';
+		$selected = isset($cat_data['parent']) ? $cat_data['parent'] : null;
+		$out .= $this->show_combobox('parent', $this->categories->get_category_string_array($cat_data['name']), $selected);
+		$out .= '<p>'.__('Categories can have a hierarchy. You might have a Jazz category, and under that have children categories for Bebop and Big Band. Totally optional.').'</p></div>';
 		// Category Description
 		$out .= '
 				<div class="form-field"><label for="name">Description: </label>';
@@ -266,6 +272,19 @@ class EL_Admin_Settings {
 		$out .= ' />
 								'.$caption.'
 							</label>';
+		return $out;
+	}
+
+	private function show_combobox($name, $values, $selected=null) {
+		$out = '
+							<select id="'.$name.'" name="'.$name.'">';
+		foreach($values as $vkey => $value) {
+			$selected_text = $selected===$vkey ? 'selected ' : '';
+			$out .= '
+								<option '.$selected_text.'value="'.$vkey.'">'.$value.'</option>';
+		}
+		$out .= '
+							</select>';
 		return $out;
 	}
 

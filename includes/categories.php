@@ -46,11 +46,13 @@ class EL_Categories {
 				return false;
 			}
 		}
+		// set cat name
+		$cat['name'] = trim( $cat_data['name'] );
+		// set slug
+		// generate slug if no slug was given
 		if( !isset( $cat_data['slug'] ) || '' == $cat_data['slug'] ) {
 			$cat_data['slug'] = $cat_data['name'];
 		}
-		$cat['name'] = trim( $cat_data['name'] );
-		$cat['desc'] = isset( $cat_data['desc'] ) ? trim( $cat_data['desc'] ) : '';
 		// make slug unique
 		$cat['slug'] = $slug = sanitize_title( $cat_data['slug'] );
 		$num = 1;
@@ -58,6 +60,13 @@ class EL_Categories {
 			$num++;
 			$cat['slug'] = $slug.'-'.$num;
 		}
+		// set parent
+		if(isset($cat_data['parent'])) {
+			$cat['parent'] = $cat_data['parent'];
+		}
+		// set description
+		$cat['desc'] = isset( $cat_data['desc'] ) ? trim( $cat_data['desc'] ) : '';
+		// add category
 		$this->cat_array[$cat['slug']] = $cat;
 		return $this->safe_categories();
 	}
@@ -94,6 +103,17 @@ class EL_Categories {
 
 	public function get_category_data($slug) {
 		return $this->cat_array[$slug];
+	}
+
+	public function get_category_string_array($exclude=array()) {
+		$exclude = is_array($exclude) ? $exclude : array($exclude);
+		$ret = array();
+		foreach($this->cat_array as $cat) {
+			if(!in_array($cat['name'], $exclude)) {
+				$ret[$cat['slug']] = $cat['name'];
+			}
+		}
+		return $ret;
 	}
 
 	public function get_category_string( $slugs ) {
