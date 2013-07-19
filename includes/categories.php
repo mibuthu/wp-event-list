@@ -66,11 +66,16 @@ class EL_Categories {
 			$num++;
 			$cat['slug'] = $slug.'-'.$num;
 		}
-		// set parent
+		// set parent and level
 		if(!isset($cat_data['parent'])) {
 			$cat_data['parent'] = '';
 		}
 		$cat['parent'] = $cat_data['parent'];
+		if('' == $cat['parent']) {
+			$cat['level'] = 0;
+		}
+		else {
+			$cat['level'] = $this->cat_array[$cat_data['parent']]['level'] + 1;
 		}
 		// set description
 		$cat['desc'] = isset( $cat_data['desc'] ) ? trim( $cat_data['desc'] ) : '';
