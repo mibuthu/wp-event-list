@@ -101,17 +101,44 @@ class EL_Categories {
 	}
 
 	private function safe_categories() {
-		if( !sort( $this->cat_array ) ) {
+		if(!$this->cat_array = $this->get_cat_array($this->cat_array, 'slug', true)) {
 			return false;
 		}
-		if( !$this->options->set( 'el_categories', $this->cat_array ) ) {
+		if(!$this->options->set('el_categories', $this->cat_array)) {
 			return false;
 		}
+		print_r($this->cat_array);
 		return true;
 	}
 
-	public function get_cat_array() {
-		return $this->cat_array;
+	public function get_cat_array($sort_field='name', $nested=true) {
+		return $this->get_cat_child_array('', $sort_field, $nested);
+	}
+
+	private function get_cat_child_array($slug, $sort_field, $nested) {
+		$children = $this->get_children($slug);
+		if(empty($children)) {
+			return null;
+		}
+		$ret = array();
+		foreach($children as $child) {
+			$ret[] = $this->cat_array[$child];
+			$grandchilds = $this->get_cat_child_array($child, $sort_field, $nested);
+			if(is_array($grandchilds)) {
+				$ret = array_merge($ret, $grandchilds);
+			}
+		}
+		return $ret;
+	}
+
+	private function get_children($slug='') {
+		$ret = array();
+		foreach($this->cat_array as $cat) {
+			if($slug == $cat['parent']) {
+				$ret[] = $cat['slug'];
+			}
+		}
+		return $ret;
 	}
 
 	public function get_category_data($slug) {
