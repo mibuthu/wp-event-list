@@ -170,8 +170,9 @@ class EL_Admin_Settings {
 		// Category Parent
 		$out .= '
 				<div class="form-field"><label for="parent">Parent: </label>';
+		$selection = array('' => __('None')) + $this->categories->get_category_string_array($cat_data['name']);
 		$selected = isset($cat_data['parent']) ? $cat_data['parent'] : null;
-		$out .= $this->show_combobox('parent', $this->categories->get_category_string_array($cat_data['name']), $selected);
+		$out .= $this->show_combobox('parent', $selection, $selected);
 		$out .= '<p>'.__('Categories can have a hierarchy. You might have a Jazz category, and under that have children categories for Bebop and Big Band. Totally optional.').'</p></div>';
 		// Category Description
 		$out .= '

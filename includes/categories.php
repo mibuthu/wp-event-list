@@ -31,6 +31,12 @@ class EL_Categories {
 		$cat_array = (array) $this->options->get( 'el_categories' );
 		$this->cat_array = array();
 		foreach( $cat_array as $cat ) {
+			// check if "parent" field is available (required due to old version without parent field)
+			// this can be removed in a later version
+			if(!isset($cat['parent']) || !isset($cat['level'])) {
+				$cat['parent'] = '';
+				$cat['level'] = 0;
+			}
 			$this->cat_array[$cat['slug']] = $cat;
 		}
 	}
@@ -61,8 +67,10 @@ class EL_Categories {
 			$cat['slug'] = $slug.'-'.$num;
 		}
 		// set parent
-		if(isset($cat_data['parent'])) {
-			$cat['parent'] = $cat_data['parent'];
+		if(!isset($cat_data['parent'])) {
+			$cat_data['parent'] = '';
+		}
+		$cat['parent'] = $cat_data['parent'];
 		}
 		// set description
 		$cat['desc'] = isset( $cat_data['desc'] ) ? trim( $cat_data['desc'] ) : '';
