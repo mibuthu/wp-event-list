@@ -4,13 +4,13 @@ if(!defined('ABSPATH')) {
 }
 
 require_once(EL_PATH.'includes/db.php');
-require_once(EL_PATH.'includes/options.php');
+require_once(EL_PATH.'includes/categories.php');
 
 // This class handles all data for the admin new event page
 class EL_Admin_New {
 	private static $instance;
 	private $db;
-	private $options;
+	private $categories;
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -23,7 +23,7 @@ class EL_Admin_New {
 
 	private function __construct() {
 		$this->db = &EL_Db::get_instance();
-		$this->options = &EL_Options::get_instance();
+		$this->categories = &EL_Categories::get_instance();
 	}
 
 	public function show_new() {
@@ -145,15 +145,29 @@ class EL_Admin_New {
 		$out = '
 				<div id="taxonomy-category" class="categorydiv">
 				<div id="category-all" class="tabs-panel">';
-		$cat_array = (array) $this->options->get('el_categories');
+		$cat_array = $this->categories->get_cat_array('name', 'asc');
 		if(empty($cat_array)) {
 			$out .= __('No categories available.');
 		}
 		else {
 			$out .= '
 					<ul id="categorychecklist" class="categorychecklist form-no-clear">';
+			$level = 0;
 			$event_cats = explode('|', substr($metabox['args']['event_cats'], 1, -1));
 			foreach($cat_array as $cat) {
+				if($cat['level'] > $level) {
+					//new sub level
+					$out .= '
+						<ul class="children">';
+					$level++;
+				}
+				while($cat['level'] < $level) {
+					// finish sub level
+					$out .= '
+						</ul>';
+					$level--;
+				}
+				$level = $cat['level'];
 				$checked = in_array($cat['slug'], $event_cats) ? 'checked="checked" ' : '';
 				$out .= '
 						<li id="'.$cat['slug'].'" class="popular-catergory">
