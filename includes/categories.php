@@ -167,15 +167,16 @@ class EL_Categories {
 		return $this->cat_array[$slug];
 	}
 
-	public function get_category_string( $slugs ) {
-		if( 2 >= strlen( $slugs ) ) {
+	public function get_category_string($slug_text) {
+		if(2 >= strlen($slug_text)) {
 			return '';
 		}
-		$slug_array = explode( '|', substr( $slugs, 1, -1 ) );
+		$slug_array = explode('|', substr( $slug_text, 1, -1));
 		$name_array = array();
-		foreach( $slug_array as $slug ) {
+		foreach($slug_array as $slug) {
 			$name_array[] = $this->cat_array[$slug]['name'];
 		}
-		return implode( ', ', $name_array );
+		sort($name_array, SORT_STRING);
+		return implode(', ', $name_array);
 	}
 }
