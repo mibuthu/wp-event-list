@@ -37,9 +37,13 @@ class EL_Admin {
 		$page = add_submenu_page('el_admin_main', 'Add New Event', 'Add New', 'edit_posts', 'el_admin_new', array(&$this, 'show_new_page'));
 		add_action('admin_print_scripts-'.$page, array(&$this, 'embed_new_scripts'));
 
+		// Categories subpage
+		$page = add_submenu_page('el_admin_main', 'Event List Categories', 'Categories', 'manage_options', 'el_admin_categories', array(&$this, 'show_categories_page'));
+		add_action('admin_print_scripts-'.$page, array(&$this, 'embed_categories_scripts'));
+
 		// Settings subpage
 		$page = add_submenu_page('el_admin_main', 'Event List Settings', 'Settings', 'manage_options', 'el_admin_settings', array(&$this, 'show_settings_page'));
-		add_action('admin_print_scripts-'.$page, array(&$this, 'embed_settings_scripts'));
+		//add_action('admin_print_scripts-'.$page, array(&$this, 'embed_settings_scripts'));
 
 		// About subpage
 		$page = add_submenu_page('el_admin_main', 'About Event List', 'About', 'edit_posts', 'el_admin_about', array(&$this, 'show_about_page'));
@@ -71,16 +75,26 @@ class EL_Admin {
 		EL_Admin_New::get_instance()->embed_new_scripts();
 	}
 
+	public function show_categories_page() {
+		require_once(EL_PATH.'admin/includes/admin-categories.php');
+		EL_Admin_Categories::get_instance()->show_categories();
+	}
+
+	public function embed_categories_scripts() {
+		require_once(EL_PATH.'admin/includes/admin-categories.php');
+		EL_Admin_Categories::get_instance()->embed_categories_scripts();
+	}
+
 	public function show_settings_page() {
 		require_once(EL_PATH.'admin/includes/admin-settings.php');
 		EL_Admin_Settings::get_instance()->show_settings();
 	}
-
+/*
 	public function embed_settings_scripts() {
 		require_once(EL_PATH.'admin/includes/admin-settings.php');
 		EL_Admin_Settings::get_instance()->embed_settings_scripts();
 	}
-
+*/
 	public function show_about_page() {
 		require_once(EL_PATH.'admin/includes/admin-about.php');
 		EL_Admin_About::get_instance()->show_about();
