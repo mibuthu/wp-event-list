@@ -121,7 +121,7 @@ class EL_Admin_Categories {
 						<div class="col-wrap">
 							<div class="form-wrap">
 							<h3>'.$title.'</h3>
-							<form id="addtag" method="POST" action="?page=el_admin_settings&amp;tab=category">';
+							<form id="addtag" method="POST" action="?page=el_admin_categories&amp;tab=category">';
 		if(!$is_new_event) {
 			$out .= '
 				<input type="hidden" name="id" value="'.$cat_data['slug'].'">';

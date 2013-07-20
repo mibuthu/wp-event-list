@@ -3,6 +3,6 @@
 // Confirmation for event deletion
 function eventlist_deleteCategory (id) {
 	if (confirm("Are you sure you want to delete this event category? This is a permanent action.")) {
-		document.location.href = "?page=el_admin_settings&slug=" + id + "&action=delete";
+		document.location.href = "?page=el_admin_categories&slug=" + id + "&action=delete";
 	}
 }
