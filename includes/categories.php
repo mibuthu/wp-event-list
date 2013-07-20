@@ -167,17 +167,6 @@ class EL_Categories {
 		return $this->cat_array[$slug];
 	}
 
-	public function get_category_string_array($exclude=array()) {
-		$exclude = is_array($exclude) ? $exclude : array($exclude);
-		$ret = array();
-		foreach($this->cat_array as $cat) {
-			if(!in_array($cat['name'], $exclude)) {
-				$ret[$cat['slug']] = $cat['name'];
-			}
-		}
-		return $ret;
-	}
-
 	public function get_category_string( $slugs ) {
 		if( 2 >= strlen( $slugs ) ) {
 			return '';

@@ -170,9 +170,17 @@ class EL_Admin_Settings {
 		// Category Parent
 		$out .= '
 				<div class="form-field"><label for="parent">Parent: </label>';
-		$selection = array('' => __('None')) + $this->categories->get_category_string_array($cat_data['name']);
+		$cat_array = $this->categories->get_cat_array('name', 'asc');
+		$option_array = array('' => __('None'));
+		$class_array = array();
+		foreach($cat_array as $cat) {
+			if($cat['slug'] != $cat_data['slug']) {
+				$option_array[$cat['slug']] = str_pad($cat['name'], 18*$cat['level'], '&nbsp;', STR_PAD_LEFT);
+				$class_array[$cat['slug']] = 'level-'.$cat['level'];
+			}
+		}
 		$selected = isset($cat_data['parent']) ? $cat_data['parent'] : null;
-		$out .= $this->show_combobox('parent', $selection, $selected);
+		$out .= $this->show_combobox('parent', $option_array, $selected, $class_array);
 		$out .= '<p>'.__('Categories can have a hierarchy. You might have a Jazz category, and under that have children categories for Bebop and Big Band. Totally optional.').'</p></div>';
 		// Category Description
 		$out .= '
@@ -276,13 +284,14 @@ class EL_Admin_Settings {
 		return $out;
 	}
 
-	private function show_combobox($name, $values, $selected=null) {
+	private function show_combobox($name, $option_array, $selected=null, $class_array=null) {
 		$out = '
 							<select id="'.$name.'" name="'.$name.'">';
-		foreach($values as $vkey => $value) {
-			$selected_text = $selected===$vkey ? 'selected ' : '';
+		foreach($option_array as $key => $value) {
+			$class_text = isset($class_array[$key]) ? 'class="'.$class_array[$key].'" ' : '';
+			$selected_text = $selected===$key ? 'selected ' : '';
 			$out .= '
-								<option '.$selected_text.'value="'.$vkey.'">'.$value.'</option>';
+								<option '.$class_text.$selected_text.'value="'.$key.'">'.$value.'</option>';
 		}
 		$out .= '
 							</select>';
