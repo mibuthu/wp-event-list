@@ -39,8 +39,6 @@ class EL_Category_Table extends WP_List_Table {
 	***************************************************************************/
 	protected function column_default($item, $column_name) {
 		switch($column_name){
-			case 'name' :
-				return $item[$column_name];
 			case 'desc' :
 				return '<div>'.$item[$column_name].'</div>';
 			case 'slug' :
@@ -62,13 +60,15 @@ class EL_Category_Table extends WP_List_Table {
 	* @return string Text to be placed inside the column <td> (movie title only)
 	***************************************************************************/
 	protected function column_name($item) {
-		//Prepare Columns
+		// prepare Actions
 		$actions = array(
 			'edit'      => '<a href="?page='.$_REQUEST['page'].'&amp;id='.$item['slug'].'&amp;action=edit">Edit</a>',
 			'delete'    => '<a href="#" onClick="eventlist_deleteCategory(\''.$item['slug'].'\');return false;">Delete</a>'
 		);
+		// create prefix with indenting according cat level
+		$prefix = str_pad('', 7*$item['level'], '&#8212;', STR_PAD_LEFT).' ';
 		//Return the title contents
-		return '<b>'.$item['name'].'</b>'.$this->row_actions( $actions );
+		return '<b>'.$prefix.$item['name'].'</b>'.$this->row_actions($actions);
 	}
 
 	/** ************************************************************************
