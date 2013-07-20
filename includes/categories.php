@@ -101,13 +101,13 @@ class EL_Categories {
 	}
 
 	private function safe_categories() {
-		if(!$this->cat_array = $this->get_cat_array($this->cat_array, 'slug', true)) {
+		$cat_array = $this->get_cat_array('slug', true);
+		if(!is_array($cat_array) || empty($cat_array)) {
 			return false;
 		}
-		if(!$this->options->set('el_categories', $this->cat_array)) {
+		if(!$this->options->set('el_categories', $cat_array)) {
 			return false;
 		}
-		print_r($this->cat_array);
 		return true;
 	}
 
