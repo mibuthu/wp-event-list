@@ -111,19 +111,19 @@ class EL_Categories {
 		return true;
 	}
 
-	public function get_cat_array($sort_field='name', $nested=true) {
-		return $this->get_cat_child_array('', $sort_field, $nested);
+	public function get_cat_array($sort_key='name', $sort_order='asc') {
+		return $this->get_cat_child_array('', $sort_key, $sort_order);
 	}
 
-	private function get_cat_child_array($slug, $sort_field, $nested) {
-		$children = $this->get_children($slug);
+	private function get_cat_child_array($slug, $sort_key, $sort_order) {
+		$children = $this->get_children($slug, $sort_key, $sort_order);
 		if(empty($children)) {
 			return null;
 		}
 		$ret = array();
 		foreach($children as $child) {
 			$ret[] = $this->cat_array[$child];
-			$grandchilds = $this->get_cat_child_array($child, $sort_field, $nested);
+			$grandchilds = $this->get_cat_child_array($child, $sort_key, $sort_order);
 			if(is_array($grandchilds)) {
 				$ret = array_merge($ret, $grandchilds);
 			}
@@ -131,14 +131,36 @@ class EL_Categories {
 		return $ret;
 	}
 
-	private function get_children($slug='') {
+	private function get_children($slug='', $sort_key='slug', $sort_order='asc') {
+		// create array with slugs
 		$ret = array();
 		foreach($this->cat_array as $cat) {
 			if($slug == $cat['parent']) {
 				$ret[] = $cat['slug'];
 			}
 		}
-		return $ret;
+		// sort array
+		if('slug' == $sort_key) {
+			if('desc' == $sort_order) {
+				rsort($ret);
+			}
+			else {
+				sort($ret);
+			}
+			return $ret;
+		}
+		else {
+			$sort_key_array = array();
+			foreach($ret as $cat_slug) {
+				$sort_key_array[] = strtolower($this->cat_array[$cat_slug][$sort_key]);
+			}
+			asort($sort_key_array);
+			$ret_sorted = array();
+			foreach($sort_key_array as $key => $value) {
+				$ret_sorted[] = $ret[$key];
+			}
+			return $ret_sorted;
+		}
 	}
 
 	public function get_category_data($slug) {
