@@ -32,7 +32,7 @@ class EL_Admin_About {
 					<ul class="el-show-event-options"><li>you can place the <strong>shortcode</strong> <code>[event-list]</code> on any page or post</li>
 					<li>you can add the <strong>widget</strong> "Event List" in your sidebars</li></ul>
 					The displayed events and their style can be modified with the available widget settings and the available attributes for the shortcode.<br />
-					A list of all available shortcode attributes with their description is listed below.<br />
+					A list of all available shortcode attributes with their description is available below.<br />
 					The most available options of the widget should be clear by there description.<br />
 					It is important to know that you have to insert an URL to the linked event-list page if you enable one of the links options ("Add links to the single events" or "Add a link to an event page").
 					This is required because the widget didn´t know in which page or post you have insert the shortcode.<br />
@@ -40,7 +40,7 @@ class EL_Admin_About {
 					So the standard value "1" is normally o.k., but you can check the ID if you have a look into the URL of an event link on your linked page or post.
 					The ID is given behind the "_" (e.g. <i>http://www.your-homepage.com/?page_id=99&event_id_<strong>1</strong>=11</i>).
 				</p>
-				<p>Be sure to also check the <a href="admin.php?page=el_admin_settings">settings page</a> to get Event List behaving just the way you want.</p>
+				<p>Be sure to also check the <a href="admin.php?page=el_admin_settings">Settings page</a> to get Event List behaving just the way you want.</p>
 			</div>';
 		$out .= $this->show_atts();
 		echo $out;
@@ -52,7 +52,7 @@ class EL_Admin_About {
 
 	private function show_atts() {
 		$out = '
-			<h3 class="el-headline">Available Shortcode Attributes</h3>
+			<h3 class="el-headline">AShortcode Attributes</h3>
 			<div>
 				You have the possibility to modify the output if you add some of the following attributes to the shortcode.<br />
 				You can combine as much attributes as you want. E.g.the shortcode including the attributes "num_events" and "show_nav" would looks like this:
