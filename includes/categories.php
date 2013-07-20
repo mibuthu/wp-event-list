@@ -28,16 +28,18 @@ class EL_Categories {
 	}
 
 	private function initalize_cat_array() {
-		$cat_array = (array) $this->options->get( 'el_categories' );
+		$cat_array = $this->options->get('el_categories');
 		$this->cat_array = array();
-		foreach( $cat_array as $cat ) {
-			// check if "parent" field is available (required due to old version without parent field)
-			// this can be removed in a later version
-			if(!isset($cat['parent']) || !isset($cat['level'])) {
-				$cat['parent'] = '';
-				$cat['level'] = 0;
+		if(!empty($cat_array)) {
+			foreach($cat_array as $cat) {
+				// check if "parent" field is available (required due to old version without parent field)
+				// this can be removed in a later version
+				if(!isset($cat['parent']) || !isset($cat['level'])) {
+					$cat['parent'] = '';
+					$cat['level'] = 0;
+				}
+				$this->cat_array[$cat['slug']] = $cat;
 			}
-			$this->cat_array[$cat['slug']] = $cat;
 		}
 	}
 
@@ -101,9 +103,14 @@ class EL_Categories {
 	}
 
 	private function safe_categories() {
-		$cat_array = $this->get_cat_array('slug', true);
-		if(!is_array($cat_array) || empty($cat_array)) {
-			return false;
+		if(empty($this->cat_array)) {
+			$cat_array = '';
+		}
+		else {
+			$cat_array = $this->get_cat_array('slug', true);
+			if(!is_array($cat_array) || empty($cat_array)) {
+				return false;
+			}
 		}
 		if(!$this->options->set('el_categories', $cat_array)) {
 			return false;
@@ -112,7 +119,12 @@ class EL_Categories {
 	}
 
 	public function get_cat_array($sort_key='name', $sort_order='asc') {
-		return $this->get_cat_child_array('', $sort_key, $sort_order);
+		if(empty($this->cat_array)) {
+			return array();
+		}
+		else {
+			return $this->get_cat_child_array('', $sort_key, $sort_order);
+		}
 	}
 
 	private function get_cat_child_array($slug, $sort_key, $sort_order) {
