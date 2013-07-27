@@ -5,6 +5,7 @@ if(!defined('ABSPATH')) {
 
 require_once(EL_PATH.'includes/db.php');
 require_once(EL_PATH.'includes/categories.php');
+require_once(EL_PATH.'includes/options.php');
 require_once(EL_PATH.'admin/includes/admin-functions.php');
 
 // This class handles all data for the admin categories page
@@ -12,6 +13,7 @@ class EL_Admin_Categories {
 	private static $instance;
 	private $db;
 	private $categories;
+	private $options;
 	private $functions;
 
 	public static function &get_instance() {
@@ -26,6 +28,7 @@ class EL_Admin_Categories {
 	private function __construct() {
 		$this->db = &EL_Db::get_instance();
 		$this->categories = &EL_Categories::get_instance();
+		$this->options = &EL_Options::get_instance();
 		$this->functions = &EL_Admin_Functions::get_instance();
 	}
 
@@ -54,6 +57,8 @@ class EL_Admin_Categories {
 			$out .= $this->show_category_table();
 			// show add category form
 			$out .= $this->show_edit_category_form(__('Add New Category'), __('Add New Category'));
+			// show cat sync option form
+			$out .= $this->show_cat_sync_form();
 		}
 		$out .= '
 				</div>
@@ -85,7 +90,13 @@ class EL_Admin_Categories {
 				$out .= '<div id="message" class="error below-h2"><p><strong>Error while deleting category "'.$_GET['slug'].'".</strong></p></div>';
 			}
 		}
-		else if(!empty($_POST)) {
+		else if('setcatsync' === $action) {
+			$this->options->set('el_sync_cats', isset($_POST['el_sync_cats']) ? '1' : '');
+		}
+		else if('manualcatsync' === $action) {
+			//TODO: do manual cat sync
+		}
+		else if('editcat' === $action && !empty($_POST)) {
 			if(!isset($_POST['id'])) {
 				// add new category
 				if($this->categories->add_category($_POST)) {
@@ -121,7 +132,7 @@ class EL_Admin_Categories {
 						<div class="col-wrap">
 							<div class="form-wrap">
 							<h3>'.$title.'</h3>
-							<form id="addtag" method="POST" action="?page=el_admin_categories&amp;tab=category">';
+							<form id="addtag" method="POST" action="?page=el_admin_categories&amp;action=editcat">';
 		if(!$is_new_event) {
 			$out .= '
 				<input type="hidden" name="id" value="'.$cat_data['slug'].'">';
@@ -156,10 +167,9 @@ class EL_Admin_Categories {
 				<div class="form-field"><label for="name">Description: </label>';
 		$out .= $this->functions->show_textarea('desc', $cat_data['desc']);
 		$out .= '</div>
-				<p class="submit"><input type="submit" class="button-primary" name="add_cat" value="'.$button_text.'" id="submitbutton"></p>';
+				<p class="submit"><input type="submit" class="button-primary" value="'.$button_text.'" id="submitbutton"></p>';
 		$out .= '
 							</form>
-							</div>
 						</div>
 					</div>
 				</div>';
@@ -181,6 +191,31 @@ class EL_Admin_Categories {
 		$out .= ob_get_contents();
 		ob_end_clean();
 		$out .= '
+							</form>
+						</div>
+					</div>';
+		return $out;
+	}
+
+	private function show_cat_sync_form() {
+		$option = &$this->options->options['el_sync_cats'];
+		$out = '
+					<div id="col-left">
+						<div class="col-wrap">
+							<div class="form-wrap">
+							<h3>'.$option['label'].'</h3>
+							<form id="catsync" method="POST" action="?page=el_admin_categories&amp;action=setcatsync">';
+		// Checkbox
+		$out .= $this->functions->show_checkbox('el_sync_cats', $this->options->get('el_sync_cats'), $option['caption'].' <input type="submit" class="button-primary" value="'.__('Apply').'" id="catsyncsubmitbutton">');
+		$out .= '<br />'.$option['desc'];
+		$out .= '
+							</form>
+						</div>';
+		// Manual sync button
+		$out .= '<br />
+						<div>
+							<form id="manualcatsync" method="POST" action="?page=el_admin_categories&amp;action=manualcatsync">
+								<input type="submit" class="button-secondary" value="'.__('Do a manual sync with post categories').'" id="manualcatsyncbutton">
 							</form>
 						</div>
 					</div>';
