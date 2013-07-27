@@ -155,7 +155,7 @@ class EL_Admin_Categories {
 		$class_array = array();
 		foreach($cat_array as $cat) {
 			if($cat['slug'] != $cat_data['slug']) {
-				$option_array[$cat['slug']] = str_pad($cat['name'], 18*$cat['level'], '&nbsp;', STR_PAD_LEFT);
+				$option_array[$cat['slug']] = str_pad('', 12*$cat['level'], '&nbsp;', STR_PAD_LEFT).$cat['name'];
 				$class_array[$cat['slug']] = 'level-'.$cat['level'];
 			}
 		}
