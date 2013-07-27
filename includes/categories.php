@@ -43,19 +43,22 @@ class EL_Categories {
 		}
 	}
 
-	public function add_category( $cat_data ) {
+	public function add_category($cat_data, $allow_identical_names=false) {
 		// check if name was set
 		if( !isset( $cat_data['name'] ) || '' == $cat_data['name'] ) {
 			return false;
 		}
 		// check if name already exists
-		foreach( $this->cat_array as $cat ) {
-			if( $cat['name'] == $cat_data['name'] ) {
-				return false;
+		$cat_data['name'] = trim($cat_data['name']);
+		if(!$allow_identical_names) {
+			foreach( $this->cat_array as $category ) {
+				if( $category['name'] === $cat_data['name'] ) {
+					return false;
+				}
 			}
 		}
 		// set cat name
-		$cat['name'] = trim( $cat_data['name'] );
+		$cat['name'] = $cat_data['name'];
 		// set slug
 		// generate slug if no slug was given
 		if( !isset( $cat_data['slug'] ) || '' == $cat_data['slug'] ) {
@@ -86,12 +89,13 @@ class EL_Categories {
 		return $this->safe_categories();
 	}
 
-	public function edit_category( $cat_data, $old_slug ) {
+	public function edit_category($cat_data, $old_slug, $allow_identical_names=false) {
 		// check if slug already exists
 		if(!isset($this->cat_array[$old_slug])) {
 			return false;
 		}
 		unset($this->cat_array[$old_slug]);
+		//TODO: change events to new cat name
 		return $this->add_category($cat_data);
 	}
 
@@ -116,6 +120,63 @@ class EL_Categories {
 			return false;
 		}
 		return true;
+	}
+
+	public function sync_with_post_cats() {
+		$post_cats = get_categories(array('type'=>'post', 'orderby'=>'slug', 'hide_empty'=>0));
+		// delete not available categories(compare categories by slug)
+		$cats_to_delete = array();
+		foreach($this->cat_array as $event_cat) {
+			$in_array = false;
+			foreach($post_cats as $post_cat) {
+				if($post_cat->slug === $event_cat['slug']) {
+					$in_array = true;
+					break;
+				}
+			}
+			if(!$in_array) {
+				$cats_to_delete[] = $event_cat['slug'];
+			}
+		}
+		$this->remove_categories($cats_to_delete);
+		// update existing and add not existing categories
+		$this->update_post_cats_children(0);
+	}
+
+	private function update_post_cats_children($parent_id) {
+		$post_cats = get_categories(array('type'=>'post', 'parent'=>$parent_id, 'orderby'=>'slug', 'hide_empty'=>0));
+		// add not existing categories
+		if(!empty($post_cats)) {
+			foreach($post_cats as $post_cat) {
+				$in_array = false;
+				foreach($this->cat_array as $event_cat) {
+					if($event_cat['slug'] === $post_cat->slug) {
+						$in_array = true;
+						// update category
+						$cat_data = $this->get_cat_data_from_post_cat($post_cat);
+						$this->edit_category($cat_data, $event_cat['slug'], true);
+						break;
+					}
+				}
+				if(!$in_array) {
+					$cat_data = $this->get_cat_data_from_post_cat($post_cat);
+					$this->add_category($cat_data, true);
+				}
+				$this->update_post_cats_children($post_cat->cat_ID);
+			}
+		}
+	}
+
+	private function get_cat_data_from_post_cat($post_cat) {
+		echo('<br />');
+		$cat['name'] = $post_cat->name;
+		$cat['slug'] = $post_cat->slug;
+		$cat['desc'] = $post_cat->description;
+		if(0 != $post_cat->parent) {
+			$cat['parent'] = get_category($post_cat->parent)->slug;
+		}
+		echo('<br /><br />');
+		return $cat;
 	}
 
 	public function get_cat_array($sort_key='name', $sort_order='asc') {

@@ -94,7 +94,7 @@ class EL_Admin_Categories {
 			$this->options->set('el_sync_cats', isset($_POST['el_sync_cats']) ? '1' : '');
 		}
 		else if('manualcatsync' === $action) {
-			//TODO: do manual cat sync
+			$this->categories->sync_with_post_cats();
 		}
 		else if('editcat' === $action && !empty($_POST)) {
 			if(!isset($_POST['id'])) {
