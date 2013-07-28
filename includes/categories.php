@@ -168,15 +168,44 @@ class EL_Categories {
 	}
 
 	private function get_cat_data_from_post_cat($post_cat) {
-		echo('<br />');
 		$cat['name'] = $post_cat->name;
 		$cat['slug'] = $post_cat->slug;
 		$cat['desc'] = $post_cat->description;
 		if(0 != $post_cat->parent) {
 			$cat['parent'] = get_category($post_cat->parent)->slug;
 		}
-		echo('<br /><br />');
 		return $cat;
+	}
+
+	public function add_post_category($cat_id) {
+		$cat_data = $this->get_cat_data_from_post_cat(get_category($cat_id));
+		$this->add_category($cat_data, true);
+	}
+
+	public function edit_post_category($cat_id) {
+		error_log('Test');
+		$cat_data = $this->get_cat_data_from_post_cat(get_category($cat_id));
+		$old_slug = $cat_data['slug'];
+		if(!isset($this->cat_array[$old_slug])) {
+			// search for the changed category because the slug was changed
+			foreach($this->cat_array as $event_cat) {
+				if(false == get_category_by_slug($event_cat['slug'])) {
+					$old_slug = $event_cat['slug'];
+					break;
+				}
+			}
+		}
+		$this->edit_category($cat_data, $old_slug, true);
+	}
+
+	public function delete_post_category($cat_id) {
+		// search for deleted categories
+		foreach($this->cat_array as $event_cat) {
+			if(false == get_category_by_slug($event_cat['slug'])) {
+				$this->remove_categories(array($event_cat['slug']));
+				break;
+			}
+		}
 	}
 
 	public function get_cat_array($sort_key='name', $sort_order='asc') {
