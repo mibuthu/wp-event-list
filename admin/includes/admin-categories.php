@@ -91,7 +91,17 @@ class EL_Admin_Categories {
 			}
 		}
 		else if('setcatsync' === $action) {
-			$this->options->set('el_sync_cats', isset($_POST['el_sync_cats']) ? '1' : '');
+			$el_sync_cats = isset($_POST['el_sync_cats']) ? '1' : '';
+			$this->options->set('el_sync_cats', $el_sync_cats);
+			if('1' == $el_sync_cats) {
+				$this->categories->sync_with_post_cats();
+				$out .= '<div id="message" class="updated"><p><strong>'.__('Sync with post categories enabled.').'</strong></p></div>';
+			}
+			else {
+				$out .= '<div id="message" class="updated"><p><strong>'.__('Sync with post categories disabled.').'</strong></p></div>';
+			}
+
+
 		}
 		else if('manualcatsync' === $action) {
 			$this->categories->sync_with_post_cats();
