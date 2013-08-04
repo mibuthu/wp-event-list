@@ -44,7 +44,7 @@ class EL_Options {
 			                                 'label'   => __('Sync Categories'),
 			                                 'caption' => __('Keep event categories in sync with post categories'),
 			                                 'desc'    => '<table><tr style="vertical-align:top"><td><strong>'.__('Attention').':</strong></td>
-			                                               <td>'.__('Please note that this function will delete all categories not available in post categories! Existing Categories with the same slug will be updated.').'</td></tr></table>'),
+			                                               <td>'.__('Please note that this option will delete all categories which are not available in the post categories! Existing Categories with the same slug will be updated.').'</td></tr></table>'),
 
 			'el_no_event_text'     => array( 'section' => 'general',
 			                                 'type'    => 'text',
