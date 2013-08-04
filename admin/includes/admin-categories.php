@@ -119,7 +119,6 @@ class EL_Admin_Categories {
 			else {
 				// edit category
 				if($this->categories->edit_category($_POST, $_POST['id'])) {
-					$this->db->change_category_slug_in_events($_POST['id'], $_POST['slug']);
 					$out .= '<div id="message" class="updated below-h2"><p><strong>Category "'.$_POST['id'].'" was modified.</strong></p></div>';
 				}
 				else {

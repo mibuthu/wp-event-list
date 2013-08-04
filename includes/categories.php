@@ -94,8 +94,13 @@ class EL_Categories {
 		if(!isset($this->cat_array[$old_slug])) {
 			return false;
 		}
+		// update events if slug has changed
+		if($old_slug != $cat_data['slug']) {
+			$this->db->change_category_slug_in_events($old_slug, $cat_data['slug']);
+		}
+		// delete old category
 		unset($this->cat_array[$old_slug]);
-		//TODO: change events to new cat slug
+		// add new category
 		return $this->add_category($cat_data, $allow_identical_names);
 	}
 
