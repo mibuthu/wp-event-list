@@ -94,7 +94,7 @@ class EL_Admin_Categories {
 		else if('setcatsync' === $action) {
 			$el_sync_cats = isset($_POST['el_sync_cats']) ? '1' : '';
 			$this->options->set('el_sync_cats', $el_sync_cats);
-			if(!$is_disabled) {
+			if('1' == $el_sync_cats) {
 				$this->categories->sync_with_post_cats();
 				$out .= '<div id="message" class="updated"><p><strong>'.__('Sync with post categories enabled.').'</strong></p></div>';
 			}
