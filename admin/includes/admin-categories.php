@@ -96,15 +96,14 @@ class EL_Admin_Categories {
 		else if('setcatsync' === $action) {
 			$el_sync_cats = isset($_POST['el_sync_cats']) ? '1' : '';
 			$this->options->set('el_sync_cats', $el_sync_cats);
-			if('1' == $el_sync_cats) {
+			$is_disabled = '1' == $this->options->get('el_sync_cats');
+			if(!$is_disabled) {
 				$this->categories->sync_with_post_cats();
 				$out .= '<div id="message" class="updated"><p><strong>'.__('Sync with post categories enabled.').'</strong></p></div>';
 			}
 			else {
 				$out .= '<div id="message" class="updated"><p><strong>'.__('Sync with post categories disabled.').'</strong></p></div>';
 			}
-
-
 		}
 		else if('manualcatsync' === $action) {
 			if(!$is_disabled) {
@@ -133,6 +132,12 @@ class EL_Admin_Categories {
 					}
 				}
 			}
+		}
+		// add message if forms are disabled
+		if($is_disabled) {
+			$out .= '<div id="message" class="updated"><p>'.__('Categories are automatically synced with the post categories.<br />
+			                                                    Because of this all options to add new categories or editing existing categories are disabled.<br />
+			                                                    If you want to manually edit the categories you have to disable this option.').'</p></div>';
 		}
 		return $out;
 	}
