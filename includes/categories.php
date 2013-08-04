@@ -185,17 +185,17 @@ class EL_Categories {
 	}
 
 	public function edit_post_category($cat_id) {
-		$cat_data = $this->get_cat_data_from_post_cat(get_category($cat_id));
-		$old_slug = $cat_data['slug'];
-		if(!isset($this->cat_array[$old_slug])) {
-			// search for the changed category because the slug was changed
-			foreach($this->cat_array as $event_cat) {
-				if(false == get_category_by_slug($event_cat['slug'])) {
-					$old_slug = $event_cat['slug'];
-					break;
-				}
-			}
+		// the get_category still holds the old cat_data
+		// the new data is available in $_POST
+		$old_slug = get_category($cat_id)->slug;
+		// set new cat_data from $_POST
+		$cat_data['name'] = $_POST['name'];
+		$cat_data['slug'] = $_POST['slug'];
+		$cat_data['desc'] = $_POST['description'];
+		if(0 != $_POST['parent']) {
+			$cat_data['parent'] = get_category($_POST['parent'])->slug;
 		}
+		// edit event category
 		$this->edit_category($cat_data, $old_slug, true);
 	}
 
