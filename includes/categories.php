@@ -95,8 +95,8 @@ class EL_Categories {
 			return false;
 		}
 		unset($this->cat_array[$old_slug]);
-		//TODO: change events to new cat name
-		return $this->add_category($cat_data);
+		//TODO: change events to new cat slug
+		return $this->add_category($cat_data, $allow_identical_names);
 	}
 
 	public function remove_categories( $slugs ) {
@@ -145,23 +145,25 @@ class EL_Categories {
 
 	private function update_post_cats_children($parent_id) {
 		$post_cats = get_categories(array('type'=>'post', 'parent'=>$parent_id, 'orderby'=>'slug', 'hide_empty'=>0));
-		// add not existing categories
+		// add not existing categories, update existing categories
 		if(!empty($post_cats)) {
 			foreach($post_cats as $post_cat) {
 				$in_array = false;
 				foreach($this->cat_array as $event_cat) {
 					if($event_cat['slug'] === $post_cat->slug) {
 						$in_array = true;
-						// update category
+						// update an already existing category
 						$cat_data = $this->get_cat_data_from_post_cat($post_cat);
 						$this->edit_category($cat_data, $event_cat['slug'], true);
 						break;
 					}
 				}
+				// add a new category
 				if(!$in_array) {
 					$cat_data = $this->get_cat_data_from_post_cat($post_cat);
 					$this->add_category($cat_data, true);
 				}
+				// update the children of the actual category
 				$this->update_post_cats_children($post_cat->cat_ID);
 			}
 		}
@@ -183,7 +185,6 @@ class EL_Categories {
 	}
 
 	public function edit_post_category($cat_id) {
-		error_log('Test');
 		$cat_data = $this->get_cat_data_from_post_cat(get_category($cat_id));
 		$old_slug = $cat_data['slug'];
 		if(!isset($this->cat_array[$old_slug])) {
