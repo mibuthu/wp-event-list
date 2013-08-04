@@ -72,6 +72,7 @@ class EL_Admin_Categories {
 	}
 
 	private function check_actions_and_show_messages($action) {
+		$is_disabled = '1' == $this->options->get('el_sync_cats');
 		$out = '';
 		if('delete' === $action && isset($_GET['slug'])) {
 			// delete categories
@@ -93,7 +94,7 @@ class EL_Admin_Categories {
 		else if('setcatsync' === $action) {
 			$el_sync_cats = isset($_POST['el_sync_cats']) ? '1' : '';
 			$this->options->set('el_sync_cats', $el_sync_cats);
-			if('1' == $el_sync_cats) {
+			if(!$is_disabled) {
 				$this->categories->sync_with_post_cats();
 				$out .= '<div id="message" class="updated"><p><strong>'.__('Sync with post categories enabled.').'</strong></p></div>';
 			}
@@ -110,22 +111,24 @@ class EL_Admin_Categories {
 			}
 		}
 		else if('editcat' === $action && !empty($_POST)) {
-			if(!isset($_POST['id'])) {
-				// add new category
-				if($this->categories->add_category($_POST)) {
-					$out .= '<div id="message" class="updated below-h2"><p><strong>New Category "'.$_POST['name'].'" was added.</strong></p></div>';
+			if(!$is_disabled) {
+				if(!isset($_POST['id'])) {
+					// add new category
+					if($this->categories->add_category($_POST)) {
+						$out .= '<div id="message" class="updated below-h2"><p><strong>New Category "'.$_POST['name'].'" was added.</strong></p></div>';
+					}
+					else {
+						$out .= '<div id="message" class="error below-h2"><p><strong>Error: New Category "'.$_POST['name'].'" could not be added.</strong></p></div>';
+					}
 				}
 				else {
-					$out .= '<div id="message" class="error below-h2"><p><strong>Error: New Category "'.$_POST['name'].'" could not be added.</strong></p></div>';
-				}
-			}
-			else {
-				// edit category
-				if($this->categories->edit_category($_POST, $_POST['id'])) {
-					$out .= '<div id="message" class="updated below-h2"><p><strong>Category "'.$_POST['id'].'" was modified.</strong></p></div>';
-				}
-				else {
-					$out .= '<div id="message" class="error below-h2"><p><strong>Error: Category "'.$_POST['id'].'" could not be modified.</strong></p></div>';
+					// edit category
+					if($this->categories->edit_category($_POST, $_POST['id'])) {
+						$out .= '<div id="message" class="updated below-h2"><p><strong>Category "'.$_POST['id'].'" was modified.</strong></p></div>';
+					}
+					else {
+						$out .= '<div id="message" class="error below-h2"><p><strong>Error: Category "'.$_POST['id'].'" could not be modified.</strong></p></div>';
+					}
 				}
 			}
 		}
@@ -133,6 +136,7 @@ class EL_Admin_Categories {
 	}
 
 	private function show_edit_category_form($title, $button_text, $cat_data=null) {
+		$is_disabled = '1' == $this->options->get('el_sync_cats');
 		$is_new_event = (null == $cat_data);
 		if($is_new_event) {
 			$cat_data['name'] = '';
@@ -152,12 +156,12 @@ class EL_Admin_Categories {
 		// Category Name
 		$out .= '
 				<div class="form-field form-required"><label for="name">Name: </label>';
-		$out .= $this->functions->show_text('name', $cat_data['name']);
+		$out .= $this->functions->show_text('name', $cat_data['name'], $is_disabled);
 		$out .= '<p>'.__('The name is how it appears on your site.').'</p></div>';
 		// Category Slug
 		$out .= '
 				<div class="form-field"><label for="name">Slug: </label>';
-		$out .= $this->functions->show_text('slug', $cat_data['slug']);
+		$out .= $this->functions->show_text('slug', $cat_data['slug'], $is_disabled);
 		$out .= '<p>'.__('The “slug” is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens.').'</p></div>';
 		// Category Parent
 		$out .= '
@@ -172,14 +176,14 @@ class EL_Admin_Categories {
 			}
 		}
 		$selected = isset($cat_data['parent']) ? $cat_data['parent'] : null;
-		$out .= $this->functions->show_combobox('parent', $option_array, $selected, $class_array);
+		$out .= $this->functions->show_combobox('parent', $option_array, $selected, $class_array, $is_disabled);
 		$out .= '<p>'.__('Categories can have a hierarchy. You might have a Jazz category, and under that have children categories for Bebop and Big Band. Totally optional.').'</p></div>';
 		// Category Description
 		$out .= '
 				<div class="form-field"><label for="name">Description: </label>';
-		$out .= $this->functions->show_textarea('desc', $cat_data['desc']);
+		$out .= $this->functions->show_textarea('desc', $cat_data['desc'], $is_disabled);
 		$out .= '</div>
-				<p class="submit"><input type="submit" class="button-primary" value="'.$button_text.'" id="submitbutton"></p>';
+				<p class="submit"><input type="submit" class="button-primary" value="'.$button_text.'" id="submitbutton"'.$this->functions->get_disabled_text($is_disabled).'></p>';
 		$out .= '
 							</form>
 						</div>
@@ -225,7 +229,7 @@ class EL_Admin_Categories {
 							</form>
 						</div>';
 		// Manual sync button
-		$disabled_text = '1' == $sync_option_value ? ' disabled="disabled"' : '';
+		$disabled_text = $this->functions->get_disabled_text('1' == $sync_option_value);
 		$out .= '<br />
 						<div>
 							<form id="manualcatsync" method="POST" action="?page=el_admin_categories&amp;action=manualcatsync">
