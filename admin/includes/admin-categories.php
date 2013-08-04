@@ -77,8 +77,7 @@ class EL_Admin_Categories {
 			// delete categories
 			$slug_array = explode(', ', $_GET['slug']);
 			$num_affected_events = $this->db->remove_category_in_events($slug_array);
-			require_once(EL_PATH.'admin/includes/category_table.php');
-			if($this->categories->remove_categories($slug_array)) {
+			if($this->categories->remove_categories($slug_array, false)) {
 				$out .= '<div id="message" class="updated">
 					<p><strong>'.sprintf(__('Category "%s" deleted.'), $_GET['slug']);
 				if($num_affected_events > 0) {

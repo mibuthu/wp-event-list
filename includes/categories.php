@@ -99,7 +99,10 @@ class EL_Categories {
 		return $this->add_category($cat_data, $allow_identical_names);
 	}
 
-	public function remove_categories( $slugs ) {
+	public function remove_categories($slugs, $remove_cats_in_events=true) {
+		if($remove_cats_in_events) {
+			$this->db->remove_category_in_events($slugs);
+		}
 		foreach( $slugs as $slug ) {
 			unset( $this->cat_array[$slug] );
 		}
