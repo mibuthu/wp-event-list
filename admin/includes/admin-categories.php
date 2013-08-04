@@ -67,6 +67,7 @@ class EL_Admin_Categories {
 	}
 
 	public function embed_categories_scripts() {
+		wp_enqueue_script('jquery');
 		wp_enqueue_script('eventlist_admin_categories_js', EL_URL.'admin/js/admin_categories.js');
 	}
 

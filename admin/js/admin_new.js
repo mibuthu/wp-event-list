@@ -1,7 +1,7 @@
 // Javascript functions for event-list admin_new page
 
 // Date helpers
-jQuery(document).ready(function( $ ) {	
+jQuery(document).ready(function($) {
 	// Read required config data from hidden field json_for_js
 	var json = $("#json_for_js").val();
 	var conf = eval('(' + json + ')');
