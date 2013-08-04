@@ -15,12 +15,13 @@ class EL_Category_Table extends WP_List_Table {
 	private $options;
 	private $db;
 	private $categories;
+	private $is_disabled;
 
-	public function __construct() {
+	public function __construct($is_disabled) {
 		$this->options = &EL_Options::get_instance();
 		$this->db = &EL_Db::get_instance();
 		$this->categories = &EL_Categories::get_instance();
-		//global $status, $page;
+		$this->is_disabled = $is_disabled;
 		//Set parent defaults
 		parent::__construct( array(
 			'singular'  => 'event',     //singular name of the listed records
@@ -60,15 +61,19 @@ class EL_Category_Table extends WP_List_Table {
 	* @return string Text to be placed inside the column <td> (movie title only)
 	***************************************************************************/
 	protected function column_name($item) {
-		// prepare Actions
-		$actions = array(
-			'edit'      => '<a href="?page='.$_REQUEST['page'].'&amp;id='.$item['slug'].'&amp;action=edit">Edit</a>',
-			'delete'    => '<a href="#" onClick="eventlist_deleteCategory(\''.$item['slug'].'\');return false;">Delete</a>'
-		);
 		// create prefix with indenting according cat level
 		$prefix = str_pad('', 7*$item['level'], '&#8212;', STR_PAD_LEFT).' ';
-		//Return the title contents
-		return '<b>'.$prefix.$item['name'].'</b>'.$this->row_actions($actions);
+		$out = '<b>'.$prefix.$item['name'].'</b>';
+		if(!$this->is_disabled) {
+			// prepare Actions
+			$actions = array(
+				'edit'      => '<a href="?page='.$_REQUEST['page'].'&amp;id='.$item['slug'].'&amp;action=edit">Edit</a>',
+				'delete'    => '<a href="#" onClick="eventlist_deleteCategory(\''.$item['slug'].'\');return false;">Delete</a>'
+			);
+			//Return the title contents
+			$out .= $this->row_actions($actions);
+		}
+		return $out;
 	}
 
 	/** ************************************************************************
@@ -80,9 +85,12 @@ class EL_Category_Table extends WP_List_Table {
 	* @return string Text to be placed inside the column <td> (movie title only)
 	***************************************************************************/
 	protected function column_cb($item) {
-		//Let's simply repurpose the table's singular label ("event")
-		//The value of the checkbox should be the record's id
-		return '<input type="checkbox" name="slug[]" value="'.$item['slug'].'" />';
+		if(!$this->is_disabled) {
+			return '<input type="checkbox" name="slug[]" value="'.$item['slug'].'" />';
+		}
+		else {
+			return '';
+		}
 	}
 
 	/** ************************************************************************
@@ -95,7 +103,7 @@ class EL_Category_Table extends WP_List_Table {
 	***************************************************************************/
 	public function get_columns() {
 		return array(
-			'cb'         => '<input type="checkbox" />', //Render a checkbox instead of text
+			'cb'         => $this->is_disabled ? '' : '<input type="checkbox" />', //Render a checkbox instead of text
 			'name'       => 'Name',
 			'desc'       => 'Description',
 			'slug'       => 'Slug',
@@ -132,10 +140,15 @@ class EL_Category_Table extends WP_List_Table {
 	* @return array An associative array containing all the bulk actions: 'slugs'=>'Visible Titles'
 	****************************************************************************/
 	public function get_bulk_actions() {
-		$actions = array(
-			'delete_bulk' => 'Delete'
-		);
-		return $actions;
+		if(!$this->is_disabled) {
+			$actions = array(
+				'delete_bulk' => 'Delete'
+			);
+			return $actions;
+		}
+		else {
+			return array();
+		}
 	}
 
 	/** ************************************************************************
@@ -144,10 +157,12 @@ class EL_Category_Table extends WP_List_Table {
 	* @see $this->prepare_items()
 	***************************************************************************/
 	private function process_bulk_action() {
-		//Detect when a bulk action is being triggered...
-		if( 'delete_bulk' === $this->current_action() ) {
-			// Show confirmation window before deleting
-			echo '<script language="JavaScript">eventlist_deleteCategory ("'.implode( ', ', $_GET['slug'] ).'");</script>';
+		if(!$this->is_disabled) {
+			//Detect when a bulk action is being triggered...
+			if( 'delete_bulk' === $this->current_action() ) {
+				// Show confirmation window before deleting
+				echo '<script language="JavaScript">eventlist_deleteCategory ("'.implode( ', ', $_GET['slug'] ).'");</script>';
+			}
 		}
 	}
 

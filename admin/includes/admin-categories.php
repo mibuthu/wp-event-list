@@ -75,20 +75,22 @@ class EL_Admin_Categories {
 		$is_disabled = '1' == $this->options->get('el_sync_cats');
 		$out = '';
 		if('delete' === $action && isset($_GET['slug'])) {
-			// delete categories
-			$slug_array = explode(', ', $_GET['slug']);
-			$num_affected_events = $this->db->remove_category_in_events($slug_array);
-			if($this->categories->remove_categories($slug_array, false)) {
-				$out .= '<div id="message" class="updated">
-					<p><strong>'.sprintf(__('Category "%s" deleted.'), $_GET['slug']);
-				if($num_affected_events > 0) {
-					$out .= '<br />'.sprintf(__('This Category was also removed from %d events.'), $num_affected_events);
+			if(!$is_disabled) {
+				// delete categories
+				$slug_array = explode(', ', $_GET['slug']);
+				$num_affected_events = $this->db->remove_category_in_events($slug_array);
+				if($this->categories->remove_categories($slug_array, false)) {
+					$out .= '<div id="message" class="updated">
+						<p><strong>'.sprintf(__('Category "%s" deleted.'), $_GET['slug']);
+					if($num_affected_events > 0) {
+						$out .= '<br />'.sprintf(__('This Category was also removed from %d events.'), $num_affected_events);
+					}
+					$out .= '</strong></p>
+					</div>';
 				}
-				$out .= '</strong></p>
-				</div>';
-			}
-			else {
-				$out .= '<div id="message" class="error below-h2"><p><strong>Error while deleting category "'.$_GET['slug'].'".</strong></p></div>';
+				else {
+					$out .= '<div id="message" class="error below-h2"><p><strong>Error while deleting category "'.$_GET['slug'].'".</strong></p></div>';
+				}
 			}
 		}
 		else if('setcatsync' === $action) {
@@ -105,7 +107,7 @@ class EL_Admin_Categories {
 
 		}
 		else if('manualcatsync' === $action) {
-			if('1' != $this->options->get('el_sync_cats')) {
+			if(!$is_disabled) {
 				$this->categories->sync_with_post_cats();
 				$out .= '<div id="message" class="updated"><p><strong>'.__('Manual sync with post categories sucessfully finished.').'</strong></p></div>';
 			}
@@ -199,8 +201,9 @@ class EL_Admin_Categories {
 						<div class="col-wrap">
 							<form id="category-filter" method="get">
 								<input type="hidden" name="page" value="'.$_REQUEST['page'].'" />';
+		$is_disabled = '1' == $this->options->get('el_sync_cats');
 		require_once(EL_PATH.'admin/includes/category_table.php');
-		$category_table = new EL_Category_Table();
+		$category_table = new EL_Category_Table($is_disabled);
 		$category_table->prepare_items();
 		ob_start();
 		$category_table->display();
