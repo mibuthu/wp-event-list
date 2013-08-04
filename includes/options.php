@@ -42,7 +42,7 @@ class EL_Options {
 			                                 'type'    => 'checkbox',
 			                                 'std_val' => '',
 			                                 'label'   => __('Sync Categories'),
-			                                 'caption' => __('Keep event categories in sync with post categories'),
+			                                 'caption' => __('Keep event categories in sync with post categories automatically'),
 			                                 'desc'    => '<table><tr style="vertical-align:top"><td><strong>'.__('Attention').':</strong></td>
 			                                               <td>'.__('Please note that this option will delete all categories which are not available in the post categories! Existing Categories with the same slug will be updated.').'</td></tr></table>'),
 
