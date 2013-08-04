@@ -104,7 +104,10 @@ class EL_Admin_Categories {
 
 		}
 		else if('manualcatsync' === $action) {
-			$this->categories->sync_with_post_cats();
+			if('1' != $this->options->get('el_sync_cats')) {
+				$this->categories->sync_with_post_cats();
+				$out .= '<div id="message" class="updated"><p><strong>'.__('Manual sync with post categories sucessfully finished.').'</strong></p></div>';
+			}
 		}
 		else if('editcat' === $action && !empty($_POST)) {
 			if(!isset($_POST['id'])) {
@@ -207,26 +210,29 @@ class EL_Admin_Categories {
 	}
 
 	private function show_cat_sync_form() {
-		$option = &$this->options->options['el_sync_cats'];
+		$sync_option = &$this->options->options['el_sync_cats'];
+		$sync_option_value = $this->options->get('el_sync_cats');
 		$out = '
 					<div id="col-left">
 						<div class="col-wrap">
 							<div class="form-wrap">
-							<h3>'.$option['label'].'</h3>
+							<h3>'.$sync_option['label'].'</h3>
 							<form id="catsync" method="POST" action="?page=el_admin_categories&amp;action=setcatsync">';
 		// Checkbox
-		$out .= $this->functions->show_checkbox('el_sync_cats', $this->options->get('el_sync_cats'), $option['caption'].' <input type="submit" class="button-primary" value="'.__('Apply').'" id="catsyncsubmitbutton">');
-		$out .= '<br />'.$option['desc'];
+		$out .= $this->functions->show_checkbox('el_sync_cats', $sync_option_value, $sync_option['caption'].' <input type="submit" class="button-primary" value="'.__('Apply').'" id="catsyncsubmitbutton">');
+		$out .= '<br />'.$sync_option['desc'];
 		$out .= '
 							</form>
 						</div>';
 		// Manual sync button
+		$disabled_text = '1' == $sync_option_value ? ' disabled="disabled"' : '';
 		$out .= '<br />
 						<div>
 							<form id="manualcatsync" method="POST" action="?page=el_admin_categories&amp;action=manualcatsync">
-								<input type="submit" class="button-secondary" value="'.__('Do a manual sync with post categories').'" id="manualcatsyncbutton">
+								<input type="submit" class="button-secondary" value="'.__('Do a manual sync with post categories').'" id="manualcatsyncbutton"'.$disabled_text.'>
 							</form>
-						</div>
+						</div>';
+		$out .= '
 					</div>';
 		return $out;
 	}
