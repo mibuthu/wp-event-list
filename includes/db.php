@@ -179,24 +179,24 @@ class EL_Db {
 		}
 	}
 
-	public function remove_category_in_events( $category_slugs ) {
+	public function remove_category_in_events($category_slugs) {
 		global $wpdb;
-		$sql = 'SELECT * FROM '.$this->table.' WHERE categories LIKE "%|'.implode( '|%" OR categories LIKE "%|', $category_slugs ).'|%"';
+		$sql = 'SELECT * FROM '.$this->table.' WHERE categories LIKE "%|'.implode('|%" OR categories LIKE "%|', $category_slugs).'|%"';
 		$affected_events = $wpdb->get_results($sql, ARRAY_A);
-		foreach( $affected_events as $event ) {
+		foreach($affected_events as $event) {
 			// remove category from categorystring
-			foreach( $category_slugs as $slug ) {
-				$event['categories'] = str_replace('|'.$slug, '', $event['categories']);
+			foreach($category_slugs as $slug) {
+				$event['categories'] = str_replace('|'.$slug.'|', '|', $event['categories']);
 			}
-			if( 3 > strlen( $event['categories'] ) ) {
+			if(3 > strlen( $event['categories'])) {
 				$event['categories'] = '';
 			}
 			else {
-				$event['categories'] = explode( '|', substr($event['categories'], 1, -1 ) );
+				$event['categories'] = explode( '|', substr($event['categories'], 1, -1));
 			}
-			$this->update_event( $event );
+			$this->update_event($event);
 			}
-		return count( $affected_events );
+		return count($affected_events);
 	}
 
 	public function change_category_slug_in_events($old_slug, $new_slug) {

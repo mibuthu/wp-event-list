@@ -3,8 +3,8 @@ Contributors: mibuthu
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W54LNZMWF9KW2
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, admin, attribute, widget, sidebar
 Requires at least: 3.3
-Tested up to: 3.5.2
-Stable tag: 0.4.4
+Tested up to: 3.6
+Stable tag: 0.4.5
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -24,6 +24,7 @@ The purpose of this plugin is to to show a list of events with date, time, descr
 * A duplicate function for events
 * Event navigation to view only upcoming events or past/future events filtered by year
 * Event categories
+* Sync event categories with post categories
 
 The event list can be placed in any page or post on your Wordpress site. Just include the following short code where you want the calendar to appear:
 
@@ -65,6 +66,13 @@ Yes, you can create an instance of the "SC_Event_List" class which located in "i
 
 
 == Changelog ==
+
+= 0.4.5 (2013-08-05) =
+
+* added capability to sync the event categories with the post categories (manually or automatically)
+* fixed problem with empty category list
+* fixed link to category page in new event page
+* fixed indention in in category parent combo box
 
 = 0.4.4 (2013-07-20) =
 

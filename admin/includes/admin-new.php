@@ -193,7 +193,7 @@ class EL_Admin_New {
 				</div>*/
 		$out .= '
 				<div id="category-manager">
-					<a id="category-manage-link" href="?page=el_admin_settings&amp;tab=category">'.__('Goto Category Settings').'</a>
+					<a id="category-manage-link" href="?page=el_admin_categories">'.__('Goto Category Settings').'</a>
 				</div>
 				</div>';
 		echo $out;

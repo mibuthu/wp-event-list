@@ -29,29 +29,37 @@ class EL_Options {
 			                                 'std_val' => '',
 			                                 'label'   => '',
 			                                 'caption' => '',
-			                                 'desc'    => 'Database version' ),
+			                                 'desc'    => __('Database version')),
 
 			'el_categories'        => array( 'section' => 'categories',
 			                                 'type'    => 'category',
 			                                 'std_val' => null,
-			                                 'label'   => 'Event Categories',
+			                                 'label'   => __('Event Categories'),
 			                                 'caption' => '',
-			                                 'desc'    => 'This option specifies all event category data.' ),
+			                                 'desc'    => __('This option specifies all event category data.')),
+
+			'el_sync_cats'         => array( 'section' => 'categories',
+			                                 'type'    => 'checkbox',
+			                                 'std_val' => '',
+			                                 'label'   => __('Sync Categories'),
+			                                 'caption' => __('Keep event categories in sync with post categories automatically'),
+			                                 'desc'    => '<table><tr style="vertical-align:top"><td><strong>'.__('Attention').':</strong></td>
+			                                               <td>'.__('Please note that this option will delete all categories which are not available in the post categories! Existing Categories with the same slug will be updated.').'</td></tr></table>'),
 
 			'el_no_event_text'     => array( 'section' => 'general',
 			                                 'type'    => 'text',
 			                                 'std_val' => 'no event',
-			                                 'label'   => 'Text for no events',
+			                                 'label'   => __('Text for no events'),
 			                                 'caption' => '',
-			                                 'desc'    => 'This option defines the text which is displayed if no events are available for the selected view.' ),
+			                                 'desc'    => __('This option defines the text which is displayed if no events are available for the selected view.')),
 
 			'el_date_once_per_day' => array( 'section' => 'general',
 			                                 'type'    => 'checkbox',
 			                                 'std_val' => '',
-			                                 'label'   => 'Date display',
-			                                 'caption' => 'Show date only once per day',
-			                                 'desc'    => 'With this option you can display the date only once per day if multiple events are available on the same day.<br />
-			                                               If this option is enabled the events are ordered in a different way (end date before start time) to allow using the same date for as much events as possible.' ),
+			                                 'label'   => __('Date display'),
+			                                 'caption' => __('Show date only once per day'),
+			                                 'desc'    => __('With this option you can display the date only once per day if multiple events are available on the same day.<br />
+			                                                  If this option is enabled the events are ordered in a different way (end date before start time) to allow using the same date for as much events as possible.')),
 		);
 	}
 

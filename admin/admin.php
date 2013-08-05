@@ -3,9 +3,16 @@ if(!defined('ABSPATH')) {
 	exit;
 }
 
+require_once( EL_PATH.'includes/options.php' );
+
 // This class handles all available admin pages
 class EL_Admin {
 	private static $instance;
+	private $options;
+
+	private function __construct() {
+		$this->options = &EL_Options::get_instance();
+	}
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -20,6 +27,13 @@ class EL_Admin {
 		// Register actions
 		add_action('admin_menu', array(&$this, 'register_pages'));
 		add_action('plugins_loaded', array(&$this, 'db_upgrade_check'));
+
+		// Register syncing if required
+		if(1 == $this->options->get('el_sync_cats')) {
+			add_action('create_category', array(&$this, 'action_add_category'));
+			add_action('edit_category', array(&$this, 'action_edit_category'));
+			add_action('delete_category', array(&$this, 'action_delete_category'));
+		}
 	}
 
 	/**
@@ -103,6 +117,21 @@ class EL_Admin {
 	public function embed_about_scripts() {
 		require_once(EL_PATH.'admin/includes/admin-about.php');
 		EL_Admin_About::get_instance()->embed_about_scripts();
+	}
+
+	public function action_add_category($cat_id) {
+		require_once(EL_PATH.'includes/categories.php');
+		EL_Categories::get_instance()->add_post_category($cat_id);
+	}
+
+	public function action_edit_category($cat_id) {
+		require_once(EL_PATH.'includes/categories.php');
+		EL_Categories::get_instance()->edit_post_category($cat_id);
+	}
+
+	public function action_delete_category($cat_id) {
+		require_once(EL_PATH.'includes/categories.php');
+		EL_Categories::get_instance()->delete_post_category($cat_id);
 	}
 }
 ?>
