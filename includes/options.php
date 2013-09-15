@@ -46,6 +46,13 @@ class EL_Options {
 			                                 'desc'    => '<table><tr style="vertical-align:top"><td><strong>'.__('Attention').':</strong></td>
 			                                               <td>'.__('Please note that this option will delete all categories which are not available in the post categories! Existing Categories with the same slug will be updated.').'</td></tr></table>'),
 
+			'el_rss_feed'          => array('section' => 'general',
+			                                'type'    => 'checkbox',
+			                                'std_val' => '',
+			                                'label'   => __('RSS feed'),
+			                                'caption' => __('Enable RSS feed links for event pages'),
+			                                'desc'    => __('With this option enabled an RSS feed link will be included on your event pages.')),
+
 			'el_no_event_text'     => array( 'section' => 'general',
 			                                 'type'    => 'text',
 			                                 'std_val' => 'no event',
