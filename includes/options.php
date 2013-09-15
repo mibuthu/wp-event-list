@@ -50,7 +50,7 @@ class EL_Options {
 			                                'type'    => 'checkbox',
 			                                'std_val' => '',
 			                                'label'   => __('RSS feed'),
-			                                'caption' => __('Enable RSS feed links for event pages'),
+			                                'caption' => __('RSS feed links for event pages'),
 			                                'desc'    => __('With this option enabled an RSS feed link will be included on your event pages.')),
 
 			'el_no_event_text'     => array('section' => 'general',
