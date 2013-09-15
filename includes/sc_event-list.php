@@ -214,11 +214,15 @@ class SC_Event_List {
 		}
 		$events = $this->db->get_events( $a['ytd'], $a['num_events'], $cat_filter, $sort_array );
 		$out = '';
-		// TODO: add rss feed
-		//		if ($mfgigcal_settings['rss']) {
-		//			(get_option('permalink_structure')) ? $feed_link = "/feed/events" : $feed_link = "/?feed=events";
-		//			$out .= "<a href=\"$feed_link\" class=\"rss-link\">RSS</a>";
-		//		}
+		if($this->options->get('el_rss_feed')) {
+			if(get_option('permalink_structure')) {
+				$feed_link = get_bloginfo('url').'/feed/el_events';
+			}
+			else {
+				$feed_link = get_bloginfo('url').'/?feed=el_events';
+			}
+			$out .= '<a href="'.$feed_link.'" class="rss-link">RSS</a>';
+		}
 
 		// generate output
 		$out .= $this->html_calendar_nav( $a );
