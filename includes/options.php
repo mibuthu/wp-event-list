@@ -20,7 +20,7 @@ class EL_Options {
 		return self::$instance;
 	}
 
-	public function __construct() {
+	private function __construct() {
 		$this->group = 'event-list';
 
 		$this->options = array(
