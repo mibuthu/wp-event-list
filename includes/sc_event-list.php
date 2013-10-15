@@ -43,7 +43,7 @@ class SC_Event_List {
 			'cat_filter'      => array( 'val'     => 'none<br />category slug',
 			                            'std_val' => 'none',
 			                            'visible' => true,
-			                            'desc'    => 'This attribute specifies events of which categories are shown. The standard is "none" to show all events.<br />
+			                            'desc'    => 'This attribute specifies the categories of which events are shown. The standard is "none" to show all events.<br />
 			                                          Specify a category slug or a list of category slugs separated by a comma "," e.g. "tennis,hockey" to only show events of the specified categories.' ),
 
 			'num_events'      => array( 'val'     => 'number',
