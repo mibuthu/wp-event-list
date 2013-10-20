@@ -262,9 +262,9 @@ class SC_Event_List {
 		}
 		$out .= '"><h3>';
 
-		$title = $this->db->truncate( min( $max_length, $a['title_length'] ), $event->title );
+		$title = esc_attr($this->db->truncate(min($max_length, $a['title_length']), $event->title));
 		if( $this->is_visible( $a['link_to_event'] ) ) {
-			$out .= '<a href="'.add_query_arg( 'event_id_'.$a['sc_id_for_url'], $event->id, $this->get_url( $a ) ).'">'.$title.'</a>';
+			$out .= '<a href="'.esc_html(add_query_arg('event_id_'.$a['sc_id_for_url'], $event->id, $this->get_url($a))).'">'.$title.'</a>';
 		}
 		else {
 			$out .= $title;
@@ -276,13 +276,13 @@ class SC_Event_List {
 			if( empty( $date_array['errors']) && is_numeric( $date_array['hour'] ) && is_numeric( $date_array['minute'] ) ) {
 				$event->time = mysql2date( get_option( 'time_format' ), $event->time );
 			}
-			$out .= '<span class="event-time">'.$event->time.'</span>';
+			$out .= '<span class="event-time">'.esc_attr($event->time).'</span>';
 		}
 		if( $this->is_visible( $a['show_location'] ) ) {
-			$out .= '<span class="event-location">'.$this->db->truncate( min( $max_length, $a['location_length'] ), $event->location ).'</span>';
+			$out .= '<span class="event-location">'.esc_attr($this->db->truncate(min($max_length, $a['location_length']), $event->location)).'</span>';
 		}
 		if( $this->is_visible( $a['show_cat'] ) ) {
-			$out .= '<div class="event-cat">'.$this->categories->get_category_string( $event->categories ).'</div>';
+			$out .= '<div class="event-cat">'.esc_attr($this->categories->get_category_string($event->categories)).'</div>';
 		}
 		if( $this->is_visible( $a['show_details'] ) ) {
 			$out .= '<div class="event-details">'.$this->db->truncate( min( $max_length, $a['details_length'] ), do_shortcode( $event->details ) ).'</div>';
