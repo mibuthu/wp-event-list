@@ -59,10 +59,14 @@ class EL_Feed {
 			foreach ($events as $event) {
 				echo '
 			<item>
-				<title>'.$event->title.'</title>
-				<pubDate>'.mysql2date('D, d M Y H:i:s +0000', $event->pub_date, false).'</pubDate>
-				<description><![CDATA['.$this->format_date($event->start_date, $event->end_date).' '.$event->location.']]></description>
-				<content:encoded><![CDATA['.$event->details.']]></content:encoded>
+				<title>'.esc_attr($this->format_date($event->start_date, $event->end_date).' - '.$event->title).'</title>
+				<pubDate>'.mysql2date('D, d M Y H:i:s +0000', $event->start_date, false).'</pubDate>
+				<description>'.esc_attr($this->format_date($event->start_date, $event->end_date).' '.
+						('' != $event->time ? $event->time : '').('' != $event->location ? ' - '.$event->location : '')).'</description>
+				'.('' != $event->details ?
+						'<content:encoded><![CDATA['.esc_attr($this->format_date($event->start_date, $event->end_date).' '.
+						('' != $event->time ? $event->time : '').('' != $event->location ? ' - '.$event->location : '')).
+						$event->details.']]></content:encoded>' : '').'
 			</item>';
 			}
 		}
