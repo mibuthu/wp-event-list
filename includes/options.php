@@ -61,12 +61,13 @@ class EL_Options {
 			                                'desc'    => __('With this option you can display the date only once per day if multiple events are available on the same day.<br />
 			                                                 If this option is enabled the events are ordered in a different way (end date before start time) to allow using the same date for as much events as possible.')),
 
-			'el_rss_feed'          => array('section' => 'feed',
+			'el_enable_feed'       => array('section' => 'feed',
 			                                'type'    => 'checkbox',
 			                                'std_val' => '',
-			                                'label'   => __('RSS feed'),
-			                                'caption' => __('RSS feed links for event pages'),
-			                                'desc'    => __('With this option enabled an RSS feed link will be included on your event pages.')),
+			                                'label'   => __('Enable RSS feed'),
+			                                'caption' => __('Enable support for an event RSS feed'),
+			                                'desc'    => __('This option activates a RSS feed for the events.<br />
+			                                                 You have to enable this option if you want to use one of the RSS feed features.')),
 		);
 	}
 

@@ -100,6 +100,15 @@ class SC_Event_List {
 			                            'desc'    => 'This attribute specifies if a link to the single event should be added onto the event name in the event list.<br />
 			                                          Choose "false" to never add and "true" to always add the link.<br />
 			                                          With "event_list_only" the link is only added in the event list and with "single_event_only" only for a single event'),
+
+			'add_feed_link'   => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
+			                            'std_val' => 'false',
+			                            'visible' => true,
+			                            'desc'    => 'This attribute specifies if a rss feed link should be added.<br />
+			                                          You have to enable the feed in the eventlist options to make this attribute workable.<br />
+			                                          In the options you can also find some settings to modify the output.<br />
+			                                          Choose "false" to never add and "true" to always add the link.<br />
+			                                          With "event_list_only" the link is only added in the event list and with "single_event_only" only for a single event'),
 			// Invisible attributes ('visibe' = false): This attributes are required for the widget but will not be listed in the attributes table on the admin info page
 			'title_length'    => array( 'val'     => 'number',
 			                            'std_val' => '0',
@@ -213,18 +222,10 @@ class SC_Event_List {
 			$sort_array = array( 'start_date ASC', 'end_date ASC', 'time ASC' );
 		}
 		$events = $this->db->get_events( $a['ytd'], $a['num_events'], $cat_filter, $sort_array );
-		$out = '';
-		if($this->options->get('el_rss_feed')) {
-			if(get_option('permalink_structure')) {
-				$feed_link = get_bloginfo('url').'/feed/el_events';
-			}
-			else {
-				$feed_link = get_bloginfo('url').'/?feed=el_events';
-			}
-			$out .= '<a href="'.$feed_link.'" class="rss-link">RSS</a>';
-		}
 
 		// generate output
+		$out = '';
+		$out .= $this->html_feed_link($a);
 		$out .= $this->html_calendar_nav( $a );
 		if( empty( $events ) ) {
 			// no events found
@@ -358,6 +359,19 @@ class SC_Event_List {
 		}
 		$out .= '</div><br />';
 		return $out;
+	}
+
+	private function html_feed_link(&$a) {
+		if($this->options->get('el_enable_feed') && 'true' === $a['add_feed_link']) {
+			if(get_option('permalink_structure')) {
+				$feed_link = get_bloginfo('url').'/feed/eventlist';
+			}
+			else {
+				$feed_link = get_bloginfo('url').'/?feed=eventlist';
+			}
+			return '<a href="'.$feed_link.'" class="rss-link">RSS</a>';
+		}
+		return '';
 	}
 
 	private function get_ytd( &$a ) {

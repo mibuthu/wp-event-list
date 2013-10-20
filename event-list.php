@@ -53,7 +53,7 @@ class Event_List {
 		add_action( 'widgets_init', array( &$this, 'widget_init' ) );
 		// Add RSS Feed page
 		$options = EL_Options::get_instance();
-		if($options->get('el_rss_feed')) {
+		if($options->get('el_enable_feed')) {
 			include_once(EL_PATH.'includes/feed.php');
 			$feed = EL_Feed::get_instance();
 			//echo $feed->create_events_feed();

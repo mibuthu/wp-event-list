@@ -26,11 +26,11 @@ class EL_Feed {
 	}
 
 	public function init() {
-		add_action('do_feed_el_events', array(&$this, 'create_events_feed'), 10, 1);
-		add_filter('generate_rewrite_rules', array(&$this, 'events_feed_rewrite'));
+		add_action('do_feed_eventlist', array(&$this, 'create_eventlist_feed'), 10, 1);
+		add_filter('generate_rewrite_rules', array(&$this, 'eventlist_feed_rewrite'));
 	}
 
-	public function create_events_feed() {
+	public function create_eventlist_feed() {
 		header('Content-Type: '.feed_content_type('rss-http').'; charset='.get_option('blog_charset'), true);
 		$events = $this->db->get_events();
 
@@ -49,7 +49,7 @@ class EL_Feed {
 			<title>'.get_bloginfo_rss('name')/*.wp_title_rss()*/.'</title>
 			<atom:link href="'.apply_filters('self_link', get_bloginfo()).'" rel="self" type="application/rss+xml" />
 			<link>'.get_bloginfo_rss('url').'</link>
-			<description>'.__('Events').'</description>
+			<description>'.__('Eventlist').'</description>
 			<lastBuildDate>'.mysql2date('D, d M Y H:i:s +0000', get_lastpostmodified('GMT'), false).'</lastBuildDate>
 			<language>'.get_option('rss_language').'</language>
 			<sy:updatePeriod>'.apply_filters('rss_update_period', 'hourly').'</sy:updatePeriod>
@@ -60,7 +60,6 @@ class EL_Feed {
 				echo '
 			<item>
 				<title>'.$event->title.'</title>
-				'/*<link>'.$mfgigcal_settings['calendar_url'].'?event_id='.$event->id.'</link>*/.'
 				<pubDate>'.mysql2date('D, d M Y H:i:s +0000', $event->pub_date, false).'</pubDate>
 				<description><![CDATA['.$this->format_date($event->start_date, $event->end_date).' '.$event->location.']]></description>
 				<content:encoded><![CDATA['.$event->details.']]></content:encoded>
@@ -72,7 +71,7 @@ class EL_Feed {
 	</rss>';
 	}
 
-	function events_feed_rewrite() {
+	function eventlist_feed_rewrite() {
 		global $wp_rewrite;
 		$feed_rules = array('feed/(.+)' => 'index.php?feed='.$wp_rewrite->preg_index(1),
 		                    '(.+).xml'  => 'index.php?feed='.$wp_rewrite->preg_index(1));
