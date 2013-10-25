@@ -4,12 +4,14 @@ if(!defined('ABSPATH')) {
 }
 
 require_once(EL_PATH.'includes/db.php');
+require_once(EL_PATH.'includes/options.php');
 
 // This class handles rss feeds
 class EL_Feed {
 
 	private static $instance;
-	public $db;
+	private $db;
+	private $options;
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -23,11 +25,19 @@ class EL_Feed {
 
 	private function __construct() {
 		$this->db = EL_Db::get_instance();
+		$this->options = EL_Options::get_instance();
 	}
 
 	public function init() {
+		if($this->options->get('el_add_feed_link')) {
+			add_action('wp_head', array(&$this, 'print_head_feed_link'));
+		}
 		add_action('do_feed_eventlist', array(&$this, 'create_eventlist_feed'), 10, 1);
 		add_filter('generate_rewrite_rules', array(&$this, 'eventlist_feed_rewrite'));
+	}
+
+	public function print_head_feed_link() {
+		echo '<link rel="alternate" type="application/rss+xml" title=" &raquo; Eventlist Feed" href="http://zeus/wp-plugins/?feed=eventlist" />';
 	}
 
 	public function create_eventlist_feed() {

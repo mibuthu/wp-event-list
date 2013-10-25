@@ -68,6 +68,17 @@ class EL_Options {
 			                                'caption' => __('Enable support for an event RSS feed'),
 			                                'desc'    => __('This option activates a RSS feed for the events.<br />
 			                                                 You have to enable this option if you want to use one of the RSS feed features.')),
+
+			'el_add_feed_link'     => array('section' => 'feed',
+			                                'type'    => 'checkbox',
+			                                'std_val' => '',
+			                                'label'   => __('Add RSS feed link in head'),
+			                                'caption' => __('Add RSS feed link in the html head'),
+			                                'desc'    => __('This option adds a RSS feed in the html head for the events.<br />
+			                                                 You have 2 possibilities to include the RSS feed:<br />
+			                                                 The first option is to use this option to include a link in the html head. This link will be recognized by browers or feed readers.<br />
+			                                                 The second possibility is to include a visible feed link directly in the event list. This can be done by setting the shortcode attribute "add_feed_link" to "true"<br />
+			                                                 This option is only valid if the option "Enable RSS feed" is enabled.')),
 		);
 	}
 
