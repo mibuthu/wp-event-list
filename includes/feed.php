@@ -56,7 +56,7 @@ class EL_Feed {
 		xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
 	>
 		<channel>
-			<title>'.get_bloginfo_rss('name')/*.wp_title_rss()*/.'</title>
+			<title>'.get_bloginfo_rss('name').'</title>
 			<atom:link href="'.apply_filters('self_link', get_bloginfo()).'" rel="self" type="application/rss+xml" />
 			<link>'.get_bloginfo_rss('url').'</link>
 			<description>'.__('Eventlist').'</description>
