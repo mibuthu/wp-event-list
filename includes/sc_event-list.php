@@ -382,7 +382,7 @@ class SC_Event_List {
 			// create html
 			$out .= '<div class="feed" style="text-align:'.$align.'">
 						<a href="'.$feed_link.'">
-							<img src="'.includes_url('images/rss.png').'" alt="rss" />RSS
+							<img src="'.includes_url('images/rss.png').'" alt="rss" />'.esc_attr($this->options->get('el_feed_link_text')).'
 						</a>
 					</div>';
 		}
