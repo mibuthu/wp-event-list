@@ -105,6 +105,14 @@ class EL_Options {
 			                               'desc'    => __('This option specifies the caption of the RSS feed link in the event list.<br />
 			                                                Insert an empty text to hide any text if you only want to show the rss image.<br />
 			                                                You have to set the shortcode attribute "add_feed_link" to "true" if you want to show the feed link.')),
+
+			'el_feed_link_img'    => array('section' => 'feed',
+			                               'type'    => 'checkbox',
+			                               'std_val' => '1',
+			                               'label'   => __('Feed link image'),
+			                               'caption' => __('Show rss image in feed link'),
+			                               'desc'    => __('This option specifies if the an image should be dispayed in the feed link in front of the text.<br />
+			                                                You have to set the shortcode attribute "add_feed_link" to "true" if you want to show the feed link.')),
 		);
 	}
 

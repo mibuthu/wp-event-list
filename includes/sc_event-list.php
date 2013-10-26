@@ -378,11 +378,16 @@ class SC_Event_List {
 			if('left' !== $align && 'center' !== $align && 'right' !== $align) {
 				$align = 'left';
 			}
-
+			// prepare image
+			$image = '';
+			if('' !== $this->options->get('el_feed_link_img')) {
+				$image = '<img src="'.includes_url('images/rss.png').'" alt="rss" />';
+			}
+			// prepare text
+			$text = $image.esc_attr($this->options->get('el_feed_link_text'));
 			// create html
 			$out .= '<div class="feed" style="text-align:'.$align.'">
-						<a href="'.$feed_link.'">
-							<img src="'.includes_url('images/rss.png').'" alt="rss" />'.esc_attr($this->options->get('el_feed_link_text')).'
+						<a href="'.$feed_link.'">'.$text.'
 						</a>
 					</div>';
 		}
