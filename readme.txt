@@ -1,10 +1,10 @@
 ﻿=== Event List ===
 Contributors: mibuthu
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W54LNZMWF9KW2
-Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, admin, attribute, widget, sidebar
+Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, admin, attribute, widget, sidebar, feed, rss
 Requires at least: 3.3
-Tested up to: 3.6
-Stable tag: 0.4.5
+Tested up to: 3.7
+Stable tag: 0.5.0
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -25,6 +25,7 @@ The purpose of this plugin is to to show a list of events with date, time, descr
 * Event navigation to view only upcoming events or past/future events filtered by year
 * Event categories
 * Sync event categories with post categories
+* Event feed
 
 The event list can be placed in any page or post on your Wordpress site. Just include the following short code where you want the calendar to appear:
 
@@ -57,15 +58,22 @@ Yes, you can create an instance of the "SC_Event_List" class which located in "i
 
 == Screenshots ==
 
-1. Admin page: Main page with the event list table
+1. Admin page: Event list table
 2. Admin page: New/edit event form
-3. Admin page: Settings page (category tab)
-4. Admin page: About page with help and shortcode attributes list
-5. Admin page: Widget with the available options
-6. Example page created with [event-list] shortcode
+3. Admin page: Categories
+4. Admin page: Settings (general tab)
+5. Admin page: Settings (feed tab)
+6. Admin page: About page with help and shortcode attributes list
+7. Admin page: Widget with the available options
+8. Example page created with [event-list] shortcode
 
 
 == Changelog ==
+
+= 0.5.0 (2013-10-26) =
+
+* added event feed with a lot of options
+* added widget option for cat filter
 
 = 0.4.5 (2013-08-05) =
 
