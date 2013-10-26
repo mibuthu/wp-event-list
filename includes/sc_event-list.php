@@ -369,7 +369,7 @@ class SC_Event_List {
 			else {
 				$feed_link = get_bloginfo('url').'/?feed=eventlist';
 			}
-			return '<a href="'.$feed_link.'" class="rss-link">RSS</a>';
+			return '<a href="'.$feed_link.'" class="feed"><img src="'.includes_url('images/rss.png').'" alt="rss" />RSS</a>';
 		}
 		return '';
 	}
