@@ -225,8 +225,9 @@ class SC_Event_List {
 
 		// generate output
 		$out = '';
-		$out .= $this->html_feed_link($a);
+		$out .= $this->html_feed_link($a, 'top');
 		$out .= $this->html_calendar_nav( $a );
+		$out .= $this->html_feed_link($a, 'below_nav');
 		if( empty( $events ) ) {
 			// no events found
 			$out .= '<p>'.$this->options->get( 'el_no_event_text' ).'</p>';
@@ -241,6 +242,7 @@ class SC_Event_List {
 			}
 			$out .= '</ul>';
 		}
+		$out .= $this->html_feed_link($a, 'bottom');
 		return $out;
 	}
 
@@ -361,8 +363,8 @@ class SC_Event_List {
 		return $out;
 	}
 
-	private function html_feed_link(&$a) {
-		if($this->options->get('el_enable_feed') && 'true' === $a['add_feed_link']) {
+	private function html_feed_link(&$a, $pos) {
+		if($this->options->get('el_enable_feed') && 'true' === $a['add_feed_link'] && $pos === $this->options->get('el_feed_link_pos')) {
 			if(get_option('permalink_structure')) {
 				$feed_link = get_bloginfo('url').'/feed/eventlist';
 			}

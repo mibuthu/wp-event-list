@@ -79,6 +79,15 @@ class EL_Options {
 			                                                 The first option is to use this option to include a link in the html head. This link will be recognized by browers or feed readers.<br />
 			                                                 The second possibility is to include a visible feed link directly in the event list. This can be done by setting the shortcode attribute "add_feed_link" to "true"<br />
 			                                                 This option is only valid if the option "Enable RSS feed" is enabled.')),
+
+			'el_feed_link_pos'     => array('section' => 'feed',
+			                                'type'    => 'radio',
+			                                'std_val' => 'bottom',
+			                                'label'   => __('Position of the RSS feed link'),
+			                                'caption' => array('top' => 'at the top (above the navigation bar)', 'below_nav' => 'between navigation bar and events', 'bottom' => 'at the bottom'),
+			                                'desc'    => __('This option specifies the position of the RSS feed link in the event list.<br />
+			                                                 The options are to display the link at the top, at the bottom or between the navigation bar and the event list.<br />
+			                                                 You have to set the shortcode attribute "add_feed_link" to "true" if you want to show the feed link.')),
 		);
 	}
 
