@@ -43,7 +43,7 @@ class SC_Event_List {
 			'cat_filter'      => array( 'val'     => 'none<br />category slug',
 			                            'std_val' => 'none',
 			                            'visible' => true,
-			                            'desc'    => 'This attribute specifies events of which categories are shown. The standard is "none" to show all events.<br />
+			                            'desc'    => 'This attribute specifies the categories of which events are shown. The standard is "none" to show all events.<br />
 			                                          Specify a category slug or a list of category slugs separated by a comma "," e.g. "tennis,hockey" to only show events of the specified categories.' ),
 
 			'num_events'      => array( 'val'     => 'number',
@@ -98,6 +98,15 @@ class SC_Event_List {
 			                            'std_val' => 'event_list_only',
 			                            'visible' => true,
 			                            'desc'    => 'This attribute specifies if a link to the single event should be added onto the event name in the event list.<br />
+			                                          Choose "false" to never add and "true" to always add the link.<br />
+			                                          With "event_list_only" the link is only added in the event list and with "single_event_only" only for a single event'),
+
+			'add_feed_link'   => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
+			                            'std_val' => 'false',
+			                            'visible' => true,
+			                            'desc'    => 'This attribute specifies if a rss feed link should be added.<br />
+			                                          You have to enable the feed in the eventlist options to make this attribute workable.<br />
+			                                          In the options you can also find some settings to modify the output.<br />
 			                                          Choose "false" to never add and "true" to always add the link.<br />
 			                                          With "event_list_only" the link is only added in the event list and with "single_event_only" only for a single event'),
 			// Invisible attributes ('visibe' = false): This attributes are required for the widget but will not be listed in the attributes table on the admin info page
@@ -213,15 +222,12 @@ class SC_Event_List {
 			$sort_array = array( 'start_date ASC', 'end_date ASC', 'time ASC' );
 		}
 		$events = $this->db->get_events( $a['ytd'], $a['num_events'], $cat_filter, $sort_array );
-		$out = '';
-		// TODO: add rss feed
-		//		if ($mfgigcal_settings['rss']) {
-		//			(get_option('permalink_structure')) ? $feed_link = "/feed/events" : $feed_link = "/?feed=events";
-		//			$out .= "<a href=\"$feed_link\" class=\"rss-link\">RSS</a>";
-		//		}
 
 		// generate output
+		$out = '';
+		$out .= $this->html_feed_link($a, 'top');
 		$out .= $this->html_calendar_nav( $a );
+		$out .= $this->html_feed_link($a, 'below_nav');
 		if( empty( $events ) ) {
 			// no events found
 			$out .= '<p>'.$this->options->get( 'el_no_event_text' ).'</p>';
@@ -236,6 +242,7 @@ class SC_Event_List {
 			}
 			$out .= '</ul>';
 		}
+		$out .= $this->html_feed_link($a, 'bottom');
 		return $out;
 	}
 
@@ -257,9 +264,9 @@ class SC_Event_List {
 		}
 		$out .= '"><h3>';
 
-		$title = $this->db->truncate( min( $max_length, $a['title_length'] ), $event->title );
+		$title = esc_attr($this->db->truncate(min($max_length, $a['title_length']), $event->title));
 		if( $this->is_visible( $a['link_to_event'] ) ) {
-			$out .= '<a href="'.add_query_arg( 'event_id_'.$a['sc_id_for_url'], $event->id, $this->get_url( $a ) ).'">'.$title.'</a>';
+			$out .= '<a href="'.esc_html(add_query_arg('event_id_'.$a['sc_id_for_url'], $event->id, $this->get_url($a))).'">'.$title.'</a>';
 		}
 		else {
 			$out .= $title;
@@ -271,13 +278,13 @@ class SC_Event_List {
 			if( empty( $date_array['errors']) && is_numeric( $date_array['hour'] ) && is_numeric( $date_array['minute'] ) ) {
 				$event->time = mysql2date( get_option( 'time_format' ), $event->time );
 			}
-			$out .= '<span class="event-time">'.$event->time.'</span>';
+			$out .= '<span class="event-time">'.esc_attr($event->time).'</span>';
 		}
 		if( $this->is_visible( $a['show_location'] ) ) {
-			$out .= '<span class="event-location">'.$this->db->truncate( min( $max_length, $a['location_length'] ), $event->location ).'</span>';
+			$out .= '<span class="event-location">'.esc_attr($this->db->truncate(min($max_length, $a['location_length']), $event->location)).'</span>';
 		}
 		if( $this->is_visible( $a['show_cat'] ) ) {
-			$out .= '<div class="event-cat">'.$this->categories->get_category_string( $event->categories ).'</div>';
+			$out .= '<div class="event-cat">'.esc_attr($this->categories->get_category_string($event->categories)).'</div>';
 		}
 		if( $this->is_visible( $a['show_details'] ) ) {
 			$out .= '<div class="event-details">'.$this->db->truncate( min( $max_length, $a['details_length'] ), do_shortcode( $event->details ) ).'</div>';
@@ -353,6 +360,37 @@ class SC_Event_List {
 			}
 		}
 		$out .= '</div><br />';
+		return $out;
+	}
+
+	private function html_feed_link(&$a, $pos) {
+		$out = '';
+		if($this->options->get('el_enable_feed') && 'true' === $a['add_feed_link'] && $pos === $this->options->get('el_feed_link_pos')) {
+			// prepare url
+			if(get_option('permalink_structure')) {
+				$feed_link = get_bloginfo('url').'/feed/eventlist';
+			}
+			else {
+				$feed_link = get_bloginfo('url').'/?feed=eventlist';
+			}
+			// prepare align
+			$align = $this->options->get('el_feed_link_align');
+			if('left' !== $align && 'center' !== $align && 'right' !== $align) {
+				$align = 'left';
+			}
+			// prepare image
+			$image = '';
+			if('' !== $this->options->get('el_feed_link_img')) {
+				$image = '<img src="'.includes_url('images/rss.png').'" alt="rss" />';
+			}
+			// prepare text
+			$text = $image.esc_attr($this->options->get('el_feed_link_text'));
+			// create html
+			$out .= '<div class="feed" style="text-align:'.$align.'">
+						<a href="'.$feed_link.'">'.$text.'
+						</a>
+					</div>';
+		}
 		return $out;
 	}
 

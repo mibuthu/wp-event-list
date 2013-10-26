@@ -30,12 +30,20 @@ class EL_Widget extends WP_Widget {
 			                                 'form_style'    => null,
 			                                 'form_width'    => null ),
 
+			'cat_filter' =>           array( 'type'          => 'text',
+			                                 'std_value'     => 'none',
+			                                 'caption'       => __('Category Filter:'),
+			                                 'caption_after' => null,
+			                                 'tooltip'       => __('This attribute specifies the categories of which events are shown. The standard is \'none\' to show all events. Specify a category slug or a list of category slugs separated by a comma to only show events of the specified categories.'),
+			                                 'form_style'    => 'margin:0 0 0.8em 0',
+			                                 'form_width'    => null ),
+
 			'num_events' =>           array( 'type'          => 'text',
 			                                 'std_value'     => '3',
-			                                 'caption'       => __( 'Number of upcoming events:' ),
+			                                 'caption'       => __('Number of listed events:'),
 			                                 'caption_after' => null,
-			                                 'tooltip'       => __( 'The number of events to display' ),
-			                                 'form_style'    => null,
+			                                 'tooltip'       => __('The number of upcoming events to display'),
+			                                 'form_style'    => '',
 			                                 'form_width'    => 30 ),
 
 			'title_length' =>         array( 'type'          => 'text',
@@ -147,6 +155,7 @@ class EL_Widget extends WP_Widget {
 		$linked_page_is_set = 0 < strlen( $instance['url_to_page'] );
 		$linked_page_id_is_set = 0 < (int)$instance['sc_id_for_url'];
 		$shortcode = '[event-list show_nav=false';
+		$shortcode .= ' cat_filter='.$instance['cat_filter'];
 		$shortcode .= ' num_events="'.$instance['num_events'].'"';
 		$shortcode .= ' title_length='.$instance['title_length'];
 		$shortcode .= ' show_starttime='.$instance['show_starttime'];

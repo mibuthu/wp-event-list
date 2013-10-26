@@ -1,20 +1,8 @@
-/*
-a.rss-link {
-	display:block;
-	height:16px;
-	float:right;
-	background:transparent url(images/icon-rss.png) right top no-repeat;
-	padding-right:20px;
-	line-height:16px;
-}
-*/
-
 ul.event-list-view, ul.single-event-view {
 	list-style: none;
 	margin: 1em 0 1.5em 0;
 	padding: 0;
 }
-
 
 li.event {
 	clear: both;
@@ -95,4 +83,16 @@ li.event {
 
 .event-details {
 	font-size: 0.8em;
+}
+
+div.feed {
+	display: block;
+}
+
+div.feed a * {
+	vertical-align: middle;
+}
+
+div.feed img {
+	margin: 0px 5px 0px 2px;
 }
