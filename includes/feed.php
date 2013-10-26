@@ -29,7 +29,7 @@ class EL_Feed {
 	}
 
 	public function init() {
-		if($this->options->get('el_add_feed_link')) {
+		if($this->options->get('el_head_feed_link')) {
 			add_action('wp_head', array(&$this, 'print_head_feed_link'));
 		}
 		add_action('do_feed_eventlist', array(&$this, 'create_eventlist_feed'), 10, 1);

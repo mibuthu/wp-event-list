@@ -69,7 +69,7 @@ class EL_Options {
 			                                'desc'    => __('This option activates a RSS feed for the events.<br />
 			                                                 You have to enable this option if you want to use one of the RSS feed features.')),
 
-			'el_add_feed_link'     => array('section' => 'feed',
+			'el_head_feed_link'    => array('section' => 'feed',
 			                                'type'    => 'checkbox',
 			                                'std_val' => '',
 			                                'label'   => __('Add RSS feed link in head'),
