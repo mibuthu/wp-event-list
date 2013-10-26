@@ -85,10 +85,14 @@ li.event {
 	font-size: 0.8em;
 }
 
-a.feed * {
+div.feed {
+	display: block;
+}
+
+div.feed a * {
 	vertical-align: middle;
 }
 
-a.feed img {
+div.feed img {
 	margin: 0px 5px 0px 2px;
 }

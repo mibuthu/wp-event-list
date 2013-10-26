@@ -88,6 +88,15 @@ class EL_Options {
 			                                'desc'    => __('This option specifies the position of the RSS feed link in the event list.<br />
 			                                                 The options are to display the link at the top, at the bottom or between the navigation bar and the event list.<br />
 			                                                 You have to set the shortcode attribute "add_feed_link" to "true" if you want to show the feed link.')),
+
+			'el_feed_link_align'  => array('section' => 'feed',
+			                               'type'    => 'radio',
+			                               'std_val' => 'left',
+			                               'label'   => __('Align of the RSS feed link'),
+			                               'caption' => array('left' => 'left', 'center' => 'center', 'right' => 'right'),
+			                               'desc'    => __('This option specifies the align of the RSS feed link in the event list.<br />
+			                                                The link can be displayed on the left side, centered or on the right.<br />
+			                                                You have to set the shortcode attribute "add_feed_link" to "true" if you want to show the feed link.')),
 		);
 	}
 

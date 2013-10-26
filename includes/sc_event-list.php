@@ -364,16 +364,29 @@ class SC_Event_List {
 	}
 
 	private function html_feed_link(&$a, $pos) {
+		$out = '';
 		if($this->options->get('el_enable_feed') && 'true' === $a['add_feed_link'] && $pos === $this->options->get('el_feed_link_pos')) {
+			// prepare url
 			if(get_option('permalink_structure')) {
 				$feed_link = get_bloginfo('url').'/feed/eventlist';
 			}
 			else {
 				$feed_link = get_bloginfo('url').'/?feed=eventlist';
 			}
-			return '<a href="'.$feed_link.'" class="feed"><img src="'.includes_url('images/rss.png').'" alt="rss" />RSS</a>';
+			// prepare align
+			$align = $this->options->get('el_feed_link_align');
+			if('left' !== $align && 'center' !== $align && 'right' !== $align) {
+				$align = 'left';
+			}
+
+			// create html
+			$out .= '<div class="feed" style="text-align:'.$align.'">
+						<a href="'.$feed_link.'">
+							<img src="'.includes_url('images/rss.png').'" alt="rss" />RSS
+						</a>
+					</div>';
 		}
-		return '';
+		return $out;
 	}
 
 	private function get_ytd( &$a ) {
