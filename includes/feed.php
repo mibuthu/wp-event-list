@@ -37,7 +37,7 @@ class EL_Feed {
 	}
 
 	public function print_head_feed_link() {
-		echo '<link rel="alternate" type="application/rss+xml" title="'.get_bloginfo_rss('name').' &raquo; Eventlist Feed" href="http://zeus/wp-plugins/?feed=eventlist" />';
+		echo '<link rel="alternate" type="application/rss+xml" title="'.get_bloginfo_rss('name').' &raquo; Eventlist Feed" href="'.$this->eventlist_feed_url().'" />';
 	}
 
 	public function create_eventlist_feed() {
@@ -83,6 +83,16 @@ class EL_Feed {
 		echo '
 		</channel>
 	</rss>';
+	}
+
+	function eventlist_feed_url() {
+		if(get_option('permalink_structure')) {
+			$feed_link = get_bloginfo('url').'/feed/eventlist';
+		}
+		else {
+			$feed_link = get_bloginfo('url').'/?feed=eventlist';
+		}
+		return $feed_link;
 	}
 
 	function eventlist_feed_rewrite() {
