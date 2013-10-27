@@ -37,7 +37,7 @@ class EL_Feed {
 	}
 
 	public function print_head_feed_link() {
-		echo '<link rel="alternate" type="application/rss+xml" title=" &raquo; Eventlist Feed" href="http://zeus/wp-plugins/?feed=eventlist" />';
+		echo '<link rel="alternate" type="application/rss+xml" title="'.get_bloginfo_rss('name').' &raquo; Eventlist Feed" href="http://zeus/wp-plugins/?feed=eventlist" />';
 	}
 
 	public function create_eventlist_feed() {
