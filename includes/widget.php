@@ -145,12 +145,12 @@ class EL_Widget extends WP_Widget {
 	 * @param array $instance Saved values from database.
 	 */
 	public function widget( $args, $instance ) {
-		extract( $args );
+		$this->prepare_instance($instance);
 		$title = apply_filters( 'widget_title', $instance['title'] );
-		echo $before_widget;
+		echo $args['before_widget'];
 		if ( ! empty( $title ) )
 		{
-			echo $before_title . $title . $after_title;
+			echo $args['before_title'].$title.$args['after_title'];
 		}
 		$linked_page_is_set = 0 < strlen( $instance['url_to_page'] );
 		$linked_page_id_is_set = 0 < (int)$instance['sc_id_for_url'];
@@ -176,7 +176,7 @@ class EL_Widget extends WP_Widget {
 		if( 'true' === $instance['link_to_page'] && $linked_page_is_set ) {
 			echo '<div style="clear:both"><a title="'.$instance['link_to_page_caption'].'" href="'.$instance[ 'url_to_page'].'">'.$instance['link_to_page_caption'].'</a></div>';
 		}
-		echo $after_widget;
+		echo $args['after_widget'];
 	}
 
 	/**
@@ -236,5 +236,19 @@ class EL_Widget extends WP_Widget {
 		echo $out;
 	}
 
+	/**
+	 * Prepare the instance array and add not available items with std_value
+	 *
+	 * This is required for a plugin upgrades: In existing widgets probably added widget options are not available.
+	 *
+	 * @param array &$instance Previously saved values from database.
+	 */
+	private function prepare_instance(&$instance) {
+		foreach($this->items as $itemname => $item) {
+			if(!isset($instance[$itemname])) {
+				$instance[$itemname] = $item['std_value'];
+			}
+		}
+	}
 }
 ?>
