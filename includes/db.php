@@ -314,7 +314,7 @@ class EL_Db {
 
 
 // Define "date_parse_from_format" (This is required for php versions < 5.3)
-if( !function_exists('date_parse_from_format') ){
+if(!function_exists('date_parse_from_format')){
 	function date_parse_from_format($format, $date) {
 		// reverse engineer date formats
 		$keys = array(
@@ -336,43 +336,41 @@ if( !function_exists('date_parse_from_format') ){
 			'i' => array('minute', '\d{2}'),            // Minutes with leading zeros
 			's' => array('second', '\d{2}')             // Seconds, with leading zeros
 		);
-
 		// convert format string to regex
 		$regex = '';
 		$chars = str_split($format);
-		foreach ( $chars AS $n => $char ) {
+		foreach($chars as $n => $char) {
 			$lastChar = isset($chars[$n-1]) ? $chars[$n-1] : '';
 			$skipCurrent = '\\' == $lastChar;
-			if ( !$skipCurrent && isset($keys[$char]) ) {
+			if(!$skipCurrent && isset($keys[$char])) {
 				$regex .= '(?P<'.$keys[$char][0].'>'.$keys[$char][1].')';
 			}
-			else if ( '\\' == $char ) {
+			else if('\\' == $char) {
 				$regex .= $char;
 			}
 			else {
 				$regex .= preg_quote($char);
 			}
 		}
-
 		// create array
 		$dt = array();
 		$dt['error_count'] = 0;
 		$dt['errors'] = array();
 		// now try to match it
-		if( preg_match('#^'.$regex.'$#', $date, $dt) ){
-			foreach ( $dt AS $k => $v ){
-				if ( is_int($k) ){
+		if(preg_match('#^'.$regex.'$#', $date, $dt)){
+			foreach($dt as $k => $v) {
+				if(is_int($k)){
 					unset($dt[$k]);
 				}
 			}
-			if( !checkdate($dt['month'], $dt['day'], $dt['year']) ){
+			if(!checkdate($dt['month'], $dt['day'], $dt['year'])) {
 				$dt['error_count'] = 1;
-				array_push( $dt['errors'], 'ERROR' );
+				$dt['errors'][] = 'ERROR';
 			}
 		}
 		else {
 			$dt['error_count'] = 1;
-			array_push( $dt['errors'], 'ERROR' );
+			$dt['errors'][] = 'ERROR';
 		}
 		$dt['fraction'] = '';
 		$dt['warning_count'] = 0;
