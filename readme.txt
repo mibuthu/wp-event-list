@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, admin, attribute, widget, sidebar, feed, rss
 Requires at least: 3.3
 Tested up to: 3.7
-Stable tag: 0.5.0
+Stable tag: 0.5.1
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -69,6 +69,13 @@ Yes, you can create an instance of the "SC_Event_List" class which located in "i
 
 
 == Changelog ==
+
+= 0.5.1 (2013-10-27) =
+
+* added site name in eventlist feed name (similar to standard feed captions)
+* fixed not working feed link in header
+* fixed problem with new widget options after upgrade
+* fixed not working permalink for the eventlist feed
 
 = 0.5.0 (2013-10-26) =
 
