@@ -29,18 +29,17 @@ class EL_Feed {
 	}
 
 	public function init() {
+		add_action('init', array(&$this, 'add_eventlist_feed'));
 		if($this->options->get('el_head_feed_link')) {
 			add_action('wp_head', array(&$this, 'print_head_feed_link'));
 		}
-		add_action('do_feed_eventlist', array(&$this, 'create_eventlist_feed'), 10, 1);
-		add_filter('generate_rewrite_rules', array(&$this, 'eventlist_feed_rewrite'));
 	}
 
 	public function print_head_feed_link() {
-		echo '<link rel="alternate" type="application/rss+xml" title=" &raquo; Eventlist Feed" href="http://zeus/wp-plugins/?feed=eventlist" />';
+		echo '<link rel="alternate" type="application/rss+xml" title="'.get_bloginfo_rss('name').' &raquo; Eventlist Feed" href="'.$this->eventlist_feed_url().'" />';
 	}
 
-	public function create_eventlist_feed() {
+	public function print_eventlist_feed() {
 		header('Content-Type: '.feed_content_type('rss-http').'; charset='.get_option('blog_charset'), true);
 		$events = $this->db->get_events();
 
@@ -85,15 +84,30 @@ class EL_Feed {
 	</rss>';
 	}
 
-	function eventlist_feed_rewrite() {
+	public function add_eventlist_feed() {
 		global $wp_rewrite;
-		$feed_rules = array('feed/(.+)' => 'index.php?feed='.$wp_rewrite->preg_index(1),
-		                    '(.+).xml'  => 'index.php?feed='.$wp_rewrite->preg_index(1));
-		$wp_rewrite->rules = $feed_rules + $wp_rewrite->rules;
-		return $wp_rewrite->rules;
+		add_feed('eventlist', array(&$this, 'print_eventlist_feed'));
+		add_action('generate_rewrite_rules', array(&$this, 'eventlist_feed_rewrite'));
+		$wp_rewrite->flush_rules();
 	}
 
-	function format_date($start_date, $end_date) {
+	public function eventlist_feed_rewrite() {
+		global $wp_rewrite;
+		$feed_rules = array('feed/(.+)' => 'index.php?feed='.$wp_rewrite->preg_index(1));
+		$wp_rewrite->rules = $feed_rules + $wp_rewrite->rules;
+	}
+
+	public function eventlist_feed_url() {
+		if(get_option('permalink_structure')) {
+			$feed_link = get_bloginfo('url').'/feed/eventlist';
+		}
+		else {
+			$feed_link = get_bloginfo('url').'/?feed=eventlist';
+		}
+		return $feed_link;
+	}
+
+	private function format_date($start_date, $end_date) {
 		$startArray = explode("-", $start_date);
 		$start_date = mktime(0,0,0,$startArray[1],$startArray[2],$startArray[0]);
 

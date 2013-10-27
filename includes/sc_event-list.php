@@ -367,12 +367,8 @@ class SC_Event_List {
 		$out = '';
 		if($this->options->get('el_enable_feed') && 'true' === $a['add_feed_link'] && $pos === $this->options->get('el_feed_link_pos')) {
 			// prepare url
-			if(get_option('permalink_structure')) {
-				$feed_link = get_bloginfo('url').'/feed/eventlist';
-			}
-			else {
-				$feed_link = get_bloginfo('url').'/?feed=eventlist';
-			}
+			require_once( EL_PATH.'includes/feed.php' );
+			$feed_link = EL_Feed::get_instance()->eventlist_feed_url();
 			// prepare align
 			$align = $this->options->get('el_feed_link_align');
 			if('left' !== $align && 'center' !== $align && 'right' !== $align) {
@@ -387,8 +383,7 @@ class SC_Event_List {
 			$text = $image.esc_attr($this->options->get('el_feed_link_text'));
 			// create html
 			$out .= '<div class="feed" style="text-align:'.$align.'">
-						<a href="'.$feed_link.'">'.$text.'
-						</a>
+						<a href="'.$feed_link.'">'.$text.'</a>
 					</div>';
 		}
 		return $out;
