@@ -27,6 +27,7 @@ class EL_Admin {
 		// Register actions
 		add_action('admin_menu', array(&$this, 'register_pages'));
 		add_action('plugins_loaded', array(&$this, 'db_upgrade_check'));
+		add_action('right_now_content_table_end', array(&$this, 'add_events_to_right_now'));
 
 		// Register syncing if required
 		if(1 == $this->options->get('el_sync_cats')) {
@@ -67,6 +68,18 @@ class EL_Admin {
 	public function db_upgrade_check() {
 		require_once(EL_PATH.'includes/db.php');
 		EL_Db::get_instance()->upgrade_check();
+	}
+
+	public function add_events_to_right_now() {
+		require_once(EL_PATH.'includes/db.php');
+		$num_events = EL_Db::get_instance()->get_num_events();
+		$event_link = 'admin.php?page=el_admin_main';
+		$out = '
+			<tr>
+				<td class="first b b-events"><a href="'.$event_link.'">'.$num_events.'</a></td>
+				<td class="t events"><a href="'.$event_link.'">'.__('Events').'</a></td>
+			</tr>';
+		echo $out;
 	}
 
 	public function show_main_page() {
