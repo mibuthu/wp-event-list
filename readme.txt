@@ -3,8 +3,8 @@ Contributors: mibuthu
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W54LNZMWF9KW2
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, admin, attribute, widget, sidebar, feed, rss
 Requires at least: 3.3
-Tested up to: 3.7
-Stable tag: 0.5.1
+Tested up to: 3.7.1
+Stable tag: 0.5.2
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -69,6 +69,11 @@ Yes, you can create an instance of the "SC_Event_List" class which located in "i
 
 
 == Changelog ==
+
+= 0.5.2 (2013-11-09) =
+
+* added number of events in Right Now dashboard widget
+* fixed some css issues
 
 = 0.5.1 (2013-10-27) =
 
