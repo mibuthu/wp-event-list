@@ -24,7 +24,6 @@ li.event {
 	width: 3.2em;
 	border-radius: 5px;
 	background-color: rgb(230,230,230);
-	overflow: hidden;
 }
 
 .event-list .start-date {
