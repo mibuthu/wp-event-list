@@ -1,5 +1,5 @@
 ul.event-list-view, ul.single-event-view {
-	list-style: none;
+	list-style: none !important;
 	margin: 1em 0 1.5em 0;
 	padding: 0;
 }
@@ -94,5 +94,5 @@ div.feed a * {
 }
 
 div.feed img {
-	margin: 0px 5px 0px 2px;
+	margin: 0 5px 0 2px;
 }
