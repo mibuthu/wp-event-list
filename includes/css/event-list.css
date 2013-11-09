@@ -68,8 +68,10 @@ li.event {
 	margin: 0 0 0 3.8em;
 }
 
-.event-info h3 {
+.event-title h3 {
 	clear: none;
+	margin: 0;
+	padding: 0;
 }
 
 .event-time {
