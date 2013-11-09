@@ -107,6 +107,12 @@ class EL_Db {
 		return $date;
 	}
 
+	public function get_num_events() {
+		global $wpdb;
+		$sql = 'SELECT COUNT(*) FROM '.$this->table;
+		return $wpdb->get_var($sql);
+	}
+
 	public function update_event( $event_data, $dateformat=NULL ) {
 		global $wpdb;
 		// prepare and validate sqldata

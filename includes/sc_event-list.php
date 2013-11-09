@@ -262,7 +262,9 @@ class SC_Event_List {
 		else {
 			$out .= ' multi-day';
 		}
-		$out .= '"><h3>';
+		$out .= '">';
+
+		$out .= '<span class="event-title"><h3>';
 
 		$title = esc_attr($this->db->truncate(min($max_length, $a['title_length']), $event->title));
 		if( $this->is_visible( $a['link_to_event'] ) ) {
@@ -271,7 +273,7 @@ class SC_Event_List {
 		else {
 			$out .= $title;
 		}
-		$out .= '</h3>';
+		$out .= '</h3></span>';
 		if( $event->time != '' && $this->is_visible( $a['show_starttime'] ) ) {
 			// set time format if a known format is available, else only show the text
 			$date_array = date_parse( $event->time );

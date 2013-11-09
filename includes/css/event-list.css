@@ -1,17 +1,18 @@
 ul.event-list-view, ul.single-event-view {
-	list-style: none;
+	list-style: none !important;
 	margin: 1em 0 1.5em 0;
 	padding: 0;
 }
 
 li.event {
 	clear: both;
+	margin: 0 0.5em 1.5em 0.5em;
+	zoom: 1; /* Fix for IE 6+7 */
 }
 
 .event-date {
-	white-space: nowrap;
 	float: left;
-	margin-bottom: 1.5em;
+	margin: 0 0.4em 1.5em 0;
 }
 
 .event-list .multi-date {
@@ -23,7 +24,6 @@ li.event {
 	width: 3.2em;
 	border-radius: 5px;
 	background-color: rgb(230,230,230);
-	overflow: hidden;
 }
 
 .event-list .start-date {
@@ -68,8 +68,10 @@ li.event {
 	margin: 0 0 0 3.8em;
 }
 
-.event-info h3 {
+.event-title h3 {
 	clear: none;
+	margin: 0;
+	padding: 0;
 }
 
 .event-time {
@@ -94,5 +96,5 @@ div.feed a * {
 }
 
 div.feed img {
-	margin: 0px 5px 0px 2px;
+	margin: 0 5px 0 2px;
 }
