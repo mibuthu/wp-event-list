@@ -38,7 +38,7 @@ class EL_Navbar {
 		$last_year = $this->db->get_event_date('last');
 		$out = '<div class="navbar subsubsub">';
 		if(is_numeric($args['ytd']) || is_numeric($args['event_id'])) {
-			$out .= '<a href="'.add_query_arg('ytd'.$args['sc_id_for_url'], 'upcoming', $url).'">Upcoming</a>';
+			$out .= '<a href="'.add_query_arg('ytd'.$args['sc_id_for_url'], 'upcoming', $url).'">'.__('Upcoming').'</a>';
 		}
 		else {
 			$out .= '<strong>Upcoming</strong>';
