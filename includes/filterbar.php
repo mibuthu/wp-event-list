@@ -34,32 +34,59 @@ class EL_Filterbar {
 		$defaults = array('ytd'=>null, 'event_id'=>null, 'sc_id_for_url'=>null);
 		$args = wp_parse_args($args, $defaults);
 		$args['sc_id_for_url'] = is_numeric($args['sc_id_for_url']) ? '_'.$args['sc_id_for_url'] : '';
-		$first_year = $this->db->get_event_date('first');
-		$last_year = $this->db->get_event_date('last');
-		$out = '<div class="navbar subsubsub">';
-		if('all' != $args['ytd'] || is_numeric($args['event_id'])) {
-			$out .= '<a href="'.add_query_arg('ytd'.$args['sc_id_for_url'], 'all', $url).'">'.__('All').'</a> | ';
-		}
-		else {
-			$out .= '<strong>All</strong> | ';
-		}
-		if('upcoming' != $args['ytd'] || is_numeric($args['event_id'])) {
-			$out .= '<a href="'.add_query_arg('ytd'.$args['sc_id_for_url'], 'upcoming', $url).'">'.__('Upcoming').'</a>';
-		}
-		else {
-			$out .= '<strong>Upcoming</strong>';
-		}
-		for($year=$last_year; $year>=$first_year; $year--) {
-			$out .= ' | ';
-			if($year == $args['ytd']) {
-				$out .= '<strong>'.$year.'</strong>';
-			}
-			else {
-				$out .= '<a href="'.add_query_arg('ytd'.$args['sc_id_for_url'], $year, $url).'">'.$year.'</a>';
-			}
-		}
+		$out = '<div class="filterbar subsubsub">';
+		$out .= $this->show_years($url, $args);
 		$out .= '</div><br />';
 		return $out;
+	}
+
+	private function show_all() {
+		//TODO: add show_all code
+	}
+
+	private function show_upcoming() {
+		//TODO: add show_upcoming code
+	}
+
+	private function show_years($url, $args, $show_all=true, $show_upcoming=true) {
+		$ytd = 'ytd'.$args['sc_id_for_url'];
+		// prepare displayed elements
+		if($show_all) {
+			$elements[__('All')] = ('all' != $args['ytd'] && !is_numeric($args['event_id'])) ? add_query_arg($ytd, 'all', $url) : null;
+		}
+		if($show_upcoming) {
+			$elements[__('Upcoming')] = ('upcoming' != $args['ytd'] && !is_numeric($args['event_id'])) ? add_query_arg($ytd, 'upcoming', $url) : null;
+		}
+		$first_year = $this->db->get_event_date('first');
+		$last_year = $this->db->get_event_date('last');
+		for($year=$last_year; $year>=$first_year; $year--) {
+			$elements[$year] = add_query_arg($ytd, $year, $url);
+		}
+		// remove link from actual element
+		if(is_numeric($args['ytd']) && !is_numeric($args['event_id'])) {
+			$elements[$args['ytd']] = null;
+		}
+		return $this->show_hlist($elements);
+	}
+
+	private function show_hlist($elements) {
+		$out = '';
+		foreach($elements as $k=>$e) {
+			if(null === $e) {
+				$out .= '<strong>'.$k.'</strong>';
+			}
+			else {
+				$out .= $this->show_url($e, $k);
+			}
+			$out .= ' | ';
+		}
+		// remove | at the end
+		$out = substr($out, 0, -3);
+		return $out;
+	}
+
+	private function show_url($url, $caption) {
+		return '<a href="'.$url.'">'.$caption.'</a>';
 	}
 }
 ?>
