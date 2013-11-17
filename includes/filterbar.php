@@ -71,12 +71,12 @@ class EL_Filterbar {
 
 	private function show_hlist($elements) {
 		$out = '';
-		foreach($elements as $k=>$e) {
-			if(null === $e) {
-				$out .= '<strong>'.$k.'</strong>';
+		foreach($elements as $name=>$url) {
+			if(null === $url) {
+				$out .= '<strong>'.$name.'</strong>';
 			}
 			else {
-				$out .= $this->show_url($e, $k);
+				$out .= $this->show_url($url, $name);
 			}
 			$out .= ' | ';
 		}
