@@ -209,7 +209,7 @@ class SC_Event_List {
 
 	private function html_events( &$a ) {
 		// specify to show all events if not upcoming is selected
-		if( is_numeric( $a['ytd'] ) ) {
+		if('upcoming' != $a['ytd']) {
 			$a['num_events'] = 0;
 		}
 		$cat_filter = 'none' === $a['cat_filter'] ? null : explode( ',', $a['cat_filter'] );
@@ -371,20 +371,19 @@ class SC_Event_List {
 	}
 
 	private function get_ytd( &$a ) {
-		if( isset( $_GET['ytd_'.$a['sc_id']] ) && 'upcoming' === $_GET['ytd_'.$a['sc_id']] ){
-			// ytd is 'upcoming'
-			$ytd = 'upcoming';
+		$ytd = 'upcoming';
+		if(isset($_GET['ytd_'.$a['sc_id']])) {
+			if('all' == $_GET['ytd_'.$a['sc_id']]){
+				$ytd = 'all';
+			}
+			elseif(is_numeric($_GET['ytd_'.$a['sc_id']])) {
+				// ytd is a year
+				$ytd = (int)$_GET['ytd_'.$a['sc_id']];
+			}
 		}
-		elseif( isset( $_GET['ytd_'.$a['sc_id']] ) && is_numeric( $_GET['ytd_'.$a['sc_id']] ) ) {
-			// ytd is a year
-			$ytd = (int)$_GET['ytd_'.$a['sc_id']];
-		}
-		elseif( isset( $a['initial_date'] ) && is_numeric( $a['initial_date'] ) && !is_numeric( $a['event_id'] ) && !isset( $_GET['link_'.$a['sc_id']] ) ) {
+		elseif(isset($a['initial_date']) && is_numeric($a['initial_date']) && !is_numeric($a['event_id']) && !isset($_GET['link_'.$a['sc_id']])) {
 			// initial_date attribute is set
 			$ytd = (int)$a['initial_date'];
-		}
-		else {
-			$ytd = 'upcoming';
 		}
 		return $ytd;
 	}

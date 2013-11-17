@@ -101,8 +101,11 @@ class EL_Admin_Main {
 		$out = $this->navbar->show('?page=el_admin_main', $_GET);
 		// set date range of events being displayed
 		$date_range = 'upcoming';
+		if(isset($_GET['ytd']) && 'all' == $_GET['ytd']) {
+			$date_range = 'all';
+		}
 		if(isset($_GET['ytd']) && is_numeric($_GET['ytd'])) {
-			$date_range = $_GET['ytd'];
+			$date_range = (int)$_GET['ytd'];
 		}
 		// show event table
 		// the form is required for bulk actions, the page field is required for plugins to ensure that the form posts back to the current page
