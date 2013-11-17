@@ -5,11 +5,13 @@ if(!defined('ABSPATH')) {
 
 require_once(EL_PATH.'includes/db.php');
 require_once(EL_PATH.'admin/includes/event_table.php');
+require_once(EL_PATH.'includes/navbar.php');
 
 // This class handles all data for the admin main page
 class EL_Admin_Main {
 	private static $instance;
 	private $db;
+	private $navbar;
 	private $event_action = false;
 	private $event_action_error = false;
 
@@ -24,6 +26,7 @@ class EL_Admin_Main {
 
 	private function __construct() {
 		$this->db = &EL_Db::get_instance();
+		$this->navbar = &EL_Navbar::get_instance();
 		$this->event_action = null;
 		$this->event_action_error = null;
 	}
@@ -95,7 +98,7 @@ class EL_Admin_Main {
 
 	private function list_events() {
 		// show calendar navigation
-		$out = $this->show_calendar_nav();
+		$out = $this->navbar->show('?page=el_admin_main', $_GET);
 		// set date range of events being displayed
 		$date_range = 'upcoming';
 		if(isset($_GET['ytd']) && is_numeric($_GET['ytd'])) {
@@ -113,34 +116,6 @@ class EL_Admin_Main {
 			$out .= ob_get_contents();
 		ob_end_clean();
 		$out .= '</form>';
-		return $out;
-	}
-
-	private function show_calendar_nav() {
-		$first_year = $this->db->get_event_date('first');
-		$last_year = $this->db->get_event_date('last');
-
-		// Calendar Navigation
-		if(true === is_admin()) {
-			$url = "?page=el_admin_main";
-			$out = '<ul class="subsubsub">';
-			if(isset($_GET['ytd']) || isset($_GET['event_id'])) {
-				$out .= '<li class="upcoming"><a href="'.$url.'">Upcoming</a></li>';
-			}
-			else {
-				$out .= '<li class="upcoming"><a class="current" href="'.$url.'">Upcoming</a></li>';
-			}
-			for($year=$last_year; $year>=$first_year; $year--) {
-				$out .= ' | ';
-				if(isset($_GET['ytd']) && $year == $_GET['ytd']) {
-					$out .= '<li class="year"><a class="current" href="'.$url.'ytd='.$year.'">'.$year.'</a></li>';
-				}
-				else {
-					$out .= '<li class="year"><a href="'.$url.'&amp;ytd='.$year.'">'.$year.'</a></li>';
-				}
-			}
-			$out .= '</ul><br />';
-		}
 		return $out;
 	}
 
