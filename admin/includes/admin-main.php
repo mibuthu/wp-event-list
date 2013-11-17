@@ -5,13 +5,13 @@ if(!defined('ABSPATH')) {
 
 require_once(EL_PATH.'includes/db.php');
 require_once(EL_PATH.'admin/includes/event_table.php');
-require_once(EL_PATH.'includes/navbar.php');
+require_once(EL_PATH.'includes/filterbar.php');
 
 // This class handles all data for the admin main page
 class EL_Admin_Main {
 	private static $instance;
 	private $db;
-	private $navbar;
+	private $filterbar;
 	private $event_action = false;
 	private $event_action_error = false;
 
@@ -26,7 +26,7 @@ class EL_Admin_Main {
 
 	private function __construct() {
 		$this->db = &EL_Db::get_instance();
-		$this->navbar = &EL_Navbar::get_instance();
+		$this->filterbar = &EL_Filterbar::get_instance();
 		$this->event_action = null;
 		$this->event_action_error = null;
 	}
@@ -97,8 +97,8 @@ class EL_Admin_Main {
 	}
 
 	private function list_events() {
-		// show calendar navigation
-		$out = $this->navbar->show('?page=el_admin_main', $_GET);
+		// show filterbar
+		$out = $this->filterbar->show('?page=el_admin_main', $_GET);
 		// set date range of events being displayed
 		$date_range = 'upcoming';
 		if(isset($_GET['ytd']) && 'all' == $_GET['ytd']) {

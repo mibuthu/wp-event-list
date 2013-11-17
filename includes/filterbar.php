@@ -8,7 +8,7 @@ require_once( EL_PATH.'includes/db.php' );
 //require_once( EL_PATH.'includes/categories.php' );
 
 // This class handles the navigation and filter bar
-class EL_Navbar {
+class EL_Filterbar {
 	private static $instance;
 	private $db;
 //	private $options;
@@ -17,7 +17,7 @@ class EL_Navbar {
 	public static function &get_instance() {
 		// Create class instance if required
 		if( !isset( self::$instance ) ) {
-			self::$instance = new EL_Navbar();
+			self::$instance = new EL_Filterbar();
 		}
 		// Return class instance
 		return self::$instance;

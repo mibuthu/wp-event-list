@@ -198,7 +198,7 @@ class SC_Event_List {
 
 	private function html_event_details( &$a ) {
 		$event = $this->db->get_event( $a['event_id'] );
-		$out = $this->html_navbar($a);
+		$out = $this->html_filterbar($a);
 		$out .= '
 			<h2>Event Information:</h2>
 			<ul class="single-event-view">';
@@ -226,7 +226,7 @@ class SC_Event_List {
 		// generate output
 		$out = '';
 		$out .= $this->html_feed_link($a, 'top');
-		$out .= $this->html_navbar($a);
+		$out .= $this->html_filterbar($a);
 		$out .= $this->html_feed_link($a, 'below_nav');
 		if( empty( $events ) ) {
 			// no events found
@@ -335,13 +335,13 @@ class SC_Event_List {
 		return $out;
 	}
 
-	private function html_navbar(&$a) {
+	private function html_filterbar(&$a) {
 		if(!$this->is_visible($a['show_nav'])) {
 			return '';
 		}
-		require_once( EL_PATH.'includes/navbar.php');
-		$navbar = EL_Navbar::get_instance();
-		return $navbar->show($this->get_url($a), $a);
+		require_once( EL_PATH.'includes/filterbar.php');
+		$filterbar = EL_Filterbar::get_instance();
+		return $filterbar->show($this->get_url($a), $a);
 	}
 
 	private function html_feed_link(&$a, $pos) {
