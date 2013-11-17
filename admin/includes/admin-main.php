@@ -97,23 +97,20 @@ class EL_Admin_Main {
 	}
 
 	private function list_events() {
+		// set date range of events being displayed
+		if(!(isset($_GET['ytd']) && 'all' == $_GET['ytd']) &&
+		   !(isset($_GET['ytd']) && is_numeric($_GET['ytd']))) {
+			$_GET['ytd'] = 'upcoming';
+		}
 		// show filterbar
 		$out = $this->filterbar->show('?page=el_admin_main', $_GET);
-		// set date range of events being displayed
-		$date_range = 'upcoming';
-		if(isset($_GET['ytd']) && 'all' == $_GET['ytd']) {
-			$date_range = 'all';
-		}
-		if(isset($_GET['ytd']) && is_numeric($_GET['ytd'])) {
-			$date_range = (int)$_GET['ytd'];
-		}
 		// show event table
 		// the form is required for bulk actions, the page field is required for plugins to ensure that the form posts back to the current page
 		$out .= '<form id="event-filter" method="get">
 				<input type="hidden" name="page" value="'.$_REQUEST['page'].'" />';
 		// show table
 		$table = new EL_Event_Table();
-		$table->prepare_items($date_range);
+		$table->prepare_items($_GET['ytd']);
 		ob_start();
 			$table->display();
 			$out .= ob_get_contents();
