@@ -154,7 +154,7 @@ class EL_Widget extends WP_Widget {
 		}
 		$linked_page_is_set = 0 < strlen( $instance['url_to_page'] );
 		$linked_page_id_is_set = 0 < (int)$instance['sc_id_for_url'];
-		$shortcode = '[event-list show_nav=false';
+		$shortcode = '[event-list show_filterbar=false';
 		$shortcode .= ' cat_filter='.$instance['cat_filter'];
 		$shortcode .= ' num_events="'.$instance['num_events'].'"';
 		$shortcode .= ' title_length='.$instance['title_length'];

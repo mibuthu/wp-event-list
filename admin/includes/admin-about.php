@@ -55,8 +55,8 @@ class EL_Admin_About {
 			<h3 class="el-headline">AShortcode Attributes</h3>
 			<div>
 				You have the possibility to modify the output if you add some of the following attributes to the shortcode.<br />
-				You can combine as much attributes as you want. E.g.the shortcode including the attributes "num_events" and "show_nav" would looks like this:
-				<p><code>[event-list num_events=10 show_nav=false]</code></p>
+				You can combine as much attributes as you want. E.g.the shortcode including the attributes "num_events" and "show_filterbar" would looks like this:
+				<p><code>[event-list num_events=10 show_filterbar=false]</code></p>
 				<p>Below you can find a list of all supported attributes with their descriptions and available options:</p>';
 		$out .= $this->show_atts_table();
 		$out .= '

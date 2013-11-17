@@ -52,12 +52,12 @@ class SC_Event_List {
 			                            'desc'    => 'This attribute specifies how many events should be displayed if upcoming events is selected.<br />
 			                                          0 is the standard value which means that all events will be displayed.' ),
 
-			'show_nav'        => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
+			'show_filterbar'  => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
 			                            'std_val' => 'true',
 			                            'visible' => true,
-			                            'desc'    => 'This attribute specifies if the calendar navigation should be displayed.<br />
+			                            'desc'    => 'This attribute specifies if the filterbar should be displayed. The filterbar allows the user to filter the listed events.<br />
 			                                          Choose "false" to always hide and "true" to always show the navigation.<br />
-			                                          With "event_list_only" the navigation is only visible in the event list and with "single_event_only" only for a single event'),
+			                                          With "event_list_only" the filterbar is only visible in the event list and with "single_event_only" only for a single event'),
 
 			'show_starttime'  => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
 			                            'std_val' => 'true',
@@ -336,7 +336,7 @@ class SC_Event_List {
 	}
 
 	private function html_filterbar(&$a) {
-		if(!$this->is_visible($a['show_nav'])) {
+		if(!$this->is_visible($a['show_filterbar'])) {
 			return '';
 		}
 		require_once( EL_PATH.'includes/filterbar.php');
