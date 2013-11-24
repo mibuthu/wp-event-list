@@ -67,7 +67,7 @@ class EL_Db {
 		}
 		else {  // upcoming
 			// get only events in the future
-			$range_start = date( 'Y-m-d' );
+			$range_start = date('Y-m-d', current_time('timestamp'));
 			$range_end = '9999-12-31';
 		}
 		// set category filter
@@ -102,7 +102,7 @@ class EL_Db {
 			$date = $this->extract_date( $date[0][$search_date],'Y');
 		}
 		else {
-			$date = date("Y");
+			$date = date('Y', current_time('timestamp'));
 		}
 		return $date;
 	}
@@ -122,7 +122,7 @@ class EL_Db {
 			//pub_user
 			$sqldata['pub_user'] = isset($event_data['id']) ? $event_data['pub_user'] : wp_get_current_user()->ID;
 			//pub_date
-			$sqldata['pub_date'] = isset($event_data['pub_date']) ? $event_data['pub_date'] : date("Y-m-d H:i:s");
+			$sqldata['pub_date'] = isset($event_data['pub_date']) ? $event_data['pub_date'] : date("Y-m-d H:i:s", current_time('timestamp'));
 		}
 		//start_date
 		if( !isset( $event_data['start_date']) ) { return false; }

@@ -58,7 +58,7 @@ class EL_Admin_New {
 		}
 		else {
 			//new event
-			$start_date = time()+1*24*60*60;
+			$start_date = current_time('timestamp')+86400; // next day (86400 seconds = 1*24*60*60 = 1 day);
 			$end_date = $start_date;
 		}
 
