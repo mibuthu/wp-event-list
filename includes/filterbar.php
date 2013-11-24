@@ -5,14 +5,14 @@ if(!defined('ABSPATH')) {
 
 require_once( EL_PATH.'includes/db.php' );
 //require_once( EL_PATH.'includes/options.php' );
-//require_once( EL_PATH.'includes/categories.php' );
+require_once( EL_PATH.'includes/categories.php' );
 
 // This class handles the navigation and filter bar
 class EL_Filterbar {
 	private static $instance;
 	private $db;
 //	private $options;
-//	private $categories;
+	private $categories;
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -26,7 +26,7 @@ class EL_Filterbar {
 	private function __construct() {
 		$this->db = &EL_Db::get_instance();
 //		$this->options = &EL_Options::get_instance();
-//		$this->categories = &EL_Categories::get_instance();
+		$this->categories = &EL_Categories::get_instance();
 	}
 
 	// main function to show the rendered HTML output
@@ -36,6 +36,7 @@ class EL_Filterbar {
 		$args['sc_id_for_url'] = is_numeric($args['sc_id_for_url']) ? '_'.$args['sc_id_for_url'] : '';
 		$out = '<div class="filterbar subsubsub">';
 		$out .= $this->show_years($url, $args);
+		$out .= $this->show_cats($url, $args);
 		$out .= '</div><br />';
 		return $out;
 	}
@@ -69,6 +70,15 @@ class EL_Filterbar {
 		return $this->show_hlist($elements);
 	}
 
+	private function show_cats($url, $args) {
+		$cat_array = $this->categories->get_cat_array();
+		$elements['all'] = __('All');
+		foreach($cat_array as $cat) {
+			$elements[$cat['slug']] = str_pad('', 12*$cat['level'], '&nbsp;', STR_PAD_LEFT).$cat['name'];
+		}
+		return $this->show_combobox($elements, 'categories');
+	}
+
 	private function show_hlist($elements) {
 		$out = '';
 		foreach($elements as $name=>$url) {
@@ -82,6 +92,21 @@ class EL_Filterbar {
 		}
 		// remove | at the end
 		$out = substr($out, 0, -3);
+		return $out;
+	}
+
+	private function show_combobox($elements, $selectname) {
+		$out = '<select name="'.$selectname.'">';
+		foreach($elements as $name=>$url) {
+			$out .= '
+					<option';
+			if(null === $url) {
+				$out .= ' selected="selected"';
+			}
+			$out .= ' value="'.$name.'">'.$url.'</option>';
+		}
+		$out .= '
+				</select>';
 		return $out;
 	}
 
