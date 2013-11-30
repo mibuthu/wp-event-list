@@ -55,40 +55,52 @@ class EL_Filterbar {
 		$ytd = 'ytd'.$args['sc_id_for_url'];
 		// prepare displayed elements
 		if($show_all) {
-			$elements[__('All')] = ('all' != $args['ytd'] && !is_numeric($args['event_id'])) ? add_query_arg($ytd, 'all', $url) : null;
+			$elements[] = $this->all_element();
 		}
 		if($show_upcoming) {
-			$elements[__('Upcoming')] = ('upcoming' != $args['ytd'] && !is_numeric($args['event_id'])) ? add_query_arg($ytd, 'upcoming', $url) : null;
+			$elements[] = $this->upcoming_element();
 		}
 		$first_year = $this->db->get_event_date('first');
 		$last_year = $this->db->get_event_date('last');
 		for($year=$last_year; $year>=$first_year; $year--) {
-			$elements[$year] = add_query_arg($ytd, $year, $url);
+			$elements[] = array('slug'=>$year, 'name'=>$year);
 		}
-		// remove link from actual element
-		if(is_numeric($args['ytd']) && !is_numeric($args['event_id'])) {
-			$elements[$args['ytd']] = null;
+		// set selected year
+		if(is_numeric($args['event_id'])) {
+			$actual = null;
 		}
-		return $this->show_hlist($elements);
+		elseif('all' === $args['ytd']) {
+			$actual = 'all';
+		}
+		elseif('upcoming' === $args['ytd']) {
+			$actual = 'upcoming';
+		}
+		elseif(is_numeric($args['ytd'])) {
+			$actual = $args['ytd'];
+		}
+		else {
+			$actual = null;
+		}
+		return $this->show_hlist($elements, $url, 'ytd', $actual);
 	}
 
 	private function show_cats($url, $args) {
 		$cat_array = $this->categories->get_cat_array();
-		$elements['all'] = __('All');
+		$elements[] = $this->all_element();
 		foreach($cat_array as $cat) {
-			$elements[$cat['slug']] = str_pad('', 12*$cat['level'], '&nbsp;', STR_PAD_LEFT).$cat['name'];
+			$elements[] = array('slug' => $cat['slug'], 'name' => str_pad('', 12*$cat['level'], '&nbsp;', STR_PAD_LEFT).$cat['name']);
 		}
 		return $this->show_combobox($elements, 'categories');
 	}
 
-	private function show_hlist($elements) {
+	private function show_hlist($elements, $url, $query_arg_name, $actual=null) {
 		$out = '';
-		foreach($elements as $name=>$url) {
-			if(null === $url) {
-				$out .= '<strong>'.$name.'</strong>';
+		foreach($elements as $element) {
+			if($actual == $element['slug']) {
+				$out .= '<strong>'.$element['name'].'</strong>';
 			}
 			else {
-				$out .= $this->show_url($url, $name);
+				$out .= $this->show_url(add_query_arg($query_arg_name, $element['slug'], $url), $element['name']);
 			}
 			$out .= ' | ';
 		}
@@ -97,19 +109,27 @@ class EL_Filterbar {
 		return $out;
 	}
 
-	private function show_combobox($elements, $selectname) {
+	private function show_combobox($elements, $selectname, $actual=null) {
 		$out = '<select name="'.$selectname.'">';
-		foreach($elements as $name=>$url) {
+		foreach($elements as $element) {
 			$out .= '
 					<option';
-			if(null === $url) {
+			if($element['slug'] === $actual) {
 				$out .= ' selected="selected"';
 			}
-			$out .= ' value="'.$name.'">'.$url.'</option>';
+			$out .= ' value="'.$element['slug'].'">'.$element['name'].'</option>';
 		}
 		$out .= '
 				</select>';
 		return $out;
+	}
+
+	private function all_element() {
+		return array('slug'=>'all', 'name'=>__('All'));
+	}
+
+	private function upcoming_element() {
+		return array('slug'=>'upcoming', 'name'=>__('Upcoming'));
 	}
 
 	private function show_url($url, $caption) {
