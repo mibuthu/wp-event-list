@@ -42,11 +42,13 @@ class EL_Filterbar {
 	}
 
 	private function show_all() {
-		//TODO: add show_all code
+		$elements[] = $this->all_element();
+		return $this->show_hlist($elements);
 	}
 
 	private function show_upcoming() {
-		//TODO: add show_upcoming code
+		$elements[] = $this->upcoming_element();
+		return $this->show_hlist($elements);
 	}
 
 	private function show_years($url, $args, $show_all=true, $show_upcoming=true) {
