@@ -52,7 +52,6 @@ class EL_Filterbar {
 	}
 
 	private function show_years($url, $args, $show_all=true, $show_upcoming=true) {
-		$ytd = 'ytd'.$args['sc_id_for_url'];
 		// prepare displayed elements
 		if($show_all) {
 			$elements[] = $this->all_element();
@@ -81,7 +80,7 @@ class EL_Filterbar {
 		else {
 			$actual = null;
 		}
-		return $this->show_hlist($elements, $url, 'ytd', $actual);
+		return $this->show_hlist($elements, $url, 'ytd'.$args['sc_id_for_url'], $actual);
 	}
 
 	private function show_cats($url, $args) {
