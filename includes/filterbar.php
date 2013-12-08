@@ -31,9 +31,6 @@ class EL_Filterbar {
 
 	// main function to show the rendered HTML output
 	public function show($url, $args) {
-		$defaults = array('ytd'=>null, 'event_id'=>null, 'sc_id_for_url'=>null);
-		$args = wp_parse_args($args, $defaults);
-		$args['sc_id_for_url'] = is_numeric($args['sc_id_for_url']) ? '_'.$args['sc_id_for_url'] : '';
 		$out = '<div class="filterbar subsubsub">';
 		$out .= $this->show_years($url, $args);
 		$out .= $this->show_cats($url, $args);
@@ -52,6 +49,7 @@ class EL_Filterbar {
 	}
 
 	private function show_years($url, $args, $show_all=true, $show_upcoming=true) {
+		$args = $this->parse_args($args);
 		// prepare displayed elements
 		if($show_all) {
 			$elements[] = $this->all_element();
@@ -84,6 +82,7 @@ class EL_Filterbar {
 	}
 
 	private function show_cats($url, $args) {
+		$args = $this->parse_args($args);
 		$cat_array = $this->categories->get_cat_array();
 		$elements[] = $this->all_element();
 		foreach($cat_array as $cat) {
@@ -128,11 +127,18 @@ class EL_Filterbar {
 	}
 
 	private function upcoming_element() {
-		return array('slug'=>'upcoming', 'name'=>__('Upcoming'));
+		return array('slug' => 'upcoming', 'name' => __('Upcoming'));
 	}
 
 	private function show_url($url, $caption) {
 		return '<a href="'.$url.'">'.$caption.'</a>';
+	}
+
+	private function parse_args($args) {
+		$defaults = array('ytd' => null, 'event_id' => null, 'sc_id_for_url' => null);
+		$args = wp_parse_args($args, $defaults);
+		$args['sc_id_for_url'] = is_numeric($args['sc_id_for_url']) ? '_'.$args['sc_id_for_url'] : '';
+		return $args;
 	}
 }
 ?>
