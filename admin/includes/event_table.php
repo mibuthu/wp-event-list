@@ -162,13 +162,16 @@ class EL_Event_Table extends WP_List_Table {
 	}
 
 	public function extra_tablenav($which) {
-		$out = '
-			<div class="alignleft actions">';
-		$out .= $this->filterbar->show_years('?page=el_admin_main', $_GET, 'dropdown');
-		$out .= $this->filterbar->show_cats('?page=el_admin_main', $_GET, 'dropdown');
-		$out .= '
+		$out = '';
+		if('top' === $which) {
+			$out = '
+				<div class="alignleft actions">';
+			$out .= $this->filterbar->show_years('?page=el_admin_main', $_GET, 'dropdown');
+			$out .= $this->filterbar->show_cats('?page=el_admin_main', $_GET, 'dropdown');
+			$out .= '
 				<input id="event-query-submit" class="button" type="submit" value="Filter" name =""></input>
 			</div>';
+		}
 		echo $out;
 	}
 
