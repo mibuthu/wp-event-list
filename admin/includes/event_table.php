@@ -186,7 +186,7 @@ class EL_Event_Table extends WP_List_Table {
 	* @uses $this->get_pagenum()
 	* @uses $this->set_pagination_args()
 	***************************************************************************/
-	public function prepare_items( $date_range='upcoming' ) {
+	public function prepare_items($date_range='upcoming', $cat_filter=null) {
 		$per_page = 20;
 		// define column headers
 		$columns = $this->get_columns();
@@ -196,7 +196,7 @@ class EL_Event_Table extends WP_List_Table {
 		// handle the bulk actions
 		$this->process_bulk_action();
 		// get the required event data
-		$data = $this->get_events( $date_range );
+		$data = $this->get_events($date_range, $cat_filter);
 		// setup pagination
 		$current_page = $this->get_pagenum();
 		$total_items = count( $data );
@@ -210,7 +210,7 @@ class EL_Event_Table extends WP_List_Table {
 		$this->items = $data;
 	}
 
-	private function get_events( $date_range ) {
+	private function get_events($date_range, $cat_filter) {
 		// define sort_array
 		$order = 'ASC';
 		if( isset( $_GET['order'] ) && $_GET['order'] === 'desc' ) {
@@ -244,7 +244,7 @@ class EL_Event_Table extends WP_List_Table {
 				break;
 		}
 		// get and return events in the correct order
-		return $this->db->get_events( $date_range, 0, null, $sort_array );
+		return $this->db->get_events( $date_range, 0, $cat_filter, $sort_array );
 	}
 
 	/** ************************************************************************
