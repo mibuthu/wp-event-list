@@ -1,22 +1,25 @@
 <?php
-if( !defined( 'ABSPATH' ) ) {
+if(!defined('ABSPATH')) {
 	exit;
 }
 
 // load the base class (WP_List_Table class isn't automatically available)
 if(!class_exists('WP_List_Table')){
-	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+	require_once(ABSPATH.'wp-admin/includes/class-wp-list-table.php');
 }
-require_once( EL_PATH.'includes/db.php' );
-require_once( EL_PATH.'includes/categories.php' );
+require_once(EL_PATH.'includes/db.php');
+require_once(EL_PATH.'includes/categories.php');
+require_once(EL_PATH.'includes/filterbar.php');
 
 class EL_Event_Table extends WP_List_Table {
 	private $db;
 	private $categories;
+	private $filterbar;
 
 	public function __construct() {
 		$this->db = &EL_Db::get_instance();
 		$this->categories = &EL_Categories::get_instance();
+		$this->filterbar = &EL_Filterbar::get_instance();
 
 		global $status, $page;
 		//Set parent defaults
@@ -156,6 +159,17 @@ class EL_Event_Table extends WP_List_Table {
 			// Show confirmation window before deleting
 			echo '<script language="JavaScript">eventlist_deleteEvent ("'.implode( ', ', $_GET['id'] ).'");</script>';
 		}
+	}
+
+	public function extra_tablenav($which) {
+		$out = '
+			<div class="alignleft actions">';
+		$out .= $this->filterbar->show_years('?page=el_admin_main', $_GET, 'dropdown');
+		$out .= $this->filterbar->show_cats('?page=el_admin_main', $_GET, 'dropdown');
+		$out .= '
+				<input id="event-query-submit" class="button" type="submit" value="Filter" name =""></input>
+			</div>';
+		echo $out;
 	}
 
 	/** ************************************************************************
