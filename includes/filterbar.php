@@ -48,11 +48,11 @@ class EL_Filterbar {
 		return $this->show_hlist($elements);
 	}
 
-	private function show_years($url, $args, $show_all=true, $show_upcoming=true) {
+	public function show_years($url, $args, $type='hlist', $show_all=true, $show_upcoming=true) {
 		$args = $this->parse_args($args);
 		// prepare displayed elements
 		if($show_all) {
-			$elements[] = $this->all_element();
+			$elements[] = $this->all_element('hlist'==$type ? null : __('Show all dates'));
 		}
 		if($show_upcoming) {
 			$elements[] = $this->upcoming_element();
@@ -78,17 +78,27 @@ class EL_Filterbar {
 		else {
 			$actual = null;
 		}
-		return $this->show_hlist($elements, $url, 'ytd'.$args['sc_id_for_url'], $actual);
+		if('dropdown' === $type) {
+			return $this->show_dropdown($elements, 'ytdtest', null);
+		}
+		else {
+			return $this->show_hlist($elements, $url, 'ytd'.$args['sc_id_for_url'], $actual);
+		}
 	}
 
-	private function show_cats($url, $args) {
+	public function show_cats($url, $args, $type='dropdown') {
 		$args = $this->parse_args($args);
 		$cat_array = $this->categories->get_cat_array();
-		$elements[] = $this->all_element();
+		$elements[] = $this->all_element('hlist'==$type ? null : __('View all categories'));
 		foreach($cat_array as $cat) {
 			$elements[] = array('slug' => $cat['slug'], 'name' => str_pad('', 12*$cat['level'], '&nbsp;', STR_PAD_LEFT).$cat['name']);
 		}
-		return $this->show_combobox($elements, 'categories');
+		if('hlist' === $type) {
+			return $this->show_hlist($elements, $url);
+		}
+		else {
+			return $this->show_dropdown($elements, 'cat', null);
+		}
 	}
 
 	private function show_hlist($elements, $url, $query_arg_name, $actual=null) {
@@ -107,7 +117,7 @@ class EL_Filterbar {
 		return $out;
 	}
 
-	private function show_combobox($elements, $selectname, $actual=null) {
+	private function show_dropdown($elements, $selectname, $query_arg_name, $actual=null) {
 		$out = '<select name="'.$selectname.'">';
 		foreach($elements as $element) {
 			$out .= '
@@ -122,8 +132,11 @@ class EL_Filterbar {
 		return $out;
 	}
 
-	private function all_element() {
-		return array('slug'=>'all', 'name'=>__('All'));
+	private function all_element($name=null) {
+		if(null == $name) {
+			$name = __('All');
+		}
+		return array('slug' => 'all', 'name' => $name);
 	}
 
 	private function upcoming_element() {
