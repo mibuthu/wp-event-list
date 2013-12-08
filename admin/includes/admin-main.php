@@ -12,6 +12,7 @@ class EL_Admin_Main {
 	private static $instance;
 	private $db;
 	private $filterbar;
+	private $event_table;
 	private $event_action = false;
 	private $event_action_error = false;
 
@@ -36,23 +37,22 @@ class EL_Admin_Main {
 		if(!current_user_can('edit_posts')) {
 			wp_die(__('You do not have sufficient permissions to access this page.'));
 		}
-		$action = '';
+		$this->event_table = new EL_Event_Table();
 		// is there POST data an event was edited must be updated
 		if(!empty($_POST)) {
 			$this->event_action_error = !$this->db->update_event($_POST, __('Y/m/d'));
 			$this->event_action = isset($_POST['id']) ? 'modified' : 'added';
 		}
 		// get action
-		if(isset($_GET['action'])) {
-			$action = $_GET['action'];
-		}
+		$action = $this->event_table->current_action();
+		// TODO: add check_admin_referer to improve security (see /wp-admin/edit.php)
 		// if an event should be edited a different page must be displayed
-		if($action === 'edit') {
+		if('edit' === $action) {
 			$this->show_edit();
 			return;
 		}
 		// delete events if required
-		if($action === 'delete' && isset($_GET['id'])) {
+		if('delete' === $action && isset($_GET['id'])) {
 			$this->event_action_error = !$this->db->delete_events(explode(',', $_GET['id']));
 			$this->event_action = 'deleted';
 		}
@@ -103,16 +103,16 @@ class EL_Admin_Main {
 			$_GET['ytd'] = 'upcoming';
 		}
 		// show filterbar
-		$out = $this->filterbar->show('?page=el_admin_main', $_GET);
+		$out = '';
+//		$out = $this->filterbar->show('?page=el_admin_main', $_GET);
 		// show event table
 		// the form is required for bulk actions, the page field is required for plugins to ensure that the form posts back to the current page
 		$out .= '<form id="event-filter" method="get">
 				<input type="hidden" name="page" value="'.$_REQUEST['page'].'" />';
 		// show table
-		$table = new EL_Event_Table();
-		$table->prepare_items($_GET['ytd']);
+		$this->event_table->prepare_items($_GET['ytd']);
 		ob_start();
-			$table->display();
+			$this->event_table->display();
 			$out .= ob_get_contents();
 		ob_end_clean();
 		$out .= '</form>';
