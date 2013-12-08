@@ -79,7 +79,7 @@ class EL_Filterbar {
 			$actual = null;
 		}
 		if('dropdown' === $type) {
-			return $this->show_dropdown($elements, 'ytdtest', null);
+			return $this->show_dropdown($elements, 'ytd', null);
 		}
 		else {
 			return $this->show_hlist($elements, $url, 'ytd'.$args['sc_id_for_url'], $actual);
