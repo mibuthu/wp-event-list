@@ -62,7 +62,7 @@ class EL_Filterbar {
 		for($year=$last_year; $year>=$first_year; $year--) {
 			$elements[] = array('slug'=>$year, 'name'=>$year);
 		}
-		// set selected year
+		// set selection
 		if(is_numeric($args['event_id'])) {
 			$actual = null;
 		}
@@ -79,7 +79,7 @@ class EL_Filterbar {
 			$actual = null;
 		}
 		if('dropdown' === $type) {
-			return $this->show_dropdown($elements, 'ytd', null);
+			return $this->show_dropdown($elements, 'ytd'.$args['sc_id_for_url'], $actual);
 		}
 		else {
 			return $this->show_hlist($elements, $url, 'ytd'.$args['sc_id_for_url'], $actual);
@@ -88,27 +88,30 @@ class EL_Filterbar {
 
 	public function show_cats($url, $args, $type='dropdown') {
 		$args = $this->parse_args($args);
+		// prepare displayed elements
 		$cat_array = $this->categories->get_cat_array();
 		$elements[] = $this->all_element('hlist'==$type ? null : __('View all categories'));
 		foreach($cat_array as $cat) {
 			$elements[] = array('slug' => $cat['slug'], 'name' => str_pad('', 12*$cat['level'], '&nbsp;', STR_PAD_LEFT).$cat['name']);
 		}
+		// set selection
+		$actual = isset($args['cat']) ? $args['cat'] : null;
 		if('hlist' === $type) {
-			return $this->show_hlist($elements, $url);
+			return $this->show_hlist($elements, $url, 'cat'.$args['sc_id_for_url'], $actual);
 		}
 		else {
-			return $this->show_dropdown($elements, 'cat', null);
+			return $this->show_dropdown($elements, 'cat'.$args['sc_id_for_url'], $actual);
 		}
 	}
 
-	private function show_hlist($elements, $url, $query_arg_name, $actual=null) {
+	private function show_hlist($elements, $url, $name, $actual=null) {
 		$out = '';
 		foreach($elements as $element) {
 			if($actual == $element['slug']) {
 				$out .= '<strong>'.$element['name'].'</strong>';
 			}
 			else {
-				$out .= $this->show_url(add_query_arg($query_arg_name, $element['slug'], $url), $element['name']);
+				$out .= $this->show_url(add_query_arg($name, $element['slug'], $url), $element['name']);
 			}
 			$out .= ' | ';
 		}
@@ -117,12 +120,13 @@ class EL_Filterbar {
 		return $out;
 	}
 
-	private function show_dropdown($elements, $selectname, $query_arg_name, $actual=null) {
-		$out = '<select name="'.$selectname.'">';
+	private function show_dropdown($elements, $name, $actual=null) {
+		$out = '<select name="'.$name.'">';
+		error_log('Actual: '.$actual);
 		foreach($elements as $element) {
 			$out .= '
 					<option';
-			if($element['slug'] === $actual) {
+			if($element['slug'] == $actual) {
 				$out .= ' selected="selected"';
 			}
 			$out .= ' value="'.$element['slug'].'">'.$element['name'].'</option>';
