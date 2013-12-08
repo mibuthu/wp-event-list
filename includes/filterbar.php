@@ -122,7 +122,6 @@ class EL_Filterbar {
 
 	private function show_dropdown($elements, $name, $actual=null) {
 		$out = '<select name="'.$name.'">';
-		error_log('Actual: '.$actual);
 		foreach($elements as $element) {
 			$out .= '
 					<option';
