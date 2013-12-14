@@ -163,6 +163,13 @@ class EL_Event_Table extends WP_List_Table {
 
 	public function extra_tablenav($which) {
 		$out = '';
+		// set standard values
+		if(!isset($_GET['ytd'])) {
+			$_GET['ytd'] = 'upcoming';
+		}
+		if(!isset($_GET['cat'])) {
+			$_GET['cat'] = 'all';
+		}
 		if('top' === $which) {
 			$out = '
 				<div class="alignleft actions">';
@@ -186,7 +193,7 @@ class EL_Event_Table extends WP_List_Table {
 	* @uses $this->get_pagenum()
 	* @uses $this->set_pagination_args()
 	***************************************************************************/
-	public function prepare_items($date_range='upcoming', $cat_filter=null) {
+	public function prepare_items($date_range, $cat_filter) {
 		$per_page = 20;
 		// define column headers
 		$columns = $this->get_columns();

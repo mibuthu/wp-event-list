@@ -71,6 +71,9 @@ class EL_Db {
 			$range_end = '9999-12-31';
 		}
 		// set category filter
+		if(is_array($cat_filter) && 'all' == $cat_filter[0]) {
+			$cat_filter = null;
+		}
 		$sql_cat_filter = empty( $cat_filter ) ? '' : ' AND ( categories LIKE "%|'.implode( '|%" OR categories LIKE "%|', $cat_filter ).'|%" )';
 		$sql = 'SELECT * FROM '.$this->table.' WHERE end_date >= "'.$range_start.'" AND start_date <= "'.$range_end.'"'.$sql_cat_filter.' ORDER BY '.implode( ', ', $sort_array );
 		if( 'upcoming' === $date_range && is_numeric($num_events) && 0 < $num_events ) {
