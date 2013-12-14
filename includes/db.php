@@ -160,13 +160,13 @@ class EL_Db {
 		else { $sqldata['categories'] = '|'.implode( '|', $event_data['categories'] ).'|'; }
 		//types for sql data
 		$sqltypes = array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );
-		if( isset( $event_data['id'] ) ) { // update event
-			$wpdb->update( $this->table, $sqldata, array( 'id' => $event_data['id'] ), $sqltypes );
+		if(isset( $event_data['id'] ) ) { // update event
+			return $wpdb->update($this->table, $sqldata, array('id' => $event_data['id']), $sqltypes);
 		}
 		else { // new event
-			$wpdb->insert( $this->table, $sqldata, $sqltypes );
+			$wpdb->insert($this->table, $sqldata, $sqltypes);
+			return $wpdb->insert_id;
 		}
-		return true;
 	}
 
 	public function delete_events( $event_ids ) {
