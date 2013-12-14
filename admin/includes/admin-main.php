@@ -53,6 +53,10 @@ class EL_Admin_Main {
 					break;
 			}
 		}
+		// cleanup query args when filter button was pressed
+		if(isset($_GET['filter'])) {
+			$this->redirect();
+		}
 	}
 
 	// show the main admin page
@@ -192,9 +196,11 @@ class EL_Admin_Main {
 			<div id="message" class="error below-h2"><p><strong>'.$text.'</strong></p></div>';
 	}
 
-	private function redirect($action, $error=false, $query_args=array()) {
-		$url = remove_query_arg(array('action', '_wpnonce', '_wp_http_referer'), $_SERVER['REQUEST_URI']);
-		$url = add_query_arg('action', $action, $url);
+	private function redirect($action=false, $error=false, $query_args=array()) {
+		$url = remove_query_arg(array('action', 'action2', 'filter', '_wpnonce', '_wp_http_referer'), $_SERVER['REQUEST_URI']);
+		if($action) {
+			$url = add_query_arg('action', $action, $url);
+		}
 		if($error) {
 			$url = add_query_arg('error', '1', $url);
 		}
