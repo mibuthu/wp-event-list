@@ -170,6 +170,7 @@ class EL_Event_Table extends WP_List_Table {
 		if(!isset($_GET['cat'])) {
 			$_GET['cat'] = 'all';
 		}
+		// add filter elements
 		if('top' === $which) {
 			$out = '
 				<div class="alignleft actions">';
