@@ -13,8 +13,7 @@ class EL_Admin_Main {
 	private $db;
 	private $filterbar;
 	private $event_table;
-	private $event_action = false;
-	private $event_action_error = false;
+	private $action;
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -28,75 +27,108 @@ class EL_Admin_Main {
 	private function __construct() {
 		$this->db = &EL_Db::get_instance();
 		$this->filterbar = &EL_Filterbar::get_instance();
-		$this->event_action = null;
-		$this->event_action_error = null;
+		$this->event_table = new EL_Event_Table();
+		$this->action = $this->event_table->current_action();
+		// check for real actions
+		if($this->action) {
+			switch($this->action) {
+				// real actions (redirect when finished)
+				case 'new':
+					if(!empty($_POST)) {
+						$id = $this->db->update_event($_POST, __('Y/m/d'));
+						$error = !$id;
+						$this->redirect('added', $error, array('title' => $_POST['title'], 'id' => $id));
+					}
+				case 'edited':
+					if(!empty($_POST)) {
+						$error = !$this->db->update_event($_POST, __('Y/m/d'));
+						$this->redirect('modified', $error, array('title' => $_POST['title'], 'id' => $_POST['id']));
+					}
+					break;
+				case 'delete':
+					if(isset($_GET['id'])) {
+						$error = !$this->db->delete_events(explode(',', $_GET['id']));
+						$this->redirect('deleted', $error, array('id' => $_GET['id']));
+					}
+					break;
+			}
+		}
 	}
 
 	// show the main admin page
 	public function show_main() {
+		// check permissions
 		if(!current_user_can('edit_posts')) {
 			wp_die(__('You do not have sufficient permissions to access this page.'));
 		}
-		$this->event_table = new EL_Event_Table();
-		// is there POST data an event was edited must be updated
-		if(!empty($_POST)) {
-			$this->event_action_error = !$this->db->update_event($_POST, __('Y/m/d'));
-			$this->event_action = isset($_POST['id']) ? 'modified' : 'added';
-		}
-		// get action
-		$action = $this->event_table->current_action();
 		// TODO: add check_admin_referer to improve security (see /wp-admin/edit.php)
-		// if an event should be edited a different page must be displayed
-		if('edit' === $action) {
-			$this->show_edit();
-			return;
+		// is there POST data an event was edited must be updated
+
+		// check for actions
+		if($this->action) {
+			switch($this->action) {
+				// actions showing edit view
+				case 'edit':
+				case 'added':
+				case 'modified':
+					$this->show_edit_view($this->action);
+					return;
+
+				// actions showing event list
+				case 'deleted':
+					// nothing to do
+					break;
+			}
 		}
-		// delete events if required
-		if('delete' === $action && isset($_GET['id'])) {
-			$this->event_action_error = !$this->db->delete_events(explode(',', $_GET['id']));
-			$this->event_action = 'deleted';
-		}
-		// automatically set order of table to date, if no manual sorting is set
+
+		// proceed with normal event list page
 		if(!isset($_GET['orderby'])) {
+			// set initial sorting
 			$_GET['orderby'] = 'date';
 			$_GET['order'] = 'asc';
 		}
-
-		// headline for the normal page
-		$out ='
-			<div class="wrap">
-			<div id="icon-edit-pages" class="icon32"><br /></div><h2>Events <a href="?page=el_admin_new" class="add-new-h2">Add New</a></h2>';
-		// added messages if required
-		$out .= $this->show_messages();
-		// list event table
-		$out .= $this->list_events();
-		$out .= '</div>';
-		echo $out;
+		$this->show_page_header($this->action);
+		echo $this->show_event_table();
+		echo '</div>';
 	}
 
-	private function show_edit() {
-		$out = '<div class="wrap">
-				<div id="icon-edit-pages" class="icon32"><br /></div><h2>Edit Event</h2>';
+	private function show_page_header($action, $editview=false) {
+		if($editview) {
+			$header = 'Edit Event';
+		}
+		else {
+			$header = 'Events <a href="?page=el_admin_new" class="add-new-h2">Add New</a>';
+		}
+		echo '
+			<div class="wrap">
+				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.$header.'</h2>';
+		$this->show_message($action);
+	}
+
+	private function show_edit_view($action) {
+		$this->show_page_header($action, true);
 		require_once(EL_PATH.'admin/includes/admin-new.php');
-		$out .= EL_Admin_New::get_instance()->edit_event();
-		$out .= '</div>';
-		echo $out;
+		echo EL_Admin_New::get_instance()->edit_event();
+		echo '</div>';
 	}
 
 	public function embed_main_scripts() {
 		// If edit event is selected switch to embed admin_new
-		if(isset($_GET['action']) && 'edit' === $_GET['action']) {
-			require_once(EL_PATH.'admin/includes/admin-new.php');
-			EL_Admin_New::get_instance()->embed_new_scripts();
-		}
-		else {
-			// Proceed with embedding for admin_main
-			wp_enqueue_script('eventlist_admin_main_js', EL_URL.'admin/js/admin_main.js');
-			wp_enqueue_style('eventlist_admin_main', EL_URL.'admin/css/admin_main.css');
+		switch($this->action) {
+			case 'edit':
+			case 'added':
+			case 'modified':
+				// embed admin new script
+				require_once(EL_PATH.'admin/includes/admin-new.php');
+				EL_Admin_New::get_instance()->embed_new_scripts();
+			default:
+				// embed admin_main script
+				wp_enqueue_script('eventlist_admin_main_js', EL_URL.'admin/js/admin_main.js');
+				wp_enqueue_style('eventlist_admin_main', EL_URL.'admin/css/admin_main.css');
 		}
 	}
 
-	private function list_events() {
+	private function show_event_table() {
 		// set filter options
 		if((isset($_GET['ytd']) && 'all' == $_GET['ytd']) ||
 		   (isset($_GET['ytd']) && is_numeric($_GET['ytd']))) {
@@ -124,41 +156,51 @@ class EL_Admin_Main {
 		return $out;
 	}
 
-	private function show_messages() {
-		$out = '';
-		// event added
-		if('added' === $this->event_action) {
-			if(false === $this->event_action_error) {
-				$out .= '<div id="message" class="updated below-h2"><p><strong>New Event "'.stripslashes($_POST['title']).'" was added.</strong></p></div>';
-			}
-			else {
-				$out .= '<div id="message" class="error below-h2"><p><strong>Error: New Event "'.stripslashes($_POST['title']).'" could not be added.</strong></p></div>';
-			}
+	private function show_message($action) {
+		$error = isset($_GET['error']);
+		switch($action) {
+			case 'added':
+				if(!$error)
+					$this->show_update_message('New Event "'.stripslashes($_GET['title']).'" was added.');
+				else
+					$this->show_error_message('Error: New Event "'.stripslashes($_GET['title']).'" could not be added.');
+				break;
+			case 'modified':
+				if(!$error)
+					$this->show_update_message('Event "'.stripslashes($_GET['title']).'" (id: '.$_GET['id'].') was modified.');
+				else
+					$this->show_error_message('Error: Event "'.stripslashes($_GET['title']).'" (id: '.$_GET['id'].') could not be modified.');
+				break;
+			case 'deleted':
+				$num_deleted = count(explode(',', $_GET['id']));
+				$plural = ($num_deleted > 1) ? 's' : '';
+				if(!$error)
+					$this->show_update_message($num_deleted.' Event'.$plural.' deleted (id'.$plural.': '.$_GET['id'].').');
+				else
+					$this->show_error_message('Error while deleting '.$num_deleted.' Event'.$plural.'.');
+				break;
 		}
-		// event modified
-		elseif('modified' === $this->event_action) {
-			if(false === $this->event_action_error) {
-				$out .= '<div id="message" class="updated below-h2"><p><strong>Event "'.stripslashes($_POST['title']).'" (id: '.$_POST['id'].') was modified.</strong></p></div>';
-			}
-			else {
-				$out .= '<div id="message" class="error below-h2"><p><strong>Error: Event "'.stripslashes($_POST['title']).'" (id: '.$_POST['id'].') could not be modified.</strong></p></div>';
-			}
+	}
+
+	private function show_update_message($text) {
+		echo '
+			<div id="message" class="updated below-h2"><p><strong>'.$text.'</strong></p></div>';
+	}
+
+	private function show_error_message($text) {
+		echo '
+			<div id="message" class="error below-h2"><p><strong>'.$text.'</strong></p></div>';
+	}
+
+	private function redirect($action, $error=false, $query_args=array()) {
+		$url = remove_query_arg(array('action', '_wpnonce', '_wp_http_referer'), $_SERVER['REQUEST_URI']);
+		$url = add_query_arg('action', $action, $url);
+		if($error) {
+			$url = add_query_arg('error', '1', $url);
 		}
-		// event deleted
-		elseif('deleted' === $this->event_action) {
-			$num_deleted = count(explode(',', $_GET['id']));
-			$plural = '';
-			if($num_deleted > 1) {
-				$plural = 's';
-			}
-			if(false === $this->event_action_error) {
-				$out .= '<div id="message" class="updated below-h2"><p><strong>'.$num_deleted.' Event'.$plural.' deleted (id'.$plural.': '.$_GET['id'].').</strong></p></div>';
-			}
-			else {
-				$out .= '<div id="message" class="error below-h2"><p><strong>Error while deleting '.$num_deleted.' Event'.$plural.'.</strong></p></div>';
-			}
-		}
-		return $out;
+		$url = add_query_arg($query_args, $url);
+		wp_redirect($url);
+		exit;
 	}
 }
 ?>
