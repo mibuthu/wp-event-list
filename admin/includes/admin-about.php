@@ -52,7 +52,7 @@ class EL_Admin_About {
 
 	private function show_atts() {
 		$out = '
-			<h3 class="el-headline">AShortcode Attributes</h3>
+			<h3 class="el-headline">Shortcode Attributes</h3>
 			<div>
 				You have the possibility to modify the output if you add some of the following attributes to the shortcode.<br />
 				You can combine as much attributes as you want. E.g.the shortcode including the attributes "num_events" and "show_filterbar" would looks like this:
