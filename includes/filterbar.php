@@ -32,7 +32,7 @@ class EL_Filterbar {
 	// main function to show the rendered HTML output
 	public function show($url, $args) {
 		$out = '<div class="filterbar subsubsub">';
-		$out .= $this->show_years($url, $args);
+		$out .= $this->show_years($url, $args, 'dropdown');
 		$out .= $this->show_cats($url, $args);
 		$out .= '</div><br />';
 		return $out;
@@ -50,6 +50,7 @@ class EL_Filterbar {
 
 	public function show_years($url, $args, $type='hlist', $show_all=true, $show_upcoming=true) {
 		$args = $this->parse_args($args);
+		$argname = 'ytd'.$args['sc_id_for_url'];
 		// prepare displayed elements
 		if($show_all) {
 			$elements[] = $this->all_element('hlist'==$type ? null : __('Show all dates'));
@@ -79,15 +80,16 @@ class EL_Filterbar {
 			$actual = null;
 		}
 		if('dropdown' === $type) {
-			return $this->show_dropdown($elements, 'ytd'.$args['sc_id_for_url'], $actual);
+			return $this->show_dropdown($elements, $argname, $actual);
 		}
 		else {
-			return $this->show_hlist($elements, $url, 'ytd'.$args['sc_id_for_url'], $actual);
+			return $this->show_hlist($elements, $url, $argname, $actual);
 		}
 	}
 
 	public function show_cats($url, $args, $type='dropdown') {
 		$args = $this->parse_args($args);
+		$argname = 'cat'.$args['sc_id_for_url'];
 		// prepare displayed elements
 		$cat_array = $this->categories->get_cat_array();
 		$elements[] = $this->all_element('hlist'==$type ? null : __('View all categories'));
@@ -96,11 +98,12 @@ class EL_Filterbar {
 		}
 		// set selection
 		$actual = isset($args['cat']) ? $args['cat'] : null;
+		error_log($actual);
 		if('hlist' === $type) {
-			return $this->show_hlist($elements, $url, 'cat'.$args['sc_id_for_url'], $actual);
+			return $this->show_hlist($elements, $url, $argname, $actual);
 		}
 		else {
-			return $this->show_dropdown($elements, 'cat'.$args['sc_id_for_url'], $actual);
+			return $this->show_dropdown($elements, $argname, $actual);
 		}
 	}
 
@@ -121,7 +124,7 @@ class EL_Filterbar {
 	}
 
 	private function show_dropdown($elements, $name, $actual=null) {
-		$out = '<select name="'.$name.'">';
+		$out = '<select name="'.$name.'" onchange="window.location.assign(window.location.href+=\'&'.$name.'=\'+this.value)">';
 		foreach($elements as $element) {
 			$out .= '
 					<option';
