@@ -161,7 +161,6 @@ class EL_Filterbar {
 	private function parse_args($args) {
 		$defaults = array('ytd' => null, 'event_id' => null, 'sc_id_for_url' => null);
 		$args = wp_parse_args($args, $defaults);
-		$args['sc_id_for_url'] = is_numeric($args['sc_id_for_url']) ? '_'.$args['sc_id_for_url'] : '';
 		return $args;
 	}
 

@@ -172,8 +172,8 @@ class SC_Event_List {
 		$a = shortcode_atts( $std_values, $atts );
 		// add internal attributes
 		$a['sc_id'] = $this->num_sc_loaded;
-		$a['event_id'] = isset( $_GET['event_id_'.$a['sc_id']] ) ? (integer)$_GET['event_id_'.$a['sc_id']] : null;
-		$a['ytd'] = $this->get_ytd( $a );
+		$a['event_id'] = isset( $_GET['event_id'.$a['sc_id']] ) ? (integer)$_GET['event_id'.$a['sc_id']] : null;
+		$a['ytd'] = $this->get_ytd($a);
 		// fix sc_id_for_url if required
 		if( !is_numeric( $a['sc_id_for_url'] ) ) {
 			$a['sc_id_for_url'] = $a['sc_id'];
@@ -268,7 +268,7 @@ class SC_Event_List {
 
 		$title = esc_attr($this->db->truncate(min($max_length, $a['title_length']), $event->title));
 		if( $this->is_visible( $a['link_to_event'] ) ) {
-			$out .= '<a href="'.esc_html(add_query_arg('event_id_'.$a['sc_id_for_url'], $event->id, $this->get_url($a))).'">'.$title.'</a>';
+			$out .= '<a href="'.esc_html(add_query_arg('event_id'.$a['sc_id_for_url'], $event->id, $this->get_url($a))).'">'.$title.'</a>';
 		}
 		else {
 			$out .= $title;
@@ -372,16 +372,16 @@ class SC_Event_List {
 
 	private function get_ytd( &$a ) {
 		$ytd = 'upcoming';
-		if(isset($_GET['ytd_'.$a['sc_id']])) {
-			if('all' == $_GET['ytd_'.$a['sc_id']]){
+		if(isset($_GET['ytd'.$a['sc_id']])) {
+			if('all' == $_GET['ytd'.$a['sc_id']]){
 				$ytd = 'all';
 			}
-			elseif(is_numeric($_GET['ytd_'.$a['sc_id']])) {
+			elseif(is_numeric($_GET['ytd'.$a['sc_id']])) {
 				// ytd is a year
-				$ytd = (int)$_GET['ytd_'.$a['sc_id']];
+				$ytd = (int)$_GET['ytd'.$a['sc_id']];
 			}
 		}
-		elseif(isset($a['initial_date']) && is_numeric($a['initial_date']) && !is_numeric($a['event_id']) && !isset($_GET['link_'.$a['sc_id']])) {
+		elseif(isset($a['initial_date']) && is_numeric($a['initial_date']) && !is_numeric($a['event_id']) && !isset($_GET['link'.$a['sc_id']])) {
 			// initial_date attribute is set
 			$ytd = (int)$a['initial_date'];
 		}
@@ -397,7 +397,7 @@ class SC_Event_List {
 			// use actual page
 			$url = get_permalink();
 			foreach( $_GET as  $k => $v ) {
-				if( 'ytd_'.$a['sc_id'] !== $k && 'event_id_'.$a['sc_id'] !== $k && 'link_'.$a['sc_id'] !== $k ) {
+				if( 'ytd'.$a['sc_id'] !== $k && 'event_id'.$a['sc_id'] !== $k && 'link'.$a['sc_id'] !== $k ) {
 					$url = add_query_arg( $k, $v, $url );
 				}
 			}
