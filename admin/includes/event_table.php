@@ -174,8 +174,8 @@ class EL_Event_Table extends WP_List_Table {
 		if('top' === $which) {
 			$out = '
 				<div class="alignleft actions">';
-			$out .= $this->filterbar->show_years('?page=el_admin_main', $_GET, 'dropdown');
-			$out .= $this->filterbar->show_cats('?page=el_admin_main', $_GET, 'dropdown');
+			$out .= $this->filterbar->show_years('?page=el_admin_main', $_GET, 'dropdown', 'admin');
+			$out .= $this->filterbar->show_cats('?page=el_admin_main', $_GET, 'dropdown', 'admin');
 			$out .= '
 				<input id="event-query-submit" class="button" type="submit" name ="filter" value="'.__('Filter').'"></input>
 			</div>';

@@ -48,7 +48,7 @@ class EL_Filterbar {
 		return $this->show_hlist($elements);
 	}
 
-	public function show_years($url, $args, $type='hlist', $show_all=true, $show_upcoming=true) {
+	public function show_years($url, $args, $type='hlist', $subtype='std', $show_all=true, $show_upcoming=true) {
 		$args = $this->parse_args($args);
 		$argname = 'ytd'.$args['sc_id_for_url'];
 		// prepare displayed elements
@@ -80,14 +80,14 @@ class EL_Filterbar {
 			$actual = null;
 		}
 		if('dropdown' === $type) {
-			return $this->show_dropdown($elements, $argname, $actual);
+			return $this->show_dropdown($elements, $argname, $subtype, $actual);
 		}
 		else {
 			return $this->show_hlist($elements, $url, $argname, $actual);
 		}
 	}
 
-	public function show_cats($url, $args, $type='dropdown') {
+	public function show_cats($url, $args, $type='dropdown', $subtype='std') {
 		$args = $this->parse_args($args);
 		$argname = 'cat'.$args['sc_id_for_url'];
 		// prepare displayed elements
@@ -98,12 +98,11 @@ class EL_Filterbar {
 		}
 		// set selection
 		$actual = isset($args['cat']) ? $args['cat'] : null;
-		error_log($actual);
 		if('hlist' === $type) {
 			return $this->show_hlist($elements, $url, $argname, $actual);
 		}
 		else {
-			return $this->show_dropdown($elements, $argname, $actual);
+			return $this->show_dropdown($elements, $argname, $subtype, $actual);
 		}
 	}
 
@@ -123,8 +122,9 @@ class EL_Filterbar {
 		return $out;
 	}
 
-	private function show_dropdown($elements, $name, $actual=null) {
-		$out = '<select name="'.$name.'" onchange="window.location.assign(window.location.href+=\'&'.$name.'=\'+this.value)">';
+	private function show_dropdown($elements, $name, $subtype='std', $actual=null) {
+		$onchange = ('admin' == $subtype) ? '' : ' onchange="window.location.assign(window.location.href+=\'&'.$name.'=\'+this.value)"';
+		$out = '<select name="'.$name.'"'.$onchange.'>';
 		foreach($elements as $element) {
 			$out .= '
 					<option';
