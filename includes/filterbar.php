@@ -123,7 +123,12 @@ class EL_Filterbar {
 	}
 
 	private function show_dropdown($elements, $name, $subtype='std', $actual=null) {
-		$onchange = ('admin' == $subtype) ? '' : ' onchange="window.location.assign(window.location.href+=\'&'.$name.'=\'+this.value)"';
+		$onchange = '';
+		if('admin' != $subtype) {
+			wp_register_script('el_filterbar', EL_URL.'includes/js/filterbar.js', null, true);
+			add_action('wp_footer', array(&$this, 'footer_script'));
+			$onchange = ' onchange="eventlist_redirect(this.name,this.value)"';
+		}
 		$out = '<select name="'.$name.'"'.$onchange.'>';
 		foreach($elements as $element) {
 			$out .= '
@@ -158,6 +163,10 @@ class EL_Filterbar {
 		$args = wp_parse_args($args, $defaults);
 		$args['sc_id_for_url'] = is_numeric($args['sc_id_for_url']) ? '_'.$args['sc_id_for_url'] : '';
 		return $args;
+	}
+
+	public function footer_script() {
+		wp_print_scripts('el_filterbar');
 	}
 }
 ?>
