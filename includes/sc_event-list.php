@@ -173,11 +173,12 @@ class SC_Event_List {
 		// add internal attributes
 		$a['sc_id'] = $this->num_sc_loaded;
 		$a['event_id'] = isset( $_GET['event_id'.$a['sc_id']] ) ? (integer)$_GET['event_id'.$a['sc_id']] : null;
-		$a['ytd'] = $this->get_ytd($a);
 		// fix sc_id_for_url if required
 		if( !is_numeric( $a['sc_id_for_url'] ) ) {
 			$a['sc_id_for_url'] = $a['sc_id'];
 		}
+		$a['ytd'] = $this->get_ytd($a);
+		$a['cat'] = isset($_GET['cat'.$a['sc_id']]) ? $_GET['cat'.$a['sc_id']] : $a['cat_filter'];
 
 		$out = '
 				<div class="event-list">';
@@ -212,7 +213,7 @@ class SC_Event_List {
 		if('upcoming' != $a['ytd']) {
 			$a['num_events'] = 0;
 		}
-		$cat_filter = 'none' === $a['cat_filter'] ? null : explode( ',', $a['cat_filter'] );
+		$cat_filter = ('none' === $a['cat']) ? null : explode( ',', $a['cat'] );
 		if( '1' !== $this->options->get( 'el_date_once_per_day' ) ) {
 			// normal sort
 			$sort_array = array( 'start_date ASC', 'time ASC', 'end_date ASC' );
