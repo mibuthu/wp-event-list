@@ -1,11 +1,11 @@
 // Javascript functions for event-list admin_main page
 
 // Confirmation for event deletion
-function eventlist_redirect(name, value) {
-	window.location.assign(updateUrlParameter(window.location.href, name, value));
+function eventlist_redirect(name, value, sc_id) {
+	window.location.assign(updateUrlParameter(window.location.href, name, value, sc_id));
 }
 
-function updateUrlParameter(url, paramName, paramVal) {
+function updateUrlParameter(url, paramName, paramVal, sc_id) {
 	// extrude anchor
 	var urlArray = url.split("#");
 	var anchor = urlArray[1] ? "#" + urlArray[1] : "";
@@ -20,12 +20,15 @@ function updateUrlParameter(url, paramName, paramVal) {
 	if(null != oldParams.length) {
 		urlArray = oldParams.split("&");
 		for(i=0; i<urlArray.length; i++) {
-			if(urlArray[i].split("=")[0] != paramName) {
-				newParams += seperator + urlArray[i];
+			if(urlArray[i].split("=")[0] == "event_id"+sc_id) {
+				// do nothing
 			}
-			else {
+			else if(urlArray[i].split("=")[0] == paramName) {
 				newParams += seperator + paramName + "=" + paramVal;
 				paramNameAdded = true;
+			}
+			else {
+				newParams += seperator + urlArray[i];
 			}
 			seperator = "&";
 		}

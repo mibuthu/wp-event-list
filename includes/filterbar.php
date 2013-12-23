@@ -80,7 +80,7 @@ class EL_Filterbar {
 			$actual = null;
 		}
 		if('dropdown' === $type) {
-			return $this->show_dropdown($elements, $argname, $subtype, $actual);
+			return $this->show_dropdown($elements, $argname, $subtype, $actual, $args['sc_id_for_url']);
 		}
 		else {
 			return $this->show_hlist($elements, $url, $argname, $actual);
@@ -102,7 +102,7 @@ class EL_Filterbar {
 			return $this->show_hlist($elements, $url, $argname, $actual);
 		}
 		else {
-			return $this->show_dropdown($elements, $argname, $subtype, $actual);
+			return $this->show_dropdown($elements, $argname, $subtype, $actual, $args['sc_id_for_url']);
 		}
 	}
 
@@ -122,12 +122,12 @@ class EL_Filterbar {
 		return $out;
 	}
 
-	private function show_dropdown($elements, $name, $subtype='std', $actual=null) {
+	private function show_dropdown($elements, $name, $subtype='std', $actual=null, $sc_id='') {
 		$onchange = '';
 		if('admin' != $subtype) {
 			wp_register_script('el_filterbar', EL_URL.'includes/js/filterbar.js', null, true);
 			add_action('wp_footer', array(&$this, 'footer_script'));
-			$onchange = ' onchange="eventlist_redirect(this.name,this.value)"';
+			$onchange = ' onchange="eventlist_redirect(this.name,this.value,'.$sc_id.')"';
 		}
 		$out = '<select name="'.$name.'"'.$onchange.'>';
 		foreach($elements as $element) {
