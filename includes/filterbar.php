@@ -97,7 +97,7 @@ class EL_Filterbar {
 			$elements[] = array('slug' => $cat['slug'], 'name' => str_pad('', 12*$cat['level'], '&nbsp;', STR_PAD_LEFT).$cat['name']);
 		}
 		// set selection
-		$actual = isset($args['cat']) ? $args['cat'] : null;
+		$actual = isset($args['actual_cat']) ? $args['actual_cat'] : null;
 		if('hlist' === $type) {
 			return $this->show_hlist($elements, $url, $argname, $actual);
 		}

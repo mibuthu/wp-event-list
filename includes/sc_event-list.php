@@ -40,11 +40,18 @@ class SC_Event_List {
 			                            'desc'    => 'This attribute specifies which events are initially shown. The standard is to show the upcoming events.<br />
 			                                          Specify a year e.g. "2014" to change this behavior.'),
 
-			'cat_filter'      => array( 'val'     => 'none<br />category slug',
-			                            'std_val' => 'none',
+			'initial_cat'     => array( 'val'     => 'all<br />category slug',
+			                            'std_val' => 'all',
 			                            'visible' => true,
-			                            'desc'    => 'This attribute specifies the categories of which events are shown. The standard is "none" to show all events.<br />
-			                                          Specify a category slug or a list of category slugs separated by a comma "," e.g. "tennis,hockey" to only show events of the specified categories.' ),
+			                            'desc'    => 'This attribute specifies the category of which events are initially shown. The standard is to show events of all categories.<br />
+			                                          Specify a category slug to change this behavior. You can include a category selection in the filterbar to give users the possibility to change the displayed categories.'),
+
+			'cat_filter'      => array( 'val'     => 'all<br />category slugs',
+			                            'std_val' => 'all',
+			                            'visible' => true,
+			                            'desc'    => 'This attribute specifies the categories of which events are shown. The standard is "all" to show all events.<br />
+			                                          Events defined in categories which are not listed here are also not available in the category selection in the filterbar. It is also not possible to show them with a manual added url parameter<br />
+			                                          Specify a category slug or a list of category slugs separated by a comma "," e.g. "tennis,hockey".'),
 
 			'num_events'      => array( 'val'     => 'number',
 			                            'std_val' => '0',
@@ -139,6 +146,7 @@ class SC_Event_List {
 			// Internal attributes: This parameters will be added by the script and are not available in the shortcode
 			//   'sc_id'
 			//   'actual_date'
+			//   'actual_cat'
 		);
 
 		$this->num_sc_loaded = 0;
@@ -177,8 +185,8 @@ class SC_Event_List {
 		if( !is_numeric( $a['sc_id_for_url'] ) ) {
 			$a['sc_id_for_url'] = $a['sc_id'];
 		}
-		$a['cat'] = isset($_GET['cat'.$a['sc_id']]) ? $_GET['cat'.$a['sc_id']] : $a['cat_filter'];
 		$a['actual_date'] = $this->get_actual_date($a);
+		$a['actual_cat'] = $this->get_actual_cat($a);
 
 		$out = '
 				<div class="event-list">';
@@ -213,7 +221,7 @@ class SC_Event_List {
 		if('upcoming' != $a['actual_date']) {
 			$a['num_events'] = 0;
 		}
-		$cat_filter = ('none' === $a['cat']) ? null : explode( ',', $a['cat'] );
+		$cat_filter = ('none' === $a['actual_cat']) ? null : explode( ',', $a['actual_cat'] );
 		if( '1' !== $this->options->get( 'el_date_once_per_day' ) ) {
 			// normal sort
 			$sort_array = array( 'start_date ASC', 'time ASC', 'end_date ASC' );
@@ -386,6 +394,17 @@ class SC_Event_List {
 			$actual_date = null;
 		}
 		return $actual_date;
+	}
+
+	private function get_actual_cat(&$a) {
+		$actual_cat = $a['initial_cat'];
+		if(isset($_GET['cat'.$a['sc_id']])) {
+			$actual_cat = $_GET['cat'.$a['sc_id']];
+		}
+		if(isset($_GET['event_id'.$a['sc_id']])) {
+			$actual_cat = null;
+		}
+		return $actual_cat;
 	}
 
 	private function get_url( &$a ) {
