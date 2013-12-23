@@ -65,8 +65,13 @@ class EL_Db {
 			$range_start = '0000-01-01';
 			$range_end = '9999-12-31';
 		}
+		elseif('past' === $date_filter) {
+			// get only events in the past
+			$range_start = '0000-01-01';
+			$range_end = date('Y-m-d', current_time('timestamp')-86400); // previous day (86400 seconds = 1*24*60*60 = 1 day))
+		}
 		else {  // upcoming
-			// get only events in the future
+			// get only events from today and in the future
 			$range_start = date('Y-m-d', current_time('timestamp'));
 			$range_end = '9999-12-31';
 		}

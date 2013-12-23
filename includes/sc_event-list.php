@@ -414,7 +414,7 @@ class SC_Event_List {
 	private function get_actual_date(&$a) {
 		$actual_date = $a['initial_date'];
 		if(isset($_GET['ytd'.$a['sc_id']])) {
-			if('all' == $_GET['ytd'.$a['sc_id']] || 'upcoming' == $_GET['ytd'.$a['sc_id']]) {
+			if('all' == $_GET['ytd'.$a['sc_id']] || 'upcoming' == $_GET['ytd'.$a['sc_id']] || 'past' == $_GET['ytd'.$a['sc_id']]) {
 				$actual_date = $_GET['ytd'.$a['sc_id']];
 			}
 			elseif(is_numeric($_GET['ytd'.$a['sc_id']])) {

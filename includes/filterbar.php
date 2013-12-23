@@ -78,7 +78,7 @@ class EL_Filterbar {
 		$out .= '</div><br />';
 		return $out;
 	}
-
+/*
 	private function show_all() {
 		$elements[] = $this->all_element();
 		return $this->show_hlist($elements);
@@ -88,17 +88,20 @@ class EL_Filterbar {
 		$elements[] = $this->upcoming_element();
 		return $this->show_hlist($elements);
 	}
-
+*/
 	public function show_years($url, $args, $type='hlist', $subtype='std', $options=array()) {
 		$args = $this->parse_args($args);
 		$argname = 'ytd'.$args['sc_id_for_url'];
 		// prepare displayed elements
 		$elements = array();
-		if(!isset($options['show_all']) || 'true' == $options['show_all']) {
+		if(!isset($options['show_all']) || 'true' == $options['show_all']) {   // default is true
 			$elements[] = $this->all_element('hlist'==$type ? null : __('Show all dates'));
 		}
-		if(!isset($options['show_upcoming']) || 'true' == $options['show_upcoming']) {
+		if(!isset($options['show_upcoming']) || 'true' == $options['show_upcoming']) {   // default is true
 			$elements[] = $this->upcoming_element();
+		}
+		if(isset($options['show_past']) && 'true' == $options['show_past']) {   // default is false
+			$elements[] = $this->past_element();
 		}
 		$first_year = $this->db->get_event_date('first');
 		$last_year = $this->db->get_event_date('last');
@@ -109,13 +112,7 @@ class EL_Filterbar {
 		if(is_numeric($args['event_id'])) {
 			$actual = null;
 		}
-		elseif('all' === $args['actual_date']) {
-			$actual = 'all';
-		}
-		elseif('upcoming' === $args['actual_date']) {
-			$actual = 'upcoming';
-		}
-		elseif(is_numeric($args['actual_date'])) {
+		elseif('all' === $args['actual_date'] || 'upcoming' === $args['actual_date'] || 'past' === $args['actual_date'] || is_numeric($args['actual_date'])) {
 			$actual = $args['actual_date'];
 		}
 		else {
@@ -197,6 +194,10 @@ class EL_Filterbar {
 
 	private function upcoming_element() {
 		return array('slug' => 'upcoming', 'name' => __('Upcoming'));
+	}
+
+	private function past_element() {
+		return array('slug' => 'past', 'name' => __('Past'));
 	}
 
 	private function show_url($url, $caption) {
