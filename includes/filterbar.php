@@ -55,7 +55,7 @@ class EL_Filterbar {
 					$item_array = explode("(", $item);
 					if(sizeof($item_array) > 1) {
 						// options available
-						$option_array = explode(",", substr($item_array[1],0,-1));
+						$option_array = explode("|", substr($item_array[1],0,-1));
 						foreach($option_array as $option_text) {
 							$o = explode("=", $option_text);
 							$options[$o[0]] = $o[1];

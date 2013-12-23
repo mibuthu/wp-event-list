@@ -80,8 +80,8 @@ class SC_Event_List {
 			                                          <p>Find below examples for declarations with a description of all possibilities:</p>
 			                                          <code>years_hlist,cats_dropdown</code><br />
 			                                          In this example you can see that the filterbar item and the used display option is seperated by "_". You can define several filterbar items seperated by comma (","). The items will be aligned on the left side.
-			                                          <p><code>years_dropdown(show-all=false,show-past=true),cats_dropdown;;reset_link</code><br />
-			                                          In this example you can see that filterbar options can be added in brackets in format "option_name=value". You can also add multiple options seperated by comma.<br />
+			                                          <p><code>years_dropdown(show-all=false|show-past=true),cats_dropdown;;reset_link</code><br />
+			                                          In this example you can see that filterbar options can be added in brackets in format "option_name=value". You can also add multiple options seperated by a pipe ("|").<br />
 			                                          The 2 semicolon (";") devides the bar in 3 section. The first section will be displayed left-justified, the second section will be centered and the third section will be right-aligned. So in this example the 2 dropdown will be left-aligned and the reset link will be on the right side.</p>
 			                                          Find below an overview of the available filterbar items and their options:<br />
 			                                          <small><table class="el-filterbar-table">
