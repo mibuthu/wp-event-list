@@ -67,14 +67,14 @@ class EL_Filterbar {
 		if(is_numeric($args['event_id'])) {
 			$actual = null;
 		}
-		elseif('all' === $args['ytd']) {
+		elseif('all' === $args['actual_date']) {
 			$actual = 'all';
 		}
-		elseif('upcoming' === $args['ytd']) {
+		elseif('upcoming' === $args['actual_date']) {
 			$actual = 'upcoming';
 		}
-		elseif(is_numeric($args['ytd'])) {
-			$actual = $args['ytd'];
+		elseif(is_numeric($args['actual_date'])) {
+			$actual = $args['actual_date'];
 		}
 		else {
 			$actual = null;

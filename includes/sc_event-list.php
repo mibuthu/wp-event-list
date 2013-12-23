@@ -34,11 +34,11 @@ class SC_Event_List {
 		// All available attributes
 		$this->atts = array(
 
-			'initial_date'    => array( 'val'     => 'upcoming<br />year e.g. "2013"',
+			'initial_date'    => array( 'val'     => 'all<br />upcoming<br />year e.g. "2014"',
 			                            'std_val' => 'upcoming',
 			                            'visible' => true,
 			                            'desc'    => 'This attribute specifies which events are initially shown. The standard is to show the upcoming events.<br />
-			                                          Specify a year e.g. "2013" to change this behavior.' ),
+			                                          Specify a year e.g. "2014" to change this behavior.'),
 
 			'cat_filter'      => array( 'val'     => 'none<br />category slug',
 			                            'std_val' => 'none',
@@ -138,7 +138,7 @@ class SC_Event_List {
 			                                          The empty standard value is o.k. for the normal use. This attribute is normally only required for the event-list widget.' ),
 			// Internal attributes: This parameters will be added by the script and are not available in the shortcode
 			//   'sc_id'
-			//   'ytd'
+			//   'actual_date'
 		);
 
 		$this->num_sc_loaded = 0;
@@ -177,8 +177,8 @@ class SC_Event_List {
 		if( !is_numeric( $a['sc_id_for_url'] ) ) {
 			$a['sc_id_for_url'] = $a['sc_id'];
 		}
-		$a['ytd'] = $this->get_ytd($a);
 		$a['cat'] = isset($_GET['cat'.$a['sc_id']]) ? $_GET['cat'.$a['sc_id']] : $a['cat_filter'];
+		$a['actual_date'] = $this->get_actual_date($a);
 
 		$out = '
 				<div class="event-list">';
@@ -210,7 +210,7 @@ class SC_Event_List {
 
 	private function html_events( &$a ) {
 		// specify to show all events if not upcoming is selected
-		if('upcoming' != $a['ytd']) {
+		if('upcoming' != $a['actual_date']) {
 			$a['num_events'] = 0;
 		}
 		$cat_filter = ('none' === $a['cat']) ? null : explode( ',', $a['cat'] );
@@ -222,7 +222,7 @@ class SC_Event_List {
 			// sort according end_date before start time (required for option el_date_once_per_day)
 			$sort_array = array( 'start_date ASC', 'end_date ASC', 'time ASC' );
 		}
-		$events = $this->db->get_events( $a['ytd'], $a['num_events'], $cat_filter, $sort_array );
+		$events = $this->db->get_events($a['actual_date'], $a['num_events'], $cat_filter, $sort_array);
 
 		// generate output
 		$out = '';
@@ -371,22 +371,21 @@ class SC_Event_List {
 		return $out;
 	}
 
-	private function get_ytd( &$a ) {
-		$ytd = 'upcoming';
+	private function get_actual_date(&$a) {
+		$actual_date = $a['initial_date'];
 		if(isset($_GET['ytd'.$a['sc_id']])) {
-			if('all' == $_GET['ytd'.$a['sc_id']]){
-				$ytd = 'all';
+			if('all' == $_GET['ytd'.$a['sc_id']] || 'upcoming' == $_GET['ytd'.$a['sc_id']]) {
+				$actual_date = $_GET['ytd'.$a['sc_id']];
 			}
 			elseif(is_numeric($_GET['ytd'.$a['sc_id']])) {
 				// ytd is a year
-				$ytd = (int)$_GET['ytd'.$a['sc_id']];
+				$actual_date = (int)$_GET['ytd'.$a['sc_id']];
 			}
 		}
-		elseif(isset($a['initial_date']) && is_numeric($a['initial_date']) && !is_numeric($a['event_id']) && !isset($_GET['link'.$a['sc_id']])) {
-			// initial_date attribute is set
-			$ytd = (int)$a['initial_date'];
+		if(isset($_GET['event_id'.$a['sc_id']])) {
+			$actual_date = null;
 		}
-		return $ytd;
+		return $actual_date;
 	}
 
 	private function get_url( &$a ) {
@@ -398,7 +397,8 @@ class SC_Event_List {
 			// use actual page
 			$url = get_permalink();
 			foreach( $_GET as  $k => $v ) {
-				if( 'ytd'.$a['sc_id'] !== $k && 'event_id'.$a['sc_id'] !== $k && 'link'.$a['sc_id'] !== $k ) {
+				// TODO: check if "link" is really not required anymore
+				if('ytd'.$a['sc_id'] !== $k && 'event_id'.$a['sc_id'] !== $k /*&& 'link'.$a['sc_id'] !== $k*/) {
 					$url = add_query_arg( $k, $v, $url );
 				}
 			}
