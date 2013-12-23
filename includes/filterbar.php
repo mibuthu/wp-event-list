@@ -31,9 +31,41 @@ class EL_Filterbar {
 
 	// main function to show the rendered HTML output
 	public function show($url, $args) {
-		$out = '<div class="filterbar subsubsub">';
-		$out .= $this->show_years($url, $args, 'dropdown');
-		$out .= $this->show_cats($url, $args);
+		$out = '<style>
+					.filterbar { display:table; width:100% }
+					.filterbar > div { display:table-cell }
+				</style>
+				<!--[if lte IE 7]>
+				<style>.filterbar > div { float:left }</style>
+				<![endif]-->
+				<div class="filterbar subsubsub">';
+		// prepare filterbar-items
+		//split 3 section (left, center, right) seperated by semicolon
+		$sections = explode(";", $args['filterbar_items']);
+		$section_align = array('left', 'center', 'right');
+		for($i=0; $i<sizeof($sections) && $i<3; $i++) {
+			if(strlen($sections[$i]) > 0) {
+				$out .= '
+					<div style="text-align:'.$section_align[$i].'">';
+				//split items in section seperated by comma
+				$items = explode(",", $sections[$i]);
+				foreach($items as $item) {
+					//search for item options
+					$item_array = explode("_", $item);
+					// TODO: support for item options
+					switch($item_array[0]) {
+						case 'years':
+							$out .= $this->show_years($url, $args, $item_array[1]);
+							break;
+						case 'cats':
+							$out .= $this->show_cats($url, $args, $item_array[1]);
+							break;
+					}
+				}
+				$out .= '
+					</div>';
+			}
+		}
 		$out .= '</div><br />';
 		return $out;
 	}
