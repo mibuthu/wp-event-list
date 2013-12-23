@@ -73,6 +73,31 @@ class SC_Event_List {
 			                                          Choose "false" to always hide and "true" to always show the navigation.<br />
 			                                          With "event_list_only" the filterbar is only visible in the event list and with "single_event_only" only for a single event'),
 
+			'filterbar_items' => array( 'val'     => 'years_hlist<br />years_dropdown<br />cats_hlist<br />cats_dropdown<br />reset_link',
+			                            'std_val' => 'years_hlist',
+			                            'visible' => true,
+			                            'desc'    => 'This attribute specifies the available items in the filterbar. All available filterbar items and display options are listed below. Which option is available for which item can be found in the value options column and in the display option table.
+			                                          <p>Find below examples for declarations with a description of all possibilities:</p>
+			                                          <code>years_hlist,cats_dropdown</code><br />
+			                                          In this example you can see that the filterbar item and the used display option is seperated by "_". You can define several filterbar items seperated by comma (","). The items will be aligned on the left side.
+			                                          <p><code>years_dropdown(show-all=false,show-past=true),cats_dropdown;;reset_link</code><br />
+			                                          In this example you can see that filterbar options can be added in brackets in format "option_name=value". You can also add multiple options seperated by comma.<br />
+			                                          The 2 semicolon (";") devides the bar in 3 section. The first section will be displayed left-justified, the second section will be centered and the third section will be right-aligned. So in this example the 2 dropdown will be left-aligned and the reset link will be on the right side.</p>
+			                                          Find below an overview of the available filterbar items and their options:<br />
+			                                          <small><table class="el-filterbar-table">
+			                                              <th class="el-filterbar-item">filterbar item</th><th class="el-filterbar-desc">description</th><th class="el-filterbar-options">item options</th><th class="el-filterbar-values">option values</th><th class="el-filterbar-default">default value</th><th class="el-filterbar-desc2">description</th></thead>
+			                                              <tr><td>years</td><td>Show a list of all available years. Additional there are some special entries available (see item options).</td><td>show_all<br />show_upcoming<br />show_past</td><td>true | false<br />true | false<br />true | false</td><td>true<br />true<br />false</td><td>Add an entry to show all events.<br />Add an entry to show all upcoming events.<br />Add an entry to show events in the past.</tr>
+			                                              <tr><td>cats</td><td>Show a list of all available categories.</td><td>show_all</td><td>true<br />false</td><td>true</td><td>Add an entry to show events from all categories.</td></tr>
+			                                              <tr><td>reset</td><td>Only a link to reset the eventlist filter to standard.</td><td>none</td><td></td><td></td><td></td></tr>
+			                                          </table></small>
+			                                          Find below an overview of the available filterbar display options:<br />
+			                                          <small><table class="el-filterbar-table">
+			                                             <th class="el-filterbar-doption">display option</th><th class="el-filterbar-desc3">description</th><th class="el-filterbar-for">available for</th></thead>
+			                                             <tr><td>hlist</td><td>"hlist" shows a horizonal list seperated by "|" with a link to each item</td><td>years, cat</td></tr>
+			                                             <tr><td>dropdown</td><td>"dropdown" shows a select box where an item can be choosen. After the selection of an item the page is reloaded via javascript to show the filtered events.</td><td>years, cat</td></tr>
+			                                             <tr><td>link</td><td>"link" shows a simple link which can be clicked.</td><td>reset</td></tr>
+			                                          </table></small>'),
+
 			'show_starttime'  => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
 			                            'std_val' => 'true',
 			                            'visible' => true,

@@ -9,7 +9,7 @@
 .el-atts-table {
 	border: 1px solid #aaa;
 	border-collapse: collapse;
-	width: 95%;
+	width: 98%;
 }
 .el-atts-table th {
 	border: 1px solid #aaa;
@@ -21,15 +21,35 @@
 	padding: 2px 5px !important;
 	vertical-align: top;
 }
-
-.el-atts-table-name {
+.el-atts-table-name, .el-atts-table-options, .el-atts-table-default {
 	width: 110px;
 }
 
-.el-atts-table-options {
-	width: 110px;
+.el-filterbar-table {
+	border: 1px solid #aaa;
+	border-collapse: collapse;
+	width: 100%;
+	margin: 0.2em 0 1.2em 0;
 }
-
-.el-atts-table-default {
-	width: 110px;
+.el-filterbar-table th {
+	border: 1px solid #aaa;
+	padding: 1px 3px !important;
+	background: #eeeeee;
+}
+.el-filterbar-table td {
+	border: 1px solid #aaa;
+	padding: 1px 4px !important;
+	vertical-align: top;
+}
+.el-filterbar-item, .el-filterbar-doption {
+	width: 85px;
+}
+.el-filterbar-options, .el-filterbar-values {
+	width: 90px;
+}
+.el-filterbar-default {
+	width: 70px;
+}
+.el-filterbar-desc2, .el-filterbar-for {
+	width: 270px;
 }
