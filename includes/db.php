@@ -51,7 +51,7 @@ class EL_Db {
 		}
 	}
 
-	public function get_events($date_filter='all', $cat_filter=null, $num_events=0, $sort_array=array( 'start_date ASC', 'time ASC', 'end_date ASC')) {
+	public function get_events($date_filter='all', $cat_filter=null, $num_events=0, $sort_array=array('start_date ASC', 'time ASC', 'end_date ASC')) {
 		global $wpdb;
 
 		// set date for data base query
@@ -71,6 +71,9 @@ class EL_Db {
 			$range_end = '9999-12-31';
 		}
 		// set category filter
+		if(!is_array($cat_filter) && null != $cat_filter) {
+			$cat_filter = array($cat_filter);
+		}
 		if(is_array($cat_filter) && 'all' == $cat_filter[0]) {
 			$cat_filter = null;
 		}

@@ -15,11 +15,13 @@ class EL_Event_Table extends WP_List_Table {
 	private $db;
 	private $categories;
 	private $filterbar;
+	private $args;
 
 	public function __construct() {
 		$this->db = &EL_Db::get_instance();
 		$this->categories = &EL_Categories::get_instance();
 		$this->filterbar = &EL_Filterbar::get_instance();
+		$this->set_args();
 
 		global $status, $page;
 		//Set parent defaults
@@ -163,19 +165,12 @@ class EL_Event_Table extends WP_List_Table {
 
 	public function extra_tablenav($which) {
 		$out = '';
-		// set standard values
-		if(!isset($_GET['ytd'])) {
-			$_GET['ytd'] = 'upcoming';
-		}
-		if(!isset($_GET['cat'])) {
-			$_GET['cat'] = 'all';
-		}
 		// add filter elements
 		if('top' === $which) {
 			$out = '
 				<div class="alignleft actions">';
-			$out .= $this->filterbar->show_years('?page=el_admin_main', $_GET, 'dropdown', 'admin');
-			$out .= $this->filterbar->show_cats('?page=el_admin_main', $_GET, 'dropdown', 'admin');
+			$out .= $this->filterbar->show_years('?page=el_admin_main', $this->args, 'dropdown', 'admin');
+			$out .= $this->filterbar->show_cats('?page=el_admin_main', $this->args, 'dropdown', 'admin');
 			$out .= '
 				<input id="event-query-submit" class="button" type="submit" name ="filter" value="'.__('Filter').'"></input>
 			</div>';
@@ -194,7 +189,7 @@ class EL_Event_Table extends WP_List_Table {
 	* @uses $this->get_pagenum()
 	* @uses $this->set_pagination_args()
 	***************************************************************************/
-	public function prepare_items($date_filter, $cat_filter) {
+	public function prepare_items() {
 		$per_page = 20;
 		// define column headers
 		$columns = $this->get_columns();
@@ -204,7 +199,7 @@ class EL_Event_Table extends WP_List_Table {
 		// handle the bulk actions
 		$this->process_bulk_action();
 		// get the required event data
-		$data = $this->get_events($date_filter, $cat_filter);
+		$data = $this->get_events();
 		// setup pagination
 		$current_page = $this->get_pagenum();
 		$total_items = count( $data );
@@ -218,7 +213,20 @@ class EL_Event_Table extends WP_List_Table {
 		$this->items = $data;
 	}
 
-	private function get_events($date_filter, $cat_filter) {
+	private function set_args() {
+		// actual_date
+		$this->args['actual_date'] = 'upcoming';
+		if(isset($_GET['ytd']) && (is_numeric($_GET['ytd']) || 'all' == $_GET['ytd'] || 'upcoming' == $_GET['ytd'])) {
+			$this->args['actual_date'] = $_GET['ytd'];
+		}
+		// actual_cat
+		$this->args['actual_cat'] = 'all';
+		if(isset($_GET['cat'])) {
+			$this->args['actual_cat'] = $_GET['cat'];
+		}
+	}
+
+	private function get_events() {
 		// define sort_array
 		$order = 'ASC';
 		if( isset( $_GET['order'] ) && $_GET['order'] === 'desc' ) {
@@ -252,7 +260,7 @@ class EL_Event_Table extends WP_List_Table {
 				break;
 		}
 		// get and return events in the correct order
-		return $this->db->get_events($date_filter, $cat_filter, 0, $sort_array);
+		return $this->db->get_events($this->args['actual_date'], $this->args['actual_cat'], 0, $sort_array);
 	}
 
 	/** ************************************************************************
