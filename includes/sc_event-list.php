@@ -230,7 +230,7 @@ class SC_Event_List {
 			// sort according end_date before start time (required for option el_date_once_per_day)
 			$sort_array = array( 'start_date ASC', 'end_date ASC', 'time ASC' );
 		}
-		$events = $this->db->get_events($a['actual_date'], $a['num_events'], $cat_filter, $sort_array);
+		$events = $this->db->get_events($a['actual_date'], $cat_filter, $a['num_events'], $sort_array);
 
 		// generate output
 		$out = '';

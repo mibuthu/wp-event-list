@@ -51,16 +51,16 @@ class EL_Db {
 		}
 	}
 
-	public function get_events( $date_range='all', $num_events=0, $cat_filter=null, $sort_array=array( 'start_date ASC', 'time ASC', 'end_date ASC') ) {
+	public function get_events($date_filter='all', $cat_filter=null, $num_events=0, $sort_array=array( 'start_date ASC', 'time ASC', 'end_date ASC')) {
 		global $wpdb;
 
 		// set date for data base query
-		if( is_numeric( $date_range ) ) {
+		if(is_numeric($date_filter)) {
 			// get events of a specific year
-			$range_start = $date_range.'-01-01';
-			$range_end = $date_range.'-12-31';
+			$range_start = $date_filter.'-01-01';
+			$range_end = $date_filter.'-12-31';
 		}
-		elseif( 'all' === $date_range ) {
+		elseif('all' === $date_filter) {
 			// get all events
 			$range_start = '0000-01-01';
 			$range_end = '9999-12-31';
@@ -74,12 +74,12 @@ class EL_Db {
 		if(is_array($cat_filter) && 'all' == $cat_filter[0]) {
 			$cat_filter = null;
 		}
-		$sql_cat_filter = empty( $cat_filter ) ? '' : ' AND ( categories LIKE "%|'.implode( '|%" OR categories LIKE "%|', $cat_filter ).'|%" )';
-		$sql = 'SELECT * FROM '.$this->table.' WHERE end_date >= "'.$range_start.'" AND start_date <= "'.$range_end.'"'.$sql_cat_filter.' ORDER BY '.implode( ', ', $sort_array );
-		if( 'upcoming' === $date_range && is_numeric($num_events) && 0 < $num_events ) {
+		$sql_cat_filter = empty($cat_filter) ? '' : ' AND (categories LIKE "%|'.implode('|%" OR categories LIKE "%|', $cat_filter).'|%")';
+		$sql = 'SELECT * FROM '.$this->table.' WHERE end_date >= "'.$range_start.'" AND start_date <= "'.$range_end.'"'.$sql_cat_filter.' ORDER BY '.implode(', ', $sort_array);
+		if('upcoming' === $date_filter && is_numeric($num_events) && 0 < $num_events) {
 			$sql .= ' LIMIT '.$num_events;
 		}
-		return $wpdb->get_results( $sql );
+		return $wpdb->get_results($sql);
 	}
 
 	public function get_event( $id ) {

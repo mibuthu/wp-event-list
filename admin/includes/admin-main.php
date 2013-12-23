@@ -136,10 +136,10 @@ class EL_Admin_Main {
 		// set filter options
 		if((isset($_GET['ytd']) && 'all' == $_GET['ytd']) ||
 		   (isset($_GET['ytd']) && is_numeric($_GET['ytd']))) {
-			$date_range = $_GET['ytd'];
+			$date_filter = $_GET['ytd'];
 		}
 		else {
-			$date_range = 'upcoming';
+			$date_filter = 'upcoming';
 		}
 		$cat_filter = isset($_GET['cat']) ? array($_GET['cat']) : null;
 
@@ -151,7 +151,7 @@ class EL_Admin_Main {
 		$out .= '<form id="event-filter" method="get">
 				<input type="hidden" name="page" value="'.$_REQUEST['page'].'" />';
 		// show table
-		$this->event_table->prepare_items($date_range, $cat_filter);
+		$this->event_table->prepare_items($date_filter, $cat_filter);
 		ob_start();
 			$this->event_table->display();
 			$out .= ob_get_contents();
