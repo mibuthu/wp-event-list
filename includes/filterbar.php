@@ -51,14 +51,23 @@ class EL_Filterbar {
 				$items = explode(",", $sections[$i]);
 				foreach($items as $item) {
 					//search for item options
-					$item_array = explode("_", $item);
-					// TODO: support for item options
+					$options = array();
+					$item_array = explode("(", $item);
+					if(sizeof($item_array) > 1) {
+						// options available
+						$option_array = explode(",", substr($item_array[1],0,-1));
+						foreach($option_array as $option_text) {
+							$o = explode("=", $option_text);
+							$options[$o[0]] = $o[1];
+						}
+					}
+					$item_array = explode("_", $item_array[0]);
 					switch($item_array[0]) {
 						case 'years':
-							$out .= $this->show_years($url, $args, $item_array[1]);
+							$out .= $this->show_years($url, $args, $item_array[1], 'std', $options);
 							break;
 						case 'cats':
-							$out .= $this->show_cats($url, $args, $item_array[1]);
+							$out .= $this->show_cats($url, $args, $item_array[1], 'std', $options);
 							break;
 					}
 				}
@@ -80,14 +89,15 @@ class EL_Filterbar {
 		return $this->show_hlist($elements);
 	}
 
-	public function show_years($url, $args, $type='hlist', $subtype='std', $show_all=true, $show_upcoming=true) {
+	public function show_years($url, $args, $type='hlist', $subtype='std', $options=array()) {
 		$args = $this->parse_args($args);
 		$argname = 'ytd'.$args['sc_id_for_url'];
 		// prepare displayed elements
-		if($show_all) {
+		$elements = array();
+		if(!isset($options['show_all']) || 'true' == $options['show_all']) {
 			$elements[] = $this->all_element('hlist'==$type ? null : __('Show all dates'));
 		}
-		if($show_upcoming) {
+		if(!isset($options['show_upcoming']) || 'true' == $options['show_upcoming']) {
 			$elements[] = $this->upcoming_element();
 		}
 		$first_year = $this->db->get_event_date('first');
@@ -119,12 +129,15 @@ class EL_Filterbar {
 		}
 	}
 
-	public function show_cats($url, $args, $type='dropdown', $subtype='std') {
+	public function show_cats($url, $args, $type='dropdown', $subtype='std', $options=array()) {
 		$args = $this->parse_args($args);
 		$argname = 'cat'.$args['sc_id_for_url'];
 		// prepare displayed elements
 		$cat_array = $this->categories->get_cat_array();
-		$elements[] = $this->all_element('hlist'==$type ? null : __('View all categories'));
+		$elements = array();
+		if(!isset($options['show_all']) || 'true' == $options['show_all']) {
+			$elements[] = $this->all_element('hlist'==$type ? null : __('View all categories'));
+		}
 		foreach($cat_array as $cat) {
 			$elements[] = array('slug' => $cat['slug'], 'name' => str_pad('', 12*$cat['level'], '&nbsp;', STR_PAD_LEFT).$cat['name']);
 		}
