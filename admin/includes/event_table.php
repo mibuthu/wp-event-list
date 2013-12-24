@@ -216,8 +216,8 @@ class EL_Event_Table extends WP_List_Table {
 	private function set_args() {
 		// actual_date
 		$this->args['actual_date'] = 'upcoming';
-		if(isset($_GET['ytd']) && (is_numeric($_GET['ytd']) || 'all' == $_GET['ytd'] || 'upcoming' == $_GET['ytd'])) {
-			$this->args['actual_date'] = $_GET['ytd'];
+		if(isset($_GET['date']) && (is_numeric($_GET['date']) || 'all' == $_GET['date'] || 'upcoming' == $_GET['date'])) {
+			$this->args['actual_date'] = $_GET['date'];
 		}
 		// actual_cat
 		$this->args['actual_cat'] = 'all';

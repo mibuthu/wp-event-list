@@ -413,13 +413,13 @@ class SC_Event_List {
 
 	private function get_actual_date(&$a) {
 		$actual_date = $a['initial_date'];
-		if(isset($_GET['ytd'.$a['sc_id']])) {
-			if('all' == $_GET['ytd'.$a['sc_id']] || 'upcoming' == $_GET['ytd'.$a['sc_id']] || 'past' == $_GET['ytd'.$a['sc_id']]) {
-				$actual_date = $_GET['ytd'.$a['sc_id']];
+		if(isset($_GET['date'.$a['sc_id']])) {
+			if('all' == $_GET['date'.$a['sc_id']] || 'upcoming' == $_GET['date'.$a['sc_id']] || 'past' == $_GET['date'.$a['sc_id']]) {
+				$actual_date = $_GET['date'.$a['sc_id']];
 			}
-			elseif(is_numeric($_GET['ytd'.$a['sc_id']])) {
-				// ytd is a year
-				$actual_date = (int)$_GET['ytd'.$a['sc_id']];
+			elseif(is_numeric($_GET['date'.$a['sc_id']])) {
+				// date is a year
+				$actual_date = (int)$_GET['date'.$a['sc_id']];
 			}
 		}
 		if(isset($_GET['event_id'.$a['sc_id']])) {
@@ -448,8 +448,7 @@ class SC_Event_List {
 			// use actual page
 			$url = get_permalink();
 			foreach( $_GET as  $k => $v ) {
-				// TODO: check if "link" is really not required anymore
-				if('ytd'.$a['sc_id'] !== $k && 'event_id'.$a['sc_id'] !== $k /*&& 'link'.$a['sc_id'] !== $k*/) {
+				if('date'.$a['sc_id'] !== $k && 'event_id'.$a['sc_id'] !== $k) {
 					$url = add_query_arg( $k, $v, $url );
 				}
 			}

@@ -93,7 +93,7 @@ class EL_Filterbar {
 */
 	public function show_years($url, $args, $type='hlist', $subtype='std', $options=array()) {
 		$args = $this->parse_args($args);
-		$argname = 'ytd'.$args['sc_id_for_url'];
+		$argname = 'date'.$args['sc_id_for_url'];
 		// prepare displayed elements
 		$elements = array();
 		if(!isset($options['show_all']) || 'true' == $options['show_all']) {   // default is true
@@ -152,7 +152,7 @@ class EL_Filterbar {
 
 	public function show_reset($url, $args) {
 		$args_to_remove = array('event_id'.$args['sc_id_for_url'],
-		                        'ytd'.$args['sc_id_for_url'],
+		                        'date'.$args['sc_id_for_url'],
 		                        'cat'.$args['sc_id_for_url']);
 		return $this->show_link(remove_query_arg($args_to_remove, $url), __('Reset'));
 	}
@@ -214,7 +214,7 @@ class EL_Filterbar {
 	}
 
 	private function parse_args($args) {
-		$defaults = array('ytd' => null, 'event_id' => null, 'sc_id_for_url' => null);
+		$defaults = array('date' => null, 'event_id' => null, 'sc_id_for_url' => null);
 		$args = wp_parse_args($args, $defaults);
 		return $args;
 	}
