@@ -69,6 +69,8 @@ class EL_Filterbar {
 						case 'cats':
 							$out .= $this->show_cats($url, $args, $item_array[1], 'std', $options);
 							break;
+						case 'reset':
+							$out .= $this->show_reset($url, $args);
 					}
 				}
 				$out .= '
@@ -148,6 +150,13 @@ class EL_Filterbar {
 		}
 	}
 
+	public function show_reset($url, $args) {
+		$args_to_remove = array('event_id'.$args['sc_id_for_url'],
+		                        'ytd'.$args['sc_id_for_url'],
+		                        'cat'.$args['sc_id_for_url']);
+		return $this->show_link(remove_query_arg($args_to_remove, $url), __('Reset'));
+	}
+
 	private function show_hlist($elements, $url, $name, $actual=null) {
 		$out = '';
 		foreach($elements as $element) {
@@ -155,7 +164,7 @@ class EL_Filterbar {
 				$out .= '<strong>'.$element['name'].'</strong>';
 			}
 			else {
-				$out .= $this->show_url(add_query_arg($name, $element['slug'], $url), $element['name']);
+				$out .= $this->show_link(add_query_arg($name, $element['slug'], $url), $element['name']);
 			}
 			$out .= ' | ';
 		}
@@ -185,6 +194,10 @@ class EL_Filterbar {
 		return $out;
 	}
 
+	private function show_link($url, $caption) {
+		return '<a href="'.$url.'">'.$caption.'</a>';
+	}
+
 	private function all_element($name=null) {
 		if(null == $name) {
 			$name = __('All');
@@ -198,10 +211,6 @@ class EL_Filterbar {
 
 	private function past_element() {
 		return array('slug' => 'past', 'name' => __('Past'));
-	}
-
-	private function show_url($url, $caption) {
-		return '<a href="'.$url.'">'.$caption.'</a>';
 	}
 
 	private function parse_args($args) {
