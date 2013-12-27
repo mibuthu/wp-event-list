@@ -110,6 +110,15 @@ class EL_Filterbar {
 		for($year=$last_year; $year>=$first_year; $year--) {
 			$elements[] = array('slug'=>$year, 'name'=>$year);
 		}
+		// filter elements acc. date_filter
+		if('all' !== $args['date_filter']) {
+			$filter_array = explode(',', $args['date_filter']);
+			foreach($elements as $id => $element) {
+				if(!in_array($element['slug'], $filter_array) && 'all' !== $element['slug'] && 'upcoming' !== $element['slug'] && 'past' !== $element['slug']) {
+					unset($elements[$id]);
+				}
+			}
+		}
 		// set selection
 		if(is_numeric($args['event_id'])) {
 			$actual = null;
@@ -139,6 +148,16 @@ class EL_Filterbar {
 		}
 		foreach($cat_array as $cat) {
 			$elements[] = array('slug' => $cat['slug'], 'name' => str_pad('', 12*$cat['level'], '&nbsp;', STR_PAD_LEFT).$cat['name']);
+		}
+		// filter elements acc. cat_filter
+		if('all' !== $args['cat_filter']) {
+			$filter_array = explode(',', $args['cat_filter']);
+			foreach($elements as $id => $element) {
+				error_log('Cat Slug: '.$element['slug']);
+				if(!in_array($element['slug'], $filter_array) && 'all' !== $element['slug']) {
+					unset($elements[$id]);
+				}
+			}
 		}
 		// set selection
 		$actual = isset($args['actual_cat']) ? $args['actual_cat'] : null;
