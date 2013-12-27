@@ -1,3 +1,7 @@
+.event-list {
+	clear: both;
+}
+
 ul.event-list-view, ul.single-event-view {
 	list-style: none !important;
 	margin: 1em 0 1.5em 0;
@@ -70,7 +74,7 @@ li.event {
 
 .event-title h3 {
 	clear: none;
-	margin: 0;
+	margin: 0 !important;
 	padding: 0;
 }
 
