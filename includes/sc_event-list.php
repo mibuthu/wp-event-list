@@ -45,20 +45,25 @@ class SC_Event_List {
 			                            'visible' => true,
 			                            'desc'    => 'This attribute specifies the category of which events are initially shown. The standard is to show events of all categories.<br />
 			                                          Specify a category slug to change this behavior. You can include a category selection in the filterbar to give users the possibility to change the displayed categories.'),
-
+/*
 			'date_filter'     => array( 'val'     => 'all<br />upcoming<br />year e.g. "2014"',
 			                            'std_val' => 'all',
 			                            'visible' => true,
 			                            'desc'    => 'This attribute specifies the date range of which events are displayed. The standard is "all" to show all events.<br />
 			                                          Events defined in date ranges not listed here are also not available in the date selection in the filterbar. It is also not possible to show them with a manual added url parameter<br />
 			                                          Specify a year or a list of years separated by a comma "," e.g. "2014,2015,2016".'),
-
+*/
 			'cat_filter'      => array( 'val'     => 'all<br />category slugs',
 			                            'std_val' => 'all',
 			                            'visible' => true,
-			                            'desc'    => 'This attribute specifies the categories of which events are shown. The standard is "all" to show all events.<br />
-			                                          Events defined in categories which are not listed here are also not available in the category selection in the filterbar. It is also not possible to show them with a manual added url parameter<br />
-			                                          Specify a category slug or a list of category slugs separated by a comma "," e.g. "tennis,hockey".'),
+			                            'desc'    => 'This attribute specifies the categories of which events are shown. The standard is "all" or an empty string to show all events.<br />
+			                                          Events defined in categories which doesn´t match with cat_filter are not shown in the event list. They are also not shown if a manual url parameter is added.<br />
+			                                          The filter is specified via the given category slug. You can use AND ("&") and OR ("|" or ",") connections to define complex filters. Additionally you can set brackets for nested queries.<br />
+			                                          Examples:<br />
+			                                          <code>tennis</code><br />
+			                                          <code>tennis,hockey</code><br />
+			                                          <code>tennis|(hockey&winter)</code><br />
+			                                          If you only use OR connections (no AND connection) the category selection in the filterbar will also be filtered according to the given filter.<br />'),
 
 			'num_events'      => array( 'val'     => 'number',
 			                            'std_val' => '0',
