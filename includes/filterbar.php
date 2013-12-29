@@ -80,7 +80,7 @@ class EL_Filterbar {
 		$out .= '</div><br />';
 		return $out;
 	}
-/*
+/*	TODO: implementation of show_all and show_upcoming
 	private function show_all() {
 		$elements[] = $this->all_element();
 		return $this->show_hlist($elements);
@@ -111,6 +111,7 @@ class EL_Filterbar {
 			$elements[] = array('slug'=>$year, 'name'=>$year);
 		}
 		// filter elements acc. date_filter
+/*		TODO: implement date_filter
 		if('all' !== $args['date_filter']) {
 			$filter_array = explode(',', $args['date_filter']);
 			foreach($elements as $id => $element) {
@@ -118,7 +119,7 @@ class EL_Filterbar {
 					unset($elements[$id]);
 				}
 			}
-		}
+		}*/
 		// set selection
 		if(is_numeric($args['event_id'])) {
 			$actual = null;
