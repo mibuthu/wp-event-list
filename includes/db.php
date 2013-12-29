@@ -51,39 +51,10 @@ class EL_Db {
 		}
 	}
 
-	public function get_events($date_filter='all', $cat_filter=null, $num_events=0, $sort_array=array('start_date ASC', 'time ASC', 'end_date ASC')) {
+	public function get_events($date_filter=null, $cat_filter=null, $num_events=0, $sort_array=array('start_date ASC', 'time ASC', 'end_date ASC')) {
 		global $wpdb;
-
-		// set date for data base query
-		if(is_numeric($date_filter)) {
-			// get events of a specific year
-			$range_start = $date_filter.'-01-01';
-			$range_end = $date_filter.'-12-31';
-		}
-		elseif('all' === $date_filter) {
-			// get all events
-			$range_start = '0000-01-01';
-			$range_end = '9999-12-31';
-		}
-		elseif('past' === $date_filter) {
-			// get only events in the past
-			$range_start = '0000-01-01';
-			$range_end = date('Y-m-d', current_time('timestamp')-86400); // previous day (86400 seconds = 1*24*60*60 = 1 day))
-		}
-		else {  // upcoming
-			// get only events from today and in the future
-			$range_start = date('Y-m-d', current_time('timestamp'));
-			$range_end = '9999-12-31';
-		}
-		// set category filter
-		if(!is_array($cat_filter) && null != $cat_filter) {
-			$cat_filter = array($cat_filter);
-		}
-		if(is_array($cat_filter) && 'all' == $cat_filter[0]) {
-			$cat_filter = null;
-		}
-		$sql_cat_filter = empty($cat_filter) ? '' : ' AND (categories LIKE "%|'.implode('|%" OR categories LIKE "%|', $cat_filter).'|%")';
-		$sql = 'SELECT * FROM '.$this->table.' WHERE end_date >= "'.$range_start.'" AND start_date <= "'.$range_end.'"'.$sql_cat_filter.' ORDER BY '.implode(', ', $sort_array);
+		$where_string = $this->get_sql_filter_string($date_filter, $cat_filter);
+		$sql = 'SELECT * FROM '.$this->table.' WHERE '.$where_string.' ORDER BY '.implode(', ', $sort_array);
 		if('upcoming' === $date_filter && is_numeric($num_events) && 0 < $num_events) {
 			$sql .= ' LIMIT '.$num_events;
 		}
@@ -256,6 +227,74 @@ class EL_Db {
 			$ret_datearray = $date_array;
 		}
 		return date( $ret_format, $timestamp );
+	}
+
+	private function get_sql_filter_string($date_filter=null, $cat_filter=null) {
+		$sql_filter_string = '';
+		// date filter
+		// TODO: date_filter not implemented yet
+/*		$date_filter=str_replace(' ','',$date_filter);
+		if('all' == $date_filter) {
+		$date_filter = null;
+		}*/
+		if(null != $date_filter) {
+			if(is_numeric($date_filter)) {
+				// get events of a specific year
+				$range_start = $date_filter.'-01-01';
+				$range_end = $date_filter.'-12-31';
+			}
+			elseif('past' === $date_filter) {
+				// get only events in the past
+				$range_start = '0000-01-01';
+				$range_end = date('Y-m-d', current_time('timestamp')-86400); // previous day (86400 seconds = 1*24*60*60 = 1 day))
+			}
+			else {  // upcoming
+				// get only events from today and in the future
+				$range_start = date('Y-m-d', current_time('timestamp'));
+				$range_end = '9999-12-31';
+			}
+			$sql_filter_string .= '(end_date >= "'.$range_start.'" AND start_date <= "'.$range_end.'")';
+		}
+
+		// cat_filter
+		$cat_filter=str_replace(' ', '', $cat_filter);
+		if(null != $cat_filter || 'all' == $cat_filter || '' == $cat_filter) {
+			if('' != $sql_filter_string) {
+				$sql_filter_string .= ' AND ';
+			}
+			$sql_filter_string .= '(';
+			$delimiters = array('&' => ' AND ',
+			                    '|' => ' OR ',
+			                    ',' => ' OR ',
+			                    '(' => '(',
+			                    ')' => ')');
+			$delimiter_keys = array_keys($delimiters);
+			$tmp_element = '';
+			$len_cat_filter = strlen($cat_filter);
+			for($i=0; $i<$len_cat_filter; $i++) {
+				if(in_array($cat_filter[$i], $delimiter_keys)) {
+					if('' !== $tmp_element) {
+						$sql_filter_string .= 'categories LIKE "%|'.$tmp_element.'|%"';
+						$tmp_element = '';
+					}
+					$sql_filter_string .= $delimiters[$cat_filter[$i]];
+				}
+				else {
+					$tmp_element .= $cat_filter[$i];
+				}
+			}
+			if('' !== $tmp_element) {
+				$sql_filter_string .= 'categories LIKE "%|'.$tmp_element.'|%"';
+			}
+			$sql_filter_string .= ')';
+		}
+
+		// no filter
+		if('' == $sql_filter_string) {
+			$sql_filter_string = '1';   // in SQL "WHERE 1" is used to show all events
+		}
+
+		return $sql_filter_string;
 	}
 
 	/** ************************************************************************
