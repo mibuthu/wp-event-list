@@ -175,22 +175,22 @@ class EL_Filterbar {
 		$args_to_remove = array('event_id'.$args['sc_id_for_url'],
 		                        'date'.$args['sc_id_for_url'],
 		                        'cat'.$args['sc_id_for_url']);
-		return $this->show_link(remove_query_arg($args_to_remove, $url), __('Reset'));
+		return $this->show_link(remove_query_arg($args_to_remove, $url), __('Reset'), 'link');
 	}
 
 	private function show_hlist($elements, $url, $name, $actual=null) {
-		$out = '';
+		$out = '<ul class="hlist">';
 		foreach($elements as $element) {
+			$out .= '<li>';
 			if($actual == $element['slug']) {
 				$out .= '<strong>'.$element['name'].'</strong>';
 			}
 			else {
 				$out .= $this->show_link(add_query_arg($name, $element['slug'], $url), $element['name']);
 			}
-			$out .= '|';
+			$out .= '</li>';
 		}
-		// remove | at the end
-		$out = substr($out, 0, -1);
+		$out .= '</ul>';
 		return $out;
 	}
 
@@ -201,7 +201,7 @@ class EL_Filterbar {
 			add_action('wp_footer', array(&$this, 'footer_script'));
 			$onchange = ' onchange="eventlist_redirect(this.name,this.value,'.$sc_id.')"';
 		}
-		$out = '<select name="'.$name.'"'.$onchange.'>';
+		$out = '<select class="dropdown" name="'.$name.'"'.$onchange.'>';
 		foreach($elements as $element) {
 			$out .= '
 					<option';
@@ -215,8 +215,9 @@ class EL_Filterbar {
 		return $out;
 	}
 
-	private function show_link($url, $caption) {
-		return '<a href="'.$url.'">'.$caption.'</a>';
+	private function show_link($url, $caption, $class=null) {
+		$class = (null === $class) ? '' : ' class="'.$class.'"';
+		return '<a href="'.$url.'"'.$class.'>'.$caption.'</a>';
 	}
 
 	private function all_element($name=null) {
