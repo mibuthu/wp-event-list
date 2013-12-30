@@ -57,37 +57,32 @@ class SC_Event_List {
 			                            'std_val' => 'all',
 			                            'visible' => true,
 			                            'desc'    => 'This attribute specifies the categories of which events are shown. The standard is "all" or an empty string to show all events.<br />
-			                                          Events defined in categories which doesn´t match with cat_filter are not shown in the event list. They are also not shown if a manual url parameter is added.<br />
+			                                          Events defined in categories which doesn´t match cat_filter are not shown in the event list. They are also not available if a manual url parameter is added.<br />
 			                                          The filter is specified via the given category slug. You can use AND ("&") and OR ("|" or ",") connections to define complex filters. Additionally you can set brackets for nested queries.<br />
 			                                          Examples:<br />
-			                                          <code>tennis</code><br />
-			                                          <code>tennis,hockey</code><br />
-			                                          <code>tennis|(hockey&winter)</code><br />
+			                                          <code>tennis</code> ... Show all events with category "tennis".<br />
+			                                          <code>tennis,hockey</code> ... Show all events with category "tennis" or "hockey".<br />
+			                                          <code>tennis|(hockey&winter)</code> ... Show all events with category "tennis" and all events where category "hockey" as well as "winter" is selected.<br />
 			                                          If you only use OR connections (no AND connection) the category selection in the filterbar will also be filtered according to the given filter.<br />'),
 
 			'num_events'      => array( 'val'     => 'number',
 			                            'std_val' => '0',
 			                            'visible' => true,
 			                            'desc'    => 'This attribute specifies how many events should be displayed if upcoming events is selected.<br />
-			                                          0 is the standard value which means that all events will be displayed.' ),
+			                                          0 is the standard value which means that all events will be displayed.<br />
+			                                          Please not that in the actual version there is no pagination of the events available.'),
 
 			'show_filterbar'  => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
 			                            'std_val' => 'true',
 			                            'visible' => true,
-			                            'desc'    => 'This attribute specifies if the filterbar should be displayed. The filterbar allows the user to filter the listed events.<br />
+			                            'desc'    => 'This attribute specifies if the filterbar should be displayed. The filterbar allows the users to select filters to limit the listed events.<br />
 			                                          Choose "false" to always hide and "true" to always show the navigation.<br />
 			                                          With "event_list_only" the filterbar is only visible in the event list and with "single_event_only" only for a single event'),
 
 			'filterbar_items' => array( 'val'     => 'years_hlist<br />years_dropdown<br />cats_hlist<br />cats_dropdown<br />reset_link',
 			                            'std_val' => 'years_hlist',
 			                            'visible' => true,
-			                            'desc'    => 'This attribute specifies the available items in the filterbar. All available filterbar items and display options are listed below. Which option is available for which item can be found in the value options column and in the display option table.
-			                                          <p>Find below examples for declarations with a description of all possibilities:</p>
-			                                          <code>years_hlist,cats_dropdown</code><br />
-			                                          In this example you can see that the filterbar item and the used display option is seperated by "_". You can define several filterbar items seperated by comma (","). The items will be aligned on the left side.
-			                                          <p><code>years_dropdown(show-all=false|show-past=true),cats_dropdown;;reset_link</code><br />
-			                                          In this example you can see that filterbar options can be added in brackets in format "option_name=value". You can also add multiple options seperated by a pipe ("|").<br />
-			                                          The 2 semicolon (";") devides the bar in 3 section. The first section will be displayed left-justified, the second section will be centered and the third section will be right-aligned. So in this example the 2 dropdown will be left-aligned and the reset link will be on the right side.</p>
+			                            'desc'    => 'This attribute specifies the available items in the filterbar. This options are only valid if the filterbar is displayed (see show_filterbar attribute).<br /><br />
 			                                          Find below an overview of the available filterbar items and their options:<br />
 			                                          <small><table class="el-filterbar-table">
 			                                              <th class="el-filterbar-item">filterbar item</th><th class="el-filterbar-desc">description</th><th class="el-filterbar-options">item options</th><th class="el-filterbar-values">option values</th><th class="el-filterbar-default">default value</th><th class="el-filterbar-desc2">description</th></thead>
@@ -101,7 +96,13 @@ class SC_Event_List {
 			                                             <tr><td>hlist</td><td>"hlist" shows a horizonal list seperated by "|" with a link to each item</td><td>years, cat</td></tr>
 			                                             <tr><td>dropdown</td><td>"dropdown" shows a select box where an item can be choosen. After the selection of an item the page is reloaded via javascript to show the filtered events.</td><td>years, cat</td></tr>
 			                                             <tr><td>link</td><td>"link" shows a simple link which can be clicked.</td><td>reset</td></tr>
-			                                          </table></small>'),
+			                                          </table></small>
+			                                          <p>Find below some declaration examples with descriptions:</p>
+			                                          <code>years_hlist,cats_dropdown</code><br />
+			                                          In this example you can see that the filterbar item and the used display option is seperated by "_". You can define several filterbar items seperated by comma (","). The items will be aligned on the left side.
+			                                          <p><code>years_dropdown(show-all=false|show-past=true),cats_dropdown;;reset_link</code><br />
+			                                          In this example you can see that filterbar options can be added in brackets in format "option_name=value". You can also add multiple options seperated by a pipe ("|").<br />
+			                                          The 2 semicolon (";") devides the bar in 3 section. The first section will be displayed left-justified, the second section will be centered and the third section will be right-aligned. So in this example the 2 dropdown will be left-aligned and the reset link will be on the right side.</p>'),
 
 			'show_starttime'  => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
 			                            'std_val' => 'true',
@@ -134,7 +135,7 @@ class SC_Event_List {
 			'details_length'  => array( 'val'     => 'number',
 			                            'std_val' => '0',
 			                            'visible' => true,
-			                            'desc'    => 'This attribute specifies if the details should be truncate to the given number of character in the event list.<br />
+			                            'desc'    => 'This attribute specifies if the details should be truncate to the given number of characters in the event list.<br />
 			                                          With the standard value 0 the full details are displayed.<br />
 			                                          This attribute has no influence if only a single event is shown.'),
 
@@ -149,22 +150,22 @@ class SC_Event_List {
 			                            'std_val' => 'false',
 			                            'visible' => true,
 			                            'desc'    => 'This attribute specifies if a rss feed link should be added.<br />
-			                                          You have to enable the feed in the eventlist options to make this attribute workable.<br />
-			                                          In the options you can also find some settings to modify the output.<br />
+			                                          You have to enable the feed in the eventlist settings to make this attribute workable.<br />
+			                                          On that page you can also find some settings to modify the output.<br />
 			                                          Choose "false" to never add and "true" to always add the link.<br />
 			                                          With "event_list_only" the link is only added in the event list and with "single_event_only" only for a single event'),
 			// Invisible attributes ('visibe' = false): This attributes are required for the widget but will not be listed in the attributes table on the admin info page
 			'title_length'    => array( 'val'     => 'number',
 			                            'std_val' => '0',
 			                            'visible' => false,
-			                            'desc'    => 'This attribute specifies if the title should be truncate to the given number of character in the event list.<br />
+			                            'desc'    => 'This attribute specifies if the title should be truncate to the given number of characters in the event list.<br />
 			                                          With the standard value 0 the full details are displayed.<br />
 			                                          This attribute has no influence if only a single event is shown.'),
 
 			'location_length' => array( 'val'     => 'number',
 			                            'std_val' => '0',
 			                            'visible' => false,
-			                            'desc'    => 'This attribute specifies if the title should be truncate to the given number of character in the event list.<br />
+			                            'desc'    => 'This attribute specifies if the title should be truncate to the given number of characters in the event list.<br />
 			                                          With the standard value 0 the full details are displayed.<br />
 			                                          This attribute has no influence if only a single event is shown.'),
 
