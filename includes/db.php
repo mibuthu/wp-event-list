@@ -258,7 +258,7 @@ class EL_Db {
 
 		// cat_filter
 		$cat_filter=str_replace(' ', '', $cat_filter);
-		if(null != $cat_filter || 'all' == $cat_filter || '' == $cat_filter) {
+		if(null != $cat_filter && 'all' != $cat_filter && '' != $cat_filter) {
 			if('' != $sql_filter_string) {
 				$sql_filter_string .= ' AND ';
 			}
