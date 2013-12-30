@@ -135,7 +135,6 @@ class EL_Admin_Main {
 	private function show_event_table() {
 		// show filterbar
 		$out = '';
-//		$out = $this->filterbar->show('?page=el_admin_main', $_GET);
 		// show event table
 		// the form is required for bulk actions, the page field is required for plugins to ensure that the form posts back to the current page
 		$out .= '<form id="event-filter" method="get">

@@ -77,7 +77,7 @@ class EL_Filterbar {
 					</div>';
 			}
 		}
-		$out .= '</div><br />';
+		$out .= '</div>';
 		return $out;
 	}
 /*	TODO: implementation of show_all and show_upcoming
@@ -187,10 +187,10 @@ class EL_Filterbar {
 			else {
 				$out .= $this->show_link(add_query_arg($name, $element['slug'], $url), $element['name']);
 			}
-			$out .= ' | ';
+			$out .= '|';
 		}
 		// remove | at the end
-		$out = substr($out, 0, -3);
+		$out = substr($out, 0, -1);
 		return $out;
 	}
 

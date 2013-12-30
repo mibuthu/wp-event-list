@@ -4,7 +4,7 @@
 
 ul.event-list-view, ul.single-event-view {
 	list-style: none !important;
-	margin: 1em 0 1.5em 0;
+	margin: 1.5em 0 2em 0;
 	padding: 0;
 }
 
@@ -101,4 +101,14 @@ div.feed a * {
 
 div.feed img {
 	margin: 0 5px 0 2px;
+}
+
+div.filterbar {
+	clear both;
+	margin: 1em 0 1em 0;
+}
+
+div.filterbar select, div.filterbar a {
+	margin: 0 4px 0 4px;
+	vertical-align: middle;
 }
