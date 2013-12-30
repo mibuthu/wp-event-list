@@ -150,11 +150,12 @@ class EL_Filterbar {
 		foreach($cat_array as $cat) {
 			$elements[] = array('slug' => $cat['slug'], 'name' => str_pad('', 12*$cat['level'], '&nbsp;', STR_PAD_LEFT).$cat['name']);
 		}
-		// filter elements acc. cat_filter
-		if('all' !== $args['cat_filter']) {
-			$filter_array = explode(',', $args['cat_filter']);
+		// filter elements acc. cat_filter (if only OR connections are used)
+		if('all' !== $args['cat_filter'] && !strpos($args['cat_filter'], '&')) {
+			$tmp_filter = str_replace(array(' ', '(', ')'), '', $args['cat_filter']);
+			$tmp_filter = str_replace(',', '|', $tmp_filter);
+			$filter_array = explode('|', $tmp_filter);
 			foreach($elements as $id => $element) {
-				error_log('Cat Slug: '.$element['slug']);
 				if(!in_array($element['slug'], $filter_array) && 'all' !== $element['slug']) {
 					unset($elements[$id]);
 				}
