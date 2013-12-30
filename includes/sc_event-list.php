@@ -217,7 +217,7 @@ class SC_Event_List {
 		$a = shortcode_atts( $std_values, $atts );
 		// add internal attributes
 		$a['sc_id'] = $this->num_sc_loaded;
-		$a['event_id'] = isset( $_GET['event_id'.$a['sc_id']] ) ? (integer)$_GET['event_id'.$a['sc_id']] : null;
+		$a['event_id'] = isset($_GET['event_id'.$a['sc_id']]) ? (int)$_GET['event_id'.$a['sc_id']] : null;
 		// fix sc_id_for_url if required
 		if( !is_numeric( $a['sc_id_for_url'] ) ) {
 			$a['sc_id_for_url'] = $a['sc_id'];
@@ -259,6 +259,7 @@ class SC_Event_List {
 			$a['num_events'] = 0;
 		}
 		$cat_filter = ('none' === $a['actual_cat']) ? null : explode( ',', $a['actual_cat'] );
+		$date_filter = $this->get_date_filter('all', $a['actual_date']);
 		if( '1' !== $this->options->get( 'el_date_once_per_day' ) ) {
 			// normal sort
 			$sort_array = array( 'start_date ASC', 'time ASC', 'end_date ASC' );
@@ -267,7 +268,7 @@ class SC_Event_List {
 			// sort according end_date before start time (required for option el_date_once_per_day)
 			$sort_array = array( 'start_date ASC', 'end_date ASC', 'time ASC' );
 		}
-		$events = $this->db->get_events($a['actual_date'], $cat_filter, $a['num_events'], $sort_array);
+		$events = $this->db->get_events($date_filter, $cat_filter, $a['num_events'], $sort_array);
 
 		// generate output
 		$out = '';
@@ -442,6 +443,16 @@ class SC_Event_List {
 			$actual_cat = null;
 		}
 		return $actual_cat;
+	}
+
+	private function get_date_filter($date_filter, $actual_date) {
+		// TODO: date_filter not implemented yet
+		if('all' == $actual_date) {
+			return null;
+		}
+		else {
+			return $actual_date;
+		}
 	}
 
 	private function get_url( &$a ) {
