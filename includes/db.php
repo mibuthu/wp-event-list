@@ -232,12 +232,8 @@ class EL_Db {
 	private function get_sql_filter_string($date_filter=null, $cat_filter=null) {
 		$sql_filter_string = '';
 		// date filter
-		// TODO: date_filter not implemented yet
-/*		$date_filter=str_replace(' ','',$date_filter);
-		if('all' == $date_filter) {
-		$date_filter = null;
-		}*/
-		if(null != $date_filter) {
+		$date_filter=str_replace(' ','',$date_filter);
+		if(null != $date_filter && 'all' != $date_filter && '' != $date_filter) {
 			if(is_numeric($date_filter)) {
 				// get events of a specific year
 				$range_start = $date_filter.'-01-01';
