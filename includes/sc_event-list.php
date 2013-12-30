@@ -258,8 +258,8 @@ class SC_Event_List {
 		if('upcoming' != $a['actual_date']) {
 			$a['num_events'] = 0;
 		}
-		$cat_filter = ('none' === $a['actual_cat']) ? null : explode( ',', $a['actual_cat'] );
 		$date_filter = $this->get_date_filter('all', $a['actual_date']);
+		$cat_filter = $this->get_cat_filter($a['cat_filter'], $a['actual_cat']);
 		if( '1' !== $this->options->get( 'el_date_once_per_day' ) ) {
 			// normal sort
 			$sort_array = array( 'start_date ASC', 'time ASC', 'end_date ASC' );
@@ -452,6 +452,25 @@ class SC_Event_List {
 		}
 		else {
 			return $actual_date;
+		}
+	}
+
+	private function get_cat_filter($cat_filter, $actual_cat) {
+		if('all' == $cat_filter || '' == $cat_filter) {
+			if('all' == $actual_cat || '' == $actual_cat) {
+				return null;
+			}
+			else {
+				return $actual_cat;
+			}
+		}
+		else {
+			if('all' == $actual_cat || '' == $actual_cat) {
+				return $cat_filter;
+			}
+			else {
+				return '('.$cat_filter.')&('.$actual_cat.')';
+			}
 		}
 	}
 
