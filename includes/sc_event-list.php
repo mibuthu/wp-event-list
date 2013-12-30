@@ -419,28 +419,22 @@ class SC_Event_List {
 
 	private function get_actual_date(&$a) {
 		$actual_date = $a['initial_date'];
-		if(isset($_GET['date'.$a['sc_id']])) {
-			if('all' == $_GET['date'.$a['sc_id']] || 'upcoming' == $_GET['date'.$a['sc_id']] || 'past' == $_GET['date'.$a['sc_id']]) {
-				$actual_date = $_GET['date'.$a['sc_id']];
-			}
-			elseif(is_numeric($_GET['date'.$a['sc_id']])) {
-				// date is a year
-				$actual_date = (int)$_GET['date'.$a['sc_id']];
-			}
-		}
 		if(isset($_GET['event_id'.$a['sc_id']])) {
 			$actual_date = null;
+		}
+		elseif(isset($_GET['date'.$a['sc_id']])) {
+			$actual_date = $_GET['date'.$a['sc_id']];
 		}
 		return $actual_date;
 	}
 
 	private function get_actual_cat(&$a) {
 		$actual_cat = $a['initial_cat'];
-		if(isset($_GET['cat'.$a['sc_id']])) {
-			$actual_cat = $_GET['cat'.$a['sc_id']];
-		}
 		if(isset($_GET['event_id'.$a['sc_id']])) {
 			$actual_cat = null;
+		}
+		elseif(isset($_GET['cat'.$a['sc_id']])) {
+			$actual_cat = $_GET['cat'.$a['sc_id']];
 		}
 		return $actual_cat;
 	}
