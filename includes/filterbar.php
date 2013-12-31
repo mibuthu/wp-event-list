@@ -31,7 +31,8 @@ class EL_Filterbar {
 
 	// main function to show the rendered HTML output
 	public function show($url, $args) {
-		$out = '<style>
+		$out = '
+				<style>
 					.filterbar { display:table; width:100% }
 					.filterbar > div { display:table-cell }
 				</style>
@@ -208,7 +209,7 @@ class EL_Filterbar {
 			if($element['slug'] == $actual) {
 				$out .= ' selected="selected"';
 			}
-			$out .= ' value="'.$element['slug'].'">'.$element['name'].'</option>';
+			$out .= ' value="'.$element['slug'].'">'.esc_html($element['name']).'</option>';
 		}
 		$out .= '
 				</select>';
@@ -217,7 +218,7 @@ class EL_Filterbar {
 
 	private function show_link($url, $caption, $class=null) {
 		$class = (null === $class) ? '' : ' class="'.$class.'"';
-		return '<a href="'.$url.'"'.$class.'>'.$caption.'</a>';
+		return '<a href="'.esc_url($url).'"'.$class.'>'.esc_html($caption).'</a>';
 	}
 
 	private function all_element($name=null) {

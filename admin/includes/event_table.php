@@ -41,19 +41,19 @@ class EL_Event_Table extends WP_List_Table {
 	* @return string Text or HTML to be placed inside the column <td>
 	***************************************************************************/
 	protected function column_default($item, $column_name) {
-		switch($column_name){
+		switch($column_name) {
 			case 'date' :
-				return $this->format_event_date( $item->start_date, $item->end_date, $item->time );
+				return $this->format_event_date($item->start_date, $item->end_date, $item->time);
 			case 'details' :
-				return '<div>'.$this->db->truncate( 80, $item->details ).'</div>';
+				return '<div>'.esc_html($this->db->truncate(80, $item->details)).'</div>';
 			case 'pub_user' :
-				return get_userdata( $item->pub_user )->user_login;
+				return get_userdata($item->pub_user)->user_login;
 			case 'pub_date' :
-				return $this->format_pub_date( $item->pub_date );
+				return $this->format_pub_date($item->pub_date);
 			case 'categories' :
-				return $this->categories->get_category_string( $item->$column_name );
+				return esc_html($this->categories->get_category_string($item->$column_name));
 			default :
-				return $item->$column_name;
+				return esc_html($item->$column_name);
 		}
 	}
 
@@ -70,15 +70,13 @@ class EL_Event_Table extends WP_List_Table {
 		$actions = array(
 			'edit'      => '<a href="?page='.$_REQUEST['page'].'&amp;id='.$item->id.'&amp;action=edit">Edit</a>',
 			'duplicate' => '<a href="?page=el_admin_new&amp;id='.$item->id.'&amp;action=copy">Duplicate</a>',
-			'delete'    => '<a href="#" onClick="eventlist_deleteEvent('.$item->id.');return false;">Delete</a>'
-		);
+			'delete'    => '<a href="#" onClick="eventlist_deleteEvent('.$item->id.');return false;">Delete</a>');
 
 		//Return the title contents
-		return sprintf( '<b>%1$s</b> <span style="color:silver">(id:%2$s)</span>%3$s',
-			$item->title,
+		return sprintf('<b>%1$s</b> <span style="color:silver">(id:%2$s)</span>%3$s',
+			esc_html($item->title),
 			$item->id,
-			$this->row_actions( $actions )
-		);
+			$this->row_actions($actions));
 	}
 
 	/** ************************************************************************
@@ -172,7 +170,7 @@ class EL_Event_Table extends WP_List_Table {
 			$out .= $this->filterbar->show_years('?page=el_admin_main', $this->args, 'dropdown', 'admin');
 			$out .= $this->filterbar->show_cats('?page=el_admin_main', $this->args, 'dropdown', 'admin');
 			$out .= '
-				<input id="event-query-submit" class="button" type="submit" name ="filter" value="'.__('Filter').'"></input>
+				<input id="event-query-submit" class="button" type="submit" name ="filter" value="'.__('Filter').'" />
 			</div>';
 		}
 		echo $out;
@@ -290,8 +288,9 @@ class EL_Event_Table extends WP_List_Table {
 				$start_time = mysql2date( get_option( 'time_format' ), $start_time );
 			}
 			$out .= '<br />
-				<span class="time">'.$start_time.'</span></span>';
+				<span class="time">'.$start_time.'</span>';
 		}
+		$out .= '</span>';
 		return $out;
 	}
 
