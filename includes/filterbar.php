@@ -32,7 +32,7 @@ class EL_Filterbar {
 	// main function to show the rendered HTML output
 	public function show($url, $args) {
 		$out = '
-				<style>
+				<style type="text/css">
 					.filterbar { display:table; width:100% }
 					.filterbar > div { display:table-cell }
 				</style>
