@@ -1,22 +1,27 @@
 <?php
-if( !defined( 'ABSPATH' ) ) {
+if(!defined('ABSPATH')) {
 	exit;
 }
 
 // load the base class (WP_List_Table class isn't automatically available)
 if(!class_exists('WP_List_Table')){
-	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+	require_once(ABSPATH.'wp-admin/includes/class-wp-list-table.php');
 }
-require_once( EL_PATH.'includes/db.php' );
-require_once( EL_PATH.'includes/categories.php' );
+require_once(EL_PATH.'includes/db.php');
+require_once(EL_PATH.'includes/categories.php');
+require_once(EL_PATH.'includes/filterbar.php');
 
 class EL_Event_Table extends WP_List_Table {
 	private $db;
 	private $categories;
+	private $filterbar;
+	private $args;
 
 	public function __construct() {
 		$this->db = &EL_Db::get_instance();
 		$this->categories = &EL_Categories::get_instance();
+		$this->filterbar = &EL_Filterbar::get_instance();
+		$this->set_args();
 
 		global $status, $page;
 		//Set parent defaults
@@ -36,19 +41,19 @@ class EL_Event_Table extends WP_List_Table {
 	* @return string Text or HTML to be placed inside the column <td>
 	***************************************************************************/
 	protected function column_default($item, $column_name) {
-		switch($column_name){
+		switch($column_name) {
 			case 'date' :
-				return $this->format_event_date( $item->start_date, $item->end_date, $item->time );
+				return $this->format_event_date($item->start_date, $item->end_date, $item->time);
 			case 'details' :
-				return '<div>'.$this->db->truncate( 80, $item->details ).'</div>';
+				return '<div>'.esc_html($this->db->truncate(80, $item->details)).'</div>';
 			case 'pub_user' :
-				return get_userdata( $item->pub_user )->user_login;
+				return get_userdata($item->pub_user)->user_login;
 			case 'pub_date' :
-				return $this->format_pub_date( $item->pub_date );
+				return $this->format_pub_date($item->pub_date);
 			case 'categories' :
-				return $this->categories->get_category_string( $item->$column_name );
+				return esc_html($this->categories->get_category_string($item->$column_name));
 			default :
-				return $item->$column_name;
+				return esc_html($item->$column_name);
 		}
 	}
 
@@ -65,15 +70,13 @@ class EL_Event_Table extends WP_List_Table {
 		$actions = array(
 			'edit'      => '<a href="?page='.$_REQUEST['page'].'&amp;id='.$item->id.'&amp;action=edit">Edit</a>',
 			'duplicate' => '<a href="?page=el_admin_new&amp;id='.$item->id.'&amp;action=copy">Duplicate</a>',
-			'delete'    => '<a href="#" onClick="eventlist_deleteEvent('.$item->id.');return false;">Delete</a>'
-		);
+			'delete'    => '<a href="#" onClick="eventlist_deleteEvent('.$item->id.');return false;">Delete</a>');
 
 		//Return the title contents
-		return sprintf( '<b>%1$s</b> <span style="color:silver">(id:%2$s)</span>%3$s',
-			$item->title,
+		return sprintf('<b>%1$s</b> <span style="color:silver">(id:%2$s)</span>%3$s',
+			esc_html($item->title),
 			$item->id,
-			$this->row_actions( $actions )
-		);
+			$this->row_actions($actions));
 	}
 
 	/** ************************************************************************
@@ -158,6 +161,21 @@ class EL_Event_Table extends WP_List_Table {
 		}
 	}
 
+	public function extra_tablenav($which) {
+		$out = '';
+		// add filter elements
+		if('top' === $which) {
+			$out = '
+				<div class="alignleft actions">';
+			$out .= $this->filterbar->show_years('?page=el_admin_main', $this->args, 'dropdown', 'admin');
+			$out .= $this->filterbar->show_cats('?page=el_admin_main', $this->args, 'dropdown', 'admin');
+			$out .= '
+				<input id="event-query-submit" class="button" type="submit" name ="filter" value="'.__('Filter').'" />
+			</div>';
+		}
+		echo $out;
+	}
+
 	/** ************************************************************************
 	* In this function the data for the display is prepared.
 	*
@@ -169,7 +187,7 @@ class EL_Event_Table extends WP_List_Table {
 	* @uses $this->get_pagenum()
 	* @uses $this->set_pagination_args()
 	***************************************************************************/
-	public function prepare_items( $date_range='upcoming' ) {
+	public function prepare_items() {
 		$per_page = 20;
 		// define column headers
 		$columns = $this->get_columns();
@@ -179,7 +197,7 @@ class EL_Event_Table extends WP_List_Table {
 		// handle the bulk actions
 		$this->process_bulk_action();
 		// get the required event data
-		$data = $this->get_events( $date_range );
+		$data = $this->get_events();
 		// setup pagination
 		$current_page = $this->get_pagenum();
 		$total_items = count( $data );
@@ -193,7 +211,23 @@ class EL_Event_Table extends WP_List_Table {
 		$this->items = $data;
 	}
 
-	private function get_events( $date_range ) {
+	private function set_args() {
+		// filters
+		$this->args['date_filter'] = 'all';
+		$this->args['cat_filter'] = 'all';
+		// actual_date
+		$this->args['actual_date'] = 'upcoming';
+		if(isset($_GET['date']) && (is_numeric($_GET['date']) || 'all' == $_GET['date'] || 'upcoming' == $_GET['date'])) {
+			$this->args['actual_date'] = $_GET['date'];
+		}
+		// actual_cat
+		$this->args['actual_cat'] = 'all';
+		if(isset($_GET['cat'])) {
+			$this->args['actual_cat'] = $_GET['cat'];
+		}
+	}
+
+	private function get_events() {
 		// define sort_array
 		$order = 'ASC';
 		if( isset( $_GET['order'] ) && $_GET['order'] === 'desc' ) {
@@ -227,7 +261,7 @@ class EL_Event_Table extends WP_List_Table {
 				break;
 		}
 		// get and return events in the correct order
-		return $this->db->get_events( $date_range, 0, null, $sort_array );
+		return $this->db->get_events($this->args['actual_date'], $this->args['actual_cat'], 0, $sort_array);
 	}
 
 	/** ************************************************************************
@@ -254,8 +288,9 @@ class EL_Event_Table extends WP_List_Table {
 				$start_time = mysql2date( get_option( 'time_format' ), $start_time );
 			}
 			$out .= '<br />
-				<span class="time">'.$start_time.'</span></span>';
+				<span class="time">'.$start_time.'</span>';
 		}
+		$out .= '</span>';
 		return $out;
 	}
 

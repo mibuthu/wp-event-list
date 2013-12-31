@@ -31,10 +31,10 @@ class EL_Widget extends WP_Widget {
 			                                 'form_width'    => null ),
 
 			'cat_filter' =>           array( 'type'          => 'text',
-			                                 'std_value'     => 'none',
+			                                 'std_value'     => 'all',
 			                                 'caption'       => __('Category Filter:'),
 			                                 'caption_after' => null,
-			                                 'tooltip'       => __('This attribute specifies the categories of which events are shown. The standard is \'none\' to show all events. Specify a category slug or a list of category slugs separated by a comma to only show events of the specified categories.'),
+			                                 'tooltip'       => __('This attribute specifies the categories of which events are shown. The standard is \'all\' or an empty string to show all events. Specify a category slug or a list of category slugs to only show events of the specified categories. See description of the shortcode attribute "cat_filter" for detailed info about all possibilities.'),
 			                                 'form_style'    => 'margin:0 0 0.8em 0',
 			                                 'form_width'    => null ),
 
@@ -152,9 +152,10 @@ class EL_Widget extends WP_Widget {
 		{
 			echo $args['before_title'].$title.$args['after_title'];
 		}
+		$this->upgrade_widget($instance, true);
 		$linked_page_is_set = 0 < strlen( $instance['url_to_page'] );
 		$linked_page_id_is_set = 0 < (int)$instance['sc_id_for_url'];
-		$shortcode = '[event-list show_nav=false';
+		$shortcode = '[event-list show_filterbar=false';
 		$shortcode .= ' cat_filter='.$instance['cat_filter'];
 		$shortcode .= ' num_events="'.$instance['num_events'].'"';
 		$shortcode .= ' title_length='.$instance['title_length'];
@@ -210,6 +211,7 @@ class EL_Widget extends WP_Widget {
 	 * @param array $instance Previously saved values from database.
 	 */
 	public function form( $instance ) {
+		$this->upgrade_widget($instance);
 		$out = '';
 		foreach( $this->items as $itemname => $item ) {
 			if( ! isset( $instance[$itemname] ) ) {
@@ -247,6 +249,20 @@ class EL_Widget extends WP_Widget {
 		foreach($this->items as $itemname => $item) {
 			if(!isset($instance[$itemname])) {
 				$instance[$itemname] = $item['std_value'];
+			}
+		}
+	}
+
+	private function upgrade_widget(&$instance, $on_frontpage=false) {
+		// required change of cat_filter in version 0.6.0 (can be removed in 0.7.0)
+		if(isset($instance['cat_filter']) && 'none' === $instance['cat_filter']) {
+			if($on_frontpage) {
+				echo '<p style="color:red"><strong>Please visit widget admin page and press "Save" to perform the required widget updates (required due to changes in new plugin version) !</strong></p>';
+			}
+			else {
+				echo '<p style="color:red"><strong>Press "Save" to perform the required widget updates (required due to changes in new plugin version) !</strong></p>';
+				$instance['cat_filter'] = 'all';
+				$this->update($instance, null);
 			}
 		}
 	}

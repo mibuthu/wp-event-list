@@ -58,13 +58,13 @@ class EL_Admin_New {
 		}
 		else {
 			//new event
-			$start_date = time()+1*24*60*60;
+			$start_date = current_time('timestamp')+86400; // next day (86400 seconds = 1*24*60*60 = 1 day);
 			$end_date = $start_date;
 		}
 
 		// Add required data for javascript in a hidden field
 		$json = json_encode(array('el_url'         => EL_URL,
-		                            'el_date_format' => $this->datepicker_format(__('Y/m/d'))));
+		                          'el_date_format' => $this->datepicker_format(__('Y/m/d'))));
 		$out = '
 				<form method="POST" action="?page=el_admin_main">';
 		$out .= "
@@ -78,7 +78,11 @@ class EL_Admin_New {
 				<div id="post-body" class="metabox-holder columns-2">
 				<div id="post-body-content">';
 		if(true === $edit) {
+			$out .= '<input type="hidden" name="action" value="edited" />';
 			$out .= '<input type="hidden" name="id" value="'.$_GET['id'].'" />';
+		}
+		else {
+			$out .= '<input type="hidden" name="action" value="new" />';
 		}
 		$out .= '<table class="form-table">
 			<tr>

@@ -1,6 +1,10 @@
+.event-list {
+	clear: both;
+}
+
 ul.event-list-view, ul.single-event-view {
 	list-style: none !important;
-	margin: 1em 0 1.5em 0;
+	margin: 1.5em 0 2em 0;
 	padding: 0;
 }
 
@@ -50,7 +54,7 @@ li.event {
 	text-transform: uppercase;
 	font-size: 1.0em;
 	line-height: 1em;
-	padding: 0.4em 0 0.4em 0;
+	padding: 0.4em 0;
 }
 
 .event-year {
@@ -70,7 +74,7 @@ li.event {
 
 .event-title h3 {
 	clear: none;
-	margin: 0;
+	margin: 0 !important;
 	padding: 0;
 }
 
@@ -97,4 +101,26 @@ div.feed a * {
 
 div.feed img {
 	margin: 0 5px 0 2px;
+}
+
+div.filterbar, div.filterbar div {
+	clear both;
+	margin: 1em 0;
+	vertical-align: middle;
+}
+
+div.filterbar select.dropdown, div.filterbar ul.hlist, div.filterbar a.link {
+	margin: 0 3px;
+	vertical-align: middle;
+}
+
+div.filterbar ul.hlist li {
+	float: left;
+	list-style-type: none;
+	margin: 0;
+}
+
+div.filterbar ul.hlist li + li:before {
+	content: "|";
+	padding: 0 1px;
 }

@@ -1,15 +1,15 @@
 ﻿=== Event List ===
 Contributors: mibuthu
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W54LNZMWF9KW2
-Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, admin, attribute, widget, sidebar, feed, rss
+Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, filter, admin, attribute, widget, sidebar, feed, rss
 Requires at least: 3.3
-Tested up to: 3.7.1
-Stable tag: 0.5.2
+Tested up to: 3.8
+Stable tag: 0.6.0
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Manage your events and show them in a list view on your site.
+Manage your events and show them on your site.
 
 
 == Description ==
@@ -18,21 +18,21 @@ The purpose of this plugin is to to show a list of events with date, time, descr
 
 = Current Features =
 * Admin pages to view/create/manage/modify events
-* Available event data fields: event title, event start time, event location, event details
-* Beginning and end dates for multiple-day events
-* Wordpress's WYSIWYG editor for the event details. So you can include styled text, links, images and other media in your event list.
-* A duplicate function for events
-* Event navigation to view only upcoming events or past/future events filtered by year
+* Available event data fields: event title, event date, event start time, event location, event details
+* Beginning and end dates for multi-day events
+* Wordpress's WYSIWYG editor for the event details. So you can include styled text, links, images and other media in your events.
+* A duplicate function for events to easier create similar event copies
 * Event categories
 * Sync event categories with post categories
-* Event feed
+* Filter events according to dates or categories
+* Include an event feed in your site
 
-The event list can be placed in any page or post on your Wordpress site. Just include the following short code where you want the calendar to appear:
+The event list can be placed in any page or post on your Wordpress site. Just include the following short code where you want the events to appear:
 
 ‘[event-list]’
 
 You can modify the listed events and their style with attributes. All available attributes can be found on the Event List -> About page.
-There is also a widget available to view the upcoming events in a sidebar.
+There is also a widget available to view the upcoming events in a sidebar with many options.
 
 If you want to follow the development status have a look at the [git-repository on github](https://github.com/mibuthu/wp-event-list "wp-event-list git-repository").
 
@@ -46,14 +46,15 @@ If you want to install the plugin manually download the zip-file and extract the
 
 == Frequently Asked Questions ==
 
-= How do I get a calendar to show up in a Page or Post on my site? =
-Insert the shortcode [event-list] in your page.
+= How do I get an event list to show up in a Page or Post on my site? =
+Insert the shortcode [event-list] in your page or post. You can modify the output by many available shortcode attributes (see Event List -> About page for more infos).
 
 = How do I use styled text and images in the event descriptions? =
-Event List uses the built-in Wordpress WYSIWYG editor. It's exactly the same process you use when creating Posts or Pages.
+Event List uses the built-in Wordpress WYSIWYG editor. It's exactly the same process like in creating Posts or Pages.
 
 = Can I call the shortcode directly via php e.g. for my own template, theme or plugin? =
-Yes, you can create an instance of the "SC_Event_List" class which located in "includes/sc_event-list.php" in the plugin folder and call the function show_html($atts).With $atts you can specify all the shortcode attributes you require. Another possibility would be to call the wordpress function "do_shortcode()".
+Yes, you can create an instance of the "SC_Event_List" class which is located in the plugin folder under "includes/sc_event-list.php" and call the function show_html($atts).With $atts you can specify all the shortcode attributes you require.
+Another possibility would be to call the wordpress function "do_shortcode()".
 
 
 == Screenshots ==
@@ -69,6 +70,26 @@ Yes, you can create an instance of the "SC_Event_List" class which located in "i
 
 
 == Changelog ==
+
+= 0.6.0 (2013-12-31) =
+* added adjustment options for the filterbar (shortcode attribute "filterbar_items")
+* added "All" and "Past" options to years filter in filterbar
+* added category filter option in filterbar
+* change "cat_filter" behavior with additional features
+* added option to display categorys/years filter in a dropdown
+* added reset option to filterbar
+* added category filter selection in admin event table
+* added shortcode attribute "initial_date"
+* renamed shortcode attribute "show_nav" into "show_filterbar"
+* renamed url parameter "ytd" to "years"
+* removed underline before event-list id in url
+* some css fixes
+* some help text updates
+
+Attention:
+In this version some of the shortcode attributes and the behavior of some existing attributes have changed and are not compatible with the old version! Please check all your shortcodes after the update.
+Additionally the url parameter has changed. So if you are using existing links to an eventlist with parameters you have to update them.
+Also existing widgets must be updated after plugin upgrade. Please visit the widget admin page and press save for all evenlist wigets.
 
 = 0.5.2 (2013-11-09) =
 

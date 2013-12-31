@@ -51,32 +51,14 @@ class EL_Db {
 		}
 	}
 
-	public function get_events( $date_range='all', $num_events=0, $cat_filter=null, $sort_array=array( 'start_date ASC', 'time ASC', 'end_date ASC') ) {
+	public function get_events($date_filter=null, $cat_filter=null, $num_events=0, $sort_array=array('start_date ASC', 'time ASC', 'end_date ASC')) {
 		global $wpdb;
-
-		// set date for data base query
-		if( is_numeric( $date_range ) ) {
-			// get events of a specific year
-			$range_start = $date_range.'-01-01';
-			$range_end = $date_range.'-12-31';
-		}
-		elseif( 'all' === $date_range ) {
-			// get all events
-			$range_start = '0000-01-01';
-			$range_end = '9999-12-31';
-		}
-		else {  // upcoming
-			// get only events in the future
-			$range_start = date( 'Y-m-d' );
-			$range_end = '9999-12-31';
-		}
-		// set category filter
-		$sql_cat_filter = empty( $cat_filter ) ? '' : ' AND ( categories LIKE "%|'.implode( '|%" OR categories LIKE "%|', $cat_filter ).'|%" )';
-		$sql = 'SELECT * FROM '.$this->table.' WHERE end_date >= "'.$range_start.'" AND start_date <= "'.$range_end.'"'.$sql_cat_filter.' ORDER BY '.implode( ', ', $sort_array );
-		if( 'upcoming' === $date_range && is_numeric($num_events) && 0 < $num_events ) {
+		$where_string = $this->get_sql_filter_string($date_filter, $cat_filter);
+		$sql = 'SELECT * FROM '.$this->table.' WHERE '.$where_string.' ORDER BY '.implode(', ', $sort_array);
+		if('upcoming' === $date_filter && is_numeric($num_events) && 0 < $num_events) {
 			$sql .= ' LIMIT '.$num_events;
 		}
-		return $wpdb->get_results( $sql );
+		return $wpdb->get_results($sql);
 	}
 
 	public function get_event( $id ) {
@@ -102,7 +84,7 @@ class EL_Db {
 			$date = $this->extract_date( $date[0][$search_date],'Y');
 		}
 		else {
-			$date = date("Y");
+			$date = date('Y', current_time('timestamp'));
 		}
 		return $date;
 	}
@@ -122,7 +104,7 @@ class EL_Db {
 			//pub_user
 			$sqldata['pub_user'] = isset($event_data['id']) ? $event_data['pub_user'] : wp_get_current_user()->ID;
 			//pub_date
-			$sqldata['pub_date'] = isset($event_data['pub_date']) ? $event_data['pub_date'] : date("Y-m-d H:i:s");
+			$sqldata['pub_date'] = isset($event_data['pub_date']) ? $event_data['pub_date'] : date("Y-m-d H:i:s", current_time('timestamp'));
 		}
 		//start_date
 		if( !isset( $event_data['start_date']) ) { return false; }
@@ -157,13 +139,13 @@ class EL_Db {
 		else { $sqldata['categories'] = '|'.implode( '|', $event_data['categories'] ).'|'; }
 		//types for sql data
 		$sqltypes = array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );
-		if( isset( $event_data['id'] ) ) { // update event
-			$wpdb->update( $this->table, $sqldata, array( 'id' => $event_data['id'] ), $sqltypes );
+		if(isset( $event_data['id'] ) ) { // update event
+			return $wpdb->update($this->table, $sqldata, array('id' => $event_data['id']), $sqltypes);
 		}
 		else { // new event
-			$wpdb->insert( $this->table, $sqldata, $sqltypes );
+			$wpdb->insert($this->table, $sqldata, $sqltypes);
+			return $wpdb->insert_id;
 		}
-		return true;
 	}
 
 	public function delete_events( $event_ids ) {
@@ -245,6 +227,70 @@ class EL_Db {
 			$ret_datearray = $date_array;
 		}
 		return date( $ret_format, $timestamp );
+	}
+
+	private function get_sql_filter_string($date_filter=null, $cat_filter=null) {
+		$sql_filter_string = '';
+		// date filter
+		$date_filter=str_replace(' ','',$date_filter);
+		if(null != $date_filter && 'all' != $date_filter && '' != $date_filter) {
+			if(is_numeric($date_filter)) {
+				// get events of a specific year
+				$range_start = $date_filter.'-01-01';
+				$range_end = $date_filter.'-12-31';
+			}
+			elseif('past' === $date_filter) {
+				// get only events in the past
+				$range_start = '0000-01-01';
+				$range_end = date('Y-m-d', current_time('timestamp')-86400); // previous day (86400 seconds = 1*24*60*60 = 1 day))
+			}
+			else {  // upcoming
+				// get only events from today and in the future
+				$range_start = date('Y-m-d', current_time('timestamp'));
+				$range_end = '9999-12-31';
+			}
+			$sql_filter_string .= '(end_date >= "'.$range_start.'" AND start_date <= "'.$range_end.'")';
+		}
+
+		// cat_filter
+		$cat_filter=str_replace(' ', '', $cat_filter);
+		if(null != $cat_filter && 'all' != $cat_filter && '' != $cat_filter) {
+			if('' != $sql_filter_string) {
+				$sql_filter_string .= ' AND ';
+			}
+			$sql_filter_string .= '(';
+			$delimiters = array('&' => ' AND ',
+			                    '|' => ' OR ',
+			                    ',' => ' OR ',
+			                    '(' => '(',
+			                    ')' => ')');
+			$delimiter_keys = array_keys($delimiters);
+			$tmp_element = '';
+			$len_cat_filter = strlen($cat_filter);
+			for($i=0; $i<$len_cat_filter; $i++) {
+				if(in_array($cat_filter[$i], $delimiter_keys)) {
+					if('' !== $tmp_element) {
+						$sql_filter_string .= 'categories LIKE "%|'.$tmp_element.'|%"';
+						$tmp_element = '';
+					}
+					$sql_filter_string .= $delimiters[$cat_filter[$i]];
+				}
+				else {
+					$tmp_element .= $cat_filter[$i];
+				}
+			}
+			if('' !== $tmp_element) {
+				$sql_filter_string .= 'categories LIKE "%|'.$tmp_element.'|%"';
+			}
+			$sql_filter_string .= ')';
+		}
+
+		// no filter
+		if('' == $sql_filter_string) {
+			$sql_filter_string = '1';   // in SQL "WHERE 1" is used to show all events
+		}
+
+		return $sql_filter_string;
 	}
 
 	/** ************************************************************************
