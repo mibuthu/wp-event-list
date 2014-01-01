@@ -66,7 +66,7 @@ class EL_Admin_New {
 		$json = json_encode(array('el_url'         => EL_URL,
 		                          'el_date_format' => $this->datepicker_format(__('Y/m/d'))));
 		$out = '
-				<form method="POST" action="?page=el_admin_main">';
+				<form method="POST" action="'.add_query_arg('noheader', 'true', '?page=el_admin_main').'">';
 		$out .= "
 				<input type='hidden' id='json_for_js' value='".$json."' />"; // single quote required for value due to json layout
 		// TODO: saving changed metabox status and order is not working yet

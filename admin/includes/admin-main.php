@@ -51,6 +51,9 @@ class EL_Admin_Main {
 						$this->redirect('deleted', $error, array('id' => $_GET['id']));
 					}
 					break;
+				// proceed with header if a bulk action was triggered (required due to "noheader" attribute for all action above)
+				case 'delete_bulk':
+					require_once(ABSPATH.'wp-admin/admin-header.php');
 			}
 		}
 		// cleanup query args when filter button was pressed
@@ -186,7 +189,7 @@ class EL_Admin_Main {
 	}
 
 	private function redirect($action=false, $error=false, $query_args=array()) {
-		$url = remove_query_arg(array('action', 'action2', 'filter', '_wpnonce', '_wp_http_referer'), $_SERVER['REQUEST_URI']);
+		$url = remove_query_arg(array('noheader', 'action', 'action2', 'filter', '_wpnonce', '_wp_http_referer'), $_SERVER['REQUEST_URI']);
 		if($action) {
 			$url = add_query_arg('action', $action, $url);
 		}
