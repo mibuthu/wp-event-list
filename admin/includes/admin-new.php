@@ -107,8 +107,8 @@ class EL_Admin_New {
 				<th><label>Event Details</label></th>
 				<td>';
 		$editor_settings = array('media_buttons' => true,
-		                          'wpautop' => false,
-		                          'textarea_rows' => 20);
+		                         'wpautop' => false,
+		                         'textarea_rows' => 20);
 		ob_start();
 			wp_editor(isset($event->details) ? $event->details : '', 'details', $editor_settings);
 			$out .= ob_get_contents();
