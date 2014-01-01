@@ -17,7 +17,7 @@ function updateUrlParameter(url, paramName, paramVal, sc_id) {
 	var newParams = "";
 	var seperator = "?";
 	var paramNameAdded = false;
-	if(null != oldParams.length) {
+	if(null != oldParams) {
 		urlArray = oldParams.split("&");
 		for(i=0; i<urlArray.length; i++) {
 			if(urlArray[i].split("=")[0] == "event_id"+sc_id) {
