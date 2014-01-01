@@ -56,7 +56,6 @@ class Event_List {
 		if($options->get('el_enable_feed')) {
 			include_once(EL_PATH.'includes/feed.php');
 			$feed = EL_Feed::get_instance();
-			//echo $feed->create_events_feed();
 		}
 
 		// ADMIN PAGE:
