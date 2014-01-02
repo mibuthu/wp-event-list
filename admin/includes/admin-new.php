@@ -137,9 +137,11 @@ class EL_Admin_New {
 	}
 
 	public function render_publish_metabox() {
+		$edit = (isset($_GET['id']) && is_numeric($_GET['id']) && isset($_GET['action']) && 'edit' === $_GET['action']) ? true : false;
+		$button_text = $edit ? __('Update') : __('Publish');
 		$out = '<div class="submitbox">
 				<div id="delete-action"><a href="?page=el_admin_main" class="submitdelete deletion">'.__('Cancel').'</a></div>
-				<div id="publishing-action"><input type="submit" class="button button-primary button-large" name="publish" value="'.__('Publish').'" id="publish"></div>
+				<div id="publishing-action"><input type="submit" class="button button-primary button-large" name="publish" value="'.$button_text.'" id="publish"></div>
 				<div class="clear"></div>
 			</div>';
 		echo $out;
