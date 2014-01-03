@@ -45,7 +45,7 @@ class EL_Event_Table extends WP_List_Table {
 			case 'date' :
 				return $this->format_event_date($item->start_date, $item->end_date, $item->time);
 			case 'details' :
-				return '<div>'.esc_html($this->db->truncate(80, $item->details)).'</div>';
+				return '<div>'.$this->db->truncate(80, $item->details).'</div>';
 			case 'pub_user' :
 				return get_userdata($item->pub_user)->user_login;
 			case 'pub_date' :
@@ -170,6 +170,7 @@ class EL_Event_Table extends WP_List_Table {
 			$out .= $this->filterbar->show_years('?page=el_admin_main', $this->args, 'dropdown', 'admin');
 			$out .= $this->filterbar->show_cats('?page=el_admin_main', $this->args, 'dropdown', 'admin');
 			$out .= '
+				<input type="hidden" name="noheader" value="true" />
 				<input id="event-query-submit" class="button" type="submit" name ="filter" value="'.__('Filter').'" />
 			</div>';
 		}

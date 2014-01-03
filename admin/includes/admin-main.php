@@ -37,12 +37,12 @@ class EL_Admin_Main {
 					if(!empty($_POST)) {
 						$id = $this->db->update_event($_POST, __('Y/m/d'));
 						$error = !$id;
-						$this->redirect('added', $error, array('title' => $_POST['title'], 'id' => $id));
+						$this->redirect('added', $error, array('title' => urlencode($_POST['title']), 'id' => $id));
 					}
 				case 'edited':
 					if(!empty($_POST)) {
 						$error = !$this->db->update_event($_POST, __('Y/m/d'));
-						$this->redirect('modified', $error, array('title' => $_POST['title'], 'id' => $_POST['id']));
+						$this->redirect('modified', $error, array('title' => urlencode($_POST['title']), 'id' => $_POST['id']));
 					}
 					break;
 				case 'delete':
@@ -51,6 +51,9 @@ class EL_Admin_Main {
 						$this->redirect('deleted', $error, array('id' => $_GET['id']));
 					}
 					break;
+				// proceed with header if a bulk action was triggered (required due to "noheader" attribute for all action above)
+				case 'delete_bulk':
+					require_once(ABSPATH.'wp-admin/admin-header.php');
 			}
 		}
 		// cleanup query args when filter button was pressed
@@ -154,15 +157,15 @@ class EL_Admin_Main {
 		switch($action) {
 			case 'added':
 				if(!$error)
-					$this->show_update_message('New Event "'.stripslashes($_GET['title']).'" was added.');
+					$this->show_update_message('New Event "'.esc_html(stripslashes($_GET['title'])).'" was added.');
 				else
-					$this->show_error_message('Error: New Event "'.stripslashes($_GET['title']).'" could not be added.');
+					$this->show_error_message('Error: New Event "'.esc_html(stripslashes($_GET['title'])).'" could not be added.');
 				break;
 			case 'modified':
 				if(!$error)
-					$this->show_update_message('Event "'.stripslashes($_GET['title']).'" (id: '.$_GET['id'].') was modified.');
+					$this->show_update_message('Event "'.esc_html(stripslashes($_GET['title'])).'" (id: '.$_GET['id'].') was modified.');
 				else
-					$this->show_error_message('Error: Event "'.stripslashes($_GET['title']).'" (id: '.$_GET['id'].') could not be modified.');
+					$this->show_error_message('Error: Event "'.esc_html(stripslashes($_GET['title'])).'" (id: '.$_GET['id'].') could not be modified.');
 				break;
 			case 'deleted':
 				$num_deleted = count(explode(',', $_GET['id']));
@@ -186,7 +189,7 @@ class EL_Admin_Main {
 	}
 
 	private function redirect($action=false, $error=false, $query_args=array()) {
-		$url = remove_query_arg(array('action', 'action2', 'filter', '_wpnonce', '_wp_http_referer'), $_SERVER['REQUEST_URI']);
+		$url = remove_query_arg(array('noheader', 'action', 'action2', 'filter', '_wpnonce', '_wp_http_referer'), $_SERVER['REQUEST_URI']);
 		if($action) {
 			$url = add_query_arg('action', $action, $url);
 		}

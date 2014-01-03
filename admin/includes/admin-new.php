@@ -66,7 +66,7 @@ class EL_Admin_New {
 		$json = json_encode(array('el_url'         => EL_URL,
 		                          'el_date_format' => $this->datepicker_format(__('Y/m/d'))));
 		$out = '
-				<form method="POST" action="?page=el_admin_main">';
+				<form method="POST" action="'.add_query_arg('noheader', 'true', '?page=el_admin_main').'">';
 		$out .= "
 				<input type='hidden' id='json_for_js' value='".$json."' />"; // single quote required for value due to json layout
 		// TODO: saving changed metabox status and order is not working yet
@@ -107,8 +107,8 @@ class EL_Admin_New {
 				<th><label>Event Details</label></th>
 				<td>';
 		$editor_settings = array('media_buttons' => true,
-		                          'wpautop' => false,
-		                          'textarea_rows' => 20);
+		                         'wpautop' => false,
+		                         'textarea_rows' => 20);
 		ob_start();
 			wp_editor(isset($event->details) ? $event->details : '', 'details', $editor_settings);
 			$out .= ob_get_contents();
@@ -137,9 +137,11 @@ class EL_Admin_New {
 	}
 
 	public function render_publish_metabox() {
+		$edit = (isset($_GET['id']) && is_numeric($_GET['id']) && isset($_GET['action']) && 'edit' === $_GET['action']) ? true : false;
+		$button_text = $edit ? __('Update') : __('Publish');
 		$out = '<div class="submitbox">
 				<div id="delete-action"><a href="?page=el_admin_main" class="submitdelete deletion">'.__('Cancel').'</a></div>
-				<div id="publishing-action"><input type="submit" class="button button-primary button-large" name="publish" value="'.__('Publish').'" id="publish"></div>
+				<div id="publishing-action"><input type="submit" class="button button-primary button-large" name="publish" value="'.$button_text.'" id="publish"></div>
 				<div class="clear"></div>
 			</div>';
 		echo $out;

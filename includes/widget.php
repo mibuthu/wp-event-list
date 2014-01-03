@@ -257,7 +257,9 @@ class EL_Widget extends WP_Widget {
 		// required change of cat_filter in version 0.6.0 (can be removed in 0.7.0)
 		if(isset($instance['cat_filter']) && 'none' === $instance['cat_filter']) {
 			if($on_frontpage) {
-				echo '<p style="color:red"><strong>Please visit widget admin page and press "Save" to perform the required widget updates (required due to changes in new plugin version) !</strong></p>';
+				if(current_user_can('edit_theme_options')) {
+					echo '<p style="color:red"><strong>Please visit widget admin page (Appearance -> Widgets) and press "Save" to perform the required widget updates (required due to changes in new plugin version) !</strong></p>';
+				}
 			}
 			else {
 				echo '<p style="color:red"><strong>Press "Save" to perform the required widget updates (required due to changes in new plugin version) !</strong></p>';

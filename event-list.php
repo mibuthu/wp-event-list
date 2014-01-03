@@ -3,7 +3,7 @@
 Plugin Name: Event List
 Plugin URI: http://wordpress.org/extend/plugins/event-list/
 Description: Manage your events and show them in a list view on your site.
-Version: 0.6.0
+Version: 0.6.1
 Author: Michael Burtscher
 Author URI: http://wordpress.org/extend/plugins/event-list/
 License: GPLv2
@@ -56,7 +56,6 @@ class Event_List {
 		if($options->get('el_enable_feed')) {
 			include_once(EL_PATH.'includes/feed.php');
 			$feed = EL_Feed::get_instance();
-			//echo $feed->create_events_feed();
 		}
 
 		// ADMIN PAGE:
