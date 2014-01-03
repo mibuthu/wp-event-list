@@ -71,7 +71,7 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 
 == Changelog ==
 
-= 0.6.1 (2013-02-03) =
+= 0.6.1 (2013-01-03) =
 * fixed redirect issue in admin event table
 * fixed a bug in filterbar javascript
 * fixed a problem with wrong format of deatails in admin event table
