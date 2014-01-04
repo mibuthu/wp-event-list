@@ -52,6 +52,9 @@ class EL_Admin {
 		$page = add_submenu_page('el_admin_main', __('Add New Event','event-list'), __('Add New','event-list'), 'edit_posts', 'el_admin_new', array(&$this, 'show_new_page'));
 		add_action('admin_print_scripts-'.$page, array(&$this, 'embed_new_scripts'));
 
+        // Import subpage
+		$page = add_submenu_page('el_admin_main', 'Import Events', 'Import Events', 'edit_posts', 'el_admin_import', array(&$this, 'show_import_page'));
+
 		// Categories subpage
 		$page = add_submenu_page('el_admin_main', __('Event List Categories','event-list'), __('Categories','event-list'), 'manage_options', 'el_admin_categories', array(&$this, 'show_categories_page'));
 		add_action('admin_print_scripts-'.$page, array(&$this, 'embed_categories_scripts'));
@@ -146,5 +149,10 @@ class EL_Admin {
 		require_once(EL_PATH.'includes/categories.php');
 		EL_Categories::get_instance()->delete_post_category($cat_id);
 	}
+
+    public function show_import_page() {
+        require_once(EL_PATH.'admin/includes/admin-import.php');
+      	EL_Admin_Import::get_instance()->show_import();
+    }
 }
 ?>
