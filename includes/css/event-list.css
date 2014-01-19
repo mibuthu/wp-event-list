@@ -116,7 +116,7 @@ div.filterbar select.dropdown, div.filterbar ul.hlist, div.filterbar a.link {
 
 div.filterbar ul.hlist li {
 	float: left;
-	list-style-type: none;
+	list-style: none;
 	margin: 0;
 }
 
