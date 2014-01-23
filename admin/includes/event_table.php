@@ -254,6 +254,9 @@ class EL_Event_Table extends WP_List_Table {
 			case 'location' :
 				array_unshift( $sort_array, 'location '.$order );
 				break;
+			case 'plaatje' :
+				array_unshift( $sort_array, 'plaatje '.$order );
+				break;
 			case 'pub_user' :
 				array_unshift( $sort_array, 'pub_user '.$order );
 				break;

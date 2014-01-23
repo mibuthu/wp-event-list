@@ -40,6 +40,7 @@ class EL_Db {
 				time text,
 				title text NOT NULL,
 				location text,
+				plaatje text,
 				details text,
 				categories text,
 				history text,
@@ -131,6 +132,9 @@ class EL_Db {
 		//location
 		if( !isset( $event_data['location'] ) ) { $sqldata['location'] = ''; }
 		else { $sqldata['location'] = stripslashes ($event_data['location'] ); }
+		//image - plaatje
+		if( !isset( $event_data['plaatje'] ) ) { $sqldata['plaatje'] = ''; }
+		else { $sqldata['plaatje'] = stripslashes ($event_data['plaatje'] ); }
 		//details
 		if( !isset( $event_data['details'] ) ) { $sqldata['details'] = ''; }
 		else { $sqldata['details'] = stripslashes ($event_data['details'] ); }

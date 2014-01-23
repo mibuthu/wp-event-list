@@ -42,6 +42,12 @@ class EL_Admin_New {
 		wp_enqueue_script('link');
 		wp_enqueue_script('eventlist_admin_new_js', EL_URL.'admin/js/admin_new.js');
 		wp_enqueue_style('eventlist_admin_new', EL_URL.'admin/css/admin_new.css');
+		// featured image upload
+		wp_enqueue_script('media-upload');
+        wp_enqueue_script('thickbox');
+        wp_enqueue_style('thickbox');
+        wp_register_script('my-upload', EL_URL.'admin/js/plaatje.js', array('jquery','media-upload','thickbox'));
+        wp_enqueue_script('my-upload');
 	}
 
 	public function edit_event() {
@@ -102,8 +108,17 @@ class EL_Admin_New {
 			<tr>
 				<th><label>Event Location</label></th>
 				<td><input type="text" class="text" name="location" id="location" value="'.str_replace('"', '&quot;', isset($event->location) ? $event->location : '').'" /></td>
-			</tr>
-			<tr>
+			</tr>';
+			//upload image
+			$out .= '<tr valign="top">
+<th scope="row">Upload featured image</th>
+<td><label for="upload_image">
+<input id="upload_image" type="text" size="36" name="plaatje" value="'.str_replace('"', '&quot;', isset($event->plaatje) ? $event->plaatje : '').'" /> 
+<input id="upload_image_button" type="button" value="Upload Image" />
+<br />paste image url or upload image
+</label></td>
+</tr>';
+			$out .= '<tr>
 				<th><label>Event Details</label></th>
 				<td>';
 		$editor_settings = array('media_buttons' => true,

@@ -36,6 +36,8 @@ li.event {
 
 .event-list .end-date {
 	margin-left: 3.8em;
+	
+	float: left;
 }
 
 .event-weekday {
@@ -65,7 +67,8 @@ li.event {
 }
 
 .multi-day {
-	margin: 0 0 0 7.5em;
+	margin: 0 0 0 3.8em;
+	/* Featured image styles - less margin */
 }
 
 .single-day {
@@ -89,6 +92,7 @@ li.event {
 
 .event-details {
 	font-size: 0.8em;
+	margin-top:10px;
 }
 
 div.feed {
@@ -124,3 +128,27 @@ div.filterbar ul.hlist li + li:before {
 	content: "|";
 	padding: 0 1px;
 }
+/* Featured image styles */
+
+.event-info {  float: left;display:in-line;width:30%;}  /* float the event info next to the featured image, adjustable width?? */
+
+/* Featured image in widget styles */
+#plaatjetonen img {width:100px;}  /* smaller image in widget list */
+
+
+#plaatje-agenda { float:left;margin: 0 0 0 3.8em;display:in-line;}
+#plaatjetonen #plaatje-agenda { float:left;margin: 0 0 0 0em;display:in-line;}
+#plaatjetonen .event-info {width:30%;}
+#plaatjetonen .multi-day {margin: 0 0 0 1.4em !important;}
+#plaatjetonen .single-day {margin: 0 0 0 1.4em !important;}
+#plaatjetonen .event-info {  float: left;display:in-line;width:40%;}
+#plaatjetonen li.event { padding: 0px 0px 20px 0px; }
+#plaatjetonen ul.event-list-view, ul.single-event-view {
+list-style: none !important;
+margin: 0em 0 1.5em 0;
+padding: 0;
+}
+#plaatjetonen .event-title {
+margin-bottom:30px;
+}
+

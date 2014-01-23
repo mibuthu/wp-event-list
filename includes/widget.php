@@ -153,6 +153,7 @@ class EL_Widget extends WP_Widget {
 			echo $args['before_title'].$title.$args['after_title'];
 		}
 		$this->upgrade_widget($instance, true);
+		echo '<div id="plaatjetonen">';
 		$linked_page_is_set = 0 < strlen( $instance['url_to_page'] );
 		$linked_page_id_is_set = 0 < (int)$instance['sc_id_for_url'];
 		$shortcode = '[event-list show_filterbar=false';
@@ -178,6 +179,7 @@ class EL_Widget extends WP_Widget {
 			echo '<div style="clear:both"><a title="'.$instance['link_to_page_caption'].'" href="'.$instance[ 'url_to_page'].'">'.$instance['link_to_page_caption'].'</a></div>';
 		}
 		echo $args['after_widget'];
+		echo '</div>';
 	}
 
 	/**
