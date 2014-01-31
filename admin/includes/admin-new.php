@@ -78,34 +78,37 @@ class EL_Admin_New {
 				<div id="post-body" class="metabox-holder columns-2">
 				<div id="post-body-content">';
 		if(true === $edit) {
-			$out .= '<input type="hidden" name="action" value="edited" />';
-			$out .= '<input type="hidden" name="id" value="'.$_GET['id'].'" />';
+			$out .= '
+					<input type="hidden" name="action" value="edited" />
+					<input type="hidden" name="id" value="'.$_GET['id'].'" />';
 		}
 		else {
-			$out .= '<input type="hidden" name="action" value="new" />';
+			$out .= '
+					<input type="hidden" name="action" value="new" />';
 		}
-		$out .= '<table class="form-table">
-			<tr>
-				<th><label>Event Title (required)</label></th>
-				<td><input type="text" class="text form-required" name="title" id="title" value="'.str_replace('"', '&quot;', isset($event->title) ? $event->title : '').'" /></td>
-			</tr>
-			<tr>
-				<th><label>Event Date (required)</label></th>
-				<td><input type="text" class="text datepicker form-required" name="start_date" id="start_date" value="'.date_i18n(__('Y/m/d'), $start_date).'" />
-						<span id="end_date_area"> - <input type="text" class="text datepicker" name="end_date" id="end_date" value="'.date_i18n(__('Y/m/d'), $end_date).'" /></span>
-						<label><input type="checkbox" name="multiday" id="multiday" value="1" /> Multi-Day Event</label></td>
-			</tr>
-			<tr>
-				<th><label>Event Time</label></th>
-				<td><input type="text" class="text" name="time" id="time" value="'.str_replace('"', '&quot;', isset($event->time) ? $event->time : '').'" /></td>
-			</tr>
-			<tr>
-				<th><label>Event Location</label></th>
-				<td><input type="text" class="text" name="location" id="location" value="'.str_replace('"', '&quot;', isset($event->location) ? $event->location : '').'" /></td>
-			</tr>
-			<tr>
-				<th><label>Event Details</label></th>
-				<td>';
+		$out .= '
+					<table class="form-table">
+					<tr>
+						<th><label>Event Title (required)</label></th>
+						<td><input type="text" class="text form-required" name="title" id="title" value="'.str_replace('"', '&quot;', isset($event->title) ? $event->title : '').'" /></td>
+					</tr>
+					<tr>
+						<th><label>Event Date (required)</label></th>
+						<td><input type="text" class="text datepicker form-required" name="start_date" id="start_date" value="'.date_i18n($dateformat, $start_date).'" />
+							<span id="end_date_area"> - <input type="text" class="text datepicker" name="end_date" id="end_date" value="'.date_i18n($dateformat, $end_date).'" /></span>
+							<label><input type="checkbox" name="multiday" id="multiday" value="1" /> Multi-Day Event</label></td>
+					</tr>
+					<tr>
+						<th><label>Event Time</label></th>
+						<td><input type="text" class="text" name="time" id="time" value="'.str_replace('"', '&quot;', isset($event->time) ? $event->time : '').'" /></td>
+					</tr>
+					<tr>
+						<th><label>Event Location</label></th>
+						<td><input type="text" class="text" name="location" id="location" value="'.str_replace('"', '&quot;', isset($event->location) ? $event->location : '').'" /></td>
+					</tr>
+					<tr>
+						<th><label>Event Details</label></th>
+						<td>';
 		$editor_settings = array('media_buttons' => true,
 		                         'wpautop' => false,
 		                         'textarea_rows' => 20);
@@ -113,9 +116,10 @@ class EL_Admin_New {
 			wp_editor(isset($event->details) ? $event->details : '', 'details', $editor_settings);
 			$out .= ob_get_contents();
 		ob_end_clean();
-		$out .= '<p class="note">NOTE: In the text editor, use RETURN to start a new paragraph - use SHIFT-RETURN to start a new line.</p></td>
-			</tr>
-			</table>';
+		$out .= '
+						<p class="note">NOTE: In the text editor, use RETURN to start a new paragraph - use SHIFT-RETURN to start a new line.</p></td>
+					</tr>
+					</table>';
 		$out .= '
 				</div>
 				<div id="postbox-container-1" class="postbox-container">
