@@ -3,8 +3,8 @@ Contributors: mibuthu
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W54LNZMWF9KW2
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, filter, admin, attribute, widget, sidebar, feed, rss
 Requires at least: 3.3
-Tested up to: 3.8
-Stable tag: 0.6.1
+Tested up to: 3.8.1
+Stable tag: 0.6.2
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -71,7 +71,14 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 
 == Changelog ==
 
-= 0.6.1 (2013-01-03) =
+= 0.6.2 (2014-02-01) =
+* complete rewrite of date handling in new/edit event form and date validation
+* added option to change date format in event new/edit form
+* fixed a css issue in the filterbar hlist when list-style-image is used in the theme
+* some css fixes in admin settings page
+* some html output code style fixes
+
+= 0.6.1 (2014-01-03) =
 * fixed redirect issue in admin event table
 * fixed a bug in filterbar javascript
 * fixed a problem with wrong format of deatails in admin event table
