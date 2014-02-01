@@ -35,13 +35,13 @@ class EL_Admin_Main {
 				// real actions (redirect when finished)
 				case 'new':
 					if(!empty($_POST)) {
-						$id = $this->db->update_event($_POST, __('Y/m/d'));
+						$id = $this->update_event($_POST);
 						$error = !$id;
 						$this->redirect('added', $error, array('title' => urlencode($_POST['title']), 'id' => $id));
 					}
 				case 'edited':
 					if(!empty($_POST)) {
-						$error = !$this->db->update_event($_POST, __('Y/m/d'));
+						$error = !$this->update_event($_POST);
 						$this->redirect('modified', $error, array('title' => urlencode($_POST['title']), 'id' => $_POST['id']));
 					}
 					break;
@@ -186,6 +186,18 @@ class EL_Admin_Main {
 	private function show_error_message($text) {
 		echo '
 			<div id="message" class="error below-h2"><p><strong>'.$text.'</strong></p></div>';
+	}
+
+	private function update_event() {
+		$eventdata = $_POST;
+		// provide correct sql start- and end-date
+		if(isset($eventdata['sql_start_date']) && '' != $eventdata['sql_start_date']) {
+			$eventdata['start_date'] = $eventdata['sql_start_date'];
+		}
+		if(isset($eventdata['sql_end_date']) && '' != $eventdata['sql_end_date']) {
+			$eventdata['end_date'] = $eventdata['sql_end_date'];
+		}
+		return $this->db->update_event($eventdata);
 	}
 
 	private function redirect($action=false, $error=false, $query_args=array()) {
