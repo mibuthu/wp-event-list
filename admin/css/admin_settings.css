@@ -1,0 +1,8 @@
+.el-settings {
+	padding: 0 10px;
+}
+
+.form-table th, .form-table td {
+	vertical-align: top;
+	padding: 15px 10px 15px 0;
+};

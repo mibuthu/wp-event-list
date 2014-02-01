@@ -58,7 +58,7 @@ class EL_Admin {
 
 		// Settings subpage
 		$page = add_submenu_page('el_admin_main', 'Event List Settings', 'Settings', 'manage_options', 'el_admin_settings', array(&$this, 'show_settings_page'));
-		//add_action('admin_print_scripts-'.$page, array(&$this, 'embed_settings_scripts'));
+		add_action('admin_print_scripts-'.$page, array(&$this, 'embed_settings_scripts'));
 
 		// About subpage
 		$page = add_submenu_page('el_admin_main', 'About Event List', 'About', 'edit_posts', 'el_admin_about', array(&$this, 'show_about_page'));
@@ -116,12 +116,12 @@ class EL_Admin {
 		require_once(EL_PATH.'admin/includes/admin-settings.php');
 		EL_Admin_Settings::get_instance()->show_settings();
 	}
-/*
+
 	public function embed_settings_scripts() {
 		require_once(EL_PATH.'admin/includes/admin-settings.php');
 		EL_Admin_Settings::get_instance()->embed_settings_scripts();
 	}
-*/
+
 	public function show_about_page() {
 		require_once(EL_PATH.'admin/includes/admin-about.php');
 		EL_Admin_About::get_instance()->show_about();
