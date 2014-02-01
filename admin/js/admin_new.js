@@ -25,7 +25,10 @@ jQuery(document).ready(function($) {
 		buttonImage: conf.el_url + "admin/images/calendar-icon.png",
 		buttonImageOnly: true,
 		constrainInput: true,
+		altField: "#sql_start_date",
+		altFormat: "yy-mm-dd",
 		onClose: function(selectedDate) {
+			// set minDate for end_date picker
 			minDate = $.datepicker.parseDate( conf.el_date_format, selectedDate );
 			minDate.setDate(minDate.getDate()+1);
 			$("#end_date").datepicker("option", "minDate", minDate);
@@ -40,7 +43,9 @@ jQuery(document).ready(function($) {
 		showOn: "both",
 		buttonImage: conf.el_url + "admin/images/calendar-icon.png",
 		buttonImageOnly: true,
-		constrainInput: true
+		constrainInput: true,
+		altField: "#sql_end_date",
+		altFormat: "yy-mm-dd"
 	});
 
 	// Toogle end_date visibility and insert the correct date
@@ -54,8 +59,11 @@ jQuery(document).ready(function($) {
 		}
 		else {
 			$("#end_date_area").fadeOut();
-			$("#end_date").datepicker("option", "minDate", null);
 		}
 		$("#end_date").datepicker("setDate", enddate);
 	});
+
+	// Initialize Dates
+	$("#start_date").datepicker("setDate", $.datepicker.parseDate('yy-mm-dd', $("#start_date").val()));
+	$("#end_date").datepicker("setDate", $.datepicker.parseDate('yy-mm-dd', $("#end_date").val()));
 });

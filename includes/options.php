@@ -61,6 +61,15 @@ class EL_Options {
 			                                'desc'    => __('With this option you can display the date only once per day if multiple events are available on the same day.<br />
 			                                                 If this option is enabled the events are ordered in a different way (end date before start time) to allow using the same date for as much events as possible.')),
 
+			'el_edit_dateformat'   => array('section' => 'admin',
+			                                'type'    => 'text',
+			                                'std_val' => '',
+			                                'label'   => __('Date format in edit form'),
+			                                'caption' => __('Specific date format in new/edit event form'),
+			                                'desc'    => __('This option sets a specific date format for the event date fields in the new/edit event form.<br />
+			                                                 The standard is an empty string to use the wordpress standard setting.<br />
+			                                                 All available options to specify the format can be found <a href="http://php.net/manual/en/function.date.php" target="_blank">here</a>')),
+
 			'el_enable_feed'       => array('section' => 'feed',
 			                                'type'    => 'checkbox',
 			                                'std_val' => '',

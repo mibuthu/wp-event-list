@@ -38,7 +38,8 @@ class EL_Admin_Settings {
 		}
 
 		// normal output
-		$out.= '<div class="wrap">
+		$out.= '
+				<div class="wrap">
 				<div id="icon-edit-pages" class="icon32"><br /></div><h2>Event List Settings</h2>';
 		if(!isset($_GET['tab'])) {
 			$_GET['tab'] = 'general';
@@ -58,6 +59,7 @@ class EL_Admin_Settings {
 */
 	private function show_tabs($current = 'category') {
 		$tabs = array('general' => 'General',
+		              'admin'   => 'Admin Page Settings',
 		              'feed'    => 'Feed Settings');
 		$out = '<h3 class="nav-tab-wrapper">';
 		foreach($tabs as $tab => $name){
@@ -77,12 +79,12 @@ class EL_Admin_Settings {
 		$out .= ob_get_contents();
 		ob_end_clean();
 		$out .= '
-				<div style="padding:0 10px">
+				<div class="el-settings">
 				<table class="form-table">';
 		foreach($this->options->options as $oname => $o) {
 			if($o['section'] == $section) {
 				$out .= '
-						<tr style="vertical-align:top;">
+						<tr>
 							<th>';
 				if($o['label'] != '') {
 					$out .= '<label for="'.$oname.'">'.$o['label'].':</label>';
@@ -119,6 +121,10 @@ class EL_Admin_Settings {
 		$out .='
 		</form>';
 		return $out;
+	}
+
+	public function embed_settings_scripts() {
+		wp_enqueue_style('eventlist_admin_settings', EL_URL.'admin/css/admin_settings.css');
 	}
 }
 ?>

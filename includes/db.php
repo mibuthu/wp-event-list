@@ -81,12 +81,12 @@ class EL_Db {
 		}
 		$date = $wpdb->get_results($sql, ARRAY_A);
 		if( !empty( $date ) ) {
-			$date = $this->extract_date( $date[0][$search_date],'Y');
+			$datestring = substr($date[0][$search_date], 0, 4);
 		}
 		else {
-			$date = date('Y', current_time('timestamp'));
+			$datestring = date('Y', current_time('timestamp'));
 		}
-		return $date;
+		return $datestring;
 	}
 
 	public function get_num_events() {
@@ -95,7 +95,7 @@ class EL_Db {
 		return $wpdb->get_var($sql);
 	}
 
-	public function update_event( $event_data, $dateformat=NULL ) {
+	public function update_event($event_data) {
 		global $wpdb;
 		// prepare and validate sqldata
 		$sqldata = array();
@@ -107,17 +107,15 @@ class EL_Db {
 			$sqldata['pub_date'] = isset($event_data['pub_date']) ? $event_data['pub_date'] : date("Y-m-d H:i:s", current_time('timestamp'));
 		}
 		//start_date
-		if( !isset( $event_data['start_date']) ) { return false; }
-		$start_timestamp = 0;
-		$sqldata['start_date'] = $this->extract_date( $event_data['start_date'], "Y-m-d", $dateformat, $start_timestamp );
-		if( false === $sqldata['start_date'] ) { return false; }
+		if(!isset( $event_data['start_date'])) { return false; }
+		$sqldata['start_date'] = $this->validate_sql_date($event_data['start_date']);
+		if(false === $sqldata['start_date']) { return false; }
 		//end_date
-		if( !isset( $event_data['end_date']) ) { return false; }
-		if( isset( $event_data['multiday'] ) && "1" === $event_data['multiday'] ) {
-			$end_timestamp = 0;
-			$sqldata['end_date'] = $this->extract_date( $event_data['end_date'], "Y-m-d", $dateformat, $end_timestamp );
-			if( false === $sqldata['end_date'] ) { $sqldata['end_date'] = $sqldata['start_date']; }
-			elseif( $end_timestamp < $start_timestamp )	 { $sqldata['end_date'] = $sqldata['start_date']; }
+		if(isset($event_data['multiday']) && "1" === $event_data['multiday']) {
+			if(!isset($event_data['end_date'])) { $sqldata['end_date'] = $sqldata['start_date']; }
+			$sqldata['end_date'] = $this->validate_sql_date($event_data['end_date']);
+			if(false === $sqldata['end_date']) { $sqldata['end_date'] = $sqldata['start_date']; }
+			elseif(new DateTime($sqldata['end_date']) < new DateTime($sqldata['start_date'])) { $sqldata['end_date'] = $sqldata['start_date']; }
 		}
 		else {
 			$sqldata['end_date'] = $sqldata['start_date'];
@@ -206,27 +204,12 @@ class EL_Db {
 		return $wpdb->get_var( $sql );
 	}
 
-	private function extract_date( $datestring, $ret_format, $dateformat=NULL, &$ret_timestamp=NULL, &$ret_datearray=NULL ) {
-		if( NULL === $dateformat ) {
-			$date_array = date_parse( $datestring );
+	private function validate_sql_date($datestring) {
+		$d = DateTime::createFromFormat('Y-m-d', $datestring);
+		if($d && $d->format('Y-m-d') == $datestring) {
+			return $datestring;
 		}
-		else {
-			$date_array = date_parse_from_format( $dateformat, $datestring );
-		}
-		if( !empty( $date_array['errors']) ) {
-			return false;
-		}
-		if( false === checkdate( $date_array['month'], $date_array['day'], $date_array['year'] ) ) {
-			return false;
-		}
-		$timestamp = mktime( 0, 0, 0, $date_array['month'], $date_array['day'], $date_array['year'] );
-		if( isset( $ret_timestamp ) ) {
-			$ret_timestamp = $timestamp;
-		}
-		if( isset( $ret_datearray ) ) {
-			$ret_datearray = $date_array;
-		}
-		return date( $ret_format, $timestamp );
+		return false;
 	}
 
 	private function get_sql_filter_string($date_filter=null, $cat_filter=null) {
@@ -361,77 +344,6 @@ class EL_Db {
 		else {
 			return $html;
 		}
-	}
-}
-
-
-// Define "date_parse_from_format" (This is required for php versions < 5.3)
-if(!function_exists('date_parse_from_format')){
-	function date_parse_from_format($format, $date) {
-		// reverse engineer date formats
-		$keys = array(
-			'Y' => array('year', '\d{4}'),              // A full numeric representation of a year, 4 digits
-			'y' => array('year', '\d{2}'),              // A two digit representation of a year
-			'm' => array('month', '\d{2}'),             // Numeric representation of a month, with leading zeros
-			'n' => array('month', '\d{1,2}'),           // Numeric representation of a month, without leading zeros
-			'M' => array('month', '[A-Z][a-z]{3}'),     // A short textual representation of a month, three letters
-			'F' => array('month', '[A-Z][a-z]{2,8}'),   // A full textual representation of a month, such as January or March
-			'd' => array('day', '\d{2}'),               // Day of the month, 2 digits with leading zeros
-			'j' => array('day', '\d{1,2}'),             // Day of the month without leading zeros
-			'D' => array('day', '[A-Z][a-z]{2}'),       // A textual representation of a day, three letters
-			'l' => array('day', '[A-Z][a-z]{6,9}'),     // A full textual representation of the day of the week
-			'u' => array('hour', '\d{1,6}'),            // Microsecondes
-			'h' => array('hour', '\d{2}'),              // 12-hour format of an hour with leading zeros
-			'H' => array('hour', '\d{2}'),              // 24-hour format of an hour with leading zeros
-			'g' => array('hour', '\d{1,2}'),            // 12-hour format of an hour without leading zeros
-			'G' => array('hour', '\d{1,2}'),            // 24-hour format of an hour without leading zeros
-			'i' => array('minute', '\d{2}'),            // Minutes with leading zeros
-			's' => array('second', '\d{2}')             // Seconds, with leading zeros
-		);
-		// convert format string to regex
-		$regex = '';
-		$chars = str_split($format);
-		foreach($chars as $n => $char) {
-			$lastChar = isset($chars[$n-1]) ? $chars[$n-1] : '';
-			$skipCurrent = '\\' == $lastChar;
-			if(!$skipCurrent && isset($keys[$char])) {
-				$regex .= '(?P<'.$keys[$char][0].'>'.$keys[$char][1].')';
-			}
-			else if('\\' == $char) {
-				$regex .= $char;
-			}
-			else {
-				$regex .= preg_quote($char);
-			}
-		}
-		// create array
-		$dt = array();
-		$dt['error_count'] = 0;
-		$dt['errors'] = array();
-		// now try to match it
-		if(preg_match('#^'.$regex.'$#', $date, $dt)){
-			foreach($dt as $k => $v) {
-				if(is_int($k)){
-					unset($dt[$k]);
-				}
-			}
-			if(!checkdate($dt['month'], $dt['day'], $dt['year'])) {
-				$dt['error_count'] = 1;
-				$dt['errors'][] = 'ERROR';
-			}
-		}
-		else {
-			$dt['error_count'] = 1;
-			$dt['errors'][] = 'ERROR';
-		}
-		$dt['fraction'] = '';
-		$dt['warning_count'] = 0;
-		$dt['warnings'] = array();
-		$dt['is_localtime'] = 0;
-		$dt['zone_type'] = 0;
-		$dt['zone'] = 0;
-		$dt['is_dst'] = '';
-		return $dt;
 	}
 }
 ?>
