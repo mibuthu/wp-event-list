@@ -58,6 +58,7 @@ class EL_Admin_Settings {
 */
 	private function show_tabs($current = 'category') {
 		$tabs = array('general' => 'General',
+		              'admin'   => 'Admin Page Settings',
 		              'feed'    => 'Feed Settings');
 		$out = '<h3 class="nav-tab-wrapper">';
 		foreach($tabs as $tab => $name){

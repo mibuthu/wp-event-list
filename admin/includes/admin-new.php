@@ -4,12 +4,14 @@ if(!defined('ABSPATH')) {
 }
 
 require_once(EL_PATH.'includes/db.php');
+require_once(EL_PATH.'includes/options.php');
 require_once(EL_PATH.'includes/categories.php');
 
 // This class handles all data for the admin new event page
 class EL_Admin_New {
 	private static $instance;
 	private $db;
+	private $options;
 	private $categories;
 
 	public static function &get_instance() {
@@ -23,6 +25,7 @@ class EL_Admin_New {
 
 	private function __construct() {
 		$this->db = &EL_Db::get_instance();
+		$this->options = &EL_Options::get_instance();
 		$this->categories = &EL_Categories::get_instance();
 	}
 
@@ -45,6 +48,7 @@ class EL_Admin_New {
 	}
 
 	public function edit_event() {
+		$dateformat = $this->get_event_dateformat();
 		$edit = false;
 		if(isset($_GET['id']) && is_numeric($_GET['id'])) {
 			// existing event
@@ -64,7 +68,7 @@ class EL_Admin_New {
 
 		// Add required data for javascript in a hidden field
 		$json = json_encode(array('el_url'         => EL_URL,
-		                          'el_date_format' => $this->datepicker_format(__('Y/m/d'))));
+		                          'el_date_format' => $this->datepicker_format($dateformat)));
 		$out = '
 				<form method="POST" action="'.add_query_arg('noheader', 'true', '?page=el_admin_main').'">';
 		$out .= "
@@ -94,9 +98,12 @@ class EL_Admin_New {
 					</tr>
 					<tr>
 						<th><label>Event Date (required)</label></th>
-						<td><input type="text" class="text datepicker form-required" name="start_date" id="start_date" value="'.date_i18n($dateformat, $start_date).'" />
-							<span id="end_date_area"> - <input type="text" class="text datepicker" name="end_date" id="end_date" value="'.date_i18n($dateformat, $end_date).'" /></span>
-							<label><input type="checkbox" name="multiday" id="multiday" value="1" /> Multi-Day Event</label></td>
+						<td><input type="text" class="text datepicker form-required" name="start_date" id="start_date" value="'.date('Y-m-d', $start_date).'" />
+							<span id="end_date_area"> - <input type="text" class="text datepicker" name="end_date" id="end_date" value="'.date('Y-m-d', $end_date).'" /></span>
+							<label><input type="checkbox" name="multiday" id="multiday" value="1" /> Multi-Day Event</label>
+							<input type="hidden" id="sql_start_date" name="sql_start_date" value="" />
+							<input type="hidden" id="sql_end_date" name="sql_end_date" value="" />
+						</td>
 					</tr>
 					<tr>
 						<th><label>Event Time</label></th>
@@ -207,6 +214,15 @@ class EL_Admin_New {
 				</div>
 				</div>';
 		echo $out;
+	}
+
+	private function get_event_dateformat() {
+		if('' == $this->options->get('el_edit_dateformat')) {
+			return __('Y/m/d');
+		}
+		else {
+			return $this->options->get('el_edit_dateformat');
+		}
 	}
 
 	/**
