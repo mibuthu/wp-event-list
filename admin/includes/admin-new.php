@@ -13,6 +13,8 @@ class EL_Admin_New {
 	private $db;
 	private $options;
 	private $categories;
+	private $is_new;
+	private $is_duplicate;
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -27,6 +29,8 @@ class EL_Admin_New {
 		$this->db = &EL_Db::get_instance();
 		$this->options = &EL_Options::get_instance();
 		$this->categories = &EL_Categories::get_instance();
+		$this->is_new = !(isset($_GET['action']) && ('edit' === $_GET['action'] || 'added' === $_GET['action'] || 'modified' === $_GET['action']));
+		$this->is_duplicate = $this->is_new && isset($_GET['id']) && is_numeric($_GET['id']);
 	}
 
 	public function show_new() {
@@ -49,23 +53,17 @@ class EL_Admin_New {
 
 	public function edit_event() {
 		$dateformat = $this->get_event_dateformat();
-		$edit = false;
-		if(isset($_GET['id']) && is_numeric($_GET['id'])) {
-			// existing event
-			$event = $this->db->get_event($_GET['id']);
-			if(isset($_GET['action']) && $_GET['action'] === 'edit') {
-				// editing of an existing event, if not it would be copy of an existing event
-				$edit = true;
-			}
-			$start_date = strtotime($event->start_date);
-			$end_date = strtotime($event->end_date);
-		}
-		else {
-			//new event
+		if($this->is_new && !$this->is_duplicate) {
+			// set next day as date
 			$start_date = current_time('timestamp')+86400; // next day (86400 seconds = 1*24*60*60 = 1 day);
 			$end_date = $start_date;
 		}
-
+		else {
+			// set event data and existing date
+			$event = $this->db->get_event($_GET['id']);
+			$start_date = strtotime($event->start_date);
+			$end_date = strtotime($event->end_date);
+		}
 		// Add required data for javascript in a hidden field
 		$json = json_encode(array('el_url'         => EL_URL,
 		                          'el_date_format' => $this->datepicker_format($dateformat)));
@@ -81,14 +79,14 @@ class EL_Admin_New {
 				<div id="poststuff">
 				<div id="post-body" class="metabox-holder columns-2">
 				<div id="post-body-content">';
-		if(true === $edit) {
+		if($this->is_new) {
 			$out .= '
-					<input type="hidden" name="action" value="edited" />
-					<input type="hidden" name="id" value="'.$_GET['id'].'" />';
+					<input type="hidden" name="action" value="new" />';
 		}
 		else {
 			$out .= '
-					<input type="hidden" name="action" value="new" />';
+					<input type="hidden" name="action" value="edited" />
+					<input type="hidden" name="id" value="'.$_GET['id'].'" />';
 		}
 		$out .= '
 					<table class="form-table">
@@ -148,8 +146,7 @@ class EL_Admin_New {
 	}
 
 	public function render_publish_metabox() {
-		$edit = (isset($_GET['id']) && is_numeric($_GET['id']) && isset($_GET['action']) && 'edit' === $_GET['action']) ? true : false;
-		$button_text = $edit ? __('Update') : __('Publish');
+		$button_text = $this->is_new ? __('Publish') : __('Update');
 		$out = '<div class="submitbox">
 				<div id="delete-action"><a href="?page=el_admin_main" class="submitdelete deletion">'.__('Cancel').'</a></div>
 				<div id="publishing-action"><input type="submit" class="button button-primary button-large" name="publish" value="'.$button_text.'" id="publish"></div>
