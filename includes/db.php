@@ -205,7 +205,7 @@ class EL_Db {
 	}
 
 	private function validate_sql_date($datestring) {
-		$d = DateTime::createFromFormat('Y-m-d', $datestring);
+		$d = date_create_from_format('Y-m-d', $datestring);
 		if($d && $d->format('Y-m-d') == $datestring) {
 			return $datestring;
 		}
@@ -344,6 +344,17 @@ class EL_Db {
 		else {
 			return $html;
 		}
+	}
+}
+
+/* create date_create_from_format (DateTime::createFromFormat) alternative for PHP 5.2
+ *
+ * This function is only a small implementation of this function with reduced functionality to handle sql dates (format: 2014-01-31)
+ */
+if( !function_exists("date_create_from_format") ) {
+	function date_create_from_format($dformat, $dvalue) {
+		$d = new DateTime($dvalue);
+		return $d;
 	}
 }
 ?>
