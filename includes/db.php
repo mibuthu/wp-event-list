@@ -351,7 +351,7 @@ class EL_Db {
  *
  * This function is only a small implementation of this function with reduced functionality to handle sql dates (format: 2014-01-31)
  */
-if( !function_exists("date_create_from_format") ) {
+if(!function_exists("date_create_from_format")) {
 	function date_create_from_format($dformat, $dvalue) {
 		$d = new DateTime($dvalue);
 		return $d;
