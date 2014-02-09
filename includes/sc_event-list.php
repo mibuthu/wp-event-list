@@ -296,7 +296,6 @@ class SC_Event_List {
 
 	private function html_event( &$event, &$a, $single_day_only=false ) {
 		static $last_event_startdate=null, $last_event_enddate=null;
-		$max_length = is_numeric( $a['event_id'] ) ? 0 : 999999;
 		$out = '
 			 	<li class="event">';
 		if( '1' !== $this->options->get( 'el_date_once_per_day' ) || $last_event_startdate !== $event->start_date || $last_event_enddate !== $event->end_date ) {
@@ -313,8 +312,7 @@ class SC_Event_List {
 		$out .= '">';
 
 		$out .= '<div class="event-title"><h3>';
-
-		$title = esc_attr($this->db->truncate(min($max_length, $a['title_length']), $event->title));
+		$title = esc_attr($this->db->truncate($event->title, $a['title_length'], $this->single_event));
 		if( $this->is_visible( $a['link_to_event'] ) ) {
 			$out .= '<a href="'.esc_html(add_query_arg('event_id'.$a['sc_id_for_url'], $event->id, $this->get_url($a))).'">'.$title.'</a>';
 		}
@@ -331,13 +329,13 @@ class SC_Event_List {
 			$out .= '<span class="event-time">'.esc_attr($event->time).'</span>';
 		}
 		if( $this->is_visible( $a['show_location'] ) ) {
-			$out .= '<span class="event-location">'.esc_attr($this->db->truncate(min($max_length, $a['location_length']), $event->location)).'</span>';
+			$out .= '<span class="event-location">'.esc_attr($this->db->truncate($event->location, $a['location_length'], $this->single_event)).'</span>';
 		}
 		if( $this->is_visible( $a['show_cat'] ) ) {
 			$out .= '<div class="event-cat">'.esc_attr($this->categories->get_category_string($event->categories)).'</div>';
 		}
 		if( $this->is_visible( $a['show_details'] ) ) {
-			$out .= '<div class="event-details">'.$this->db->truncate( min( $max_length, $a['details_length'] ), do_shortcode( $event->details ) ).'</div>';
+			$out .= '<div class="event-details">'.$this->db->truncate(do_shortcode($event->details), $a['details_length'], $this->single_event).'</div>';
 		}
 		$out .= '</div>
 				</li>';

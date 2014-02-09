@@ -276,25 +276,36 @@ class EL_Db {
 		return $sql_filter_string;
 	}
 
-	/** ************************************************************************
+	/** ************************************************************************************************************
 	 * Function to truncate and shorten text
 	 *
-	 * @param int $max_length The length to which the text should be shortened
 	 * @param string $html The html code which should be shortened
-	 ***************************************************************************/
-	public function truncate($max_length, $html) {
-		if($max_length > 0 && strlen($html) > $max_length) {
+	 * @param int $length The length to which the text should be shortened
+	 * @param bool skip If this value is true the truncate will be skipped (nothing will be done)
+	 * @param bool perserve_tags Specifies if html tags should be preserved or if only the text should be shortened
+	 ***************************************************************************************************************/
+	public function truncate($html, $length, $skip=false, $preserve_tags=true) {
+		if(0 >= $length || strlen($html) > $length || $skip) {
+			// do nothing
+			return $html;
+		}
+		elseif(!$preserve_tags) {
+			// only shorten text
+			return substr($html, 0, $length);
+		}
+		else {
+			// truncate with preserving html tags
 			$printedLength = 0;
 			$position = 0;
 			$tags = array();
 			$out = '';
-			while($printedLength < $max_length && preg_match('{</?([a-z]+)[^>]*>|&#?[a-zA-Z0-9]+;}', $html, $match, PREG_OFFSET_CAPTURE, $position)) {
+			while($printedLength < $length && preg_match('{</?([a-z]+)[^>]*>|&#?[a-zA-Z0-9]+;}', $html, $match, PREG_OFFSET_CAPTURE, $position)) {
 				list($tag, $tagPosition) = $match[0];
 				// Print text leading up to the tag
 				$str = substr($html, $position, $tagPosition - $position);
-				if($printedLength + strlen($str) > $max_length) {
-					$out .= substr($str, 0, $max_length - $printedLength);
-					$printedLength = $max_length;
+				if($printedLength + strlen($str) > $length) {
+					$out .= substr($str, 0, $length - $printedLength);
+					$printedLength = $length;
 					break;
 				}
 				$out .= $str;
@@ -327,8 +338,8 @@ class EL_Db {
 				$position = $tagPosition + strlen($tag);
 			}
 			// Print any remaining text
-			if($printedLength < $max_length && $position < strlen($html)) {
-				$out .= substr($html, $position, $max_length - $printedLength);
+			if($printedLength < $length && $position < strlen($html)) {
+				$out .= substr($html, $position, $length - $printedLength);
 			}
 			// Print "..." if the html is not complete
 			if(strlen($html) != $position) {
@@ -339,9 +350,6 @@ class EL_Db {
 				$out .= '</'.array_pop($tags).'>';
 			}
 			return $out;
-		}
-		else {
-			return $html;
 		}
 	}
 }
