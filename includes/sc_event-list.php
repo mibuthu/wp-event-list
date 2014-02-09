@@ -296,9 +296,9 @@ class SC_Event_List {
 
 	private function html_event( &$event, &$a, $single_day_only=false ) {
 		static $last_event_startdate=null, $last_event_enddate=null;
-		$max_length = is_numeric( $a['event_id'] ) ? 0 : 999999;
 		$out = '
 			 	<li class="event">';
+		// event date
 		if( '1' !== $this->options->get( 'el_date_once_per_day' ) || $last_event_startdate !== $event->start_date || $last_event_enddate !== $event->end_date ) {
 			$out .= $this->html_fulldate( $event->start_date, $event->end_date, $single_day_only );
 		}
@@ -311,10 +311,9 @@ class SC_Event_List {
 			$out .= ' multi-day';
 		}
 		$out .= '">';
-
+		// event title
 		$out .= '<div class="event-title"><h3>';
-
-		$title = esc_attr($this->db->truncate(min($max_length, $a['title_length']), $event->title));
+		$title = esc_attr($this->db->truncate($event->title, $a['title_length'], $this->single_event));
 		if( $this->is_visible( $a['link_to_event'] ) ) {
 			$out .= '<a href="'.esc_html(add_query_arg('event_id'.$a['sc_id_for_url'], $event->id, $this->get_url($a))).'">'.$title.'</a>';
 		}
@@ -322,22 +321,34 @@ class SC_Event_List {
 			$out .= $title;
 		}
 		$out .= '</h3></div>';
-		if( $event->time != '' && $this->is_visible( $a['show_starttime'] ) ) {
+		// event time
+		if('' != $event->time && $this->is_visible($a['show_starttime'])) {
 			// set time format if a known format is available, else only show the text
-			$date_array = date_parse( $event->time );
-			if( empty( $date_array['errors']) && is_numeric( $date_array['hour'] ) && is_numeric( $date_array['minute'] ) ) {
-				$event->time = mysql2date( get_option( 'time_format' ), $event->time );
+			$date_array = date_parse($event->time);
+			$time = $event->time;
+			if(empty($date_array['errors']) && is_numeric($date_array['hour']) && is_numeric($date_array['minute'])) {
+				$time = mysql2date(get_option('time_format'), $event->time);
 			}
-			$out .= '<span class="event-time">'.esc_attr($event->time).'</span>';
+			if('' == $this->options->get('el_html_tags_in_time')) {
+				$time = esc_attr($time);
+			}
+			$out .= '<span class="event-time">'.$time.'</span>';
 		}
-		if( $this->is_visible( $a['show_location'] ) ) {
-			$out .= '<span class="event-location">'.esc_attr($this->db->truncate(min($max_length, $a['location_length']), $event->location)).'</span>';
+		// event location
+		if('' != $event->location && $this->is_visible($a['show_location'])) {
+			if('' == $this->options->get('el_html_tags_in_loc')) {
+				$location = esc_attr($this->db->truncate($event->location, $a['location_length'], $this->single_event, false));
+			}
+			else {
+				$location = $this->db->truncate($event->location, $a['location_length'], $this->single_event);
+			}
+			$out .= '<span class="event-location">'.$location.'</span>';
 		}
 		if( $this->is_visible( $a['show_cat'] ) ) {
 			$out .= '<div class="event-cat">'.esc_attr($this->categories->get_category_string($event->categories)).'</div>';
 		}
 		if( $this->is_visible( $a['show_details'] ) ) {
-			$out .= '<div class="event-details">'.$this->db->truncate( min( $max_length, $a['details_length'] ), do_shortcode( $event->details ) ).'</div>';
+			$out .= '<div class="event-details">'.$this->db->truncate(do_shortcode($event->details), $a['details_length'], $this->single_event).'</div>';
 		}
 		$out .= '</div>
 				</li>';

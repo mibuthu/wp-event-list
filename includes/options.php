@@ -61,6 +61,20 @@ class EL_Options {
 			                                'desc'    => __('With this option you can display the date only once per day if multiple events are available on the same day.<br />
 			                                                 If this option is enabled the events are ordered in a different way (end date before start time) to allow using the same date for as much events as possible.')),
 
+			'el_html_tags_in_time' => array('section' => 'general',
+			                                'type'    => 'checkbox',
+			                                'std_val' => '',
+			                                'label'   => __('HTML tags'),
+			                                'caption' => __('Allow HTML tags in event time field'),
+			                                'desc'    => __('This option specifies if HTML tags are allowed in the event start time field.')),
+
+			'el_html_tags_in_loc' => array('section' => 'general',
+			                                'type'    => 'checkbox',
+			                                'std_val' => '',
+			                                'label'   => '', // only one label for all html tags settings
+			                                'caption' => __('Allow HTML tags in event location field'),
+			                                'desc'    => __('This option specifies if HTML tags are allowed in the event location field.')),
+
 			'el_edit_dateformat'   => array('section' => 'admin',
 			                                'type'    => 'text',
 			                                'std_val' => '',

@@ -45,7 +45,7 @@ class EL_Event_Table extends WP_List_Table {
 			case 'date' :
 				return $this->format_event_date($item->start_date, $item->end_date, $item->time);
 			case 'details' :
-				return '<div>'.$this->db->truncate(80, $item->details).'</div>';
+				return '<div>'.$this->db->truncate($item->details, 80).'</div>';
 			case 'pub_user' :
 				return get_userdata($item->pub_user)->user_login;
 			case 'pub_date' :
@@ -289,7 +289,7 @@ class EL_Event_Table extends WP_List_Table {
 				$start_time = mysql2date( get_option( 'time_format' ), $start_time );
 			}
 			$out .= '<br />
-				<span class="time">'.$start_time.'</span>';
+				<span class="time">'.esc_html($start_time).'</span>';
 		}
 		$out .= '</span>';
 		return $out;

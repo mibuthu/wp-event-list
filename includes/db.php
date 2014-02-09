@@ -122,7 +122,7 @@ class EL_Db {
 		}
 		//time
 		if( !isset( $event_data['time'] ) ) { $sqldata['time'] = ''; }
-		else { $sqldata['time'] = $event_data['time']; }
+		else { $sqldata['time'] = stripslashes($event_data['time']); }
 		//title
 		if( !isset( $event_data['title'] ) || $event_data['title'] === '' ) { return false; }
 		$sqldata['title'] = stripslashes( $event_data['title'] );
@@ -205,7 +205,7 @@ class EL_Db {
 	}
 
 	private function validate_sql_date($datestring) {
-		$d = DateTime::createFromFormat('Y-m-d', $datestring);
+		$d = date_create_from_format('Y-m-d', $datestring);
 		if($d && $d->format('Y-m-d') == $datestring) {
 			return $datestring;
 		}
@@ -276,30 +276,41 @@ class EL_Db {
 		return $sql_filter_string;
 	}
 
-	/** ************************************************************************
+	/** ************************************************************************************************************
 	 * Function to truncate and shorten text
 	 *
-	 * @param int $max_length The length to which the text should be shortened
 	 * @param string $html The html code which should be shortened
-	 ***************************************************************************/
-	public function truncate( $max_length, $html ) {
-		if( $max_length > 0 && strlen( $html ) > $max_length ) {
+	 * @param int $length The length to which the text should be shortened
+	 * @param bool skip If this value is true the truncate will be skipped (nothing will be done)
+	 * @param bool perserve_tags Specifies if html tags should be preserved or if only the text should be shortened
+	 ***************************************************************************************************************/
+	public function truncate($html, $length, $skip=false, $preserve_tags=true) {
+		if(0 >= $length || strlen($html) <= $length || $skip) {
+			// do nothing
+			return $html;
+		}
+		elseif(!$preserve_tags) {
+			// only shorten text
+			return substr($html, 0, $length);
+		}
+		else {
+			// truncate with preserving html tags
 			$printedLength = 0;
 			$position = 0;
 			$tags = array();
 			$out = '';
-			while ($printedLength < $max_length && preg_match('{</?([a-z]+)[^>]*>|&#?[a-zA-Z0-9]+;}', $html, $match, PREG_OFFSET_CAPTURE, $position)) {
+			while($printedLength < $length && preg_match('{</?([a-z]+)[^>]*>|&#?[a-zA-Z0-9]+;}', $html, $match, PREG_OFFSET_CAPTURE, $position)) {
 				list($tag, $tagPosition) = $match[0];
 				// Print text leading up to the tag
 				$str = substr($html, $position, $tagPosition - $position);
-				if ($printedLength + strlen($str) > $max_length) {
-					$out .= substr($str, 0, $max_length - $printedLength);
-					$printedLength = $max_length;
+				if($printedLength + strlen($str) > $length) {
+					$out .= substr($str, 0, $length - $printedLength);
+					$printedLength = $length;
 					break;
 				}
 				$out .= $str;
 				$printedLength += strlen($str);
-				if ($tag[0] == '&') {
+				if($tag[0] == '&') {
 					// Handle the entity
 					$out .= $tag;
 					$printedLength++;
@@ -307,14 +318,13 @@ class EL_Db {
 				else {
 					// Handle the tag
 					$tagName = $match[1][0];
-					if ($tag[1] == '/')
-					{
+					if($tag[1] == '/') {
 						// This is a closing tag
 						$openingTag = array_pop($tags);
 						assert($openingTag == $tagName); // check that tags are properly nested
 						$out .= $tag;
 					}
-					else if ($tag[strlen($tag) - 2] == '/') {
+					else if($tag[strlen($tag) - 2] == '/') {
 						// Self-closing tag
 						$out .= $tag;
 				}
@@ -328,22 +338,30 @@ class EL_Db {
 				$position = $tagPosition + strlen($tag);
 			}
 			// Print any remaining text
-			if ($printedLength < $max_length && $position < strlen($html)) {
-				$out .= substr($html, $position, $max_length - $printedLength);
+			if($printedLength < $length && $position < strlen($html)) {
+				$out .= substr($html, $position, $length - $printedLength);
 			}
 			// Print "..." if the html is not complete
-			if( strlen( $html) != $position ) {
-				$out .= ' ...';
+			if(strlen($html) != $position) {
+				$out .= ' &hellip;';
 			}
 			// Close any open tags.
-			while (!empty($tags)) {
+			while(!empty($tags)) {
 				$out .= '</'.array_pop($tags).'>';
 			}
 			return $out;
 		}
-		else {
-			return $html;
-		}
+	}
+}
+
+/* create date_create_from_format (DateTime::createFromFormat) alternative for PHP 5.2
+ *
+ * This function is only a small implementation of this function with reduced functionality to handle sql dates (format: 2014-01-31)
+ */
+if(!function_exists("date_create_from_format")) {
+	function date_create_from_format($dformat, $dvalue) {
+		$d = new DateTime($dvalue);
+		return $d;
 	}
 }
 ?>
