@@ -77,6 +77,7 @@ class Event_List {
 			require_once( EL_PATH.'includes/sc_event-list.php' );
 			$this->shortcode = SC_Event_List::get_instance();
 		}
+        $this->enqueue_styles();
 		return $this->shortcode->show_html( $atts );
 	}
 
@@ -88,11 +89,15 @@ class Event_List {
 
 	public function print_styles() {
 		global $post;
-		if(is_active_widget(null, null, 'event_list_widget') || strstr($post->post_content, '[event-list]')) {
-			wp_register_style('event-list', EL_URL.'includes/css/event-list.css');
-			wp_enqueue_style( 'event-list');
+		if(is_active_widget(null, null, 'event_list_widget')) {
+            $this->enqueue_styles();
 		}
 	}
+
+    private function enqueue_styles() {
+        wp_register_style('event-list', EL_URL.'includes/css/event-list.css');
+        wp_enqueue_style( 'event-list');
+    }
 } // end class linkview
 
 
