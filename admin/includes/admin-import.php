@@ -66,12 +66,24 @@ class EL_Admin_Import
 
             endif;
 
+            $returnValues = array();
             foreach ($reviewed_events as &$event) {
-                $this->db->update_event($event);
+                // convert date format to be SQL-friendly
+                $myDateTime = DateTime::createFromFormat('d.m.Y', $event['start_date']);
+                $event['start_date'] = $myDateTime->format('Y-m-d');
+                $myDateTime = DateTime::createFromFormat('d.m.Y', $event['end_date']);
+                $event['end_date'] = $myDateTime->format('Y-m-d');
+
+                $returnValues[] = $this->db->update_event($event);
             }
 
-            echo '<h3>Import successful!</h3>';
-            echo 'Please return to overview <a href="?page=el_admin_main">' . __('here') . '</a>!';
+            if (in_array(false, $returnValues)) :
+                echo '<h3>Import with errors!</h3>';
+                echo 'An error occurred during import! Please send your import file to <a href="mailto:' . get_option( 'admin_email' ) . '">the administrator</a> for analysis.';
+            else :
+                echo '<h3>Import successful!</h3>';
+                echo 'Please return to overview <a href="?page=el_admin_main">' . __('here') . '</a>!';
+            endif;
 
         else :
             ?>
