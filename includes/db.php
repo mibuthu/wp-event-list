@@ -285,7 +285,7 @@ class EL_Db {
 	 * @param bool perserve_tags Specifies if html tags should be preserved or if only the text should be shortened
 	 ***************************************************************************************************************/
 	public function truncate($html, $length, $skip=false, $preserve_tags=true) {
-		if(0 >= $length || strlen($html) > $length || $skip) {
+		if(0 >= $length || strlen($html) <= $length || $skip) {
 			// do nothing
 			return $html;
 		}
