@@ -289,7 +289,7 @@ class EL_Event_Table extends WP_List_Table {
 				$start_time = mysql2date( get_option( 'time_format' ), $start_time );
 			}
 			$out .= '<br />
-				<span class="time">'.$start_time.'</span>';
+				<span class="time">'.esc_html($start_time).'</span>';
 		}
 		$out .= '</span>';
 		return $out;
