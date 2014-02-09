@@ -343,7 +343,7 @@ class EL_Db {
 			}
 			// Print "..." if the html is not complete
 			if(strlen($html) != $position) {
-				$out .= ' ...';
+				$out .= ' &hellip;';
 			}
 			// Close any open tags.
 			while(!empty($tags)) {
