@@ -122,7 +122,7 @@ class EL_Db {
 		}
 		//time
 		if( !isset( $event_data['time'] ) ) { $sqldata['time'] = ''; }
-		else { $sqldata['time'] = $event_data['time']; }
+		else { $sqldata['time'] = stripslashes($event_data['time']); }
 		//title
 		if( !isset( $event_data['title'] ) || $event_data['title'] === '' ) { return false; }
 		$sqldata['title'] = stripslashes( $event_data['title'] );
