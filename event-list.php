@@ -3,13 +3,13 @@
 Plugin Name: Event List
 Plugin URI: http://wordpress.org/extend/plugins/event-list/
 Description: Manage your events and show them in a list view on your site.
-Version: 0.6.2
+Version: 0.6.3
 Author: Michael Burtscher
 Author URI: http://wordpress.org/extend/plugins/event-list/
 License: GPLv2
 
 A plugin for the blogging MySQL/PHP-based WordPress.
-Copyright 2012-2013 Michael Burtscher
+Copyright 2012-2014 Michael Burtscher
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNUs General Public License
