@@ -3,7 +3,7 @@
 Plugin Name: Event List
 Plugin URI: http://wordpress.org/extend/plugins/event-list/
 Description: Manage your events and show them in a list view on your site.
-Version: 0.6.3
+Version: 0.6.4
 Author: Michael Burtscher
 Author URI: http://wordpress.org/extend/plugins/event-list/
 License: GPLv2
@@ -38,13 +38,15 @@ require_once(EL_PATH.'includes/options.php');
 // MAIN PLUGIN CLASS
 class Event_List {
 	private $shortcode;
+	private $styles_loaded;
 
 	/**
 	 * Constructor:
 	 * Initializes the plugin.
 	 */
 	public function __construct() {
-		$this->shortcode = NULL;
+		$this->shortcode = null;
+		$this->styles_loaded = false;
 
 		// ALWAYS:
 		// Register shortcodes
@@ -72,10 +74,15 @@ class Event_List {
 		}
 	} // end constructor
 
-	public function shortcode_event_list( $atts ) {
-		if( NULL == $this->shortcode ) {
-			require_once( EL_PATH.'includes/sc_event-list.php' );
+	public function shortcode_event_list($atts) {
+		if(null == $this->shortcode) {
+			require_once(EL_PATH.'includes/sc_event-list.php');
 			$this->shortcode = SC_Event_List::get_instance();
+			if(!$this->styles_loaded) {
+				// normally styles are loaded with wp_print_styles action in head
+				// but if the shortcode is not in post content (e.g. included in a theme) it must be loaded here
+				$this->enqueue_styles();
+			}
 		}
 		return $this->shortcode->show_html( $atts );
 	}
@@ -88,10 +95,15 @@ class Event_List {
 
 	public function print_styles() {
 		global $post;
-		if(is_active_widget(null, null, 'event_list_widget') || strstr($post->post_content, '[event-list]')) {
-			wp_register_style('event-list', EL_URL.'includes/css/event-list.css');
-			wp_enqueue_style( 'event-list');
+		if(is_active_widget(null, null, 'event_list_widget') || strstr($post->post_content, '[event-list')) {
+			$this->enqueue_styles();
 		}
+	}
+
+	public function enqueue_styles() {
+		wp_register_style('event-list', EL_URL.'includes/css/event-list.css');
+		wp_enqueue_style( 'event-list');
+		$this->styles_loaded = true;
 	}
 } // end class linkview
 
