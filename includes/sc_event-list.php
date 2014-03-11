@@ -71,6 +71,12 @@ class SC_Event_List {
 			                            'desc'    => 'This attribute specifies how many events should be displayed if upcoming events is selected.<br />
 			                                          0 is the standard value which means that all events will be displayed.<br />
 			                                          Please not that in the actual version there is no pagination of the events available.'),
+												  
+			'num_days'        => array( 'val'     => 'number',
+			                            'std_val' => '0',
+			                            'visible' => true,
+			                            'desc'    => 'This attribute specifies how many days should be displayed if upcoming events is selected.<br />
+			                                          0 is the standard value which means that all events will be displayed.' ),
 
 			'show_filterbar'  => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
 			                            'std_val' => 'true',
@@ -104,6 +110,13 @@ class SC_Event_List {
 			                                          In this example you can see that filterbar options can be added in brackets in format "option_name=value". You can also add multiple options seperated by a pipe ("|").<br />
 			                                          The 2 semicolon (";") devides the bar in 3 section. The first section will be displayed left-justified, the second section will be centered and the third section will be right-aligned. So in this example the 2 dropdown will be left-aligned and the reset link will be on the right side.</p>'),
 
+			'show_year'        => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
+			                            'std_val' => 'true',
+			                            'visible' => true,
+			                            'desc'    => 'This attribute specifies if the year should be shown in the event listing.<br />
+			                                          Choose "false" to always hide and "true" to always show the year.<br />
+			                                          With "event_list_only" the year is only shown in the event list and with "single_event_only" only for a single event'),
+													  
 			'show_starttime'  => array( 'val'     => 'false<br />true<br />event_list_only<br />single_event_only',
 			                            'std_val' => 'true',
 			                            'visible' => true,
@@ -269,7 +282,7 @@ class SC_Event_List {
 			// sort according end_date before start time (required for option el_date_once_per_day)
 			$sort_array = array( 'start_date ASC', 'end_date ASC', 'time ASC' );
 		}
-		$events = $this->db->get_events($date_filter, $cat_filter, $a['num_events'], $sort_array);
+		$events = $this->db->get_events($date_filter, $cat_filter, $a['num_events'], $a['num_days'], $sort_array);
 
 		// generate output
 		$out = '';
@@ -296,11 +309,13 @@ class SC_Event_List {
 
 	private function html_event( &$event, &$a, $single_day_only=false ) {
 		static $last_event_startdate=null, $last_event_enddate=null;
+		$show_year = $this->is_visible( $a['show_year'] );
+
 		$out = '
 			 	<li class="event">';
 		// event date
 		if( '1' !== $this->options->get( 'el_date_once_per_day' ) || $last_event_startdate !== $event->start_date || $last_event_enddate !== $event->end_date ) {
-			$out .= $this->html_fulldate( $event->start_date, $event->end_date, $single_day_only );
+			$out .= $this->html_fulldate( $event->start_date, $event->end_date, $single_day_only, $show_year );
 		}
 		$out .= '
 					<div class="event-info';
@@ -357,7 +372,7 @@ class SC_Event_List {
 		return $out;
 	}
 
-	private function html_fulldate( $start_date, $end_date, $single_day_only=false ) {
+	private function html_fulldate( $start_date, $end_date, $single_day_only=false, $show_year=true ) {
 		$out = '
 					';
 		if( $start_date === $end_date ) {
@@ -369,28 +384,31 @@ class SC_Event_List {
 			else {
 				$out .= '<div class="end-date">';
 			}
-			$out .= $this->html_date( $start_date );
+			$out .= $this->html_date( $start_date, $show_year );
 			$out .= '</div>';
 		}
 		else {
 			// multi day event
 			$out .= '<div class="event-date multi-date">';
 			$out .= '<div class="start-date">';
-			$out .= $this->html_date( $start_date );
+			$out .= $this->html_date( $start_date, $show_year );
 			$out .= '</div>';
 			$out .= '<div class="end-date">';
-			$out .= $this->html_date( $end_date );
+			$out .= $this->html_date( $end_date, $show_year );
 			$out .= '</div>';
 		}
 		$out .= '</div>';
 		return $out;
 	}
 
-	private function html_date( $date ) {
+	private function html_date( $date, $show_year ) {
 		$out = '<div class="event-weekday">'.mysql2date( 'D', $date ).'</div>';
 		$out .= '<div class="event-day">'.mysql2date( 'd', $date ).'</div>';
 		$out .= '<div class="event-month">'.mysql2date( 'M', $date ).'</div>';
-		$out .= '<div class="event-year">'.mysql2date( 'Y', $date ).'</div>';
+
+		if ( $show_year ) {
+			$out .= '<div class="event-year">'.mysql2date( 'Y', $date ).'</div>';
+		}
 		return $out;
 	}
 

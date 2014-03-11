@@ -51,9 +51,9 @@ class EL_Db {
 		}
 	}
 
-	public function get_events($date_filter=null, $cat_filter=null, $num_events=0, $sort_array=array('start_date ASC', 'time ASC', 'end_date ASC')) {
+	public function get_events($date_filter=null, $cat_filter=null, $num_events=0, $num_days=0, $sort_array=array('start_date ASC', 'time ASC', 'end_date ASC')) {
 		global $wpdb;
-		$where_string = $this->get_sql_filter_string($date_filter, $cat_filter);
+		$where_string = $this->get_sql_filter_string($date_filter, $cat_filter, $num_days);
 		$sql = 'SELECT * FROM '.$this->table.' WHERE '.$where_string.' ORDER BY '.implode(', ', $sort_array);
 		if('upcoming' === $date_filter && is_numeric($num_events) && 0 < $num_events) {
 			$sql .= ' LIMIT '.$num_events;
@@ -212,10 +212,11 @@ class EL_Db {
 		return false;
 	}
 
-	private function get_sql_filter_string($date_filter=null, $cat_filter=null) {
+	private function get_sql_filter_string( $date_filter=null, $cat_filter=null, $num_days=0 ) {
 		$sql_filter_string = '';
 		// date filter
 		$date_filter=str_replace(' ','',$date_filter);
+
 		if(null != $date_filter && 'all' != $date_filter && '' != $date_filter) {
 			if(is_numeric($date_filter)) {
 				// get events of a specific year
@@ -230,7 +231,12 @@ class EL_Db {
 			else {  // upcoming
 				// get only events from today and in the future
 				$range_start = date('Y-m-d', current_time('timestamp'));
-				$range_end = '9999-12-31';
+				if( is_numeric($num_days) && 0 < $num_days ) {
+					$range_end = date('Y-m-d', strtotime("+".$num_days." days"));
+				}
+				else {
+					$range_end = '9999-12-31';
+				}
 			}
 			$sql_filter_string .= '(end_date >= "'.$range_start.'" AND start_date <= "'.$range_end.'")';
 		}
