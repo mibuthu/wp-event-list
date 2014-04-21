@@ -34,6 +34,11 @@ class SC_Event_List {
 		// All available attributes
 		$this->atts = array(
 
+			'initial_event_id' => array('val'     => 'all<br />event-id',
+			                            'std_val' => 'all',
+			                            'desc'    => __('With this attribute you can specify an event from which the event-details are shown initially. The standard is to show the event-list.<br />
+			                                             Specify an event-id e.g. "13" to change this behavior. It is still possible to go back to the event-list via the filterbar or url parameters.')),
+
 			'initial_date'     => array('val'     => 'all<br />upcoming<br />year e.g. "2014"',
 			                            'std_val' => 'upcoming',
 			                            'desc'    => 'This attribute specifies which events are initially shown. The standard is to show the upcoming events.<br />
@@ -205,13 +210,21 @@ class SC_Event_List {
 		$a = shortcode_atts( $std_values, $atts );
 		// add internal attributes
 		$a['sc_id'] = $this->num_sc_loaded;
-		$a['event_id'] = isset($_GET['event_id'.$a['sc_id']]) ? (int)$_GET['event_id'.$a['sc_id']] : null;
-		// fix sc_id_for_url if required
-		if( !is_numeric( $a['sc_id_for_url'] ) ) {
-			$a['sc_id_for_url'] = $a['sc_id'];
-		}
 		$a['actual_date'] = $this->get_actual_date($a);
 		$a['actual_cat'] = $this->get_actual_cat($a);
+		if(isset($_GET['event_id'.$a['sc_id']])) {
+			$a['event_id'] = (int)$_GET['event_id'.$a['sc_id']];
+		}
+		elseif('all' != $a['initial_event_id'] && $a['actual_date'] == $a['initial_date'] && $a['actual_cat'] == $a['initial_cat']) {
+			$a['event_id'] = (int)$a['initial_event_id'];
+		}
+		else {
+			$a['event_id'] = null;
+		}
+		// fix sc_id_for_url if required
+		if(!is_numeric($a['sc_id_for_url'])) {
+			$a['sc_id_for_url'] = $a['sc_id'];
+		}
 
 		$out = '
 				<div class="event-list">';
