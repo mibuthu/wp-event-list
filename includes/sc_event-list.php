@@ -215,7 +215,7 @@ class SC_Event_List {
 		if(isset($_GET['event_id'.$a['sc_id']])) {
 			$a['event_id'] = (int)$_GET['event_id'.$a['sc_id']];
 		}
-		elseif('all' != $a['initial_event_id'] && $a['actual_date'] == $a['initial_date'] && $a['actual_cat'] == $a['initial_cat']) {
+		elseif('all' != $a['initial_event_id'] && !isset($_GET['date'.$a['sc_id']]) && !isset($_GET['cat'.$a['sc_id']])) {
 			$a['event_id'] = (int)$a['initial_event_id'];
 		}
 		else {
