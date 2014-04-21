@@ -41,13 +41,13 @@ class SC_Event_List {
 
 			'initial_date'     => array('val'     => 'all<br />upcoming<br />year e.g. "2014"',
 			                            'std_val' => 'upcoming',
-			                            'desc'    => 'This attribute specifies which events are initially shown. The standard is to show the upcoming events.<br />
-			                                          Specify a year e.g. "2014" to change this behavior.'),
+			                            'desc'    => __('This attribute specifies which events are initially shown. The standard is to show the upcoming events.<br />
+			                                             Specify a year e.g. "2014" to change this behavior. It is still possible to change the displayed event date range via the filterbar or url parameters.')),
 
 			'initial_cat'      => array('val'     => 'all<br />category slug',
 			                            'std_val' => 'all',
-			                            'desc'    => 'This attribute specifies the category of which events are initially shown. The standard is to show events of all categories.<br />
-			                                          Specify a category slug to change this behavior. You can include a category selection in the filterbar to give users the possibility to change the displayed categories.'),
+			                            'desc'    => __('This attribute specifies the category of which events are initially shown. The standard is to show events of all categories.<br />
+			                                             Specify a category slug to change this behavior. It is still possible to change the displayed categories via the filterbar or url parameters.')),
 /*
 			'date_filter'      => array('val'     => 'all<br />upcoming<br />year e.g. "2014"',
 			                            'std_val' => 'all',
@@ -199,15 +199,15 @@ class SC_Event_List {
 	}
 
 	// main function to show the rendered HTML output
-	public function show_html( $atts ) {
+	public function show_html($atts) {
 		// change number of shortcodes
 		$this->num_sc_loaded++;
 		// check shortcode attributes
 		$std_values = array();
-		foreach( $this->atts as $aname => $attribute ) {
+		foreach($this->atts as $aname => $attribute) {
 			$std_values[$aname] = $attribute['std_val'];
 		}
-		$a = shortcode_atts( $std_values, $atts );
+		$a = shortcode_atts($std_values, $atts);
 		// add internal attributes
 		$a['sc_id'] = $this->num_sc_loaded;
 		$a['actual_date'] = $this->get_actual_date($a);
@@ -228,15 +228,15 @@ class SC_Event_List {
 
 		$out = '
 				<div class="event-list">';
-		if( is_numeric( $a['event_id'] ) ) {
+		if(is_numeric($a['event_id'])) {
 			// show events details if event_id is set
 			$this->single_event = true;
-			$out .= $this->html_event_details( $a );
+			$out .= $this->html_event_details($a);
 		}
 		else {
 			// show full event list
 			$this->single_event = false;
-			$out .= $this->html_events( $a );
+			$out .= $this->html_events($a);
 		}
 		$out .= '
 				</div>';
