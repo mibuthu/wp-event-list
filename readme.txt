@@ -73,7 +73,7 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 
 = 0.6.5 (2014-04-26) =
 * added shortcode attribute "initial_event_id"
-* added an option to show umpcoming events only in the feed
+* added an option to only show umpcoming events in the feed
 * fixed a problem in truncate function
 
 = 0.6.4 (2014-02-10) =
