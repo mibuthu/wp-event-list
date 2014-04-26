@@ -3,8 +3,8 @@ Contributors: mibuthu
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W54LNZMWF9KW2
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, filter, admin, attribute, widget, sidebar, feed, rss
 Requires at least: 3.3
-Tested up to: 3.8.1
-Stable tag: 0.6.4
+Tested up to: 3.9
+Stable tag: 0.6.5
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -70,6 +70,11 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 
 
 == Changelog ==
+
+= 0.6.5 (2014-04-26) =
+* added shortcode attribute "initial_event_id"
+* added an option to only show umpcoming events in the feed
+* fixed a problem in truncate function
 
 = 0.6.4 (2014-02-10) =
 * fixed css file inclusion for shortcodes with parameters
