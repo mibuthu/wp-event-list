@@ -83,10 +83,10 @@ class SC_Event_List {
 			                            'desc'    => 'This attribute specifies the available items in the filterbar. This options are only valid if the filterbar is displayed (see show_filterbar attribute).<br /><br />
 			                                          Find below an overview of the available filterbar items and their options:<br />
 			                                          <small><table class="el-filterbar-table">
-			                                              <th class="el-filterbar-item">filterbar item</th><th class="el-filterbar-desc">description</th><th class="el-filterbar-options">item options</th><th class="el-filterbar-values">option values</th><th class="el-filterbar-default">default value</th><th class="el-filterbar-desc2">description</th></thead>
+			                                              <th class="el-filterbar-item">filterbar item</th><th class="el-filterbar-desc">description</th><th class="el-filterbar-options">item options</th><th class="el-filterbar-values">option values</th><th class="el-filterbar-default">default value</th><th class="el-filterbar-desc2">option description</th></thead>
 			                                              <tr><td>years</td><td>Show a list of all available years. Additional there are some special entries available (see item options).</td><td>show_all<br />show_upcoming<br />show_past</td><td>true | false<br />true | false<br />true | false</td><td>true<br />true<br />false</td><td>Add an entry to show all events.<br />Add an entry to show all upcoming events.<br />Add an entry to show events in the past.</tr>
 			                                              <tr><td>cats</td><td>Show a list of all available categories.</td><td>show_all</td><td>true<br />false</td><td>true</td><td>Add an entry to show events from all categories.</td></tr>
-			                                              <tr><td>reset</td><td>Only a link to reset the eventlist filter to standard.</td><td>none</td><td></td><td></td><td></td></tr>
+			                                              <tr><td>reset</td><td>Only a link to reset the eventlist filter to standard.</td><td>caption</td><td>any text</td><td>Reset</td><td>Set the caption of the link.</td></tr>
 			                                          </table></small>
 			                                          Find below an overview of the available filterbar display options:<br />
 			                                          <small><table class="el-filterbar-table">

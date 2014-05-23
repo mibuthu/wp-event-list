@@ -71,7 +71,7 @@ class EL_Filterbar {
 							$out .= $this->show_cats($url, $args, $item_array[1], 'std', $options);
 							break;
 						case 'reset':
-							$out .= $this->show_reset($url, $args);
+							$out .= $this->show_reset($url, $args, $options);
 					}
 				}
 				$out .= '
@@ -172,11 +172,14 @@ class EL_Filterbar {
 		}
 	}
 
-	public function show_reset($url, $args) {
+	public function show_reset($url, $args, $options) {
 		$args_to_remove = array('event_id'.$args['sc_id_for_url'],
 		                        'date'.$args['sc_id_for_url'],
 		                        'cat'.$args['sc_id_for_url']);
-		return $this->show_link(remove_query_arg($args_to_remove, $url), __('Reset'), 'link');
+		if(!isset($options['caption'])) {
+			$options['caption'] = 'Reset';
+		}
+		return $this->show_link(remove_query_arg($args_to_remove, $url), __($options['caption']), 'link');
 	}
 
 	private function show_hlist($elements, $url, $name, $actual=null) {
