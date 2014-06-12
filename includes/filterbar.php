@@ -108,8 +108,15 @@ class EL_Filterbar {
 		}
 		$first_year = $this->db->get_event_date('first');
 		$last_year = $this->db->get_event_date('last');
-		for($year=$last_year; $year>=$first_year; $year--) {
-			$elements[] = array('slug'=>$year, 'name'=>$year);
+		if(isset($options['years_order']) && 'asc' == strtolower($options['years_order'])) {
+			for($year=$first_year; $year<=$last_year; $year++) {
+				$elements[] = array('slug'=>$year, 'name'=>$year);
+			}
+		}
+		else {
+			for($year=$last_year; $year>=$first_year; $year--) {
+				$elements[] = array('slug'=>$year, 'name'=>$year);
+			}
 		}
 		// filter elements acc. date_filter
 /*		TODO: implement date_filter
