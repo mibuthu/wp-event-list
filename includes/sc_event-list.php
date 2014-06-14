@@ -430,25 +430,23 @@ class SC_Event_List {
 	}
 
 	private function get_actual_date(&$a) {
-		$actual_date = $a['initial_date'];
 		if(isset($_GET['event_id'.$a['sc_id']])) {
-			$actual_date = null;
+			return null;
 		}
 		elseif(isset($_GET['date'.$a['sc_id']])) {
-			$actual_date = $_GET['date'.$a['sc_id']];
+			return $_GET['date'.$a['sc_id']];
 		}
-		return $actual_date;
+		return $a['initial_date'];
 	}
 
 	private function get_actual_cat(&$a) {
-		$actual_cat = $a['initial_cat'];
 		if(isset($_GET['event_id'.$a['sc_id']])) {
-			$actual_cat = null;
+			return null;
 		}
 		elseif(isset($_GET['cat'.$a['sc_id']])) {
-			$actual_cat = $_GET['cat'.$a['sc_id']];
+			return $_GET['cat'.$a['sc_id']];
 		}
-		return $actual_cat;
+		return $a['initial_cat'];
 	}
 
 	private function get_date_filter($date_filter, $actual_date) {
