@@ -39,7 +39,7 @@ class SC_Event_List {
 			                            'desc'    => __('With this attribute you can specify an event from which the event-details are shown initially. The standard is to show the event-list.<br />
 			                                             Specify an event-id e.g. "13" to change this behavior. It is still possible to go back to the event-list via the filterbar or url parameters.')),
 
-			'initial_date'     => array('val'     => 'all<br />upcoming<br />year e.g. "2014"',
+			'initial_date'     => array('val'     => 'all<br />upcoming<br />past<br />year e.g. "2014"',
 			                            'std_val' => 'upcoming',
 			                            'desc'    => __('This attribute specifies which events are initially shown. The standard is to show the upcoming events.<br />
 			                                             Specify a year e.g. "2014" to change this behavior. It is still possible to change the displayed event date range via the filterbar or url parameters.')),
