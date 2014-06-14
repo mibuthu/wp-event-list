@@ -24,7 +24,7 @@ class EL_Admin_About {
 		if(!current_user_can('edit_posts')) {
 			wp_die(__('You do not have sufficient permissions to access this page.'));
 		}
-		$out = '<div class="wrap">
+		echo '<div class="wrap">
 				<div id="icon-edit-pages" class="icon32"><br /></div><h2>About Event List</h2>
 				<h3>Help and Instructions</h3>
 				<p>You can manage your events <a href="admin.php?page=el_admin_main">here</a>.</p>
@@ -42,8 +42,8 @@ class EL_Admin_About {
 				</p>
 				<p>Be sure to also check the <a href="admin.php?page=el_admin_settings">Settings page</a> to get Event List behaving just the way you want.</p>
 			</div>';
-		$out .= $this->show_atts();
-		echo $out;
+		echo $this->show_atts();
+		echo $this->show_filter_syntax();
 	}
 
 	public function embed_about_scripts() {
@@ -88,6 +88,17 @@ class EL_Admin_About {
 		$out .= '
 			</table>';
 		return $out;
+	}
+
+	private function show_filter_syntax() {
+		return '
+			<h3>'.__('Filter Syntax').'</h3>
+			<p>'.__('For date and cat filters you can specify complex filters with the following syntax:</p>').'
+			<p>'.__('You can use AND ( "<b>&amp;</b>" ) and OR ( "<b>&verbar;</b>" or "<b>&comma;</b>" ) connections to define complex filters. Additionally you can set brackets ( "<b>(</b>" and ("<b>)</b>" ) for nested queries.').'</p>
+			'.__('Examples for cat filters:').'
+			<p><code>tennis</code> ... '.__('Show all events with category "tennis".').'<br />
+			<code>tennis,hockey</code> ... '.__('Show all events with category "tennis" or "hockey".').'<br />
+			<code>tennis|(hockey&winter)</code> ... '.__('Show all events with category "tennis" and all events where category "hockey" as well as "winter" is selected.').'</p>';
 	}
 }
 ?>
