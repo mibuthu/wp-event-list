@@ -118,16 +118,17 @@ class EL_Filterbar {
 				$elements[] = array('slug'=>$year, 'name'=>$year);
 			}
 		}
-		// filter elements acc. date_filter
-/*		TODO: implement date_filter
-		if('all' !== $args['date_filter']) {
-			$filter_array = explode(',', $args['date_filter']);
+		// filter elements acc. date_filter (if only OR connections are used)
+		if('all' !== $args['date_filter'] && !strpos($args['cat_filter'], '&')) {
+			$tmp_filter = str_replace(array(' ', '(', ')'), '', $args['date_filter']);
+			$tmp_filter = str_replace(',', '|', $tmp_filter);
+			$filter_array = explode('|', $tmp_filter);
 			foreach($elements as $id => $element) {
 				if(!in_array($element['slug'], $filter_array) && 'all' !== $element['slug'] && 'upcoming' !== $element['slug'] && 'past' !== $element['slug']) {
 					unset($elements[$id]);
 				}
 			}
-		}*/
+		}
 		// set selection
 		if(is_numeric($args['event_id'])) {
 			$actual = null;
