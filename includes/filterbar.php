@@ -30,7 +30,7 @@ class EL_Filterbar {
 	}
 
 	// main function to show the rendered HTML output
-	public function show($url, $args) {
+	public function show($url, &$args) {
 		$out = '
 				<style type="text/css">
 					.filterbar { display:table; width:100% }
@@ -92,7 +92,7 @@ class EL_Filterbar {
 		return $this->show_hlist($elements);
 	}
 */
-	public function show_years($url, $args, $type='hlist', $subtype='std', $options=array()) {
+	public function show_years($url, &$args, $type='hlist', $subtype='std', $options=array()) {
 		$args = $this->parse_args($args);
 		$argname = 'date'.$args['sc_id_for_url'];
 		// prepare displayed elements
@@ -146,7 +146,7 @@ class EL_Filterbar {
 		}
 	}
 
-	public function show_cats($url, $args, $type='dropdown', $subtype='std', $options=array()) {
+	public function show_cats($url, &$args, $type='dropdown', $subtype='std', $options=array()) {
 		$args = $this->parse_args($args);
 		$argname = 'cat'.$args['sc_id_for_url'];
 		// prepare displayed elements
