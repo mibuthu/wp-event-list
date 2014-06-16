@@ -39,7 +39,7 @@ class SC_Event_List {
 			                            'desc'    => __('With this attribute you can specify an event from which the event-details are shown initially. The standard is to show the event-list.<br />
 			                                             Specify an event-id e.g. "13" to change this behavior. It is still possible to go back to the event-list via the filterbar or url parameters.')),
 
-			'initial_date'     => array('val'     => 'all<br />upcoming<br />past<br />year e.g. "2014"',
+			'initial_date'     => array('val'     => 'all<br />upcoming<br />past<br />year',
 			                            'std_val' => 'upcoming',
 			                            'desc'    => __('This attribute specifies which events are initially shown. The standard is to show the upcoming events.<br />
 			                                             Specify a year e.g. "2014" to change this behavior. It is still possible to change the displayed event date range via the filterbar or url parameters.')),
@@ -49,11 +49,12 @@ class SC_Event_List {
 			                            'desc'    => __('This attribute specifies the category of which events are initially shown. The standard is to show events of all categories.<br />
 			                                             Specify a category slug to change this behavior. It is still possible to change the displayed categories via the filterbar or url parameters.')),
 
-			'date_filter'      => array('val'     => 'all<br />upcoming<br />past<br />years',
+			'date_filter'      => array('val'     => 'all<br />upcoming<br />past<br />year',
 			                            'std_val' => 'all',
 			                            'desc'    => 'This attribute specifies the dates and date ranges of which events are displayed. The standard is "all" to show all events.<br />
 			                                          Filtered events according to date_filter value are not available in the event list.<br />
-			                                          Specify a year or a list of years separated by a comma "," e.g. "2014,2015,2016".'),
+			                                          Specify a year or a list of years separated by a comma "," e.g. "2014,2015,2016".<br />
+			                                          When you only use OR connections (no AND connection) the years selection in the filterbar will also be filtered accordingly.'),
 
 			'cat_filter'       => array('val'     => 'all<br />category slugs',
 			                            'std_val' => 'all',
