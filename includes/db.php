@@ -278,7 +278,7 @@ class EL_Db {
 			$range_start = date('Y-m-d', current_time('timestamp'));
 			$range_end = '9999-12-31';
 		}
-		return 'end_date >= "'.$range_start.'" AND start_date <= "'.$range_end.'"';
+		return '(end_date >= "'.$range_start.'" AND start_date <= "'.$range_end.'")';
 	}
 
 	private function sql_cat_filter ($element) {
