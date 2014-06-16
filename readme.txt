@@ -3,8 +3,8 @@ Contributors: mibuthu
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W54LNZMWF9KW2
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, filter, admin, attribute, widget, sidebar, feed, rss
 Requires at least: 3.3
-Tested up to: 3.9
-Stable tag: 0.6.5
+Tested up to: 3.9.1
+Stable tag: 0.6.6
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -70,6 +70,14 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 
 
 == Changelog ==
+
+= 0.6.6 (2014-06-16) =
+* added date_filter shortcode option
+* added option to change text for filterbar reset item
+* added option "years_order" for years filterbar element
+* preparations to include more date filters / filterbar elements in future versions
+* small css style modification
+* updated some help texts
 
 = 0.6.5 (2014-04-26) =
 * added shortcode attribute "initial_event_id"

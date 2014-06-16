@@ -39,7 +39,7 @@ class SC_Event_List {
 			                            'desc'    => __('With this attribute you can specify an event from which the event-details are shown initially. The standard is to show the event-list.<br />
 			                                             Specify an event-id e.g. "13" to change this behavior. It is still possible to go back to the event-list via the filterbar or url parameters.')),
 
-			'initial_date'     => array('val'     => 'all<br />upcoming<br />year e.g. "2014"',
+			'initial_date'     => array('val'     => 'all<br />upcoming<br />past<br />year',
 			                            'std_val' => 'upcoming',
 			                            'desc'    => __('This attribute specifies which events are initially shown. The standard is to show the upcoming events.<br />
 			                                             Specify a year e.g. "2014" to change this behavior. It is still possible to change the displayed event date range via the filterbar or url parameters.')),
@@ -48,23 +48,20 @@ class SC_Event_List {
 			                            'std_val' => 'all',
 			                            'desc'    => __('This attribute specifies the category of which events are initially shown. The standard is to show events of all categories.<br />
 			                                             Specify a category slug to change this behavior. It is still possible to change the displayed categories via the filterbar or url parameters.')),
-/*
-			'date_filter'      => array('val'     => 'all<br />upcoming<br />year e.g. "2014"',
+
+			'date_filter'      => array('val'     => 'all<br />upcoming<br />past<br />year',
 			                            'std_val' => 'all',
-			                            'desc'    => 'This attribute specifies the date range of which events are displayed. The standard is "all" to show all events.<br />
-			                                          Events defined in date ranges not listed here are also not available in the date selection in the filterbar. It is also not possible to show them with a manual added url parameter<br />
-			                                          Specify a year or a list of years separated by a comma "," e.g. "2014,2015,2016".'),
-*/
+			                            'desc'    => 'This attribute specifies the dates and date ranges of which events are displayed. The standard is "all" to show all events.<br />
+			                                          Filtered events according to date_filter value are not available in the event list.<br />
+			                                          Specify a year or a list of years separated by a comma "," e.g. "2014,2015,2016".<br />
+			                                          When you only use OR connections (no AND connection) the years selection in the filterbar will also be filtered accordingly.'),
+
 			'cat_filter'       => array('val'     => 'all<br />category slugs',
 			                            'std_val' => 'all',
 			                            'desc'    => 'This attribute specifies the categories of which events are shown. The standard is "all" or an empty string to show all events.<br />
-			                                          Events defined in categories which doesn´t match cat_filter are not shown in the event list. They are also not available if a manual url parameter is added.<br />
-			                                          The filter is specified via the given category slug. You can use AND ("&") and OR ("|" or ",") connections to define complex filters. Additionally you can set brackets for nested queries.<br />
-			                                          Examples:<br />
-			                                          <code>tennis</code> ... Show all events with category "tennis".<br />
-			                                          <code>tennis,hockey</code> ... Show all events with category "tennis" or "hockey".<br />
-			                                          <code>tennis|(hockey&winter)</code> ... Show all events with category "tennis" and all events where category "hockey" as well as "winter" is selected.<br />
-			                                          If you only use OR connections (no AND connection) the category selection in the filterbar will also be filtered according to the given filter.<br />'),
+			                                          Filtered events defined in categories which doesn´t match cat_filter are not shown in the event list. They are also not available if a manual url parameter is added.<br />
+			                                          The filter is specified via the given category slug. See "Filter Syntax" description if you want to define complex filters.<br />
+			                                          When you only use OR connections (no AND connection) the category selection in the filterbar will also be filtered accordingly.'),
 
 			'num_events'       => array('val'     => 'number',
 			                            'std_val' => '0',
@@ -83,10 +80,10 @@ class SC_Event_List {
 			                            'desc'    => 'This attribute specifies the available items in the filterbar. This options are only valid if the filterbar is displayed (see show_filterbar attribute).<br /><br />
 			                                          Find below an overview of the available filterbar items and their options:<br />
 			                                          <small><table class="el-filterbar-table">
-			                                              <th class="el-filterbar-item">filterbar item</th><th class="el-filterbar-desc">description</th><th class="el-filterbar-options">item options</th><th class="el-filterbar-values">option values</th><th class="el-filterbar-default">default value</th><th class="el-filterbar-desc2">description</th></thead>
-			                                              <tr><td>years</td><td>Show a list of all available years. Additional there are some special entries available (see item options).</td><td>show_all<br />show_upcoming<br />show_past</td><td>true | false<br />true | false<br />true | false</td><td>true<br />true<br />false</td><td>Add an entry to show all events.<br />Add an entry to show all upcoming events.<br />Add an entry to show events in the past.</tr>
-			                                              <tr><td>cats</td><td>Show a list of all available categories.</td><td>show_all</td><td>true<br />false</td><td>true</td><td>Add an entry to show events from all categories.</td></tr>
-			                                              <tr><td>reset</td><td>Only a link to reset the eventlist filter to standard.</td><td>none</td><td></td><td></td><td></td></tr>
+			                                              <th class="el-filterbar-item">filterbar item</th><th class="el-filterbar-desc">description</th><th class="el-filterbar-options">item options</th><th class="el-filterbar-values">option values</th><th class="el-filterbar-default">default value</th><th class="el-filterbar-desc2">option description</th></thead>
+			                                              <tr><td>years</td><td>Show a list of all available years. Additional there are some special entries available (see item options).</td><td>show_all<br />show_upcoming<br />show_past<br />years_order</td><td>true | false<br />true | false<br />true | false<br />desc | asc</td><td>true<br />true<br />false<br />desc</td><td>Add an entry to show all events.<br />Add an entry to show all upcoming events.<br />Add an entry to show events in the past.<br />Set descending or ascending order of year entries.</tr>
+			                                              <tr><td>cats</td><td>Show a list of all available categories.</td><td>show_all</td><td>true | false</td><td>true</td><td>Add an entry to show events from all categories.</td></tr>
+			                                              <tr><td>reset</td><td>Only a link to reset the eventlist filter to standard.</td><td>caption</td><td>any text</td><td>Reset</td><td>Set the caption of the link.</td></tr>
 			                                          </table></small>
 			                                          Find below an overview of the available filterbar display options:<br />
 			                                          <small><table class="el-filterbar-table">
@@ -259,7 +256,7 @@ class SC_Event_List {
 		if('upcoming' != $a['actual_date']) {
 			$a['num_events'] = 0;
 		}
-		$date_filter = $this->get_date_filter('all', $a['actual_date']);
+		$date_filter = $this->get_date_filter($a['date_filter'], $a['actual_date']);
 		$cat_filter = $this->get_cat_filter($a['cat_filter'], $a['actual_cat']);
 		if( '1' !== $this->options->get( 'el_date_once_per_day' ) ) {
 			// normal sort
@@ -430,34 +427,43 @@ class SC_Event_List {
 	}
 
 	private function get_actual_date(&$a) {
-		$actual_date = $a['initial_date'];
 		if(isset($_GET['event_id'.$a['sc_id']])) {
-			$actual_date = null;
+			return null;
 		}
 		elseif(isset($_GET['date'.$a['sc_id']])) {
-			$actual_date = $_GET['date'.$a['sc_id']];
+			return $_GET['date'.$a['sc_id']];
 		}
-		return $actual_date;
+		return $a['initial_date'];
 	}
 
 	private function get_actual_cat(&$a) {
-		$actual_cat = $a['initial_cat'];
 		if(isset($_GET['event_id'.$a['sc_id']])) {
-			$actual_cat = null;
+			return null;
 		}
 		elseif(isset($_GET['cat'.$a['sc_id']])) {
-			$actual_cat = $_GET['cat'.$a['sc_id']];
+			return $_GET['cat'.$a['sc_id']];
 		}
-		return $actual_cat;
+		return $a['initial_cat'];
 	}
 
 	private function get_date_filter($date_filter, $actual_date) {
-		// TODO: date_filter not implemented yet
-		if('all' == $actual_date) {
-			return null;
+		if('all' == $date_filter || '' == $date_filter) {
+			if('all' == $actual_date || '' == $actual_date) {
+				return null;
+			}
+			else {
+				return $actual_date;
+			}
 		}
 		else {
-			return $actual_date;
+			// Convert html entities to correct characters, e.g. &amp; to &
+			$date_filter = html_entity_decode($date_filter);
+			if('all' == $actual_date || '' == $actual_date) {
+				return $date_filter;
+			}
+			else {
+				return '('.$date_filter.')&('.$actual_date.')';
+			}
 		}
 	}
 
@@ -471,6 +477,8 @@ class SC_Event_List {
 			}
 		}
 		else {
+			// Convert html entities to correct characters, e.g. &amp; to &
+			$cat_filter = html_entity_decode($cat_filter);
 			if('all' == $actual_cat || '' == $actual_cat) {
 				return $cat_filter;
 			}

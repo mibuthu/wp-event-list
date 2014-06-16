@@ -30,7 +30,7 @@ class EL_Filterbar {
 	}
 
 	// main function to show the rendered HTML output
-	public function show($url, $args) {
+	public function show($url, &$args) {
 		$out = '
 				<style type="text/css">
 					.filterbar { display:table; width:100% }
@@ -71,7 +71,7 @@ class EL_Filterbar {
 							$out .= $this->show_cats($url, $args, $item_array[1], 'std', $options);
 							break;
 						case 'reset':
-							$out .= $this->show_reset($url, $args);
+							$out .= $this->show_reset($url, $args, $options);
 					}
 				}
 				$out .= '
@@ -92,7 +92,7 @@ class EL_Filterbar {
 		return $this->show_hlist($elements);
 	}
 */
-	public function show_years($url, $args, $type='hlist', $subtype='std', $options=array()) {
+	public function show_years($url, &$args, $type='hlist', $subtype='std', $options=array()) {
 		$args = $this->parse_args($args);
 		$argname = 'date'.$args['sc_id_for_url'];
 		// prepare displayed elements
@@ -108,19 +108,27 @@ class EL_Filterbar {
 		}
 		$first_year = $this->db->get_event_date('first');
 		$last_year = $this->db->get_event_date('last');
-		for($year=$last_year; $year>=$first_year; $year--) {
-			$elements[] = array('slug'=>$year, 'name'=>$year);
+		if(isset($options['years_order']) && 'asc' == strtolower($options['years_order'])) {
+			for($year=$first_year; $year<=$last_year; $year++) {
+				$elements[] = array('slug'=>$year, 'name'=>$year);
+			}
 		}
-		// filter elements acc. date_filter
-/*		TODO: implement date_filter
-		if('all' !== $args['date_filter']) {
-			$filter_array = explode(',', $args['date_filter']);
+		else {
+			for($year=$last_year; $year>=$first_year; $year--) {
+				$elements[] = array('slug'=>$year, 'name'=>$year);
+			}
+		}
+		// filter elements acc. date_filter (if only OR connections are used)
+		if('all' !== $args['date_filter'] && !strpos($args['cat_filter'], '&')) {
+			$tmp_filter = str_replace(array(' ', '(', ')'), '', $args['date_filter']);
+			$tmp_filter = str_replace(',', '|', $tmp_filter);
+			$filter_array = explode('|', $tmp_filter);
 			foreach($elements as $id => $element) {
 				if(!in_array($element['slug'], $filter_array) && 'all' !== $element['slug'] && 'upcoming' !== $element['slug'] && 'past' !== $element['slug']) {
 					unset($elements[$id]);
 				}
 			}
-		}*/
+		}
 		// set selection
 		if(is_numeric($args['event_id'])) {
 			$actual = null;
@@ -139,7 +147,7 @@ class EL_Filterbar {
 		}
 	}
 
-	public function show_cats($url, $args, $type='dropdown', $subtype='std', $options=array()) {
+	public function show_cats($url, &$args, $type='dropdown', $subtype='std', $options=array()) {
 		$args = $this->parse_args($args);
 		$argname = 'cat'.$args['sc_id_for_url'];
 		// prepare displayed elements
@@ -172,11 +180,14 @@ class EL_Filterbar {
 		}
 	}
 
-	public function show_reset($url, $args) {
+	public function show_reset($url, $args, $options) {
 		$args_to_remove = array('event_id'.$args['sc_id_for_url'],
 		                        'date'.$args['sc_id_for_url'],
 		                        'cat'.$args['sc_id_for_url']);
-		return $this->show_link(remove_query_arg($args_to_remove, $url), __('Reset'), 'link');
+		if(!isset($options['caption'])) {
+			$options['caption'] = 'Reset';
+		}
+		return $this->show_link(remove_query_arg($args_to_remove, $url), __($options['caption']), 'link');
 	}
 
 	private function show_hlist($elements, $url, $name, $actual=null) {
