@@ -58,7 +58,7 @@ class SC_Event_List {
 			'cat_filter'       => array('val'     => 'all<br />category slugs',
 			                            'std_val' => 'all',
 			                            'desc'    => 'This attribute specifies the categories of which events are shown. The standard is "all" or an empty string to show all events.<br />
-			                                          Events defined in categories which doesn´t match cat_filter are not shown in the event list. They are also not available if a manual url parameter is added.<br />
+			                                          Filtered events defined in categories which doesn´t match cat_filter are not shown in the event list. They are also not available if a manual url parameter is added.<br />
 			                                          The filter is specified via the given category slug. See "Filter Syntax" description if you want to define complex filters.<br />
 			                                          When you only use OR connections (no AND connection) the category selection in the filterbar will also be filtered accordingly.'),
 
@@ -465,6 +465,8 @@ class SC_Event_List {
 			}
 		}
 		else {
+			// Convert html entities to correct characters, e.g. &amp; to &
+			$cat_filter = html_entity_decode($cat_filter);
 			if('all' == $actual_cat || '' == $actual_cat) {
 				return $cat_filter;
 			}
