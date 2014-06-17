@@ -6,6 +6,7 @@ if(!defined('ABSPATH')) {
 // This class handles all data for the admin about page
 class EL_Admin_About {
 	private static $instance;
+	private $options;
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -17,7 +18,7 @@ class EL_Admin_About {
 	}
 
 	private function __construct() {
-
+		$this->options = EL_Options::get_instance();
 	}
 
 	public function show_about() {
@@ -44,6 +45,8 @@ class EL_Admin_About {
 			</div>';
 		echo $this->show_atts();
 		echo $this->show_filter_syntax();
+		echo $this->show_date_syntax();
+		echo $this->show_daterange_syntax();
 	}
 
 	public function embed_about_scripts() {
@@ -99,6 +102,43 @@ class EL_Admin_About {
 			<p><code>tennis</code> ... '.__('Show all events with category "tennis".').'<br />
 			<code>tennis,hockey</code> ... '.__('Show all events with category "tennis" or "hockey".').'<br />
 			<code>tennis|(hockey&winter)</code> ... '.__('Show all events with category "tennis" and all events where category "hockey" as well as "winter" is selected.').'</p>';
+	}
+
+	private function show_date_syntax() {
+		$out = '
+			<h3 class="el-headline">'.__('Available Date Formats').'</h3>
+			<p>'.__('For date filters you can use the following date formats:').'</p>
+			<ul class="el-formats">';
+		$out.= $this->show_formats($this->options->date_formats);
+		$out .= '</ul>';
+		return $out;
+	}
+
+	private function show_daterange_syntax() {
+		$out = '
+			<h3 class="el-headline">'.__('Available Date Range Formats').'</h3>
+			<p>'.__('For date filters you can use the following daterange formats:').'</p>
+			<ul class="el-formats">';
+		$out .= $this->show_formats($this->options->daterange_formats);
+		$out .= '</ul>';
+		return $out;
+	}
+
+	private function show_formats(&$formats_array) {
+		$out = '';
+		foreach($formats_array as $format) {
+			$out .= '
+				<li><div class="el-format-entry"><div class="el-format-name">'.$format['name'].':</div><div class="el-format-desc">';
+			if(isset($format['value'])) {
+				$out .= __('Value').': <em>'.$format['value'].'</em><br />';
+			}
+			$out .= $format['desc'].'<br />';
+			if(isset($format['examp'])) {
+				$out .= __('Example').': <em>'.$format['examp'].'</em>';
+			}
+			$out .= '</div></div></li>';
+		}
+		return $out;
 	}
 }
 ?>
