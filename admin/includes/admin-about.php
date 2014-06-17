@@ -26,7 +26,7 @@ class EL_Admin_About {
 		}
 		echo '<div class="wrap">
 				<div id="icon-edit-pages" class="icon32"><br /></div><h2>About Event List</h2>
-				<h3>Help and Instructions</h3>
+				<h3 class="el-headline">Help and Instructions</h3>
 				<p>You can manage your events <a href="admin.php?page=el_admin_main">here</a>.</p>
 				<p>To show the events on your site you have two possibilities:
 					<ul class="el-show-event-options"><li>you can place the <strong>shortcode</strong> <code>[event-list]</code> on any page or post</li>
@@ -92,8 +92,8 @@ class EL_Admin_About {
 
 	private function show_filter_syntax() {
 		return '
-			<h3>'.__('Filter Syntax').'</h3>
-			<p>'.__('For date and cat filters you can specify complex filters with the following syntax:</p>').'
+			<h3 class="el-headline">'.__('Filter Syntax').'</h3>
+			<p>'.__('For date and cat filters you can specify complex filters with the following syntax:').'</p>
 			<p>'.__('You can use AND ( "<b>&amp;</b>" ) and OR ( "<b>&verbar;</b>" or "<b>&comma;</b>" ) connections to define complex filters. Additionally you can set brackets ( "<b>(</b>" and ("<b>)</b>" ) for nested queries.').'</p>
 			'.__('Examples for cat filters:').'
 			<p><code>tennis</code> ... '.__('Show all events with category "tennis".').'<br />
