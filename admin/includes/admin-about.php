@@ -105,23 +105,21 @@ class EL_Admin_About {
 	}
 
 	private function show_date_syntax() {
-		$out = '
+		return '
 			<h3 class="el-headline">'.__('Available Date Formats').'</h3>
 			<p>'.__('For date filters you can use the following date formats:').'</p>
-			<ul class="el-formats">';
-		$out.= $this->show_formats($this->options->date_formats);
-		$out .= '</ul>';
-		return $out;
+			<ul class="el-formats">
+			'.$this->show_formats($this->options->date_formats).'
+			</ul>';
 	}
 
 	private function show_daterange_syntax() {
-		$out = '
+		return '
 			<h3 class="el-headline">'.__('Available Date Range Formats').'</h3>
 			<p>'.__('For date filters you can use the following daterange formats:').'</p>
-			<ul class="el-formats">';
-		$out .= $this->show_formats($this->options->daterange_formats);
-		$out .= '</ul>';
-		return $out;
+			<ul class="el-formats">
+			'.$this->show_formats($this->options->daterange_formats).'
+			</ul>';
 	}
 
 	private function show_formats(&$formats_array) {
