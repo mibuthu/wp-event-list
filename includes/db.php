@@ -271,8 +271,6 @@ class EL_Db {
 			//set to standard (upcoming)
 			$range = $this->get_date_range($element, $this->options->daterange_formats['upcoming']);
 		}
-		error_log($range[0]);
-		error_log($range[1]);
 		return '(end_date >= "'.$range[0].'" AND start_date <= "'.$range[1].'")';
 	}
 
@@ -282,7 +280,6 @@ class EL_Db {
 
 	private function check_date_formats($element) {
 		foreach($this->options->date_formats as $date_type) {
-			error_log('@'.$date_type['regex'].'@');
 			if(preg_match('@'.$date_type['regex'].'@', $element)) {
 				return $this->get_date_range($element, $date_type);
 			}
