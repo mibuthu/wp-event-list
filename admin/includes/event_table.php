@@ -167,7 +167,7 @@ class EL_Event_Table extends WP_List_Table {
 		if('top' === $which) {
 			$out = '
 				<div class="alignleft actions">';
-			$out .= $this->filterbar->show_years('?page=el_admin_main', $this->args, 'dropdown', 'admin');
+			$out .= $this->filterbar->show_years('?page=el_admin_main', $this->args, 'dropdown', 'admin', array('show_past'=>true));
 			$out .= $this->filterbar->show_cats('?page=el_admin_main', $this->args, 'dropdown', 'admin');
 			$out .= '
 				<input type="hidden" name="noheader" value="true" />
@@ -218,7 +218,7 @@ class EL_Event_Table extends WP_List_Table {
 		$this->args['cat_filter'] = 'all';
 		// actual_date
 		$this->args['actual_date'] = 'upcoming';
-		if(isset($_GET['date']) && (is_numeric($_GET['date']) || 'all' == $_GET['date'] || 'upcoming' == $_GET['date'])) {
+		if(isset($_GET['date']) && (is_numeric($_GET['date']) || 'all' == $_GET['date'] || 'upcoming' == $_GET['date'] || 'past' == $_GET['date'])) {
 			$this->args['actual_date'] = $_GET['date'];
 		}
 		// actual_cat
