@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, filter, admin, attribute, widget, sidebar, feed, rss
 Requires at least: 3.3
 Tested up to: 3.9.1
-Stable tag: 0.6.6
+Stable tag: 0.6.7
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -70,6 +70,12 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 
 
 == Changelog ==
+
+= 0.6.7 (2014-06-18) =
+* added month and day support in date_filter
+* added available date and date range formats description in admin about page
+* added support for wpautop in event details
+* added "Past" entry in admin event table filter
 
 = 0.6.6 (2014-06-16) =
 * added date_filter shortcode option
