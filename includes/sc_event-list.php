@@ -345,7 +345,7 @@ class SC_Event_List {
 			$out .= '<div class="event-cat">'.esc_attr($this->categories->get_category_string($event->categories)).'</div>';
 		}
 		if( $this->is_visible( $a['show_details'] ) ) {
-			$out .= '<div class="event-details">'.$this->db->truncate(do_shortcode($event->details), $a['details_length'], $this->single_event).'</div>';
+			$out .= '<div class="event-details">'.$this->db->truncate(do_shortcode(wpautop($event->details)), $a['details_length'], $this->single_event).'</div>';
 		}
 		$out .= '</div>
 				</li>';
