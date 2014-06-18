@@ -313,7 +313,7 @@ class EL_Db {
 		}
 		// range end
 		if(substr($range_type['end'], 0, 8) == '--func--') {
-			$range[1] = eval(substr($range_type['end'], 8));
+			eval('$range[1] = '.substr($range_type['end'], 8));
 		}
 		else {
 			$range[1] = str_replace('%v%', $element, $range_type['end']);

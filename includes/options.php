@@ -190,7 +190,7 @@ class EL_Options {
 			                        'regex' => '^past$',
 			                        'value' => 'past',
 			                        'start' => '1000-01-01',
-			                        'end'   => '--func--date("Y-m-d", current_time("timestamp"))-86400;',  // previous day (86400 seconds = 1*24*60*60 = 1 day
+			                        'end'   => '--func--date("Y-m-d", current_time("timestamp")-86400);',  // previous day (86400 seconds = 1*24*60*60 = 1 day
 			                        'desc'  => __('"past" specifies a time rage from the past to the previous day.')),
 		);
 	}
