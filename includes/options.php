@@ -9,6 +9,8 @@ class EL_Options {
 	private static $instance;
 	public $group;
 	public $options;
+	public $date_formats;
+	public $daterange_formats;
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -144,6 +146,52 @@ class EL_Options {
 			                                'caption' => __('Show rss image in feed link'),
 			                                'desc'    => __('This option specifies if the an image should be dispayed in the feed link in front of the text.<br />
 			                                                 You have to set the shortcode attribute "add_feed_link" to "true" if you want to show the feed link.')),
+		);
+
+		$this->date_formats = array(
+			'year'         => array('name'  => 'Year',
+			                        'regex' => '^[12]\d{3}$',
+			                        'examp' => '2015',
+			                        'start' => '%v%-01-01',
+			                        'end'   => '%v%-12-31',
+			                        'desc'  => __('You can specify a year in 4 digit format.<br /> Other formats will not be accepted.')),
+			'month'        => array('name'  => 'Month',
+			                        'regex' => '^[12]\d{3}-(0[1-9]|1[012])$',
+			                        'examp' => '2015-03',
+			                        'start' => '%v%-01',
+			                        'end'   => '%v%-31',
+			                        'desc'  => __('You can specify a month with 4 digits for the year and 2 digits for the month, seperated by a hyphen (-).<br />Other formats will not be accepted.')),
+			'day'          => array('name'  => 'Day',
+			                        'regex' => '^[12]\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$',
+			                        'examp' => '2015-03-29',
+			                        'start' => '%v%',
+			                        'end'   => '%v%',
+			                        'desc'  => __('You can specify a day with 4 digits for the year, 2 digits for the month and 2 digets for the day, seperated by a hyphen (-).<br /> Other formats will not be accepted.')),
+		);
+
+		$this->daterange_formats = array(
+			'date_range'   => array('name'  => 'Date range',
+			                        'regex' => '.+~.+',
+			                        'examp' => '2015-03-29~2016',
+			                        'desc'  => __('You can specify a rage or dates seperated by a tilde (~).<br >You can specify any available date format before and after the tilde.')),
+			'all'          => array('name'  => 'All',
+			                        'regex' => '^all$',
+			                        'value' => 'all',
+			                        'start' => '1000-01-01',
+			                        'end'   => '2999-12-31',
+			                        'desc'  => __('"all" specifies the full time range without any limitation.')),
+			'upcoming'     => array('name'  => 'Upcoming',
+			                        'regex' => '^upcoming$',
+			                        'value' => 'upcoming',
+			                        'start' => '--func--date("Y-m-d", current_time("timestamp"));',
+			                        'end'   => '2999-12-31',
+			                        'desc'  => __('"upcoming" specifies a time range from the actual day to the future.')),
+			'past'         => array('name'  => 'Past',
+			                        'regex' => '^past$',
+			                        'value' => 'past',
+			                        'start' => '1000-01-01',
+			                        'end'   => '--func--date("Y-m-d", current_time("timestamp")-86400);',  // previous day (86400 seconds = 1*24*60*60 = 1 day
+			                        'desc'  => __('"past" specifies a time rage from the past to the previous day.')),
 		);
 	}
 

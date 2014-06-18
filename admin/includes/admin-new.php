@@ -114,8 +114,7 @@ class EL_Admin_New {
 					<tr>
 						<th><label>Event Details</label></th>
 						<td>';
-		$editor_settings = array('media_buttons' => true,
-		                         'wpautop' => false,
+		$editor_settings = array('drag_drop_upload' => true,
 		                         'textarea_rows' => 20);
 		ob_start();
 			wp_editor(isset($event->details) ? $event->details : '', 'details', $editor_settings);

@@ -45,7 +45,7 @@ class EL_Event_Table extends WP_List_Table {
 			case 'date' :
 				return $this->format_event_date($item->start_date, $item->end_date, $item->time);
 			case 'details' :
-				return '<div>'.$this->db->truncate($item->details, 80).'</div>';
+				return '<div>'.$this->db->truncate(wpautop($item->details), 80).'</div>';
 			case 'pub_user' :
 				return get_userdata($item->pub_user)->user_login;
 			case 'pub_date' :
@@ -167,7 +167,7 @@ class EL_Event_Table extends WP_List_Table {
 		if('top' === $which) {
 			$out = '
 				<div class="alignleft actions">';
-			$out .= $this->filterbar->show_years('?page=el_admin_main', $this->args, 'dropdown', 'admin');
+			$out .= $this->filterbar->show_years('?page=el_admin_main', $this->args, 'dropdown', 'admin', array('show_past'=>true));
 			$out .= $this->filterbar->show_cats('?page=el_admin_main', $this->args, 'dropdown', 'admin');
 			$out .= '
 				<input type="hidden" name="noheader" value="true" />
@@ -218,7 +218,7 @@ class EL_Event_Table extends WP_List_Table {
 		$this->args['cat_filter'] = 'all';
 		// actual_date
 		$this->args['actual_date'] = 'upcoming';
-		if(isset($_GET['date']) && (is_numeric($_GET['date']) || 'all' == $_GET['date'] || 'upcoming' == $_GET['date'])) {
+		if(isset($_GET['date']) && (is_numeric($_GET['date']) || 'all' == $_GET['date'] || 'upcoming' == $_GET['date'] || 'past' == $_GET['date'])) {
 			$this->args['actual_date'] = $_GET['date'];
 		}
 		// actual_cat

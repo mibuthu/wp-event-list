@@ -3,7 +3,9 @@
 }
 
 .el-headline {
-	margin-top: 2.3em;
+	margin-top: 1.5em;
+	margin-bottom: 0.5em;
+	clear: both;
 }
 
 .el-atts-table {
@@ -52,4 +54,28 @@
 }
 .el-filterbar-desc2, .el-filterbar-for {
 	width: 270px;
+}
+
+ul.el-formats {
+	list-style: none;
+}
+
+.el-format-entry {
+	overflow: hidden;
+	clear: both;
+	padding-bottom: 0.5em;
+}
+
+div.el-format-name {
+	float: left;
+	width: 90px;
+	font-weight: bold;
+}
+
+div.el-format-desc {
+	float: left;
+}
+
+div.el-format-desc em {
+	font-weight: bold;
 }

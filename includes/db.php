@@ -263,26 +263,62 @@ class EL_Db {
 	}
 
 	private function sql_date_filter($element) {
-		if(is_numeric($element)) {
-			// get events of a specific year
-			$range_start = $element.'-01-01';
-			$range_end = $element.'-12-31';
+		$range = $this->check_date_formats($element);
+		if(null === $range) {
+			$range = $this->check_daterange_formats($element);
 		}
-		elseif('past' === $element) {
-			// get only events in the past
-			$range_start = '0000-01-01';
-			$range_end = date('Y-m-d', current_time('timestamp')-86400); // previous day (86400 seconds = 1*24*60*60 = 1 day))
+		if(null === $range) {
+			//set to standard (upcoming)
+			$range = $this->get_date_range($element, $this->options->daterange_formats['upcoming']);
 		}
-		else {  // upcoming
-			// get only events from today and in the future
-			$range_start = date('Y-m-d', current_time('timestamp'));
-			$range_end = '9999-12-31';
-		}
-		return '(end_date >= "'.$range_start.'" AND start_date <= "'.$range_end.'")';
+		return '(end_date >= "'.$range[0].'" AND start_date <= "'.$range[1].'")';
 	}
 
 	private function sql_cat_filter ($element) {
 		return 'categories LIKE "%|'.$element.'|%"';
+	}
+
+	private function check_date_formats($element) {
+		foreach($this->options->date_formats as $date_type) {
+			if(preg_match('@'.$date_type['regex'].'@', $element)) {
+				return $this->get_date_range($element, $date_type);
+			}
+		}
+		return null;
+	}
+
+	private function check_daterange_formats($element) {
+		foreach($this->options->daterange_formats as $key => $daterange_type) {
+			if(preg_match('@'.$daterange_type['regex'].'@', $element)) {
+				//check for date_range which requires special handling
+				if('date_range' == $key) {
+					$sep_pos = strpos($element, "~");
+					$startrange = $this->check_date_range(substr($element, 0, $sep_pos));
+					$endrange = $this->check_date_range(substr($element, $sep_pos+1));
+					return array($startrange[0], $endrange[1]);
+				}
+				return $this->get_date_range($element, $daterange_type);
+			}
+		}
+		return null;
+	}
+
+	private function get_date_range($element, &$range_type) {
+		// range start
+		if(substr($range_type['start'], 0, 8) == '--func--') {
+			eval('$range[0] = '.substr($range_type['start'], 8));
+		}
+		else {
+			$range[0] = str_replace('%v%', $element, $range_type['start']);
+		}
+		// range end
+		if(substr($range_type['end'], 0, 8) == '--func--') {
+			eval('$range[1] = '.substr($range_type['end'], 8));
+		}
+		else {
+			$range[1] = str_replace('%v%', $element, $range_type['end']);
+		}
+		return $range;
 	}
 
 	/** ************************************************************************************************************

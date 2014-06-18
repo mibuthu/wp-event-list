@@ -53,7 +53,8 @@ class SC_Event_List {
 			                            'std_val' => 'all',
 			                            'desc'    => 'This attribute specifies the dates and date ranges of which events are displayed. The standard is "all" to show all events.<br />
 			                                          Filtered events according to date_filter value are not available in the event list.<br />
-			                                          Specify a year or a list of years separated by a comma "," e.g. "2014,2015,2016".<br />
+			                                          You can find all available values with a description and examples in "Available Date Formats" and "Available Date Range Formats" below.<br />
+			                                          See "Filter Syntax" description if you want to define complex filters.<br />
 			                                          When you only use OR connections (no AND connection) the years selection in the filterbar will also be filtered accordingly.'),
 
 			'cat_filter'       => array('val'     => 'all<br />category slugs',
@@ -345,7 +346,7 @@ class SC_Event_List {
 			$out .= '<div class="event-cat">'.esc_attr($this->categories->get_category_string($event->categories)).'</div>';
 		}
 		if( $this->is_visible( $a['show_details'] ) ) {
-			$out .= '<div class="event-details">'.$this->db->truncate(do_shortcode($event->details), $a['details_length'], $this->single_event).'</div>';
+			$out .= '<div class="event-details">'.$this->db->truncate(do_shortcode(wpautop($event->details)), $a['details_length'], $this->single_event).'</div>';
 		}
 		$out .= '</div>
 				</li>';
