@@ -241,13 +241,14 @@ class SC_Event_List {
 		return $out;
 	}
 
-	private function html_event_details( &$a ) {
-		$event = $this->db->get_event( $a['event_id'] );
+	private function html_event_details(&$a) {
+		$event = $this->db->get_event($a['event_id']);
 		$out = $this->html_filterbar($a);
 		$out .= '
 			<h2>Event Information:</h2>
 			<ul class="single-event-view">';
-		$out .= $this->html_event( $event, $a );
+		$single_day_only = ($event->start_date == $event->end_date) ? true : false;
+		$out .= $this->html_event($event, $a, $single_day_only);
 		$out .= '</ul>';
 		return $out;
 	}
