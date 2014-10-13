@@ -81,7 +81,6 @@ class EL_Options {
 			                                 'type'    => 'text',
 			                                 'std_val' => '',
 			                                 'label'   => __('Date format in edit form'),
-			                                 'caption' => __('Specific date format in new/edit event form'),
 			                                 'desc'    => __('This option sets a specific date format for the event date fields in the new/edit event form.<br />
 			                                                  The standard is an empty string to use the wordpress standard setting.<br />
 			                                                  All available options to specify the format can be found <a href="http://php.net/manual/en/function.date.php" target="_blank">here</a>')),
