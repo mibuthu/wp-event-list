@@ -42,7 +42,7 @@ class EL_Filterbar {
 				<div class="filterbar subsubsub">';
 		// prepare filterbar-items
 		//split 3 section (left, center, right) seperated by semicolon
-		$sections = explode(";", $args['filterbar_items']);
+		$sections = explode(";", html_entity_decode($args['filterbar_items']));
 		$section_align = array('left', 'center', 'right');
 		for($i=0; $i<sizeof($sections) && $i<3; $i++) {
 			if(strlen($sections[$i]) > 0) {
