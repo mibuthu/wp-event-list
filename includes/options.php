@@ -104,7 +104,7 @@ class EL_Options {
 
 			'el_head_feed_link'     => array('section' => 'feed',
 			                                 'type'    => 'checkbox',
-			                                 'std_val' => '',
+			                                 'std_val' => '1',
 			                                 'label'   => __('Add RSS feed link in head'),
 			                                 'caption' => __('Add RSS feed link in the html head'),
 			                                 'desc'    => __('This option adds a RSS feed in the html head for the events.<br />
