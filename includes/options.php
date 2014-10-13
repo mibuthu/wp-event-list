@@ -93,6 +93,13 @@ class EL_Options {
 			                                 'desc'    => __('This option activates a RSS feed for the events.<br />
 			                                                  You have to enable this option if you want to use one of the RSS feed features.')),
 
+			'el_feed_name'          => array('section' => 'feed',
+			                                 'type'    => 'text',
+			                                 'std_val' => 'eventlist',
+			                                 'label'   => __('Feed name'),
+			                                 'desc'    => __('This options sets the feed name. The standard value is "eventlist".<br />
+			                                                  This name will be used in the feed url (e.g. <code>domain.com/?feed=eventlist</code> or <code>domain.com/feed/eventlist</code> for an installation with permalinks')),
+
 			'el_feed_upcoming_only' => array('section' => 'feed',
 			                                 'type'    => 'checkbox',
 			                                 'std_val' => '',

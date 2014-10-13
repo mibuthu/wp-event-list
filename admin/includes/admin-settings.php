@@ -31,10 +31,17 @@ class EL_Admin_Settings {
 			wp_die(__('You do not have sufficient permissions to access this page.'));
 		}
 		$out = '';
+		// check for changed settings
 		if(isset($_GET['settings-updated'])) {
+			// show "settings saved" message
 			$out .= '<div id="message" class="updated">
 				<p><strong>'.__('Settings saved.').'</strong></p>
 			</div>';
+			// check feed rewrite status and update it if required
+			if('feed' == $_GET['tab']) {
+				require_once(EL_PATH.'includes/feed.php');
+				EL_Feed::get_instance()->update_feed_rewrite_status();
+			}
 		}
 
 		// normal output
