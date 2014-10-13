@@ -100,6 +100,13 @@ class EL_Options {
 			                                 'desc'    => __('This options sets the feed name. The standard value is "eventlist".<br />
 			                                                  This name will be used in the feed url (e.g. <code>domain.com/?feed=eventlist</code> or <code>domain.com/feed/eventlist</code> for an installation with permalinks')),
 
+			'el_feed_description'   => array('section' => 'feed',
+			                                 'type'    => 'text',
+			                                 'std_val' => 'Eventlist Feed',
+			                                 'label'   => __('Feed Description'),
+			                                 'desc'    => __('This options sets the feed description. The standard value is "Eventlist Feed".<br />
+			                                                  This description will be used in the title for the feed link in the html head and for the description in the feed itself.')),
+
 			'el_feed_upcoming_only' => array('section' => 'feed',
 			                                 'type'    => 'checkbox',
 			                                 'std_val' => '',

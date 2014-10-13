@@ -36,7 +36,7 @@ class EL_Feed {
 	}
 
 	public function print_head_feed_link() {
-		echo '<link rel="alternate" type="application/rss+xml" title="'.get_bloginfo_rss('name').' &raquo; Eventlist Feed" href="'.$this->eventlist_feed_url().'" />';
+		echo '<link rel="alternate" type="application/rss+xml" title="'.get_bloginfo_rss('name').' &raquo; '.$this->options->get('el_feed_description').'" href="'.$this->eventlist_feed_url().'" />';
 	}
 
 	public function print_eventlist_feed() {
@@ -58,7 +58,7 @@ class EL_Feed {
 			<title>'.get_bloginfo_rss('name').'</title>
 			<atom:link href="'.apply_filters('self_link', get_bloginfo()).'" rel="self" type="application/rss+xml" />
 			<link>'.get_bloginfo_rss('url').'</link>
-			<description>'.__('Eventlist').'</description>
+			<description>'.$this->options->get('el_feed_description').'</description>
 			<lastBuildDate>'.mysql2date('D, d M Y H:i:s +0000', get_lastpostmodified('GMT'), false).'</lastBuildDate>
 			<language>'.get_option('rss_language').'</language>
 			<sy:updatePeriod>'.apply_filters('rss_update_period', 'hourly').'</sy:updatePeriod>
