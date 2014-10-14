@@ -63,10 +63,11 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 2. Admin page: New/edit event form
 3. Admin page: Categories
 4. Admin page: Settings (general tab)
-5. Admin page: Settings (feed tab)
-6. Admin page: About page with help and shortcode attributes list
-7. Admin page: Widget with the available options
-8. Example page created with [event-list] shortcode
+5. Admin page: Settings (admin page tab)
+6. Admin page: Settings (feed tab)
+7. Admin page: About page with help and shortcode attributes list
+8. Admin page: Widget with the available options
+9. Example page created with [event-list] shortcode
 
 
 == Changelog ==
