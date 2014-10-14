@@ -95,7 +95,7 @@ class Event_List {
 
 	public function print_styles() {
 		global $post;
-		if(is_active_widget(null, null, 'event_list_widget') || strstr($post->post_content, '[event-list')) {
+		if(is_active_widget(null, null, 'event_list_widget') || (is_object($post) && strstr($post->post_content, '[event-list'))) {
 			$this->enqueue_styles();
 		}
 	}
