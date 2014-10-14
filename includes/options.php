@@ -81,7 +81,6 @@ class EL_Options {
 			                                 'type'    => 'text',
 			                                 'std_val' => '',
 			                                 'label'   => __('Date format in edit form'),
-			                                 'caption' => __('Specific date format in new/edit event form'),
 			                                 'desc'    => __('This option sets a specific date format for the event date fields in the new/edit event form.<br />
 			                                                  The standard is an empty string to use the wordpress standard setting.<br />
 			                                                  All available options to specify the format can be found <a href="http://php.net/manual/en/function.date.php" target="_blank">here</a>')),
@@ -94,6 +93,20 @@ class EL_Options {
 			                                 'desc'    => __('This option activates a RSS feed for the events.<br />
 			                                                  You have to enable this option if you want to use one of the RSS feed features.')),
 
+			'el_feed_name'          => array('section' => 'feed',
+			                                 'type'    => 'text',
+			                                 'std_val' => 'eventlist',
+			                                 'label'   => __('Feed name'),
+			                                 'desc'    => __('This options sets the feed name. The standard value is "eventlist".<br />
+			                                                  This name will be used in the feed url (e.g. <code>domain.com/?feed=eventlist</code> or <code>domain.com/feed/eventlist</code> for an installation with permalinks')),
+
+			'el_feed_description'   => array('section' => 'feed',
+			                                 'type'    => 'text',
+			                                 'std_val' => 'Eventlist Feed',
+			                                 'label'   => __('Feed Description'),
+			                                 'desc'    => __('This options sets the feed description. The standard value is "Eventlist Feed".<br />
+			                                                  This description will be used in the title for the feed link in the html head and for the description in the feed itself.')),
+
 			'el_feed_upcoming_only' => array('section' => 'feed',
 			                                 'type'    => 'checkbox',
 			                                 'std_val' => '',
@@ -104,7 +117,7 @@ class EL_Options {
 
 			'el_head_feed_link'     => array('section' => 'feed',
 			                                 'type'    => 'checkbox',
-			                                 'std_val' => '',
+			                                 'std_val' => '1',
 			                                 'label'   => __('Add RSS feed link in head'),
 			                                 'caption' => __('Add RSS feed link in the html head'),
 			                                 'desc'    => __('This option adds a RSS feed in the html head for the events.<br />

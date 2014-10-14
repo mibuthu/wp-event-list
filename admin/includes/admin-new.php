@@ -38,7 +38,10 @@ class EL_Admin_New {
 			wp_die(__('You do not have sufficient permissions to access this page.'));
 		}
 		$out = '<div class="wrap">
-				<div id="icon-edit-pages" class="icon32"><br /></div><h2>Add New Event</h2>';
+				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.__('Add New Event').'</h2>';
+		if($this->is_duplicate) {
+			$out .= '<span style="color:silver">('.sprintf(__('Duplicate of event id:%d'), $_GET['id']).')</span>';
+		}
 		$out .= $this->edit_event();
 		$out .= '</div>';
 		echo $out;

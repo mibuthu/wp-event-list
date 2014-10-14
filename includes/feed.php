@@ -36,7 +36,7 @@ class EL_Feed {
 	}
 
 	public function print_head_feed_link() {
-		echo '<link rel="alternate" type="application/rss+xml" title="'.get_bloginfo_rss('name').' &raquo; Eventlist Feed" href="'.$this->eventlist_feed_url().'" />';
+		echo '<link rel="alternate" type="application/rss+xml" title="'.get_bloginfo_rss('name').' &raquo; '.$this->options->get('el_feed_description').'" href="'.$this->eventlist_feed_url().'" />';
 	}
 
 	public function print_eventlist_feed() {
@@ -58,7 +58,7 @@ class EL_Feed {
 			<title>'.get_bloginfo_rss('name').'</title>
 			<atom:link href="'.apply_filters('self_link', get_bloginfo()).'" rel="self" type="application/rss+xml" />
 			<link>'.get_bloginfo_rss('url').'</link>
-			<description>'.__('Eventlist').'</description>
+			<description>'.$this->options->get('el_feed_description').'</description>
 			<lastBuildDate>'.mysql2date('D, d M Y H:i:s +0000', get_lastpostmodified('GMT'), false).'</lastBuildDate>
 			<language>'.get_option('rss_language').'</language>
 			<sy:updatePeriod>'.apply_filters('rss_update_period', 'hourly').'</sy:updatePeriod>
@@ -85,26 +85,30 @@ class EL_Feed {
 	}
 
 	public function add_eventlist_feed() {
-		global $wp_rewrite;
-		add_feed('eventlist', array(&$this, 'print_eventlist_feed'));
-		add_action('generate_rewrite_rules', array(&$this, 'eventlist_feed_rewrite'));
-		$wp_rewrite->flush_rules();
-	}
-
-	public function eventlist_feed_rewrite() {
-		global $wp_rewrite;
-		$feed_rules = array('feed/(.+)' => 'index.php?feed='.$wp_rewrite->preg_index(1));
-		$wp_rewrite->rules = $feed_rules + $wp_rewrite->rules;
+		add_feed($this->options->get('el_feed_name'), array(&$this, 'print_eventlist_feed'));
 	}
 
 	public function eventlist_feed_url() {
 		if(get_option('permalink_structure')) {
-			$feed_link = get_bloginfo('url').'/feed/eventlist';
+			$feed_link = get_bloginfo('url').'/feed/';
 		}
 		else {
-			$feed_link = get_bloginfo('url').'/?feed=eventlist';
+			$feed_link = get_bloginfo('url').'/?feed=';
 		}
-		return $feed_link;
+		return $feed_link.$this->options->get('el_feed_name');
+	}
+
+	public function update_feed_rewrite_status() {
+		$feeds = array_keys(get_option('rewrite_rules'), 'index.php?&feed=$matches[1]');
+		$feed_rewrite_status = (0 < count(preg_grep('@[(\|]'.$this->options->get('el_feed_name').'[\|)]@', $feeds))) ? true : false;
+		if('1' == $this->options->get('el_enable_feed') && !$feed_rewrite_status) {
+			// add eventlist feed to rewrite rules
+			flush_rewrite_rules(false);
+		}
+		elseif('1' != $this->options->get('el_enable_feed') && $feed_rewrite_status) {
+			// remove eventlist feed from rewrite rules
+			flush_rewrite_rules(false);
+		}
 	}
 
 	private function format_date($start_date, $end_date) {

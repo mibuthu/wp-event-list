@@ -42,7 +42,7 @@ class EL_Filterbar {
 				<div class="filterbar subsubsub">';
 		// prepare filterbar-items
 		//split 3 section (left, center, right) seperated by semicolon
-		$sections = explode(";", $args['filterbar_items']);
+		$sections = explode(";", html_entity_decode($args['filterbar_items']));
 		$section_align = array('left', 'center', 'right');
 		for($i=0; $i<sizeof($sections) && $i<3; $i++) {
 			if(strlen($sections[$i]) > 0) {
@@ -67,6 +67,9 @@ class EL_Filterbar {
 						case 'years':
 							$out .= $this->show_years($url, $args, $item_array[1], 'std', $options);
 							break;
+						case 'daterange':
+							$out .= $this->show_daterange($url, $args, $item_array[1], 'std', $options);
+							break;
 						case 'cats':
 							$out .= $this->show_cats($url, $args, $item_array[1], 'std', $options);
 							break;
@@ -81,17 +84,7 @@ class EL_Filterbar {
 		$out .= '</div>';
 		return $out;
 	}
-/*	TODO: implementation of show_all and show_upcoming
-	private function show_all() {
-		$elements[] = $this->all_element();
-		return $this->show_hlist($elements);
-	}
 
-	private function show_upcoming() {
-		$elements[] = $this->upcoming_element();
-		return $this->show_hlist($elements);
-	}
-*/
 	public function show_years($url, &$args, $type='hlist', $subtype='std', $options=array()) {
 		$args = $this->parse_args($args);
 		$argname = 'date'.$args['sc_id_for_url'];
@@ -134,6 +127,48 @@ class EL_Filterbar {
 			$actual = null;
 		}
 		elseif('all' === $args['actual_date'] || 'upcoming' === $args['actual_date'] || 'past' === $args['actual_date'] || is_numeric($args['actual_date'])) {
+			$actual = $args['actual_date'];
+		}
+		else {
+			$actual = null;
+		}
+		if('dropdown' === $type) {
+			return $this->show_dropdown($elements, $argname, $subtype, $actual, $args['sc_id_for_url']);
+		}
+		else {
+			return $this->show_hlist($elements, $url, $argname, $actual);
+		}
+	}
+
+	public function show_daterange($url, &$args, $type='hlist', $subtype='std', $options) {
+		$args = $this->parse_args($args);
+		$argname = 'date'.$args['sc_id_for_url'];
+		// prepare displayed elements
+		if(isset($options['item_order'])) {
+			$items = explode('&', $options['item_order']);
+		}
+		else {
+			$items = array('all', 'upcoming', 'past');
+		}
+		$elements = array();
+		foreach($items as $item) {
+			// show all
+			switch($item) {
+				case 'all':
+					$elements[] = $this->all_element();
+					break;
+				case 'upcoming':
+					$elements[] = $this->upcoming_element();
+					break;
+				case 'past':
+					$elements[] = $this->past_element();
+			}
+		}
+		// set actual selection
+		if(is_numeric($args['event_id'])) {
+			$actual = null;
+		}
+		elseif('all' === $args['actual_date'] || 'upcoming' === $args['actual_date'] || 'past' === $args['actual_date']) {
 			$actual = $args['actual_date'];
 		}
 		else {

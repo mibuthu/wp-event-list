@@ -76,21 +76,22 @@ class SC_Event_List {
 			                                          Choose "false" to always hide and "true" to always show the navigation.<br />
 			                                          With "event_list_only" the filterbar is only visible in the event list and with "single_event_only" only for a single event'),
 
-			'filterbar_items'  => array('val'     => 'years_hlist<br />years_dropdown<br />cats_hlist<br />cats_dropdown<br />reset_link',
+			'filterbar_items'  => array('val'     => 'years_hlist<br />years_dropdown<br />daterange_hlist<br />daterange_dropdown<br />cats_hlist<br />cats_dropdown<br />reset_link',
 			                            'std_val' => 'years_hlist',
 			                            'desc'    => 'This attribute specifies the available items in the filterbar. This options are only valid if the filterbar is displayed (see show_filterbar attribute).<br /><br />
 			                                          Find below an overview of the available filterbar items and their options:<br />
 			                                          <small><table class="el-filterbar-table">
 			                                              <th class="el-filterbar-item">filterbar item</th><th class="el-filterbar-desc">description</th><th class="el-filterbar-options">item options</th><th class="el-filterbar-values">option values</th><th class="el-filterbar-default">default value</th><th class="el-filterbar-desc2">option description</th></thead>
 			                                              <tr><td>years</td><td>Show a list of all available years. Additional there are some special entries available (see item options).</td><td>show_all<br />show_upcoming<br />show_past<br />years_order</td><td>true | false<br />true | false<br />true | false<br />desc | asc</td><td>true<br />true<br />false<br />desc</td><td>Add an entry to show all events.<br />Add an entry to show all upcoming events.<br />Add an entry to show events in the past.<br />Set descending or ascending order of year entries.</tr>
+			                                              <tr><td>daterange</td><td>With this item you can display the special entries "all", "upcoming" and "past". You can use all or only some of the available values and you can specify their order.</td><td>item_order</td><td>all | upcoming | past</td><td>all&amp;upcoming&amp;past</td><td>Specifies the displayed values and their order. The items must be seperated by "&amp;".</td></tr>
 			                                              <tr><td>cats</td><td>Show a list of all available categories.</td><td>show_all</td><td>true | false</td><td>true</td><td>Add an entry to show events from all categories.</td></tr>
 			                                              <tr><td>reset</td><td>Only a link to reset the eventlist filter to standard.</td><td>caption</td><td>any text</td><td>Reset</td><td>Set the caption of the link.</td></tr>
 			                                          </table></small>
 			                                          Find below an overview of the available filterbar display options:<br />
 			                                          <small><table class="el-filterbar-table">
 			                                             <th class="el-filterbar-doption">display option</th><th class="el-filterbar-desc3">description</th><th class="el-filterbar-for">available for</th></thead>
-			                                             <tr><td>hlist</td><td>"hlist" shows a horizonal list seperated by "|" with a link to each item</td><td>years, cat</td></tr>
-			                                             <tr><td>dropdown</td><td>"dropdown" shows a select box where an item can be choosen. After the selection of an item the page is reloaded via javascript to show the filtered events.</td><td>years, cat</td></tr>
+			                                             <tr><td>hlist</td><td>"hlist" shows a horizonal list seperated by "|" with a link to each item</td><td>years, daterange, cats</td></tr>
+			                                             <tr><td>dropdown</td><td>"dropdown" shows a select box where an item can be choosen. After the selection of an item the page is reloaded via javascript to show the filtered events.</td><td>years, daterange, cats</td></tr>
 			                                             <tr><td>link</td><td>"link" shows a simple link which can be clicked.</td><td>reset</td></tr>
 			                                          </table></small>
 			                                          <p>Find below some declaration examples with descriptions:</p>
@@ -241,13 +242,14 @@ class SC_Event_List {
 		return $out;
 	}
 
-	private function html_event_details( &$a ) {
-		$event = $this->db->get_event( $a['event_id'] );
+	private function html_event_details(&$a) {
+		$event = $this->db->get_event($a['event_id']);
 		$out = $this->html_filterbar($a);
 		$out .= '
 			<h2>Event Information:</h2>
 			<ul class="single-event-view">';
-		$out .= $this->html_event( $event, $a );
+		$single_day_only = ($event->start_date == $event->end_date) ? true : false;
+		$out .= $this->html_event($event, $a, $single_day_only);
 		$out .= '</ul>';
 		return $out;
 	}
