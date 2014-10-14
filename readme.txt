@@ -3,8 +3,8 @@ Contributors: mibuthu
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W54LNZMWF9KW2
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, filter, admin, attribute, widget, sidebar, feed, rss
 Requires at least: 3.3
-Tested up to: 3.9.1
-Stable tag: 0.6.7
+Tested up to: 4.0
+Stable tag: 0.6.8
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -71,6 +71,14 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 
 
 == Changelog ==
+
+= 0.6.8 (2014-10-14) =
+* added filterbar item "daterange" (to view all, upcoming and past)
+* added options to change feed name and feed description
+* added "Duplicate" and "Add new" button in edit event view
+* corrected embedding of feed (should solve some problems and increase speed)
+* corrected view of event details for single day events
+* changed standard value for feed link in html head to true
 
 = 0.6.7 (2014-06-18) =
 * added month and day support in date_filter
