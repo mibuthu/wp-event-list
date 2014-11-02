@@ -296,8 +296,10 @@ class SC_Event_List {
 
 	private function html_event( &$event, &$a, $single_day_only=false ) {
 		static $last_event_startdate=null, $last_event_enddate=null;
+		$cat_string = $this->categories->get_category_string($event->categories, 'slug', ' ');
+		// add class with each category slug
 		$out = '
-			 	<li class="event">';
+			 	<li class="event '.$cat_string.'">';
 		// event date
 		if( '1' !== $this->options->get( 'el_date_once_per_day' ) || $last_event_startdate !== $event->start_date || $last_event_enddate !== $event->end_date ) {
 			$out .= $this->html_fulldate( $event->start_date, $event->end_date, $single_day_only );

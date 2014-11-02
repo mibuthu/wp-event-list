@@ -280,16 +280,21 @@ class EL_Categories {
 		return $this->cat_array[$slug];
 	}
 
-	public function get_category_string($slug_text) {
+	public function get_category_string($slug_text, $type='name', $glue=', ') {
 		if(2 >= strlen($slug_text)) {
 			return '';
 		}
 		$slug_array = explode('|', substr( $slug_text, 1, -1));
-		$name_array = array();
-		foreach($slug_array as $slug) {
-			$name_array[] = $this->cat_array[$slug]['name'];
+		if('slug' == $type) {
+			$catlist = $slug_array;
 		}
-		sort($name_array, SORT_STRING);
-		return implode(', ', $name_array);
+		else { // use cat name
+			$catlist = array();
+			foreach($slug_array as $slug) {
+				$catlist[] = $this->cat_array[$slug]['name'];
+			}
+			sort($catlist, SORT_STRING);
+		}
+		return implode($glue, $catlist);
 	}
 }
