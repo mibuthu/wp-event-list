@@ -53,7 +53,7 @@ Insert the shortcode [event-list] in your page or post. You can modify the outpu
 Event List uses the built-in Wordpress WYSIWYG editor. It's exactly the same process like in creating Posts or Pages.
 
 = Can I call the shortcode directly via php e.g. for my own template, theme or plugin? =
-Yes, you can create an instance of the "SC_Event_List" class which is located in the plugin folder under "includes/sc_event-list.php" and call the function show_html($atts).With $atts you can specify all the shortcode attributes you require.
+Yes, you can create an instance of the "SC_Event_List" class which is located in the plugin folder under "includes/sc_event-list.php" and call the function show_html($atts). With $atts you can specify all the shortcode attributes you require.
 Another possibility would be to call the wordpress function "do_shortcode()".
 
 
