@@ -161,7 +161,12 @@ class EL_Filterbar {
 		foreach($event_months as $mon) {
 			$elements[] = array('slug' => $mon->a, 'name' => $mon->a);
 		}
-		return $this->show_dropdown($elements, $argname, $subtype, $actual, $args['sc_id_for_url']);
+		if('hlist' === $type) {
+			return $this->show_hlist($elements, $url, $argname, $actual);
+		}
+		else {
+			return $this->show_dropdown($elements, $argname, $subtype, $actual, $args['sc_id_for_url']);
+		}
 	}
 
 	public function show_daterange($url, &$args, $type='hlist', $subtype='std', $options) {
