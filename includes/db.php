@@ -66,6 +66,12 @@ class EL_Db {
 		$sql = 'SELECT * FROM '.$this->table.' WHERE id = '.$id.' LIMIT 1';
 		return $wpdb->get_row( $sql );
 	}
+	
+	public function get_event_months() {
+		global $wpdb;
+		$sql = 'SELECT DISTINCT substr(`start_date`,1,7)as a FROM '.$this->table.' WHERE 1 order by a asc';
+		return $wpdb->get_results($sql);
+	}
 
 	public function get_event_date( $event ) {
 		global $wpdb;
