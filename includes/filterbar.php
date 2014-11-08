@@ -143,6 +143,27 @@ class EL_Filterbar {
 		}
 	}
 
+
+	public function show_months($url, &$args, $type='dropdown', $subtype='std', $options=array()) {
+		$args = $this->parse_args($args);
+		$argname = 'date'.$args['sc_id_for_url'];
+		// set actual selection
+		if(is_numeric($args['event_id'])) {
+			$actual = null;
+		}
+		elseif('all' === $args['actual_date'] || 'upcoming' === $args['actual_date'] || 'past' === $args['actual_date']) {
+			$actual = $args['actual_date'];
+		}
+		else {
+			$actual = $args["actual_date"];//null;
+		}
+		$event_months = $this->db->get_event_months();
+		foreach($event_months as $mon) {
+			$elements[] = array('slug' => $mon->a, 'name' => $mon->a);
+		}
+		return $this->show_dropdown($elements, $argname, $subtype, $actual, $args['sc_id_for_url']);
+	}
+
 	public function show_daterange($url, &$args, $type='hlist', $subtype='std', $options) {
 		$args = $this->parse_args($args);
 		$argname = 'date'.$args['sc_id_for_url'];
@@ -216,29 +237,6 @@ class EL_Filterbar {
 		else {
 			return $this->show_dropdown($elements, $argname, $subtype, $actual, $args['sc_id_for_url']);
 		}
-	}
-
-	public function show_months($url, &$args, $type='dropdown', $subtype='std', $options=array()) {
-		$args = $this->parse_args($args);
-		$argname = 'date'.$args['sc_id_for_url'];
-		
-		// set actual selection
-		if(is_numeric($args['event_id'])) {
-			$actual = null;
-		}
-		elseif('all' === $args['actual_date'] || 'upcoming' === $args['actual_date'] || 'past' === $args['actual_date']) {
-			$actual = $args['actual_date'];
-		}
-		else {
-			$actual = $args["actual_date"];//null;
-		}
-
-		$event_months = $this->db->get_event_months();
-		foreach($event_months as $mon) {
-		$elements[] = array('slug' => $mon->a, 'name' => $mon->a);
-		}
-	
-		return $this->show_dropdown($elements, $argname, $subtype, $actual, $args['sc_id_for_url']);
 	}
 
 	public function show_reset($url, $args, $options) {
