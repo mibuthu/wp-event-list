@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, filter, admin, attribute, widget, sidebar, feed, rss
 Requires at least: 3.3
 Tested up to: 4.0
-Stable tag: 0.6.8
+Stable tag: 0.6.9
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -71,6 +71,11 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 
 
 == Changelog ==
+
+= 0.6.9 (2014-11-09) =
+* added months option in filterbar items
+* added a class for each category slug in each event li element
+* fixed error due to wrong function name when using daterange in date filter
 
 = 0.6.8 (2014-10-14) =
 * added filterbar item "daterange" (to view all, upcoming and past)
