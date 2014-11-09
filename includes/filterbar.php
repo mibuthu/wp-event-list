@@ -73,6 +73,9 @@ class EL_Filterbar {
 						case 'cats':
 							$out .= $this->show_cats($url, $args, $item_array[1], 'std', $options);
 							break;
+						case 'months':
+							$out .= $this->show_months($url, $args, $item_array[1], 'std', $options);
+							break;
 						case 'reset':
 							$out .= $this->show_reset($url, $args, $options);
 					}
@@ -137,6 +140,32 @@ class EL_Filterbar {
 		}
 		else {
 			return $this->show_hlist($elements, $url, $argname, $actual);
+		}
+	}
+
+
+	public function show_months($url, &$args, $type='dropdown', $subtype='std', $options=array()) {
+		$args = $this->parse_args($args);
+		$argname = 'date'.$args['sc_id_for_url'];
+		// set actual selection
+		if(is_numeric($args['event_id'])) {
+			$actual = null;
+		}
+		elseif('all' === $args['actual_date'] || 'upcoming' === $args['actual_date'] || 'past' === $args['actual_date']) {
+			$actual = $args['actual_date'];
+		}
+		else {
+			$actual = $args["actual_date"];//null;
+		}
+		$event_months = $this->db->get_event_months();
+		foreach($event_months as $mon) {
+			$elements[] = array('slug' => $mon->a, 'name' => $mon->a);
+		}
+		if('hlist' === $type) {
+			return $this->show_hlist($elements, $url, $argname, $actual);
+		}
+		else {
+			return $this->show_dropdown($elements, $argname, $subtype, $actual, $args['sc_id_for_url']);
 		}
 	}
 

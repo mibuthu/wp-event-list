@@ -66,6 +66,12 @@ class EL_Db {
 		$sql = 'SELECT * FROM '.$this->table.' WHERE id = '.$id.' LIMIT 1';
 		return $wpdb->get_row( $sql );
 	}
+	
+	public function get_event_months() {
+		global $wpdb;
+		$sql = 'SELECT DISTINCT substr(`start_date`,1,7)as a FROM '.$this->table.' WHERE 1 order by a asc';
+		return $wpdb->get_results($sql);
+	}
 
 	public function get_event_date( $event ) {
 		global $wpdb;
@@ -263,9 +269,9 @@ class EL_Db {
 	}
 
 	private function sql_date_filter($element) {
-		$range = $this->check_date_formats($element);
+		$range = $this->check_date_format($element);
 		if(null === $range) {
-			$range = $this->check_daterange_formats($element);
+			$range = $this->check_daterange_format($element);
 		}
 		if(null === $range) {
 			//set to standard (upcoming)
@@ -278,7 +284,7 @@ class EL_Db {
 		return 'categories LIKE "%|'.$element.'|%"';
 	}
 
-	private function check_date_formats($element) {
+	private function check_date_format($element) {
 		foreach($this->options->date_formats as $date_type) {
 			if(preg_match('@'.$date_type['regex'].'@', $element)) {
 				return $this->get_date_range($element, $date_type);
@@ -287,14 +293,14 @@ class EL_Db {
 		return null;
 	}
 
-	private function check_daterange_formats($element) {
+	private function check_daterange_format($element) {
 		foreach($this->options->daterange_formats as $key => $daterange_type) {
 			if(preg_match('@'.$daterange_type['regex'].'@', $element)) {
 				//check for date_range which requires special handling
 				if('date_range' == $key) {
 					$sep_pos = strpos($element, "~");
-					$startrange = $this->check_date_range(substr($element, 0, $sep_pos));
-					$endrange = $this->check_date_range(substr($element, $sep_pos+1));
+					$startrange = $this->check_date_format(substr($element, 0, $sep_pos));
+					$endrange = $this->check_date_format(substr($element, $sep_pos+1));
 					return array($startrange[0], $endrange[1]);
 				}
 				return $this->get_date_range($element, $daterange_type);
