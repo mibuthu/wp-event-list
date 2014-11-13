@@ -42,7 +42,7 @@ class EL_Admin {
 	 */
 	public function register_pages() {
 		// Main Menu page
-		add_menu_page('Event List', 'Event List', 'edit_posts', 'el_admin_main', array(&$this, 'show_main_page'));
+		add_menu_page('Event List', 'Event List', 'edit_posts', 'el_admin_main', array(&$this, 'show_main_page'), EL_URL.'admin/images/calendar.png', '22.2');
 
 		// All Events subpage
 		$page = add_submenu_page('el_admin_main', 'Events', 'All Events', 'edit_posts', 'el_admin_main', array(&$this, 'show_main_page'));
