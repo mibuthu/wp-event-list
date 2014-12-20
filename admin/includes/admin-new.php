@@ -94,28 +94,28 @@ class EL_Admin_New {
 		$out .= '
 					<table class="form-table">
 					<tr>
-						<th><label>Event Title (required)</label></th>
+						<th><label>'.__('Title','eventlist').' ('.__('required','eventlist').')</label></th>
 						<td><input type="text" class="text form-required" name="title" id="title" value="'.str_replace('"', '&quot;', isset($event->title) ? $event->title : '').'" /></td>
 					</tr>
 					<tr>
-						<th><label>Event Date (required)</label></th>
+						<th><label>'.__('Date','eventlist').' ('.__('required','eventlist').')</label></th>
 						<td><input type="text" class="text datepicker form-required" name="start_date" id="start_date" value="'.date('Y-m-d', $start_date).'" />
 							<span id="end_date_area"> - <input type="text" class="text datepicker" name="end_date" id="end_date" value="'.date('Y-m-d', $end_date).'" /></span>
-							<label><input type="checkbox" name="multiday" id="multiday" value="1" /> Multi-Day Event</label>
+							<label><input type="checkbox" name="multiday" id="multiday" value="1" /> '.__('Multi-Day Event','eventlist').'</label>
 							<input type="hidden" id="sql_start_date" name="sql_start_date" value="" />
 							<input type="hidden" id="sql_end_date" name="sql_end_date" value="" />
 						</td>
 					</tr>
 					<tr>
-						<th><label>Event Time</label></th>
+						<th><label>'.__('Time','eventlist').'</label></th>
 						<td><input type="text" class="text" name="time" id="time" value="'.str_replace('"', '&quot;', isset($event->time) ? $event->time : '').'" /></td>
 					</tr>
 					<tr>
-						<th><label>Event Location</label></th>
+						<th><label>'.__('Location','eventlist').'</label></th>
 						<td><input type="text" class="text" name="location" id="location" value="'.str_replace('"', '&quot;', isset($event->location) ? $event->location : '').'" /></td>
 					</tr>
 					<tr>
-						<th><label>Event Details</label></th>
+						<th><label>'.__('Details','eventlist').'</label></th>
 						<td>';
 		$editor_settings = array('drag_drop_upload' => true,
 		                         'textarea_rows' => 20);

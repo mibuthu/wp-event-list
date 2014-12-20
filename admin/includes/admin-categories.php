@@ -47,7 +47,7 @@ class EL_Admin_Categories {
 
 		// normal output
 		$out.= '<div class="wrap">
-				<div id="icon-edit-pages" class="icon32"><br /></div><h2>Event List Categories</h2>
+				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.__('Event List Categories','eventlist').'</h2>
 				<div id="posttype-page" class="posttypediv">';
 		if('edit' === $action && isset($_GET['id'])) {
 			$out .=$this->show_edit_category_form(__('Edit Category','eventlist'), __('Update Category','eventlist'), $this->categories->get_category_data($_GET['id']));
