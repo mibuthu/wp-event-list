@@ -102,10 +102,10 @@ class EL_Admin_Main {
 	private function show_page_header($action, $editview=false) {
 		if($editview) {
 			$duplicate_link = add_query_arg(array('id'=>$_GET['id'], 'action'=>'copy'), '?page=el_admin_new');
-			$header = 'Edit Event <a href="'.$duplicate_link.'" class="add-new-h2">'.__('Duplicate','eventlist').'</a>';
+			$header = __('Edit Event','eventlist').' <a href="'.$duplicate_link.'" class="add-new-h2">'.__('Duplicate','eventlist').'</a>';
 		}
 		else {
-			$header = 'Events';
+			$header = __('Events', 'eventlist');
 		}
 		echo '
 			<div class="wrap">

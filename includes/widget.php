@@ -23,8 +23,8 @@ class EL_Widget extends WP_Widget {
 		// define all available items
 		$this->items = array(
 			'title' =>                array('type'          => 'text',
-			                                'std_value'     => __('Upcoming events','eventlist'),
-			                                'caption'       => __('Title:','eventlist'),
+			                                'std_value'     => __('Upcoming events','eventlist').':',
+			                                'caption'       => __('Title','eventlist'),
 			                                'caption_after' => null,
 			                                'tooltip'       => __('The title for the widget','eventlist'),
 			                                'form_style'    => null,
@@ -32,7 +32,7 @@ class EL_Widget extends WP_Widget {
 
 			'cat_filter' =>           array('type'          => 'text',
 			                                'std_value'     => 'all',
-			                                'caption'       => __('Category Filter:','eventlist'),
+			                                'caption'       => __('Category Filter','eventlist').':',
 			                                'caption_after' => null,
 			                                'tooltip'       => __('This attribute specifies the categories of which events are shown. The standard is \'all\' or an empty string to show all events. Specify a category slug or a list of category slugs to only show events of the specified categories. See description of the shortcode attribute "cat_filter" for detailed info about all possibilities.','eventlist'),
 			                                'form_style'    => 'margin:0 0 0.8em 0',
@@ -40,7 +40,7 @@ class EL_Widget extends WP_Widget {
 
 			'num_events' =>           array('type'          => 'text',
 			                                'std_value'     => '3',
-			                                'caption'       => __('Number of listed events:','eventlist'),
+			                                'caption'       => __('Number of listed events','eventlist').':',
 			                                'caption_after' => null,
 			                                'tooltip'       => __('The number of upcoming events to display','eventlist'),
 			                                'form_style'    => '',
@@ -96,7 +96,7 @@ class EL_Widget extends WP_Widget {
 
 			'url_to_page' =>          array('type'          => 'text',
 			                                'std_value'     => '',
-			                                'caption'       => __('URL to the linked eventlist page:','eventlist'),
+			                                'caption'       => __('URL to the linked eventlist page','eventlist').':',
 			                                'caption_after' => null,
 			                                'tooltip'       => __('This options specifies the url to the linked event-list page. This option is required if you want to use one of the options below.','eventlist'),
 			                                'form_style'    => 'margin:0 0 0.4em 0',
@@ -104,7 +104,7 @@ class EL_Widget extends WP_Widget {
 
 			'sc_id_for_url' =>        array('type'          => 'text',
 			                                'std_value'     => '1',
-			                                'caption'       => __('Shortcode ID on linked page:','eventlist'),
+			                                'caption'       => __('Shortcode ID on linked page','eventlist').':',
 			                                'caption_after' => null,
 			                                'tooltip'       => __('This option specifies the shortcode-id for the event-list on the linked page. Normally the standard value 1 is correct, you only have to change it if you use multiple event-list shortcodes on the linked page.','eventlist'),
 			                                'form_style'    => null,
@@ -128,7 +128,7 @@ class EL_Widget extends WP_Widget {
 
 			'link_to_page_caption' => array('type'          => 'text',
 			                                'std_value'     => __('show event-list page','eventlist'),
-			                                'caption'       => __('Caption for the link:','eventlist'),
+			                                'caption'       => __('Caption for the link','eventlist').':',
 			                                'caption_after' => null,
 			                                'tooltip'       => __('This option specifies the text for the link to the event-list page if the approriate option is selected.','eventlist'),
 			                                'form_style'    => 'margin:0 0 1em 2.5em',

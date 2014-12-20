@@ -26,9 +26,9 @@ class EL_Event_Table extends WP_List_Table {
 		global $status, $page;
 		//Set parent defaults
 		parent::__construct(array(
-			'singular'  => 'event',     //singular name of the listed records
-			'plural'    => 'events',    //plural name of the listed records
-			'ajax'      => false        //does this table support ajax?
+			'singular'  => __('event','eventlist'),   //singular name of the listed records
+			'plural'    => __('events','eventlist'),  //plural name of the listed records
+			'ajax'      => false                      //does this table support ajax?
 		));
 	}
 
@@ -68,9 +68,9 @@ class EL_Event_Table extends WP_List_Table {
 	protected function column_title($item) {
 		//Prepare Columns
 		$actions = array(
-			'edit'      => '<a href="?page='.$_REQUEST['page'].'&amp;id='.$item->id.'&amp;action=edit">Edit</a>',
-			'duplicate' => '<a href="?page=el_admin_new&amp;id='.$item->id.'&amp;action=copy">Duplicate</a>',
-			'delete'    => '<a href="#" onClick="eventlist_deleteEvent('.$item->id.');return false;">Delete</a>');
+			'edit'      => '<a href="?page='.$_REQUEST['page'].'&amp;id='.$item->id.'&amp;action=edit">'.__('Edit','eventlist').'</a>',
+			'duplicate' => '<a href="?page=el_admin_new&amp;id='.$item->id.'&amp;action=copy">'.__('Duplicate','eventlist').'</a>',
+			'delete'    => '<a href="#" onClick="eventlist_deleteEvent('.$item->id.');return false;">'.__('Delete','eventlist').'</a>');
 
 		//Return the title contents
 		return sprintf('<b>%1$s</b> <span style="color:silver">(id:%2$s)</span>%3$s',
@@ -105,7 +105,7 @@ class EL_Event_Table extends WP_List_Table {
 		return array(
 			'cb'          => '<input type="checkbox" />', //Render a checkbox instead of text
 			'date'        => __('Date','eventlist'),
-			'title'       => __('Event','eventlist'),
+			'title'       => __('Title','eventlist'),
 			'location'    => __('Location','eventlist'),
 			'details'     => __('Details','eventlist'),
 			'categories'  => __('Categories','eventlist'),
@@ -143,7 +143,7 @@ class EL_Event_Table extends WP_List_Table {
 	****************************************************************************/
 	public function get_bulk_actions() {
 		$actions = array(
-			'delete_bulk' => 'Delete'
+			'delete_bulk' => __('Delete','eventlist')
 		);
 		return $actions;
 	}
