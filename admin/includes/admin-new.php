@@ -35,12 +35,12 @@ class EL_Admin_New {
 
 	public function show_new() {
 		if(!current_user_can('edit_posts')) {
-			wp_die(__('You do not have sufficient permissions to access this page.'));
+			wp_die(__('You do not have sufficient permissions to access this page.','eventlist'));
 		}
 		$out = '<div class="wrap">
-				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.__('Add New Event').'</h2>';
+				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.__('Add New Event','eventlist').'</h2>';
 		if($this->is_duplicate) {
-			$out .= '<span style="color:silver">('.sprintf(__('Duplicate of event id:%d'), $_GET['id']).')</span>';
+			$out .= '<span style="color:silver">('.sprintf(__('Duplicate of event id:%d','eventlist'), $_GET['id']).')</span>';
 		}
 		$out .= $this->edit_event();
 		$out .= '</div>';
@@ -131,9 +131,9 @@ class EL_Admin_New {
 				</div>
 				<div id="postbox-container-1" class="postbox-container">
 				<div id="side-sortables" class="meta-box-sortables ui-sortable">';
-		add_meta_box('event-publish', __('Publish'), array(&$this, 'render_publish_metabox'), 'event-list');
+		add_meta_box('event-publish', __('Publish','eventlist'), array(&$this, 'render_publish_metabox'), 'event-list');
 		$metabox_args = isset($event->categories) ? array('event_cats' => $event->categories) : null;
-		add_meta_box('event-categories', __('Categories'), array(&$this, 'render_category_metabox'), 'event-list', 'advanced', 'default', $metabox_args);
+		add_meta_box('event-categories', __('Categories','eventlist'), array(&$this, 'render_category_metabox'), 'event-list', 'advanced', 'default', $metabox_args);
 		ob_start();
 			do_meta_boxes('event-list', 'advanced', null);
 			$out .= ob_get_contents();
@@ -148,9 +148,9 @@ class EL_Admin_New {
 	}
 
 	public function render_publish_metabox() {
-		$button_text = $this->is_new ? __('Publish') : __('Update');
+		$button_text = $this->is_new ? __('Publish','eventlist') : __('Update','eventlist');
 		$out = '<div class="submitbox">
-				<div id="delete-action"><a href="?page=el_admin_main" class="submitdelete deletion">'.__('Cancel').'</a></div>
+				<div id="delete-action"><a href="?page=el_admin_main" class="submitdelete deletion">'.__('Cancel','eventlist').'</a></div>
 				<div id="publishing-action"><input type="submit" class="button button-primary button-large" name="publish" value="'.$button_text.'" id="publish"></div>
 				<div class="clear"></div>
 			</div>';
@@ -163,7 +163,7 @@ class EL_Admin_New {
 				<div id="category-all" class="tabs-panel">';
 		$cat_array = $this->categories->get_cat_array('name', 'asc');
 		if(empty($cat_array)) {
-			$out .= __('No categories available.');
+			$out .= __('No categories available.','eventlist');
 		}
 		else {
 			$out .= '
@@ -200,16 +200,16 @@ class EL_Admin_New {
 				</div>';
 		// TODO: Adding new categories in edit event form
 		/*		<div id="category-adder" class="wp-hidden-children">
-					<h4><a id="category-add-toggle" href="#category-add" class="hide-if-no-js">'.__('+ Add New Category').'</a></h4>
+					<h4><a id="category-add-toggle" href="#category-add" class="hide-if-no-js">'.__('+ Add New Category','eventlist').'</a></h4>
 					<p id="category-add" class="category-add wp-hidden-child">
-						<label class="screen-reader-text" for="newcategory">'.__('Category Name').'</label>
+						<label class="screen-reader-text" for="newcategory">'.__('Category Name','eventlist').'</label>
 						<input type="text" name="newcategory" id="newcategory" class="form-required form-input-tip" value="" aria-required="true"/>
-						<input type="button" id="category-add-submit" class="button category-add-submit" value="'.__('Add Category').'" />
+						<input type="button" id="category-add-submit" class="button category-add-submit" value="'.__('Add Category','eventlist').'" />
 					</p>
 				</div>*/
 		$out .= '
 				<div id="category-manager">
-					<a id="category-manage-link" href="?page=el_admin_categories">'.__('Goto Category Settings').'</a>
+					<a id="category-manage-link" href="?page=el_admin_categories">'.__('Goto Category Settings','eventlist').'</a>
 				</div>
 				</div>';
 		echo $out;
