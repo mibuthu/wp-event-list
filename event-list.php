@@ -49,6 +49,8 @@ class Event_List {
 		$this->styles_loaded = false;
 
 		// ALWAYS:
+		// Register translation
+		add_action( 'plugins_loaded', array(&$this, 'load_textdomain'));
 		// Register shortcodes
 		add_shortcode( 'event-list', array( &$this, 'shortcode_event_list' ) );
 		// Register widgets
@@ -73,6 +75,10 @@ class Event_List {
 			add_action('wp_print_styles', array( &$this, 'print_styles' ) );
 		}
 	} // end constructor
+
+	public function load_textdomain() {
+		load_plugin_textdomain('eventlist', false, dirname(plugin_basename(__FILE__)).'/languages');
+	}
 
 	public function shortcode_event_list($atts) {
 		if(null == $this->shortcode) {
