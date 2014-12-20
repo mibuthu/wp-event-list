@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: wp-eventlist\n"
-"POT-Creation-Date: 2014-12-20 23:27+0100\n"
-"PO-Revision-Date: 2014-12-20 23:31+0100\n"
+"POT-Creation-Date: 2014-12-21 00:02+0100\n"
+"PO-Revision-Date: 2014-12-21 00:06+0100\n"
 "Last-Translator: Michael Burtscher <mike@mbnet.at>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -410,15 +410,16 @@ msgstr ""
 
 #: /home/zeus/mike/workspace/wp-eventlist/includes/options.php:46
 msgid "Sync Categories"
-msgstr ""
+msgstr "Synchronisiere Kategorien"
 
 #: /home/zeus/mike/workspace/wp-eventlist/includes/options.php:47
 msgid "Keep event categories in sync with post categories automatically"
 msgstr ""
+"Halte die Termin-Kategorien mit den Beitragskategorien automatisch synchron"
 
 #: /home/zeus/mike/workspace/wp-eventlist/includes/options.php:48
 msgid "Attention"
-msgstr ""
+msgstr "Achtung"
 
 #: /home/zeus/mike/workspace/wp-eventlist/includes/options.php:49
 msgid ""
@@ -426,6 +427,9 @@ msgid ""
 "available in the post categories! Existing Categories with the same slug "
 "will be updated."
 msgstr ""
+"Bitte beachte, dass diese Option alle Kategorien, welche nicht als "
+"Beitragskategorien verfügbar sind, gelöscht werden! Existierende Kategorien "
+"mit gleichem Permalink werden aktualisiert."
 
 #: /home/zeus/mike/workspace/wp-eventlist/includes/options.php:54
 msgid "Text for no events"
@@ -678,6 +682,7 @@ msgstr "Event List"
 #: /home/zeus/mike/workspace/wp-eventlist/admin/admin.php:48
 #: /home/zeus/mike/workspace/wp-eventlist/admin/admin.php:80
 #: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-main.php:108
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/category_table.php:110
 msgid "Events"
 msgstr "Termine"
 
@@ -696,6 +701,7 @@ msgid "Add New"
 msgstr "Erstellen"
 
 #: /home/zeus/mike/workspace/wp-eventlist/admin/admin.php:56
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:50
 msgid "Event List Categories"
 msgstr "Event List Kategorien"
 
@@ -748,6 +754,11 @@ msgstr ""
 msgid "This Category was also removed from %d events."
 msgstr ""
 
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:92
+#, php-format
+msgid "Error while deleting category \"%s\""
+msgstr ""
+
 #: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:102
 msgid "Sync with post categories enabled."
 msgstr ""
@@ -760,6 +771,25 @@ msgstr ""
 msgid "Manual sync with post categories sucessfully finished."
 msgstr ""
 
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:119
+#, php-format
+msgid "New Category \"%s\" was added"
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:122
+msgid "Error: New Category \"$s\" could not be added"
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:128
+#, php-format
+msgid "Category \"%s\" was modified"
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:131
+#, php-format
+msgid "Error: Category \"%s\" could not be modified"
+msgstr ""
+
 #: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:138
 msgid ""
 "Categories are automatically synced with the post categories.<br />\n"
@@ -770,25 +800,49 @@ msgid ""
 "manually edit the categories you have to disable this option."
 msgstr ""
 
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:165
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/category_table.php:107
+msgid "Name"
+msgstr "Name"
+
 #: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:167
 msgid "The name is how it appears on your site."
-msgstr ""
+msgstr "Dieser Name wird dann auf der Webseite angezeigt."
+
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:170
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/category_table.php:109
+msgid "Slug"
+msgstr "Permalink"
 
 #: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:172
 msgid ""
 "The “slug” is the URL-friendly version of the name. It is usually all "
 "lowercase and contains only letters, numbers, and hyphens."
 msgstr ""
+"Die \"Titelform (in URLs)\" ist die URL-Variante des Namens. Sie besteht "
+"normalerweise nur aus Kleinbuchstaben, Zahlen und Bindestrichen."
+
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:175
+msgid "Parent"
+msgstr "Parent"
 
 #: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:177
 msgid "None"
-msgstr ""
+msgstr "Keine"
 
 #: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:187
 msgid ""
 "Categories can have a hierarchy. You might have a Jazz category, and under "
 "that have children categories for Bebop and Big Band. Totally optional."
 msgstr ""
+"Kategorien können hierarchisch angeordnet werden. Du kannst z.Bsp. eine "
+"Kategorie Musik anlegen, welche die Unterkategorien Schlager und Jazz "
+"enthält."
+
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:190
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/category_table.php:108
+msgid "Description"
+msgstr "Beschreibung"
 
 #: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:234
 msgid "Apply"
@@ -796,7 +850,7 @@ msgstr "Anwenden"
 
 #: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:244
 msgid "Do a manual sync with post categories"
-msgstr ""
+msgstr "Führe eine manuelle Synchronisation mit den Beitragskategorien durch"
 
 #: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-main.php:105
 msgid "Edit Event"
@@ -806,6 +860,28 @@ msgstr "Termin bearbeiten"
 #: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:72
 msgid "Duplicate"
 msgstr "Duplizieren"
+
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/category_table.php:27
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:29
+msgid "event"
+msgstr "Termin"
+
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/category_table.php:28
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:30
+msgid "events"
+msgstr "Termine"
+
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/category_table.php:70
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:71
+msgid "Edit"
+msgstr "Editieren"
+
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/category_table.php:71
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/category_table.php:145
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:73
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:146
+msgid "Delete"
+msgstr "Löschen"
 
 #: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-new.php:43
 #, php-format
@@ -867,23 +943,6 @@ msgstr ""
 #: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:306
 msgid "Y/m/d"
 msgstr ""
-
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:29
-msgid "event"
-msgstr "Termin"
-
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:30
-msgid "events"
-msgstr "Termine"
-
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:71
-msgid "Edit"
-msgstr "Editieren"
-
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:73
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:146
-msgid "Delete"
-msgstr "Löschen"
 
 #: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:112
 msgid "Author"
