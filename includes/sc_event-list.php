@@ -122,7 +122,6 @@ class SC_Event_List {
 
 			'show_details'     => array('val'     => 'false<br />true<br />event_list_only<br />single_event_only',
 			                            'std_val' => 'true',
-			                            'visible' => true,
 			                            'desc'    => __('This attribute specifies if the details are displayed in the event list.<br />
 			                                          Choose "false" to always hide and "true" to always show the details.<br />
 			                                          With "event_list_only" the details are only visible in the event list and with "single_event_only" only for a single event','eventlist')),
@@ -146,7 +145,7 @@ class SC_Event_List {
 			                                          On that page you can also find some settings to modify the output.<br />
 			                                          Choose "false" to never add and "true" to always add the link.<br />
 			                                          With "event_list_only" the link is only added in the event list and with "single_event_only" only for a single event','eventlist')),
-			// Invisible attributes ('visibe' = false): This attributes are required for the widget but will not be listed in the attributes table on the admin info page
+			// Invisible attributes ('hidden' = true): This attributes are required for the widget but will not be listed in the attributes table on the admin info page
 			'title_length'     => array('val'     => 'number',
 			                            'std_val' => '0',
 			                            'hidden'  => true,
