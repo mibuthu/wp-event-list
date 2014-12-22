@@ -30,73 +30,23 @@ class EL_Options {
 
 	public function init_options() {
 		$this->options = array(
-			'el_db_version'         => array('section' => 'system',
-			                                 'type'    => 'text',
-			                                 'std_val' => ''),
-
-			'el_categories'         => array('section' => 'categories',
-			                                 'type'    => 'category',
-			                                 'std_val' => null),
-
-			'el_sync_cats'          => array('section' => 'categories',
-			                                 'type'    => 'checkbox',
-			                                 'std_val' => ''),
-
-			'el_no_event_text'      => array('section' => 'general',
-			                                 'type'    => 'text',
-			                                 'std_val' => 'no event'),
-
-			'el_date_once_per_day'  => array('section' => 'general',
-			                                 'type'    => 'checkbox',
-			                                 'std_val' => ''),
-
-			'el_html_tags_in_time'  => array('section' => 'general',
-			                                 'type'    => 'checkbox',
-			                                 'std_val' => ''),
-
-			'el_html_tags_in_loc'   => array('section' => 'general',
-			                                 'type'    => 'checkbox',
-			                                 'std_val' => ''),
-
-			'el_edit_dateformat'    => array('section' => 'admin',
-			                                 'type'    => 'text',
-			                                 'std_val' => ''),
-
-			'el_enable_feed'        => array('section' => 'feed',
-			                                 'type'    => 'checkbox',
-			                                 'std_val' => ''),
-
-			'el_feed_name'          => array('section' => 'feed',
-			                                 'type'    => 'text',
-			                                 'std_val' => 'eventlist'),
-
-			'el_feed_description'   => array('section' => 'feed',
-			                                 'type'    => 'text',
-			                                 'std_val' => 'Eventlist Feed'),
-
-			'el_feed_upcoming_only' => array('section' => 'feed',
-			                                 'type'    => 'checkbox',
-			                                 'std_val' => ''),
-
-			'el_head_feed_link'     => array('section' => 'feed',
-			                                 'type'    => 'checkbox',
-			                                 'std_val' => '1'),
-
-			'el_feed_link_pos'      => array('section' => 'feed',
-			                                 'type'    => 'radio',
-			                                 'std_val' => 'bottom'),
-
-			'el_feed_link_align'   => array('section' => 'feed',
-			                                'type'    => 'radio',
-			                                'std_val' => 'left'),
-
-			'el_feed_link_text'    => array('section' => 'feed',
-			                                'type'    => 'text',
-			                                'std_val' => 'RSS Feed'),
-
-			'el_feed_link_img'     => array('section' => 'feed',
-			                                'type'    => 'checkbox',
-			                                'std_val' => '1'),
+			'el_db_version'         => array('std_val' => ''),
+			'el_categories'         => array('std_val' => null),
+			'el_sync_cats'          => array('std_val' => ''),
+			'el_no_event_text'      => array('std_val' => 'no event'),
+			'el_date_once_per_day'  => array('std_val' => ''),
+			'el_html_tags_in_time'  => array('std_val' => ''),
+			'el_html_tags_in_loc'   => array('std_val' => ''),
+			'el_edit_dateformat'    => array('std_val' => ''),
+			'el_enable_feed'        => array('std_val' => ''),
+			'el_feed_name'          => array('std_val' => 'eventlist'),
+			'el_feed_description'   => array('std_val' => 'Eventlist Feed'),
+			'el_feed_upcoming_only' => array('std_val' => ''),
+			'el_head_feed_link'     => array('std_val' => '1'),
+			'el_feed_link_pos'      => array('std_val' => 'bottom'),
+			'el_feed_link_align'    => array('std_val' => 'left'),
+			'el_feed_link_text'     => array('std_val' => 'RSS Feed'),
+			'el_feed_link_img'      => array('std_val' => '1'),
 		);
 
 		$this->date_formats = array(
