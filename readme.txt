@@ -3,8 +3,8 @@ Contributors: mibuthu
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W54LNZMWF9KW2
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, filter, admin, attribute, widget, sidebar, feed, rss
 Requires at least: 3.3
-Tested up to: 4.0
-Stable tag: 0.6.9
+Tested up to: 4.2
+Stable tag: 0.7.0
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -71,6 +71,13 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 
 
 == Changelog ==
+
+= 0.7.0 (2014-12-22) =
+* initial multilanguage support
+* German translation (not complete yet)
+* Unicode support in truncate function
+* Changed position of admin menu
+* Changed icon in admin menu
 
 = 0.6.9 (2014-11-09) =
 * added months option in filterbar items
