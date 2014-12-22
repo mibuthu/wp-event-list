@@ -127,7 +127,7 @@ class EL_Widget extends WP_Widget {
 			                                'form_width'    => null),
 
 			'link_to_page_caption' => array('type'          => 'text',
-			                                'std_value'     => __('show event-list page','eventlist'),
+			                                'std_value'     => __('show events page','eventlist'),
 			                                'caption'       => __('Caption for the link','eventlist').':',
 			                                'caption_after' => null,
 			                                'tooltip'       => __('This option defines the text for the link to the Event List page if the approriate option is selected.','eventlist'),
