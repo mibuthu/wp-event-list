@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: wp-eventlist\n"
-"POT-Creation-Date: 2014-12-22 13:46+0100\n"
-"PO-Revision-Date: 2014-12-22 13:46+0100\n"
+"POT-Creation-Date: 2014-12-22 14:22+0100\n"
+"PO-Revision-Date: 2014-12-22 14:23+0100\n"
 "Last-Translator: Michael Burtscher <mike@mbnet.at>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -29,196 +29,196 @@ msgstr "Anstehende Termine"
 msgid "show events page"
 msgstr "öffne den Kalender"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list.php:39
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:8
 msgid ""
 "With this attribute you can specify an event from which the event-details "
 "are shown initially. The standard is to show the event-list.<br />\n"
-"\t\t\t                                             Specify an event-id e.g. "
+"\t                                            Specify an event-id e.g. "
 "\"13\" to change this behavior. It is still possible to go back to the event-"
 "list via the filterbar or url parameters."
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list.php:44
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:12
 msgid ""
 "This attribute specifies which events are initially shown. The standard is "
 "to show the upcoming events.<br />\n"
-"\t\t\t                                             Specify a year e.g. "
-"\"2014\" to change this behavior. It is still possible to change the "
-"displayed event date range via the filterbar or url parameters."
+"\t                                            Specify a year e.g. \"2014\" "
+"to change this behavior. It is still possible to change the displayed event "
+"date range via the filterbar or url parameters."
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list.php:49
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:16
 msgid ""
 "This attribute specifies the category of which events are initially shown. "
 "The standard is to show events of all categories.<br />\n"
-"\t\t\t                                             Specify a category slug "
-"to change this behavior. It is still possible to change the displayed "
+"\t                                            Specify a category slug to "
+"change this behavior. It is still possible to change the displayed "
 "categories via the filterbar or url parameters."
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list.php:54
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:20
 msgid ""
 "This attribute specifies the dates and date ranges of which events are "
 "displayed. The standard is \"all\" to show all events.<br />\n"
-"\t\t\t                                          Filtered events according to "
+"\t                                            Filtered events according to "
 "date_filter value are not available in the event list.<br />\n"
-"\t\t\t                                          You can find all available "
+"\t                                            You can find all available "
 "values with a description and examples in \"Available Date Formats\" and "
 "\"Available Date Range Formats\" below.<br />\n"
-"\t\t\t                                          See \"Filter Syntax\" "
+"\t                                            See \"Filter Syntax\" "
 "description if you want to define complex filters.<br />\n"
-"\t\t\t                                          When you only use OR "
+"\t                                            When you only use OR "
 "connections (no AND connection) the years selection in the filterbar will "
 "also be filtered accordingly."
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list.php:62
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:27
 msgid ""
 "This attribute specifies the categories of which events are shown. The "
 "standard is \"all\" or an empty string to show all events.<br />\n"
-"\t\t\t                                          Filtered events defined in "
+"\t                                            Filtered events defined in "
 "categories which doesn´t match cat_filter are not shown in the event list. "
 "They are also not available if a manual url parameter is added.<br />\n"
-"\t\t\t                                          The filter is specified via "
+"\t                                            The filter is specified via "
 "the given category slug. See \"Filter Syntax\" description if you want to "
 "define complex filters.<br />\n"
-"\t\t\t                                          When you only use OR "
+"\t                                            When you only use OR "
 "connections (no AND connection) the category selection in the filterbar will "
 "also be filtered accordingly."
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list.php:69
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:33
 msgid ""
 "This attribute specifies how many events should be displayed if upcoming "
 "events is selected.<br />\n"
-"\t\t\t                                          0 is the standard value "
-"which means that all events will be displayed.<br />\n"
-"\t\t\t                                          Please not that in the "
-"actual version there is no pagination of the events available."
+"\t                                            0 is the standard value which "
+"means that all events will be displayed.<br />\n"
+"\t                                            Please not that in the actual "
+"version there is no pagination of the events available."
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list.php:75
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:38
 msgid ""
 "This attribute specifies if the filterbar should be displayed. The filterbar "
 "allows the users to select filters to limit the listed events.<br />\n"
-"\t\t\t                                          Choose \"false\" to always "
+"\t                                            Choose \"false\" to always "
 "hide and \"true\" to always show the navigation.<br />\n"
-"\t\t\t                                          With \"event_list_only\" the "
+"\t                                            With \"event_list_only\" the "
 "filterbar is only visible in the event list and with \"single_event_only\" "
 "only for a single event"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list.php:107
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:68
 msgid ""
 "This attribute specifies if the starttime is displayed in the event list."
 "<br />\n"
-"\t\t\t                                          Choose \"false\" to always "
+"\t                                            Choose \"false\" to always "
 "hide and \"true\" to always show the starttime.<br />\n"
-"\t\t\t                                          With \"event_list_only\" the "
+"\t                                            With \"event_list_only\" the "
 "starttime is only visible in the event list and with \"single_event_only\" "
 "only for a single event"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list.php:113
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:73
 msgid ""
 "This attribute specifies if the location is displayed in the event list.<br /"
 ">\n"
-"\t\t\t                                          Choose \"false\" to always "
+"\t                                            Choose \"false\" to always "
 "hide and \"true\" to always show the location.<br />\n"
-"\t\t\t                                          With \"event_list_only\" the "
+"\t                                            With \"event_list_only\" the "
 "location is only visible in the event list and with \"single_event_only\" "
 "only for a single event"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list.php:119
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:78
 msgid ""
 "This attribute specifies if the categories are displayed in the event list."
 "<br />\n"
-"\t\t\t                                          Choose \"false\" to always "
+"\t                                            Choose \"false\" to always "
 "hide and \"true\" to always show the category.<br />\n"
-"\t\t\t                                          With \"event_list_only\" the "
+"\t                                            With \"event_list_only\" the "
 "categories are only visible in the event list and with \"single_event_only\" "
 "only for a single event"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list.php:126
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:83
 msgid ""
 "This attribute specifies if the details are displayed in the event list.<br /"
 ">\n"
-"\t\t\t                                          Choose \"false\" to always "
+"\t                                            Choose \"false\" to always "
 "hide and \"true\" to always show the details.<br />\n"
-"\t\t\t                                          With \"event_list_only\" the "
+"\t                                            With \"event_list_only\" the "
 "details are only visible in the event list and with \"single_event_only\" "
 "only for a single event"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list.php:132
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:88
 msgid ""
 "This attribute specifies if the details should be truncate to the given "
 "number of characters in the event list.<br />\n"
-"\t\t\t                                          With the standard value 0 "
-"the full details are displayed.<br />\n"
-"\t\t\t                                          This attribute has no "
+"\t                                            With the standard value 0 the "
+"full details are displayed.<br />\n"
+"\t                                            This attribute has no "
 "influence if only a single event is shown."
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list.php:138
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:93
 msgid ""
 "This attribute specifies if a link to the single event should be added onto "
 "the event name in the event list.<br />\n"
-"\t\t\t                                          Choose \"false\" to never "
-"add and \"true\" to always add the link.<br />\n"
-"\t\t\t                                          With \"event_list_only\" the "
+"\t                                            Choose \"false\" to never add "
+"and \"true\" to always add the link.<br />\n"
+"\t                                            With \"event_list_only\" the "
 "link is only added in the event list and with \"single_event_only\" only for "
 "a single event"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list.php:144
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:98
 msgid ""
 "This attribute specifies if a rss feed link should be added.<br />\n"
-"\t\t\t                                          You have to enable the feed "
-"in the eventlist settings to make this attribute workable.<br />\n"
-"\t\t\t                                          On that page you can also "
-"find some settings to modify the output.<br />\n"
-"\t\t\t                                          Choose \"false\" to never "
-"add and \"true\" to always add the link.<br />\n"
-"\t\t\t                                          With \"event_list_only\" the "
+"\t                                            You have to enable the feed in "
+"the eventlist settings to make this attribute workable.<br />\n"
+"\t                                            On that page you can also find "
+"some settings to modify the output.<br />\n"
+"\t                                            Choose \"false\" to never add "
+"and \"true\" to always add the link.<br />\n"
+"\t                                            With \"event_list_only\" the "
 "link is only added in the event list and with \"single_event_only\" only for "
 "a single event"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list.php:153
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list.php:160
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:106
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:112
 msgid ""
 "This attribute specifies if the title should be truncate to the given number "
 "of characters in the event list.<br />\n"
-"\t\t\t                                          With the standard value 0 "
-"the full details are displayed.<br />\n"
-"\t\t\t                                          This attribute has no "
+"\t                                            With the standard value 0 the "
+"full details are displayed.<br />\n"
+"\t                                            This attribute has no "
 "influence if only a single event is shown."
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list.php:167
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:118
 msgid ""
 "This attribute specifies that the link should follow the given url.<br />\n"
-"\t\t\t                                          The standard is to leave "
-"this attribute empty, then the url will be calculated automatically from the "
+"\t                                            The standard is to leave this "
+"attribute empty, then the url will be calculated automatically from the "
 "actual page or post url.<br />\n"
-"\t\t\t                                          This is o.k. for the normal "
+"\t                                            This is o.k. for the normal "
 "use of the shortcode. This attribute is normally only required for the event-"
 "list widget."
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list.php:174
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:124
 msgid ""
 "This attribute the specifies shortcode id of the used shortcode on the page "
 "specified with \"url_to_page\" attribute.<br />\n"
-"\t\t\t                                          The empty standard value is "
-"o.k. for the normal use. This attribute is normally only required for the "
+"\t                                            The empty standard value is o."
+"k. for the normal use. This attribute is normally only required for the "
 "event-list widget."
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list.php:250
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list.php:140
 msgid "Event Information:"
 msgstr "Termin Informationen:"
 
