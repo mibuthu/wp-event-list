@@ -46,6 +46,7 @@ class EL_Widget extends WP_Widget {
 		foreach($widget_items_helptexts as $name => $values) {
 			$this->items[$name] = array_merge($this->items[$name], $values);
 		}
+		unset($widget_items_helptexts);
 	}
 
 	/**
