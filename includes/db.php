@@ -66,7 +66,7 @@ class EL_Db {
 		$sql = 'SELECT * FROM '.$this->table.' WHERE id = '.$id.' LIMIT 1';
 		return $wpdb->get_row( $sql );
 	}
-	
+
 	public function get_event_months() {
 		global $wpdb;
 		$sql = 'SELECT DISTINCT substr(`start_date`,1,7)as a FROM '.$this->table.' WHERE 1 order by a asc';
@@ -336,13 +336,14 @@ class EL_Db {
 	 * @param bool perserve_tags Specifies if html tags should be preserved or if only the text should be shortened
 	 ***************************************************************************************************************/
 	public function truncate($html, $length, $skip=false, $preserve_tags=true) {
-		if(0 >= $length || strlen($html) <= $length || $skip) {
+		mb_internal_encoding("UTF-8");
+		if(0 >= $length || mb_strlen($html) <= $length || $skip) {
 			// do nothing
 			return $html;
 		}
 		elseif(!$preserve_tags) {
 			// only shorten text
-			return substr($html, 0, $length);
+			return mb_substr($html, 0, $length);
 		}
 		else {
 			// truncate with preserving html tags
@@ -350,18 +351,18 @@ class EL_Db {
 			$position = 0;
 			$tags = array();
 			$out = '';
-			while($printedLength < $length && preg_match('{</?([a-z]+\d?)[^>]*>|&#?[a-zA-Z0-9]+;}', $html, $match, PREG_OFFSET_CAPTURE, $position)) {
+			while($printedLength < $length && mb_preg_match('{</?([a-z]+\d?)[^>]*>|&#?[a-zA-Z0-9]+;}', $html, $match, PREG_OFFSET_CAPTURE, $position)) {
 				list($tag, $tagPosition) = $match[0];
 				// Print text leading up to the tag
-				$str = substr($html, $position, $tagPosition - $position);
-				if($printedLength + strlen($str) > $length) {
-					$out .= substr($str, 0, $length - $printedLength);
+				$str = mb_substr($html, $position, $tagPosition - $position);
+				if($printedLength + mb_strlen($str) > $length) {
+					$out .= mb_substr($str, 0, $length - $printedLength);
 					$printedLength = $length;
 					break;
 				}
 				$out .= $str;
-				$printedLength += strlen($str);
-				if($tag[0] == '&') {
+				$printedLength += mb_strlen($str);
+				if('&' == $tag[0]) {
 					// Handle the entity
 					$out .= $tag;
 					$printedLength++;
@@ -369,31 +370,31 @@ class EL_Db {
 				else {
 					// Handle the tag
 					$tagName = $match[1][0];
-					if($tag[1] == '/') {
+					if('/' == $tag[1]) {
 						// This is a closing tag
 						$openingTag = array_pop($tags);
 						assert($openingTag == $tagName); // check that tags are properly nested
 						$out .= $tag;
 					}
-					else if($tag[strlen($tag) - 2] == '/') {
+					else if('/' == $tag[mb_strlen($tag) - 2]) {
 						// Self-closing tag
 						$out .= $tag;
-				}
+					}
 					else {
-					// Opening tag
+						// Opening tag
 						$out .= $tag;
 						$tags[] = $tagName;
 					}
 				}
 				// Continue after the tag
-				$position = $tagPosition + strlen($tag);
+				$position = $tagPosition + mb_strlen($tag);
 			}
 			// Print any remaining text
-			if($printedLength < $length && $position < strlen($html)) {
-				$out .= substr($html, $position, $length - $printedLength);
+			if($printedLength < $length && $position < mb_strlen($html)) {
+				$out .= mb_substr($html, $position, $length - $printedLength);
 			}
-			// Print "..." if the html is not complete
-			if(strlen($html) != $position) {
+			// Print ellipsis ("...") if the html is not complete
+			if(mb_strlen($html) != $position) {
 				$out .= ' &hellip;';
 			}
 			// Close any open tags.
@@ -402,6 +403,23 @@ class EL_Db {
 			}
 			return $out;
 		}
+	}
+}
+
+if(!function_exists("mb_preg_match")) {
+	function mb_preg_match($ps_pattern, $ps_subject, &$pa_matches, $pn_flags=0, $pn_offset=0, $ps_encoding=NULL) {
+		// WARNING! - All this function does is to correct offsets, nothing else:
+		//(code is independent of PREG_PATTER_ORDER / PREG_SET_ORDER)
+		if(is_null($ps_encoding)) {
+			$ps_encoding = mb_internal_encoding();
+		}
+		$pn_offset = strlen(mb_substr($ps_subject, 0, $pn_offset, $ps_encoding));
+		$out = preg_match($ps_pattern, $ps_subject, $pa_matches, $pn_flags, $pn_offset);
+		if($out && ($pn_flags & PREG_OFFSET_CAPTURE))
+			foreach($pa_matches as &$ha_match) {
+				$ha_match[1] = mb_strlen(substr($ps_subject, 0, $ha_match[1]), $ps_encoding);
+			}
+		return $out;
 	}
 }
 
