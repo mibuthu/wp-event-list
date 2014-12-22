@@ -25,11 +25,11 @@ class EL_Event_Table extends WP_List_Table {
 
 		global $status, $page;
 		//Set parent defaults
-		parent::__construct( array(
-			'singular'  => 'event',     //singular name of the listed records
-			'plural'    => 'events',    //plural name of the listed records
-			'ajax'      => false        //does this table support ajax?
-		) );
+		parent::__construct(array(
+			'singular'  => __('event','eventlist'),   //singular name of the listed records
+			'plural'    => __('events','eventlist'),  //plural name of the listed records
+			'ajax'      => false                      //does this table support ajax?
+		));
 	}
 
 	/** ************************************************************************
@@ -68,9 +68,9 @@ class EL_Event_Table extends WP_List_Table {
 	protected function column_title($item) {
 		//Prepare Columns
 		$actions = array(
-			'edit'      => '<a href="?page='.$_REQUEST['page'].'&amp;id='.$item->id.'&amp;action=edit">Edit</a>',
-			'duplicate' => '<a href="?page=el_admin_new&amp;id='.$item->id.'&amp;action=copy">Duplicate</a>',
-			'delete'    => '<a href="#" onClick="eventlist_deleteEvent('.$item->id.');return false;">Delete</a>');
+			'edit'      => '<a href="?page='.$_REQUEST['page'].'&amp;id='.$item->id.'&amp;action=edit">'.__('Edit','eventlist').'</a>',
+			'duplicate' => '<a href="?page=el_admin_new&amp;id='.$item->id.'&amp;action=copy">'.__('Duplicate','eventlist').'</a>',
+			'delete'    => '<a href="#" onClick="eventlist_deleteEvent('.$item->id.');return false;">'.__('Delete','eventlist').'</a>');
 
 		//Return the title contents
 		return sprintf('<b>%1$s</b> <span style="color:silver">(id:%2$s)</span>%3$s',
@@ -104,13 +104,13 @@ class EL_Event_Table extends WP_List_Table {
 	public function get_columns() {
 		return array(
 			'cb'          => '<input type="checkbox" />', //Render a checkbox instead of text
-			'date'        => __( 'Date' ),
-			'title'       => __( 'Event' ),
-			'location'    => __( 'Location' ),
-			'details'     => __( 'Details' ),
-			'categories'  => __( 'Categories' ),
-			'pub_user'    => __( 'Author' ),
-			'pub_date'    => __( 'Published' )
+			'date'        => __('Date','eventlist'),
+			'title'       => __('Title','eventlist'),
+			'location'    => __('Location','eventlist'),
+			'details'     => __('Details','eventlist'),
+			'categories'  => __('Categories','eventlist'),
+			'pub_user'    => __('Author','eventlist'),
+			'pub_date'    => __('Published','eventlist')
 		);
 	}
 
@@ -124,11 +124,11 @@ class EL_Event_Table extends WP_List_Table {
 	***************************************************************************/
 	public function get_sortable_columns() {
 		$sortable_columns = array(
-			'date'     => array( 'date', true ),  //true means its already sorted
-			'title'    => array( 'title', false ),
-			'location' => array( 'location', false ),
-			'pub_user' => array( 'pub_user', false ),
-			'pub_date' => array( 'pub_date', false )
+			'date'     => array('date', true),  //true means its already sorted
+			'title'    => array('title', false),
+			'location' => array('location', false),
+			'pub_user' => array('pub_user', false),
+			'pub_date' => array('pub_date', false)
 		);
 		return $sortable_columns;
 	}
@@ -143,7 +143,7 @@ class EL_Event_Table extends WP_List_Table {
 	****************************************************************************/
 	public function get_bulk_actions() {
 		$actions = array(
-			'delete_bulk' => 'Delete'
+			'delete_bulk' => __('Delete','eventlist')
 		);
 		return $actions;
 	}
@@ -155,9 +155,9 @@ class EL_Event_Table extends WP_List_Table {
 	***************************************************************************/
 	private function process_bulk_action() {
 		//Detect when a bulk action is being triggered...
-		if( 'delete_bulk'===$this->current_action() ) {
+		if('delete_bulk'===$this->current_action()) {
 			// Show confirmation window before deleting
-			echo '<script language="JavaScript">eventlist_deleteEvent ("'.implode( ', ', $_GET['id'] ).'");</script>';
+			echo '<script language="JavaScript">eventlist_deleteEvent ("'.implode(', ', $_GET['id']).'");</script>';
 		}
 	}
 
@@ -171,7 +171,7 @@ class EL_Event_Table extends WP_List_Table {
 			$out .= $this->filterbar->show_cats('?page=el_admin_main', $this->args, 'dropdown', 'admin');
 			$out .= '
 				<input type="hidden" name="noheader" value="true" />
-				<input id="event-query-submit" class="button" type="submit" name ="filter" value="'.__('Filter').'" />
+				<input id="event-query-submit" class="button" type="submit" name ="filter" value="'.__('Filter','eventlist').'" />
 			</div>';
 		}
 		echo $out;
@@ -194,20 +194,20 @@ class EL_Event_Table extends WP_List_Table {
 		$columns = $this->get_columns();
 		$hidden = array();
 		$sortable = $this->get_sortable_columns();
-		$this->_column_headers = array( $columns, $hidden, $sortable );
+		$this->_column_headers = array($columns, $hidden, $sortable);
 		// handle the bulk actions
 		$this->process_bulk_action();
 		// get the required event data
 		$data = $this->get_events();
 		// setup pagination
 		$current_page = $this->get_pagenum();
-		$total_items = count( $data );
-		$data = array_slice( $data, ( ( $current_page-1 )*$per_page ), $per_page );
-		$this->set_pagination_args( array(
+		$total_items = count($data);
+		$data = array_slice($data, (($current_page-1)*$per_page), $per_page);
+		$this->set_pagination_args(array(
 			'total_items' => $total_items,
 			'per_page'    => $per_page,
 			'total_pages' => ceil($total_items/$per_page)
-		) );
+		));
 		// setup items which are used by the rest of the class
 		$this->items = $data;
 	}
@@ -231,34 +231,34 @@ class EL_Event_Table extends WP_List_Table {
 	private function get_events() {
 		// define sort_array
 		$order = 'ASC';
-		if( isset( $_GET['order'] ) && $_GET['order'] === 'desc' ) {
+		if(isset($_GET['order']) && $_GET['order'] === 'desc') {
 			$order = 'DESC';
 		}
 		$orderby = '';
-		if( isset( $_GET['orderby'] ) ){
+		if(isset($_GET['orderby'])){
 			$orderby = $_GET['orderby'];
 		}
 		// set standard sort according date ASC, only when date should be sorted desc, DESC should be used
-		if( $orderby == 'date' && $order == 'DESC' ) {
-			$sort_array = array( 'start_date DESC', 'time DESC', 'end_date DESC');
+		if($orderby == 'date' && $order == 'DESC') {
+			$sort_array = array('start_date DESC', 'time DESC', 'end_date DESC');
 		}
 		else {
-			$sort_array = array( 'start_date ASC', 'time ASC', 'end_date ASC');
+			$sort_array = array('start_date ASC', 'time ASC', 'end_date ASC');
 		}
 		// add primary order column to the front of the standard sort array
-		switch( $orderby )
+		switch($orderby)
 		{
 			case 'title' :
-				array_unshift( $sort_array, 'title '.$order );
+				array_unshift($sort_array, 'title '.$order);
 				break;
 			case 'location' :
-				array_unshift( $sort_array, 'location '.$order );
+				array_unshift($sort_array, 'location '.$order);
 				break;
 			case 'pub_user' :
-				array_unshift( $sort_array, 'pub_user '.$order );
+				array_unshift($sort_array, 'pub_user '.$order);
 				break;
 			case 'pub_date' :
-				array_unshift( $sort_array, 'pub_date '.$order );
+				array_unshift($sort_array, 'pub_date '.$order);
 				break;
 		}
 		// get and return events in the correct order
@@ -273,20 +273,20 @@ class EL_Event_Table extends WP_List_Table {
 	* @param string $end_date The end date of the event
 	* @param string $time The start time of the event
 	***************************************************************************/
-	private function format_event_date( $start_date, $end_date, $start_time ) {
+	private function format_event_date($start_date, $end_date, $start_time) {
 		$out = '<span style="white-space:nowrap;">';
 		// start date
-		$out .= mysql2date( __( 'Y/m/d' ), $start_date );
+		$out .= mysql2date(__('Y/m/d'), $start_date);
 		// end date for multiday event
-		if( $start_date !== $end_date ) {
-			$out .= ' -<br />'.mysql2date( __( 'Y/m/d' ), $end_date );
+		if($start_date !== $end_date) {
+			$out .= ' -<br />'.mysql2date(__('Y/m/d'), $end_date);
 		}
 		// event time
-		if( '' !== $start_time ) {
+		if('' !== $start_time) {
 			// set time format if a known format is available, else only show the text
-			$date_array = date_parse( $start_time );
-			if( empty( $date_array['errors']) && is_numeric( $date_array['hour'] ) && is_numeric( $date_array['minute'] ) ) {
-				$start_time = mysql2date( get_option( 'time_format' ), $start_time );
+			$date_array = date_parse($start_time);
+			if(empty($date_array['errors']) && is_numeric($date_array['hour']) && is_numeric($date_array['minute'])) {
+				$start_time = mysql2date(get_option('time_format'), $start_time);
 			}
 			$out .= '<br />
 				<span class="time">'.esc_html($start_time).'</span>';
@@ -295,17 +295,17 @@ class EL_Event_Table extends WP_List_Table {
 		return $out;
 	}
 
-	private function format_pub_date( $pub_date ) {
+	private function format_pub_date($pub_date) {
 		// similar output than for post or pages
-		$timestamp = strtotime( $pub_date );
+		$timestamp = strtotime($pub_date);
 		$time_diff = time() - $timestamp;
-		if( $time_diff >= 0 && $time_diff < 24*60*60 ) {
-			$date = sprintf( __( '%s ago' ), human_time_diff( $timestamp ) );
+		if($time_diff >= 0 && $time_diff < 24*60*60) {
+			$date = sprintf(__('%s ago','eventlist'), human_time_diff($timestamp));
 		}
 		else {
-			$date = mysql2date( __( 'Y/m/d' ), $pub_date );
+			$date = mysql2date(__('Y/m/d'), $pub_date);
 		}
-		$datetime = mysql2date( __( 'Y/m/d g:i:s A' ), $pub_date );
+		$datetime = mysql2date(__('Y/m/d g:i:s A'), $pub_date);
 		return '<abbr title="'.$datetime.'">'.$date.'</abbr>';
 	}
 }

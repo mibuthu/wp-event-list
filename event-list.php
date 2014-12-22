@@ -3,7 +3,7 @@
 Plugin Name: Event List
 Plugin URI: http://wordpress.org/extend/plugins/event-list/
 Description: Manage your events and show them in a list view on your site.
-Version: 0.6.9
+Version: 0.7.0
 Author: Michael Burtscher
 Author URI: http://wordpress.org/extend/plugins/event-list/
 License: GPLv2
@@ -25,13 +25,13 @@ You can view a copy of the HTML version of the GNU General Public
 License at http://www.gnu.org/copyleft/gpl.html
 */
 
-if( !defined( 'ABSPATH' ) ) {
+if(!defined('WPINC')) {
 	exit;
 }
 
 // GENERAL DEFINITIONS
-define( 'EL_URL', plugin_dir_url( __FILE__ ) );
-define( 'EL_PATH', plugin_dir_path( __FILE__ ) );
+define('EL_URL', plugin_dir_url(__FILE__));
+define('EL_PATH', plugin_dir_path(__FILE__));
 
 require_once(EL_PATH.'includes/options.php');
 
@@ -49,10 +49,12 @@ class Event_List {
 		$this->styles_loaded = false;
 
 		// ALWAYS:
+		// Register translation
+		add_action('plugins_loaded', array(&$this, 'load_textdomain'));
 		// Register shortcodes
-		add_shortcode( 'event-list', array( &$this, 'shortcode_event_list' ) );
+		add_shortcode('event-list', array(&$this, 'shortcode_event_list'));
 		// Register widgets
-		add_action( 'widgets_init', array( &$this, 'widget_init' ) );
+		add_action('widgets_init', array(&$this, 'widget_init'));
 		// Add RSS Feed page
 		$options = EL_Options::get_instance();
 		if($options->get('el_enable_feed')) {
@@ -61,18 +63,22 @@ class Event_List {
 		}
 
 		// ADMIN PAGE:
-		if ( is_admin() ) {
+		if(is_admin()) {
 			// Include required php-files and initialize required objects
-			require_once( EL_PATH.'admin/admin.php' );
+			require_once(EL_PATH.'admin/admin.php');
 			EL_Admin::get_instance()->init_admin_page();
 		}
 
 		// FRONT PAGE:
 		else {
 			// Register actions
-			add_action('wp_print_styles', array( &$this, 'print_styles' ) );
+			add_action('wp_print_styles', array(&$this, 'print_styles'));
 		}
 	} // end constructor
+
+	public function load_textdomain() {
+		load_plugin_textdomain('eventlist', false, dirname(plugin_basename(__FILE__)).'/languages');
+	}
 
 	public function shortcode_event_list($atts) {
 		if(null == $this->shortcode) {
@@ -84,13 +90,13 @@ class Event_List {
 				$this->enqueue_styles();
 			}
 		}
-		return $this->shortcode->show_html( $atts );
+		return $this->shortcode->show_html($atts);
 	}
 
 	public function widget_init() {
 		// Widget "event-list"
-		require_once( EL_PATH.'includes/widget.php' );
-		return register_widget( 'EL_Widget' );
+		require_once(EL_PATH.'includes/widget.php');
+		return register_widget('EL_Widget');
 	}
 
 	public function print_styles() {
@@ -102,7 +108,7 @@ class Event_List {
 
 	public function enqueue_styles() {
 		wp_register_style('event-list', EL_URL.'includes/css/event-list.css');
-		wp_enqueue_style( 'event-list');
+		wp_enqueue_style('event-list');
 		$this->styles_loaded = true;
 	}
 } // end class linkview

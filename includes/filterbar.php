@@ -94,7 +94,7 @@ class EL_Filterbar {
 		// prepare displayed elements
 		$elements = array();
 		if(!isset($options['show_all']) || 'true' == $options['show_all']) {   // default is true
-			$elements[] = $this->all_element('hlist'==$type ? null : __('Show all dates'));
+			$elements[] = $this->all_element('hlist'==$type ? null : __('Show all dates','eventlist'));
 		}
 		if(!isset($options['show_upcoming']) || 'true' == $options['show_upcoming']) {   // default is true
 			$elements[] = $this->upcoming_element();
@@ -218,7 +218,7 @@ class EL_Filterbar {
 		$cat_array = $this->categories->get_cat_array();
 		$elements = array();
 		if(!isset($options['show_all']) || 'true' == $options['show_all']) {
-			$elements[] = $this->all_element('hlist'==$type ? null : __('View all categories'));
+			$elements[] = $this->all_element('hlist'==$type ? null : __('View all categories','eventlist'));
 		}
 		foreach($cat_array as $cat) {
 			$elements[] = array('slug' => $cat['slug'], 'name' => str_pad('', 12*$cat['level'], '&nbsp;', STR_PAD_LEFT).$cat['name']);
@@ -298,17 +298,17 @@ class EL_Filterbar {
 
 	private function all_element($name=null) {
 		if(null == $name) {
-			$name = __('All');
+			$name = __('All','eventlist');
 		}
 		return array('slug' => 'all', 'name' => $name);
 	}
 
 	private function upcoming_element() {
-		return array('slug' => 'upcoming', 'name' => __('Upcoming'));
+		return array('slug' => 'upcoming', 'name' => __('Upcoming','eventlist'));
 	}
 
 	private function past_element() {
-		return array('slug' => 'past', 'name' => __('Past'));
+		return array('slug' => 'past', 'name' => __('Past','eventlist'));
 	}
 
 	private function parse_args($args) {
