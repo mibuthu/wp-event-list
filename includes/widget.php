@@ -26,7 +26,7 @@ class EL_Widget extends WP_Widget {
 			                                'std_value'     => __('Upcoming events','eventlist').':',
 			                                'caption'       => __('Title','eventlist'),
 			                                'caption_after' => null,
-			                                'tooltip'       => __('The title for the widget','eventlist'),
+			                                'tooltip'       => __('This option defines the displayed title for the widget.','eventlist'),
 			                                'form_style'    => null,
 			                                'form_width'    => null),
 
@@ -34,7 +34,7 @@ class EL_Widget extends WP_Widget {
 			                                'std_value'     => 'all',
 			                                'caption'       => __('Category Filter','eventlist').':',
 			                                'caption_after' => null,
-			                                'tooltip'       => __('This attribute specifies the categories of which events are shown. The standard is \'all\' or an empty string to show all events. Specify a category slug or a list of category slugs to only show events of the specified categories. See description of the shortcode attribute "cat_filter" for detailed info about all possibilities.','eventlist'),
+			                                'tooltip'       => __('This option defines the categories of which events are shown. The standard is all or an empty string to show all events. Specify a category slug or a list of category slugs to only show events of the specified categories. See description of the shortcode attribute cat_filter for detailed info about all possibilities.','eventlist'),
 			                                'form_style'    => 'margin:0 0 0.8em 0',
 			                                'form_width'    => null),
 
@@ -49,8 +49,8 @@ class EL_Widget extends WP_Widget {
 			'title_length' =>         array('type'          => 'text',
 			                                'std_value'     => '0',
 			                                'caption'       => __('Truncate event title to','eventlist'),
-			                                'caption_after' => __('chars','eventlist'),
-			                                'tooltip'       => __('This option specifies the number of displayed characters for the event title. Set this value to 0 to view the full title.','eventlist'),
+			                                'caption_after' => __('characters','eventlist'),
+			                                'tooltip'       => __('This option defines the number of displayed characters for the event title. Set this value to 0 to view the full title.','eventlist'),
 			                                'form_style'    => null,
 			                                'form_width'    => 30),
 
@@ -73,8 +73,8 @@ class EL_Widget extends WP_Widget {
 			'location_length' =>      array('type'          => 'text',
 			                                'std_value'     => '0',
 			                                'caption'       => __('Truncate location to','eventlist'),
-			                                'caption_after' => __('chars','eventlist'),
-			                                'tooltip'       => __('If the event location is diplayed this option specifies the number of displayed characters. Set this value to 0 to view the full location.','eventlist'),
+			                                'caption_after' => __('characters','eventlist'),
+			                                'tooltip'       => __('If the event location is diplayed this option defines the number of displayed characters. Set this value to 0 to view the full location.','eventlist'),
 			                                'form_style'    => 'margin:0 0 0.6em 0.9em',
 			                                'form_width'    => 30),
 
@@ -90,15 +90,15 @@ class EL_Widget extends WP_Widget {
 			                                'std_value'     => '0',
 			                                'caption'       => __('Truncate details to','eventlist'),
 			                                'caption_after' => __('characters','eventlist'),
-			                                'tooltip'       => __('If the event details are diplayed this option specifies the number of diplayed characters. Set this value to 0 to view the full details.','eventlist'),
+			                                'tooltip'       => __('If the event details are diplayed this option defines the number of diplayed characters. Set this value to 0 to view the full details.','eventlist'),
 			                                'form_style'    => 'margin:0 0 0.6em 0.9em',
 			                                'form_width'    => 30),
 
 			'url_to_page' =>          array('type'          => 'text',
 			                                'std_value'     => '',
-			                                'caption'       => __('URL to the linked eventlist page','eventlist').':',
+			                                'caption'       => __('URL to the linked Event List page','eventlist').':',
 			                                'caption_after' => null,
-			                                'tooltip'       => __('This options specifies the url to the linked event-list page. This option is required if you want to use one of the options below.','eventlist'),
+			                                'tooltip'       => __('This option defines the url to the linked Event List page. This option is required if you want to use one of the options below.','eventlist'),
 			                                'form_style'    => 'margin:0 0 0.4em 0',
 			                                'form_width'    => null),
 
@@ -106,7 +106,7 @@ class EL_Widget extends WP_Widget {
 			                                'std_value'     => '1',
 			                                'caption'       => __('Shortcode ID on linked page','eventlist').':',
 			                                'caption_after' => null,
-			                                'tooltip'       => __('This option specifies the shortcode-id for the event-list on the linked page. Normally the standard value 1 is correct, you only have to change it if you use multiple event-list shortcodes on the linked page.','eventlist'),
+			                                'tooltip'       => __('This option defines the shortcode-id for the Event List on the linked page. Normally the standard value 1 is correct, you only have to change it if you use multiple event-list shortcodes on the linked page.','eventlist'),
 			                                'form_style'    => null,
 			                                'form_width'    => 30),
 
@@ -120,7 +120,7 @@ class EL_Widget extends WP_Widget {
 
 			'link_to_page' =>         array('type'          => 'checkbox',
 			                                'std_value'     => 'false',
-			                                'caption'       => __('Add a link to an event page','eventlist'),
+			                                'caption'       => __('Add a link to the Event List page','eventlist'),
 			                                'caption_after' => null,
 			                                'tooltip'       => __('With this option you can add a link to the event-list page below the diplayed events. You have to specify the url to page option if you want to use it.','eventlist'),
 			                                'form_style'    => 'margin:0 0 0.2em 0.8em',
@@ -130,7 +130,7 @@ class EL_Widget extends WP_Widget {
 			                                'std_value'     => __('show event-list page','eventlist'),
 			                                'caption'       => __('Caption for the link','eventlist').':',
 			                                'caption_after' => null,
-			                                'tooltip'       => __('This option specifies the text for the link to the event-list page if the approriate option is selected.','eventlist'),
+			                                'tooltip'       => __('This option defines the text for the link to the Event List page if the approriate option is selected.','eventlist'),
 			                                'form_style'    => 'margin:0 0 1em 2.5em',
 			                                'form_width'    => null),
 		);
