@@ -60,6 +60,10 @@ li.event {
 	padding-bottom: 0.3em;
 }
 
+.event-info {
+	display: block !important;
+}
+
 .multi-day {
 	margin: 0 0 0 7.5em;
 }
