@@ -6,38 +6,38 @@ if(!defined('WPINC')) {
 $sc_eventlist_helptexts = array(
 	'initial_event_id' => array('val'    => 'all<br />event-id',
 	                            'desc'   => __('With this attribute you can specify an event from which the event-details are shown initially. The standard is to show the event-list.<br />
-	                                            Specify an event-id e.g. "13" to change this behavior. It is still possible to go back to the event-list via the filterbar or url parameters.','eventlist')),
+	                                            Specify an event-id e.g. "13" to change this behavior. It is still possible to go back to the event-list via the filterbar or url parameters.','event-list')),
 
 	'initial_date'     => array('val'    => 'all<br />upcoming<br />past<br />year',
 	                            'desc'   => __('This attribute specifies which events are initially shown. The standard is to show the upcoming events.<br />
-	                                            Specify a year e.g. "2014" to change this behavior. It is still possible to change the displayed event date range via the filterbar or url parameters.','eventlist')),
+	                                            Specify a year e.g. "2014" to change this behavior. It is still possible to change the displayed event date range via the filterbar or url parameters.','event-list')),
 
 	'initial_cat'      => array('val'    => 'all<br />category slug',
 	                            'desc'   => __('This attribute specifies the category of which events are initially shown. The standard is to show events of all categories.<br />
-	                                            Specify a category slug to change this behavior. It is still possible to change the displayed categories via the filterbar or url parameters.','eventlist')),
+	                                            Specify a category slug to change this behavior. It is still possible to change the displayed categories via the filterbar or url parameters.','event-list')),
 
 	'date_filter'      => array('val'    => 'all<br />upcoming<br />past<br />year',
 	                            'desc'   => __('This attribute specifies the dates and date ranges of which events are displayed. The standard is "all" to show all events.<br />
 	                                            Filtered events according to date_filter value are not available in the event list.<br />
 	                                            You can find all available values with a description and examples in "Available Date Formats" and "Available Date Range Formats" below.<br />
 	                                            See "Filter Syntax" description if you want to define complex filters.<br />
-	                                            When you only use OR connections (no AND connection) the years selection in the filterbar will also be filtered accordingly.','eventlist')),
+	                                            When you only use OR connections (no AND connection) the years selection in the filterbar will also be filtered accordingly.','event-list')),
 
 	'cat_filter'       => array('val'    => 'all<br />category slugs',
 	                            'desc'   => __('This attribute specifies the categories of which events are shown. The standard is "all" or an empty string to show all events.<br />
 	                                            Filtered events defined in categories which doesn´t match cat_filter are not shown in the event list. They are also not available if a manual url parameter is added.<br />
 	                                            The filter is specified via the given category slug. See "Filter Syntax" description if you want to define complex filters.<br />
-	                                            When you only use OR connections (no AND connection) the category selection in the filterbar will also be filtered accordingly.','eventlist')),
+	                                            When you only use OR connections (no AND connection) the category selection in the filterbar will also be filtered accordingly.','event-list')),
 
 	'num_events'       => array('val'    => 'number',
 	                            'desc'   => __('This attribute specifies how many events should be displayed if upcoming events is selected.<br />
 	                                            0 is the standard value which means that all events will be displayed.<br />
-	                                            Please not that in the actual version there is no pagination of the events available.','eventlist')),
+	                                            Please not that in the actual version there is no pagination of the events available.','event-list')),
 
 	'show_filterbar'   => array('val'    => 'false<br />true<br />event_list_only<br />single_event_only',
 	                            'desc'   => __('This attribute specifies if the filterbar should be displayed. The filterbar allows the users to select filters to limit the listed events.<br />
 	                                            Choose "false" to always hide and "true" to always show the navigation.<br />
-	                                            With "event_list_only" the filterbar is only visible in the event list and with "single_event_only" only for a single event','eventlist')),
+	                                            With "event_list_only" the filterbar is only visible in the event list and with "single_event_only" only for a single event','event-list')),
 
 	'filterbar_items'  => array('val'    => 'years_hlist<br />years_dropdown<br />months_hlist<br />months_dropdown<br />daterange_hlist<br />daterange_dropdown<br />cats_hlist<br />cats_dropdown<br />reset_link',
 	                            'desc'   => 'This attribute specifies the available items in the filterbar. This options are only valid if the filterbar is displayed (see show_filterbar attribute).<br /><br />
@@ -67,61 +67,61 @@ $sc_eventlist_helptexts = array(
 	'show_starttime'   => array('val'    => 'false<br />true<br />event_list_only<br />single_event_only',
 	                            'desc'   => __('This attribute specifies if the starttime is displayed in the event list.<br />
 	                                            Choose "false" to always hide and "true" to always show the starttime.<br />
-	                                            With "event_list_only" the starttime is only visible in the event list and with "single_event_only" only for a single event','eventlist')),
+	                                            With "event_list_only" the starttime is only visible in the event list and with "single_event_only" only for a single event','event-list')),
 
 	'show_location'    => array('val'    => 'false<br />true<br />event_list_only<br />single_event_only',
 	                            'desc'   => __('This attribute specifies if the location is displayed in the event list.<br />
 	                                            Choose "false" to always hide and "true" to always show the location.<br />
-	                                            With "event_list_only" the location is only visible in the event list and with "single_event_only" only for a single event','eventlist')),
+	                                            With "event_list_only" the location is only visible in the event list and with "single_event_only" only for a single event','event-list')),
 
 	'show_cat'         => array('val'    => 'false<br />true<br />event_list_only<br />single_event_only',
 	                            'desc'   => __('This attribute specifies if the categories are displayed in the event list.<br />
 	                                            Choose "false" to always hide and "true" to always show the category.<br />
-	                                            With "event_list_only" the categories are only visible in the event list and with "single_event_only" only for a single event','eventlist')),
+	                                            With "event_list_only" the categories are only visible in the event list and with "single_event_only" only for a single event','event-list')),
 
 	'show_details'     => array('val'    => 'false<br />true<br />event_list_only<br />single_event_only',
 	                            'desc'   => __('This attribute specifies if the details are displayed in the event list.<br />
 	                                            Choose "false" to always hide and "true" to always show the details.<br />
-	                                            With "event_list_only" the details are only visible in the event list and with "single_event_only" only for a single event','eventlist')),
+	                                            With "event_list_only" the details are only visible in the event list and with "single_event_only" only for a single event','event-list')),
 
 	'details_length'   => array('val'    => 'number',
 	                            'desc'   => __('This attribute specifies if the details should be truncate to the given number of characters in the event list.<br />
 	                                            With the standard value 0 the full details are displayed.<br />
-	                                            This attribute has no influence if only a single event is shown.','eventlist')),
+	                                            This attribute has no influence if only a single event is shown.','event-list')),
 
 	'link_to_event'    => array('val'    => 'false<br />true<br />event_list_only<br />single_event_only',
 	                            'desc'   => __('This attribute specifies if a link to the single event should be added onto the event name in the event list.<br />
 	                                            Choose "false" to never add and "true" to always add the link.<br />
-	                                            With "event_list_only" the link is only added in the event list and with "single_event_only" only for a single event','eventlist')),
+	                                            With "event_list_only" the link is only added in the event list and with "single_event_only" only for a single event','event-list')),
 
 	'add_feed_link'    => array('val'    => 'false<br />true<br />event_list_only<br />single_event_only',
 	                            'desc'   => __('This attribute specifies if a rss feed link should be added.<br />
 	                                            You have to enable the feed in the eventlist settings to make this attribute workable.<br />
 	                                            On that page you can also find some settings to modify the output.<br />
 	                                            Choose "false" to never add and "true" to always add the link.<br />
-	                                            With "event_list_only" the link is only added in the event list and with "single_event_only" only for a single event','eventlist')),
+	                                            With "event_list_only" the link is only added in the event list and with "single_event_only" only for a single event','event-list')),
 	// Invisible attributes ('hidden' = true): This attributes are required for the widget but will not be listed in the attributes table on the admin info page
 	'title_length'     => array('val'    => 'number',
 	                            'hidden' => true,
 	                            'desc'   => __('This attribute specifies if the title should be truncate to the given number of characters in the event list.<br />
 	                                            With the standard value 0 the full details are displayed.<br />
-	                                            This attribute has no influence if only a single event is shown.','eventlist')),
+	                                            This attribute has no influence if only a single event is shown.','event-list')),
 
 	'location_length'  => array('val'    => 'number',
 	                            'hidden' => true,
 	                            'desc'   => __('This attribute specifies if the title should be truncate to the given number of characters in the event list.<br />
 	                                            With the standard value 0 the full details are displayed.<br />
-	                                            This attribute has no influence if only a single event is shown.','eventlist')),
+	                                            This attribute has no influence if only a single event is shown.','event-list')),
 
 	'url_to_page'      => array('val'    => 'url',
 	                            'hidden' => true,
 	                            'desc'   => __('This attribute specifies that the link should follow the given url.<br />
 	                                            The standard is to leave this attribute empty, then the url will be calculated automatically from the actual page or post url.<br />
-	                                            This is o.k. for the normal use of the shortcode. This attribute is normally only required for the event-list widget.','eventlist')),
+	                                            This is o.k. for the normal use of the shortcode. This attribute is normally only required for the event-list widget.','event-list')),
 
 	'sc_id_for_url'    => array('val'    => 'number',
 	                            'hidden' => true,
 	                            'desc'   => __('This attribute the specifies shortcode id of the used shortcode on the page specified with "url_to_page" attribute.<br />
-	                                            The empty standard value is o.k. for the normal use. This attribute is normally only required for the event-list widget.','eventlist')),
+	                                            The empty standard value is o.k. for the normal use. This attribute is normally only required for the event-list widget.','event-list')),
 );
 ?>

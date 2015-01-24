@@ -137,7 +137,7 @@ class SC_Event_List {
 		$event = $this->db->get_event($a['event_id']);
 		$out = $this->html_filterbar($a);
 		$out .= '
-			<h2>'.__('Event Information:','eventlist').'</h2>
+			<h2>'.__('Event Information:','event-list').'</h2>
 			<ul class="single-event-view">';
 		$single_day_only = ($event->start_date == $event->end_date) ? true : false;
 		$out .= $this->html_event($event, $a, $single_day_only);

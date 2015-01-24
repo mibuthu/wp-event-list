@@ -39,7 +39,7 @@ class EL_Options {
 			'el_html_tags_in_loc'   => array('std_val' => ''),
 			'el_edit_dateformat'    => array('std_val' => ''),
 			'el_enable_feed'        => array('std_val' => ''),
-			'el_feed_name'          => array('std_val' => 'eventlist'),
+			'el_feed_name'          => array('std_val' => 'event-list'),
 			'el_feed_description'   => array('std_val' => 'Eventlist Feed'),
 			'el_feed_upcoming_only' => array('std_val' => ''),
 			'el_head_feed_link'     => array('std_val' => '1'),

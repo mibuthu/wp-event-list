@@ -17,12 +17,12 @@ class EL_Widget extends WP_Widget {
 		parent::__construct(
 				'event_list_widget', // Base ID
 				'Event List', // Name
-				array('description' => __('With this widget a list of upcoming events can be displayed.','eventlist')) // Args
+				array('description' => __('With this widget a list of upcoming events can be displayed.','event-list')) // Args
 		);
 
 		// define all available items
 		$this->items = array(
-			'title'                => array('std_value' => __('Upcoming events','eventlist').':'),
+			'title'                => array('std_value' => __('Upcoming events','event-list').':'),
 			'cat_filter'           => array('std_value' => 'all'),
 			'num_events'           => array('std_value' => '3'),
 			'title_length'         => array('std_value' => '0'),
@@ -35,7 +35,7 @@ class EL_Widget extends WP_Widget {
 			'sc_id_for_url'        => array('std_value' => '1'),
 			'link_to_event'        => array('std_value' => 'false'),
 			'link_to_page'         => array('std_value' => 'false'),
-			'link_to_page_caption' => array('std_value' => __('show events page','eventlist')),
+			'link_to_page_caption' => array('std_value' => __('show events page','event-list')),
 		);
 
 		add_action('admin_init', array(&$this, 'load_widget_items_helptexts'), 2);

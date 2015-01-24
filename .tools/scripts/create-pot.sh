@@ -7,7 +7,7 @@ plugin_path=$(cd "$(dirname "$0")${path_to_plugin_dir}" && pwd)
 plugin_slug=$(basename $(ls "${plugin_path}"/*.php) .php)
 language_path="${plugin_path}${language_dir}"
 #language_file="${language_path}/${plugin_slug}.pot"
-language_file="${language_path}/eventlist.pot"
+language_file="${language_path}/event-list.pot"
 
 # get project information from the plugin header
 plugin_name=`awk -F: '/Plugin Name:/ { print $2 }' "${plugin_path}/${plugin_slug}.php" | sed 's/^ *//g'`

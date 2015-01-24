@@ -24,8 +24,8 @@ class EL_Category_Table extends WP_List_Table {
 		$this->is_disabled = $is_disabled;
 		//Set parent defaults
 		parent::__construct( array(
-			'singular'  => __('event','eventlist'),     //singular name of the listed records
-			'plural'    => __('events','eventlist'),    //plural name of the listed records
+			'singular'  => __('event','event-list'),     //singular name of the listed records
+			'plural'    => __('events','event-list'),    //plural name of the listed records
 			'ajax'      => false        //does this table support ajax?
 		) );
 	}
@@ -67,8 +67,8 @@ class EL_Category_Table extends WP_List_Table {
 		if(!$this->is_disabled) {
 			// prepare Actions
 			$actions = array(
-				'edit'      => '<a href="?page='.$_REQUEST['page'].'&amp;id='.$item['slug'].'&amp;action=edit">'.__('Edit','eventlist').'</a>',
-				'delete'    => '<a href="#" onClick="eventlist_deleteCategory(\''.$item['slug'].'\');return false;">'.__('Delete','eventlist').'</a>'
+				'edit'      => '<a href="?page='.$_REQUEST['page'].'&amp;id='.$item['slug'].'&amp;action=edit">'.__('Edit','event-list').'</a>',
+				'delete'    => '<a href="#" onClick="eventlist_deleteCategory(\''.$item['slug'].'\');return false;">'.__('Delete','event-list').'</a>'
 			);
 			//Return the title contents
 			$out .= $this->row_actions($actions);
@@ -104,10 +104,10 @@ class EL_Category_Table extends WP_List_Table {
 	public function get_columns() {
 		return array(
 			'cb'         => $this->is_disabled ? '' : '<input type="checkbox" />', //Render a checkbox instead of text
-			'name'       => __('Name','eventlist'),
-			'desc'       => __('Description','eventlist'),
-			'slug'       => __('Slug','eventlist'),
-			'num_events' => __('Events','eventlist')
+			'name'       => __('Name','event-list'),
+			'desc'       => __('Description','event-list'),
+			'slug'       => __('Slug','event-list'),
+			'num_events' => __('Events','event-list')
 		);
 	}
 
@@ -142,7 +142,7 @@ class EL_Category_Table extends WP_List_Table {
 	public function get_bulk_actions() {
 		if(!$this->is_disabled) {
 			$actions = array(
-				'delete_bulk' => __('Delete','eventlist')
+				'delete_bulk' => __('Delete','event-list')
 			);
 			return $actions;
 		}

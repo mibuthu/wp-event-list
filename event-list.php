@@ -77,7 +77,7 @@ class Event_List {
 	} // end constructor
 
 	public function load_textdomain() {
-		load_plugin_textdomain('eventlist', false, dirname(plugin_basename(__FILE__)).'/languages');
+		load_plugin_textdomain('event-list', false, dirname(plugin_basename(__FILE__)).'/languages');
 	}
 
 	public function shortcode_event_list($atts) {
