@@ -17,7 +17,6 @@ class EL_Feed {
 		// Create class instance if required
 		if(!isset(self::$instance)) {
 			self::$instance = new self();
-			self::$instance->init();
 		}
 		// Return class instance
 		return self::$instance;
@@ -26,10 +25,11 @@ class EL_Feed {
 	private function __construct() {
 		$this->db = EL_Db::get_instance();
 		$this->options = EL_Options::get_instance();
+		$this->init();
 	}
 
 	public function init() {
-		add_action('init', array(&$this, 'add_eventlist_feed'));
+		add_feed($this->options->get('el_feed_name'), array(&$this, 'print_eventlist_feed'));
 		if($this->options->get('el_head_feed_link')) {
 			add_action('wp_head', array(&$this, 'print_head_feed_link'));
 		}
@@ -84,10 +84,6 @@ class EL_Feed {
 	</rss>';
 	}
 
-	public function add_eventlist_feed() {
-		add_feed($this->options->get('el_feed_name'), array(&$this, 'print_eventlist_feed'));
-	}
-
 	public function eventlist_feed_url() {
 		if(get_option('permalink_structure')) {
 			$feed_link = get_bloginfo('url').'/feed/';
@@ -99,7 +95,7 @@ class EL_Feed {
 	}
 
 	public function update_feed_rewrite_status() {
-		$feeds = array_keys(get_option('rewrite_rules'), 'index.php?&feed=$matches[1]');
+		$feeds = array_keys((array)get_option('rewrite_rules'), 'index.php?&feed=$matches[1]');
 		$feed_rewrite_status = (0 < count(preg_grep('@[(\|]'.$this->options->get('el_feed_name').'[\|)]@', $feeds))) ? true : false;
 		if('1' == $this->options->get('el_enable_feed') && !$feed_rewrite_status) {
 			// add eventlist feed to rewrite rules
