@@ -167,10 +167,10 @@ class EL_Filterbar {
 		if('true' == $options['show_past']) {
 			$elements[] = $this->past_element();
 		}
-		$event_months = $this->db->get_event_months($args['date_filter'],$args['cat_filter'], $options['months_order']);
+		$event_months = $this->db->get_distinct_event_data('substr(`start_date`,1,7)', $args['date_filter'],$args['cat_filter'], $options['months_order']);
 		foreach($event_months as $entry) {
-			list($year, $month) = explode('-', $entry->month);
-			$elements[] = array('slug' => $entry->month, 'name' => date($options['date_format'], mktime(0,0,0,$month,1,$year)));
+			list($year, $month) = explode('-', $entry->data);
+			$elements[] = array('slug' => $entry->data, 'name' => date($options['date_format'], mktime(0,0,0,$month,1,$year)));
 		}
 		// set actual selection
 		if(is_numeric($args['event_id'])) {
