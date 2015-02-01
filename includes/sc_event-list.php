@@ -187,7 +187,7 @@ class SC_Event_List {
 
 	private function html_event( &$event, &$a, $single_day_only=false ) {
 		static $last_event_startdate=null, $last_event_enddate=null;
-		$cat_string = $this->categories->get_category_string($event->categories, 'slug', ' ');
+		$cat_string = $this->categories->convert_db_string($event->categories, 'slug_string', ' ');
 		// add class with each category slug
 		$out = '
 			 	<li class="event '.$cat_string.'">';
@@ -238,7 +238,7 @@ class SC_Event_List {
 			$out .= '<span class="event-location">'.$location.'</span>';
 		}
 		if( $this->is_visible( $a['show_cat'] ) ) {
-			$out .= '<div class="event-cat">'.esc_attr($this->categories->get_category_string($event->categories)).'</div>';
+			$out .= '<div class="event-cat">'.esc_attr($this->categories->convert_db_string($event->categories)).'</div>';
 		}
 		if( $this->is_visible( $a['show_details'] ) ) {
 			$out .= '<div class="event-details">'.$this->db->truncate(do_shortcode(wpautop($event->details)), $a['details_length'], $this->single_event).'</div>';

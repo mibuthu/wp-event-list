@@ -51,7 +51,7 @@ class EL_Event_Table extends WP_List_Table {
 			case 'pub_date' :
 				return $this->format_pub_date($item->pub_date);
 			case 'categories' :
-				return esc_html($this->categories->get_category_string($item->$column_name));
+				return esc_html($this->categories->convert_db_string($item->$column_name));
 			default :
 				return esc_html($item->$column_name);
 		}
