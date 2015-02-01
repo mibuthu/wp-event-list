@@ -213,19 +213,12 @@ class EL_Event_Table extends WP_List_Table {
 	}
 
 	private function set_args() {
-		// filters
-		$this->args['date_filter'] = 'all';
-		$this->args['cat_filter'] = 'all';
-		// actual_date
-		$this->args['actual_date'] = 'upcoming';
-		if(isset($_GET['date']) && (is_numeric($_GET['date']) || 'all' == $_GET['date'] || 'upcoming' == $_GET['date'] || 'past' == $_GET['date'])) {
-			$this->args['actual_date'] = $_GET['date'];
-		}
-		// actual_cat
-		$this->args['actual_cat'] = 'all';
-		if(isset($_GET['cat'])) {
-			$this->args['actual_cat'] = $_GET['cat'];
-		}
+		$this->args = array('date_filter'   => 'all',
+		                    'cat_filter'    => 'all',
+		                    'sc_id_for_url' => '',
+		                    'actual_date'   => isset($_GET['date']) ? $_GET['date'] : 'upcoming',
+		                    'actual_cat'    => isset($_GET['cat'])  ? $_GET['cat']  : 'all',
+		);
 	}
 
 	private function get_events() {
