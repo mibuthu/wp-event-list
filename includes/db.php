@@ -67,7 +67,7 @@ class EL_Db {
 		return $wpdb->get_row( $sql );
 	}
 
-	public function get_distinct_event_data($search_string, $date_filter, $cat_filter, $order) {
+	public function get_distinct_event_data($search_string, $date_filter, $cat_filter, $order='asc') {
 		global $wpdb;
 		$where_string = $this->get_sql_filter_string($date_filter, $cat_filter);
 		if('desc' != $order) {
