@@ -4,7 +4,6 @@ if(!defined('ABSPATH')) {
 }
 
 require_once( EL_PATH.'includes/db.php' );
-//require_once( EL_PATH.'includes/options.php' );
 require_once( EL_PATH.'includes/categories.php' );
 
 // This class handles the navigation and filter bar
@@ -25,7 +24,6 @@ class EL_Filterbar {
 
 	private function __construct() {
 		$this->db = &EL_Db::get_instance();
-//		$this->options = &EL_Options::get_instance();
 		$this->categories = &EL_Categories::get_instance();
 	}
 
