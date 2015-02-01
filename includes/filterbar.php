@@ -146,8 +146,32 @@ class EL_Filterbar {
 
 
 	public function show_months($url, &$args, $type='dropdown', $subtype='std', $options=array()) {
+		$default_options = array (
+				'show_all' => 'false',
+				'show_upcoming' => 'false',
+				'show_past' => 'false',
+				'months_order' => 'asc',
+				'date_format' => 'Y-m',
+		);
+		$options = wp_parse_args($options, $default_options);
 		$args = $this->parse_args($args);
 		$argname = 'date'.$args['sc_id_for_url'];
+		// prepare displayed elements
+		$elements = array();
+		if('true' == $options['show_all']) {
+			$elements[] = $this->all_element('hlist'==$type ? null : __('Show all dates','event-list'));
+		}
+		if('true' == $options['show_upcoming']) {
+			$elements[] = $this->upcoming_element();
+		}
+		if('true' == $options['show_past']) {
+			$elements[] = $this->past_element();
+		}
+		$event_months = $this->db->get_event_months($args['date_filter'],$args['cat_filter'], $options['months_order']);
+		foreach($event_months as $entry) {
+			list($year, $month) = explode('-', $entry->month);
+			$elements[] = array('slug' => $entry->month, 'name' => date($options['date_format'], mktime(0,0,0,$month,1,$year)));
+		}
 		// set actual selection
 		if(is_numeric($args['event_id'])) {
 			$actual = null;
@@ -157,10 +181,6 @@ class EL_Filterbar {
 		}
 		else {
 			$actual = $args["actual_date"];
-		}
-		$event_months = $this->db->get_event_months();
-		foreach($event_months as $mon) {
-			$elements[] = array('slug' => $mon->a, 'name' => $mon->a);
 		}
 		// display elements
 		if('hlist' === $type) {

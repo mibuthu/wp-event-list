@@ -49,7 +49,12 @@ $sc_eventlist_helptexts = array(
 	                                                 <tr><td>show_upcoming</td><td>true | false</td><td>true</td><td>Add an entry to show all upcoming events.</td></tr>
 	                                                 <tr><td>show_past</td><td>true | false</td><td>false</td><td>Add an entry to show events in the past.</td></tr>
 	                                                 <tr><td>years_order</td><td>desc | asc</td><td>desc</td><td>Set descending or ascending order of year entries.</td></tr>
-	                                             <tr><td>months</td><td>Show a list of all available months.</td><td></td><td></td><td></td><td></td></tr>
+	                                             <tr><td rowspan="5">months</td><td rowspan="5">Show a list of all available months.</td>
+	                                                     <td>show_all</td><td>true | false</td><td>false</td><td>Add an entry to show all events.</td></tr>
+	                                                 <tr><td>show_upcoming</td><td>true | false</td><td>false</td><td>Add an entry to show all upcoming events.</td></tr>
+	                                                 <tr><td>show_past</td><td>true | false</td><td>false</td><td>Add an entry to show events in the past.</td></tr>
+	                                                 <tr><td>months_order</td><td>desc | asc</td><td>desc</td><td>Set descending or ascending order of month entries.</td></tr>
+	                                                 <tr><td>date_format</td><td><a href="http://php.net/manual/en/function.date.php">php date-formats</a></td><td>Y-m</td><td>Set the displayed date format of the month entries.</td></tr>
 	                                             <tr><td>daterange</td><td>With this item you can display the special entries "all", "upcoming" and "past". You can use all or only some of the available values and you can specify their order.</td><td>item_order</td><td>all | upcoming | past</td><td>all&amp;upcoming&amp;past</td><td>Specifies the displayed values and their order. The items must be seperated by "&amp;".</td></tr>
 	                                             <tr><td>cats</td><td>Show a list of all available categories.</td><td>show_all</td><td>true | false</td><td>true</td><td>Add an entry to show events from all categories.</td></tr>
 	                                             <tr><td>reset</td><td>Only a link to reset the eventlist filter to standard.</td><td>caption</td><td>any text</td><td>Reset</td><td>Set the caption of the link.</td></tr>

@@ -67,9 +67,13 @@ class EL_Db {
 		return $wpdb->get_row( $sql );
 	}
 
-	public function get_event_months() {
+	public function get_event_months($date_filter, $cat_filter, $order) {
 		global $wpdb;
-		$sql = 'SELECT DISTINCT substr(`start_date`,1,7)as a FROM '.$this->table.' WHERE 1 order by a asc';
+		$where_string = $this->get_sql_filter_string($date_filter, $cat_filter);
+		if('desc' != $order) {
+			$order = 'asc';   // standard order is ASC
+		}
+		$sql = 'SELECT DISTINCT substr(`start_date`,1,7) as month FROM '.$this->table.' WHERE '.$where_string.' order by month '.$order;
 		return $wpdb->get_results($sql);
 	}
 
