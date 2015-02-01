@@ -135,6 +135,7 @@ class EL_Filterbar {
 		else {
 			$actual = null;
 		}
+		// display elements
 		if('dropdown' === $type) {
 			return $this->show_dropdown($elements, $argname, $subtype, $actual, $args['sc_id_for_url']);
 		}
@@ -155,12 +156,13 @@ class EL_Filterbar {
 			$actual = $args['actual_date'];
 		}
 		else {
-			$actual = $args["actual_date"];//null;
+			$actual = $args["actual_date"];
 		}
 		$event_months = $this->db->get_event_months();
 		foreach($event_months as $mon) {
 			$elements[] = array('slug' => $mon->a, 'name' => $mon->a);
 		}
+		// display elements
 		if('hlist' === $type) {
 			return $this->show_hlist($elements, $url, $argname, $actual);
 		}
@@ -203,6 +205,7 @@ class EL_Filterbar {
 		else {
 			$actual = null;
 		}
+		// display elements
 		if('dropdown' === $type) {
 			return $this->show_dropdown($elements, $argname, $subtype, $actual, $args['sc_id_for_url']);
 		}
@@ -236,6 +239,7 @@ class EL_Filterbar {
 		}
 		// set selection
 		$actual = isset($args['actual_cat']) ? $args['actual_cat'] : null;
+		// display elements
 		if('hlist' === $type) {
 			return $this->show_hlist($elements, $url, $argname, $actual);
 		}
