@@ -89,41 +89,29 @@ class EL_Filterbar {
 	}
 
 	public function show_years($url, &$args, $type='hlist', $subtype='std', $options=array()) {
+		$default_options = array (
+				'show_all' => 'true',
+				'show_upcoming' => 'true',
+				'show_past' => 'false',
+				'years_order' => 'asc',
+		);
+		$options = wp_parse_args($options, $default_options);
 		$args = $this->parse_args($args);
 		$argname = 'date'.$args['sc_id_for_url'];
 		// prepare displayed elements
 		$elements = array();
-		if(!isset($options['show_all']) || 'true' == $options['show_all']) {   // default is true
+		if('true' == $options['show_all']) {
 			$elements[] = $this->all_element('date', $type);
 		}
-		if(!isset($options['show_upcoming']) || 'true' == $options['show_upcoming']) {   // default is true
+		if('true' == $options['show_upcoming']) {
 			$elements[] = $this->upcoming_element();
 		}
-		if(isset($options['show_past']) && 'true' == $options['show_past']) {   // default is false
+		if('true' == $options['show_past']) {
 			$elements[] = $this->past_element();
 		}
-		$first_year = $this->db->get_event_date('first');
-		$last_year = $this->db->get_event_date('last');
-		if(isset($options['years_order']) && 'asc' == strtolower($options['years_order'])) {
-			for($year=$first_year; $year<=$last_year; $year++) {
-				$elements[] = array('slug'=>$year, 'name'=>$year);
-			}
-		}
-		else {
-			for($year=$last_year; $year>=$first_year; $year--) {
-				$elements[] = array('slug'=>$year, 'name'=>$year);
-			}
-		}
-		// filter elements acc. date_filter (if only OR connections are used)
-		if('all' !== $args['date_filter'] && !strpos($args['cat_filter'], '&')) {
-			$tmp_filter = str_replace(array(' ', '(', ')'), '', $args['date_filter']);
-			$tmp_filter = str_replace(',', '|', $tmp_filter);
-			$filter_array = explode('|', $tmp_filter);
-			foreach($elements as $id => $element) {
-				if(!in_array($element['slug'], $filter_array) && 'all' !== $element['slug'] && 'upcoming' !== $element['slug'] && 'past' !== $element['slug']) {
-					unset($elements[$id]);
-				}
-			}
+		$event_years = $this->db->get_distinct_event_data('substr(`start_date`,1,4)', $args['date_filter'],$args['cat_filter'], $options['years_order']);
+		foreach($event_years as $entry) {
+			$elements[] = array('slug'=>$entry->data, 'name'=>$entry->data);
 		}
 		// set selection
 		if(is_numeric($args['event_id'])) {
@@ -143,7 +131,6 @@ class EL_Filterbar {
 			return $this->show_hlist($elements, $url, $argname, $actual);
 		}
 	}
-
 
 	public function show_months($url, &$args, $type='dropdown', $subtype='std', $options=array()) {
 		$default_options = array (

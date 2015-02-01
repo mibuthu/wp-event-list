@@ -77,28 +77,6 @@ class EL_Db {
 		return $wpdb->get_results($sql);
 	}
 
-	public function get_event_date( $event ) {
-		global $wpdb;
-		if( $event === 'first' ) {
-			// first year
-			$search_date = 'start_date';
-			$sql = 'SELECT DISTINCT '.$search_date.' FROM '.$this->table.' WHERE '.$search_date.' != "0000-00-00" ORDER BY '.$search_date.' ASC LIMIT 1';
-		}
-		else {
-			// last year
-			$search_date = 'end_date';
-			$sql = 'SELECT DISTINCT '.$search_date.' FROM '.$this->table.' WHERE '.$search_date.' != "0000-00-00" ORDER BY '.$search_date.' DESC LIMIT 1';
-		}
-		$date = $wpdb->get_results($sql, ARRAY_A);
-		if( !empty( $date ) ) {
-			$datestring = substr($date[0][$search_date], 0, 4);
-		}
-		else {
-			$datestring = date('Y', current_time('timestamp'));
-		}
-		return $datestring;
-	}
-
 	public function get_num_events() {
 		global $wpdb;
 		$sql = 'SELECT COUNT(*) FROM '.$this->table;
