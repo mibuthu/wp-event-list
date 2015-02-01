@@ -67,32 +67,14 @@ class EL_Db {
 		return $wpdb->get_row( $sql );
 	}
 
-	public function get_event_months() {
+	public function get_distinct_event_data($search_string, $date_filter, $cat_filter, $order='asc') {
 		global $wpdb;
-		$sql = 'SELECT DISTINCT substr(`start_date`,1,7)as a FROM '.$this->table.' WHERE 1 order by a asc';
+		$where_string = $this->get_sql_filter_string($date_filter, $cat_filter);
+		if('desc' != $order) {
+			$order = 'asc';   // standard order is ASC
+		}
+		$sql = 'SELECT DISTINCT '.$search_string.' as data FROM '.$this->table.' WHERE '.$where_string.' order by data '.$order;
 		return $wpdb->get_results($sql);
-	}
-
-	public function get_event_date( $event ) {
-		global $wpdb;
-		if( $event === 'first' ) {
-			// first year
-			$search_date = 'start_date';
-			$sql = 'SELECT DISTINCT '.$search_date.' FROM '.$this->table.' WHERE '.$search_date.' != "0000-00-00" ORDER BY '.$search_date.' ASC LIMIT 1';
-		}
-		else {
-			// last year
-			$search_date = 'end_date';
-			$sql = 'SELECT DISTINCT '.$search_date.' FROM '.$this->table.' WHERE '.$search_date.' != "0000-00-00" ORDER BY '.$search_date.' DESC LIMIT 1';
-		}
-		$date = $wpdb->get_results($sql, ARRAY_A);
-		if( !empty( $date ) ) {
-			$datestring = substr($date[0][$search_date], 0, 4);
-		}
-		else {
-			$datestring = date('Y', current_time('timestamp'));
-		}
-		return $datestring;
 	}
 
 	public function get_num_events() {

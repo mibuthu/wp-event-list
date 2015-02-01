@@ -4,14 +4,12 @@ if(!defined('ABSPATH')) {
 }
 
 require_once( EL_PATH.'includes/db.php' );
-//require_once( EL_PATH.'includes/options.php' );
 require_once( EL_PATH.'includes/categories.php' );
 
 // This class handles the navigation and filter bar
 class EL_Filterbar {
 	private static $instance;
 	private $db;
-//	private $options;
 	private $categories;
 
 	public static function &get_instance() {
@@ -25,12 +23,12 @@ class EL_Filterbar {
 
 	private function __construct() {
 		$this->db = &EL_Db::get_instance();
-//		$this->options = &EL_Options::get_instance();
 		$this->categories = &EL_Categories::get_instance();
 	}
 
 	// main function to show the rendered HTML output
 	public function show($url, &$args) {
+		$this->parse_args($args);
 		$out = '
 				<style type="text/css">
 					.filterbar { display:table; width:100% }
@@ -89,89 +87,72 @@ class EL_Filterbar {
 	}
 
 	public function show_years($url, &$args, $type='hlist', $subtype='std', $options=array()) {
-		$args = $this->parse_args($args);
-		$argname = 'date'.$args['sc_id_for_url'];
+		$default_options = array (
+				'show_all' => 'true',
+				'show_upcoming' => 'true',
+				'show_past' => 'false',
+				'years_order' => 'asc',
+		);
+		$options = wp_parse_args($options, $default_options);
 		// prepare displayed elements
 		$elements = array();
-		if(!isset($options['show_all']) || 'true' == $options['show_all']) {   // default is true
-			$elements[] = $this->all_element('hlist'==$type ? null : __('Show all dates','eventlist'));
+		if('true' == $options['show_all']) {
+			$elements[] = $this->all_element('date', $type);
 		}
-		if(!isset($options['show_upcoming']) || 'true' == $options['show_upcoming']) {   // default is true
+		if('true' == $options['show_upcoming']) {
 			$elements[] = $this->upcoming_element();
 		}
-		if(isset($options['show_past']) && 'true' == $options['show_past']) {   // default is false
+		if('true' == $options['show_past']) {
 			$elements[] = $this->past_element();
 		}
-		$first_year = $this->db->get_event_date('first');
-		$last_year = $this->db->get_event_date('last');
-		if(isset($options['years_order']) && 'asc' == strtolower($options['years_order'])) {
-			for($year=$first_year; $year<=$last_year; $year++) {
-				$elements[] = array('slug'=>$year, 'name'=>$year);
-			}
+		$event_years = $this->db->get_distinct_event_data('substr(`start_date`,1,4)', $args['date_filter'],$args['cat_filter'], $options['years_order']);
+		foreach($event_years as $entry) {
+			$elements[] = array('slug'=>$entry->data, 'name'=>$entry->data);
 		}
-		else {
-			for($year=$last_year; $year>=$first_year; $year--) {
-				$elements[] = array('slug'=>$year, 'name'=>$year);
-			}
-		}
-		// filter elements acc. date_filter (if only OR connections are used)
-		if('all' !== $args['date_filter'] && !strpos($args['cat_filter'], '&')) {
-			$tmp_filter = str_replace(array(' ', '(', ')'), '', $args['date_filter']);
-			$tmp_filter = str_replace(',', '|', $tmp_filter);
-			$filter_array = explode('|', $tmp_filter);
-			foreach($elements as $id => $element) {
-				if(!in_array($element['slug'], $filter_array) && 'all' !== $element['slug'] && 'upcoming' !== $element['slug'] && 'past' !== $element['slug']) {
-					unset($elements[$id]);
-				}
-			}
-		}
-		// set selection
-		if(is_numeric($args['event_id'])) {
-			$actual = null;
-		}
-		elseif('all' === $args['actual_date'] || 'upcoming' === $args['actual_date'] || 'past' === $args['actual_date'] || is_numeric($args['actual_date'])) {
-			$actual = $args['actual_date'];
-		}
-		else {
-			$actual = null;
-		}
+		// display elements
 		if('dropdown' === $type) {
-			return $this->show_dropdown($elements, $argname, $subtype, $actual, $args['sc_id_for_url']);
+			return $this->show_dropdown($elements, 'date'.$args['sc_id_for_url'], $subtype, $args['actual_date'], $args['sc_id_for_url']);
 		}
 		else {
-			return $this->show_hlist($elements, $url, $argname, $actual);
+			return $this->show_hlist($elements, $url, 'date'.$args['sc_id_for_url'], $args['actual_date']);
 		}
 	}
 
-
 	public function show_months($url, &$args, $type='dropdown', $subtype='std', $options=array()) {
-		$args = $this->parse_args($args);
-		$argname = 'date'.$args['sc_id_for_url'];
-		// set actual selection
-		if(is_numeric($args['event_id'])) {
-			$actual = null;
+		$default_options = array (
+				'show_all' => 'false',
+				'show_upcoming' => 'false',
+				'show_past' => 'false',
+				'months_order' => 'asc',
+				'date_format' => 'Y-m',
+		);
+		$options = wp_parse_args($options, $default_options);
+		// prepare displayed elements
+		$elements = array();
+		if('true' == $options['show_all']) {
+			$elements[] = $this->all_element('date', $type);
 		}
-		elseif('all' === $args['actual_date'] || 'upcoming' === $args['actual_date'] || 'past' === $args['actual_date']) {
-			$actual = $args['actual_date'];
+		if('true' == $options['show_upcoming']) {
+			$elements[] = $this->upcoming_element();
 		}
-		else {
-			$actual = $args["actual_date"];//null;
+		if('true' == $options['show_past']) {
+			$elements[] = $this->past_element();
 		}
-		$event_months = $this->db->get_event_months();
-		foreach($event_months as $mon) {
-			$elements[] = array('slug' => $mon->a, 'name' => $mon->a);
+		$event_months = $this->db->get_distinct_event_data('substr(`start_date`,1,7)', $args['date_filter'],$args['cat_filter'], $options['months_order']);
+		foreach($event_months as $entry) {
+			list($year, $month) = explode('-', $entry->data);
+			$elements[] = array('slug' => $entry->data, 'name' => date($options['date_format'], mktime(0,0,0,$month,1,$year)));
 		}
+		// display elements
 		if('hlist' === $type) {
-			return $this->show_hlist($elements, $url, $argname, $actual);
+			return $this->show_hlist($elements, $url, 'date'.$args['sc_id_for_url'], $args['actual_date']);
 		}
 		else {
-			return $this->show_dropdown($elements, $argname, $subtype, $actual, $args['sc_id_for_url']);
+			return $this->show_dropdown($elements, 'date'.$args['sc_id_for_url'], $subtype, $args["actual_date"], $args['sc_id_for_url']);
 		}
 	}
 
 	public function show_daterange($url, &$args, $type='hlist', $subtype='std', $options) {
-		$args = $this->parse_args($args);
-		$argname = 'date'.$args['sc_id_for_url'];
 		// prepare displayed elements
 		if(isset($options['item_order'])) {
 			$items = explode('&', $options['item_order']);
@@ -184,7 +165,7 @@ class EL_Filterbar {
 			// show all
 			switch($item) {
 				case 'all':
-					$elements[] = $this->all_element();
+					$elements[] = $this->all_element('date');   // Always show short form ... hlist
 					break;
 				case 'upcoming':
 					$elements[] = $this->upcoming_element();
@@ -193,54 +174,54 @@ class EL_Filterbar {
 					$elements[] = $this->past_element();
 			}
 		}
-		// set actual selection
-		if(is_numeric($args['event_id'])) {
-			$actual = null;
-		}
-		elseif('all' === $args['actual_date'] || 'upcoming' === $args['actual_date'] || 'past' === $args['actual_date']) {
-			$actual = $args['actual_date'];
-		}
-		else {
-			$actual = null;
-		}
+		// display elements
 		if('dropdown' === $type) {
-			return $this->show_dropdown($elements, $argname, $subtype, $actual, $args['sc_id_for_url']);
+			return $this->show_dropdown($elements, 'date'.$args['sc_id_for_url'], $subtype, $args['actual_date'], $args['sc_id_for_url']);
 		}
 		else {
-			return $this->show_hlist($elements, $url, $argname, $actual);
+			return $this->show_hlist($elements, $url, 'date'.$args['sc_id_for_url'], $args['actual_date']);
 		}
 	}
 
 	public function show_cats($url, &$args, $type='dropdown', $subtype='std', $options=array()) {
-		$args = $this->parse_args($args);
-		$argname = 'cat'.$args['sc_id_for_url'];
+		$default_options = array (
+				'show_all' => 'true',
+		);
+		$options = wp_parse_args($options, $default_options);
 		// prepare displayed elements
-		$cat_array = $this->categories->get_cat_array();
 		$elements = array();
-		if(!isset($options['show_all']) || 'true' == $options['show_all']) {
-			$elements[] = $this->all_element('hlist'==$type ? null : __('View all categories','eventlist'));
+		if('true' == $options['show_all']) {
+			$elements[] = $this->all_element('cat', $type);
 		}
-		foreach($cat_array as $cat) {
-			$elements[] = array('slug' => $cat['slug'], 'name' => str_pad('', 12*$cat['level'], '&nbsp;', STR_PAD_LEFT).$cat['name']);
+		//prepare required arrays
+		$cat_array = $this->categories->get_cat_array();
+		$events_cat_strings = $this->db->get_distinct_event_data('`categories`', $args['date_filter'],$args['cat_filter']);
+		$events_cat_array = array();
+		foreach($events_cat_strings as $cat_string) {
+			$events_cat_array = array_merge($events_cat_array, $this->categories->convert_db_string($cat_string->data, 'slug_array'));
 		}
-		// filter elements acc. cat_filter (if only OR connections are used)
-		if('all' !== $args['cat_filter'] && !strpos($args['cat_filter'], '&')) {
-			$tmp_filter = str_replace(array(' ', '(', ')'), '', $args['cat_filter']);
-			$tmp_filter = str_replace(',', '|', $tmp_filter);
-			$filter_array = explode('|', $tmp_filter);
-			foreach($elements as $id => $element) {
-				if(!in_array($element['slug'], $filter_array) && 'all' !== $element['slug']) {
-					unset($elements[$id]);
+		$events_cat_array = array_unique($events_cat_array);
+		//create filtered cat_array
+		$filtered_cat_array = array();
+		$required_cats = array();
+		for($i=count($cat_array)-1; 0<=$i; $i--) {   // start from the end to have the childs first and be able to add the parent to the required_cats
+			if(in_array($cat_array[$i]['slug'], $events_cat_array) || in_array($cat_array[$i]['slug'], $required_cats)) {
+				array_unshift($filtered_cat_array, $cat_array[$i]);   // add the new cat at the beginning (unshift) due to starting at the end in the loop
+				if('' != $cat_array[$i]['parent']) {   // the parent is required to show the categories correctly
+					$required_cats[] = $cat_array[$i]['parent'];
 				}
 			}
 		}
-		// set selection
-		$actual = isset($args['actual_cat']) ? $args['actual_cat'] : null;
+		//create elements array
+		foreach($filtered_cat_array as $cat) {
+			$elements[] = array('slug' => $cat['slug'], 'name' => str_pad('', 12*$cat['level'], '&nbsp;', STR_PAD_LEFT).$cat['name']);
+		}
+		// display elements
 		if('hlist' === $type) {
-			return $this->show_hlist($elements, $url, $argname, $actual);
+			return $this->show_hlist($elements, $url, 'cat'.$args['sc_id_for_url'], $args['actual_cat']);
 		}
 		else {
-			return $this->show_dropdown($elements, $argname, $subtype, $actual, $args['sc_id_for_url']);
+			return $this->show_dropdown($elements, 'cat'.$args['sc_id_for_url'], $subtype, $args['actual_cat'], $args['sc_id_for_url']);
 		}
 	}
 
@@ -251,7 +232,7 @@ class EL_Filterbar {
 		if(!isset($options['caption'])) {
 			$options['caption'] = 'Reset';
 		}
-		return $this->show_link(remove_query_arg($args_to_remove, $url), __($options['caption']), 'link');
+		return $this->show_link(remove_query_arg($args_to_remove, $url), $options['caption'], 'link');
 	}
 
 	private function show_hlist($elements, $url, $name, $actual=null) {
@@ -296,25 +277,36 @@ class EL_Filterbar {
 		return '<a href="'.esc_url($url).'"'.$class.'>'.esc_html($caption).'</a>';
 	}
 
-	private function all_element($name=null) {
-		if(null == $name) {
-			$name = __('All','eventlist');
+	private function all_element($list_type='date', $display_type='hlist') {
+		if('hlist' == $display_type) {
+			$name = __('All','event-list');
+		}
+		else {
+			$name = ('date' == $list_type) ? __('Show all dates','event-list') :  __('Show all categories','event-list');
 		}
 		return array('slug' => 'all', 'name' => $name);
 	}
 
 	private function upcoming_element() {
-		return array('slug' => 'upcoming', 'name' => __('Upcoming','eventlist'));
+		return array('slug' => 'upcoming', 'name' => __('Upcoming','event-list'));
 	}
 
 	private function past_element() {
-		return array('slug' => 'past', 'name' => __('Past','eventlist'));
+		return array('slug' => 'past', 'name' => __('Past','event-list'));
 	}
 
-	private function parse_args($args) {
-		$defaults = array('date' => null, 'event_id' => null, 'sc_id_for_url' => null);
+	private function parse_args(&$args) {
+		$defaults = array('date' => null,
+		                  'actual_date' => null,
+		                  'actual_cat' => null,
+		                  'event_id' => null,
+		                  'sc_id_for_url' => '',
+		);
 		$args = wp_parse_args($args, $defaults);
-		return $args;
+		if(is_numeric($args['event_id'])) {
+			$args['actual_date'] = null;
+			$args['actual_cat'] = null;
+		};
 	}
 
 	public function footer_script() {

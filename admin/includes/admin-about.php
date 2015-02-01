@@ -23,23 +23,23 @@ class EL_Admin_About {
 
 	public function show_about() {
 		if(!current_user_can('edit_posts')) {
-			wp_die(__('You do not have sufficient permissions to access this page.','eventlist'));
+			wp_die(__('You do not have sufficient permissions to access this page.','event-list'));
 		}
 		echo '<div class="wrap">
-				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.__('About Event List','eventlist').'</h2>
+				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.__('About Event List','event-list').'</h2>
 				<h3 class="el-headline">Help and Instructions</h3>
 				<p>You can manage your events <a href="admin.php?page=el_admin_main">here</a>.</p>
-				<p>To show the events on your site you have two possibilities:
-					<ul class="el-show-event-options"><li>you can place the <strong>shortcode</strong> <code>[event-list]</code> on any page or post</li>
-					<li>you can add the <strong>widget</strong> "Event List" in your sidebars</li></ul>
-					The displayed events and their style can be modified with the available widget settings and the available attributes for the shortcode.<br />
+				<p>To show the events on your site you have two possibilities:</p>
+				<ul class="el-show-event-options"><li>you can place the <strong>shortcode</strong> <code>[event-list]</code> on any page or post</li>
+				<li>you can add the <strong>widget</strong> "Event List" in your sidebars</li></ul>
+				<p>The displayed events and their style can be modified with the available widget settings and the available attributes for the shortcode.<br />
 					A list of all available shortcode attributes with their description is available below.<br />
 					The available  widget options are described in their tooltip text.<br />
 					For the widget it is important to know that you have to insert an URL to the linked event-list page if you enable one of the links options ("Add links to the single events" or "Add a link to an event page").
 					This is required because the widget didn´t know in which page or post the shortcode was included.<br />
 					Additonally you have to insert the correct Shortcode ID on the linked page. This ID describes which shortcode should be used on the given page or post if you have more than one.
 					So the standard value "1" is normally o.k., but if required you can check the ID by looking into the URL of an event link on your linked page or post.
-					The ID will be added at the end of the query parameter name (e.g. <i>http://www.your-homepage.com/?page_id=99&event_id<strong>1</strong>=11</i>).
+					The ID will be added at the end of the query parameter name (e.g. <i>http://www.your-homepage.com/?page_id=99&amp;event_id<strong>1</strong>=11</i>).
 				</p>
 				<p>Be sure to also check the <a href="admin.php?page=el_admin_settings">Settings page</a> to get Event List behaving just the way you want.</p>
 			</div>';
@@ -95,19 +95,19 @@ class EL_Admin_About {
 
 	private function show_filter_syntax() {
 		return '
-			<h3 class="el-headline">'.__('Filter Syntax','eventlist').'</h3>
-			<p>'.__('For date and cat filters you can specify complex filters with the following syntax:','eventlist').'</p>
-			<p>'.__('You can use AND ( "<b>&amp;</b>" ) and OR ( "<b>&verbar;</b>" or "<b>&comma;</b>" ) connections to define complex filters. Additionally you can set brackets ( "<b>(</b>" and ("<b>)</b>" ) for nested queries.','eventlist').'</p>
-			'.__('Examples for cat filters:','eventlist').'
-			<p><code>tennis</code> ... '.__('Show all events with category "tennis".','eventlist').'<br />
-			<code>tennis,hockey</code> ... '.__('Show all events with category "tennis" or "hockey".','eventlist').'<br />
-			<code>tennis|(hockey&winter)</code> ... '.__('Show all events with category "tennis" and all events where category "hockey" as well as "winter" is selected.','eventlist').'</p>';
+			<h3 class="el-headline">'.__('Filter Syntax','event-list').'</h3>
+			<p>'.__('For date and cat filters you can specify complex filters with the following syntax:','event-list').'</p>
+			<p>'.__('You can use AND ( "<b>&amp;</b>" ) and OR ( "<b>&verbar;</b>" or "<b>&comma;</b>" ) connections to define complex filters. Additionally you can set brackets ( "<b>(</b>" and ("<b>)</b>" ) for nested queries.','event-list').'</p>
+			'.__('Examples for cat filters:','event-list').'
+			<p><code>tennis</code> ... '.__('Show all events with category "tennis".','event-list').'<br />
+			<code>tennis,hockey</code> ... '.__('Show all events with category "tennis" or "hockey".','event-list').'<br />
+			<code>tennis|(hockey&amp;winter)</code> ... '.__('Show all events with category "tennis" and all events where category "hockey" as well as "winter" is selected.','event-list').'</p>';
 	}
 
 	private function show_date_syntax() {
 		return '
-			<h3 class="el-headline">'.__('Available Date Formats','eventlist').'</h3>
-			<p>'.__('For date filters you can use the following date formats:','eventlist').'</p>
+			<h3 class="el-headline">'.__('Available Date Formats','event-list').'</h3>
+			<p>'.__('For date filters you can use the following date formats:','event-list').'</p>
 			<ul class="el-formats">
 			'.$this->show_formats($this->options->date_formats).'
 			</ul>';
@@ -115,8 +115,8 @@ class EL_Admin_About {
 
 	private function show_daterange_syntax() {
 		return '
-			<h3 class="el-headline">'.__('Available Date Range Formats','eventlist').'</h3>
-			<p>'.__('For date filters you can use the following daterange formats:','eventlist').'</p>
+			<h3 class="el-headline">'.__('Available Date Range Formats','event-list').'</h3>
+			<p>'.__('For date filters you can use the following daterange formats:','event-list').'</p>
 			<ul class="el-formats">
 			'.$this->show_formats($this->options->daterange_formats).'
 			</ul>';
@@ -128,11 +128,11 @@ class EL_Admin_About {
 			$out .= '
 				<li><div class="el-format-entry"><div class="el-format-name">'.$format['name'].':</div><div class="el-format-desc">';
 			if(isset($format['value'])) {
-				$out .= __('Value','eventlist').': <em>'.$format['value'].'</em><br />';
+				$out .= __('Value','event-list').': <em>'.$format['value'].'</em><br />';
 			}
 			$out .= $format['desc'].'<br />';
 			if(isset($format['examp'])) {
-				$out .= __('Example','eventlist').': <em>'.$format['examp'].'</em>';
+				$out .= __('Example','event-list').': <em>'.$format['examp'].'</em>';
 			}
 			$out .= '</div></div></li>';
 		}

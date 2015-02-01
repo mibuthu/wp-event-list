@@ -3,13 +3,13 @@
 Plugin Name: Event List
 Plugin URI: http://wordpress.org/extend/plugins/event-list/
 Description: Manage your events and show them in a list view on your site.
-Version: 0.7.0
+Version: 0.7.1
 Author: Michael Burtscher
 Author URI: http://wordpress.org/extend/plugins/event-list/
 License: GPLv2
 
 A plugin for the blogging MySQL/PHP-based WordPress.
-Copyright 2012-2014 Michael Burtscher
+Copyright 2012-2015 Michael Burtscher
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNUs General Public License
@@ -37,6 +37,7 @@ require_once(EL_PATH.'includes/options.php');
 
 // MAIN PLUGIN CLASS
 class Event_List {
+	private $options;
 	private $shortcode;
 	private $styles_loaded;
 
@@ -45,6 +46,7 @@ class Event_List {
 	 * Initializes the plugin.
 	 */
 	public function __construct() {
+		$this->options = EL_Options::get_instance();
 		$this->shortcode = null;
 		$this->styles_loaded = false;
 
@@ -55,12 +57,8 @@ class Event_List {
 		add_shortcode('event-list', array(&$this, 'shortcode_event_list'));
 		// Register widgets
 		add_action('widgets_init', array(&$this, 'widget_init'));
-		// Add RSS Feed page
-		$options = EL_Options::get_instance();
-		if($options->get('el_enable_feed')) {
-			include_once(EL_PATH.'includes/feed.php');
-			$feed = EL_Feed::get_instance();
-		}
+		// Register RSS feed
+		add_action('init', array(&$this, 'feed_init'), 10);
 
 		// ADMIN PAGE:
 		if(is_admin()) {
@@ -77,7 +75,7 @@ class Event_List {
 	} // end constructor
 
 	public function load_textdomain() {
-		load_plugin_textdomain('eventlist', false, dirname(plugin_basename(__FILE__)).'/languages');
+		load_plugin_textdomain('event-list', false, dirname(plugin_basename(__FILE__)).'/languages');
 	}
 
 	public function shortcode_event_list($atts) {
@@ -91,6 +89,13 @@ class Event_List {
 			}
 		}
 		return $this->shortcode->show_html($atts);
+	}
+
+	public function feed_init() {
+		if($this->options->get('el_enable_feed')) {
+			include_once(EL_PATH.'includes/feed.php');
+			EL_Feed::get_instance();
+		}
 	}
 
 	public function widget_init() {

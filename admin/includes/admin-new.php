@@ -35,12 +35,12 @@ class EL_Admin_New {
 
 	public function show_new() {
 		if(!current_user_can('edit_posts')) {
-			wp_die(__('You do not have sufficient permissions to access this page.','eventlist'));
+			wp_die(__('You do not have sufficient permissions to access this page.','event-list'));
 		}
 		$out = '<div class="wrap">
-				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.__('Add New Event','eventlist').'</h2>';
+				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.__('Add New Event','event-list').'</h2>';
 		if($this->is_duplicate) {
-			$out .= '<span style="color:silver">('.sprintf(__('Duplicate of event id:%d','eventlist'), $_GET['id']).')</span>';
+			$out .= '<span style="color:silver">('.sprintf(__('Duplicate of event id:%d','event-list'), $_GET['id']).')</span>';
 		}
 		$out .= $this->edit_event();
 		$out .= '</div>';
@@ -94,28 +94,28 @@ class EL_Admin_New {
 		$out .= '
 					<table class="form-table">
 					<tr>
-						<th><label>'.__('Title','eventlist').' ('.__('required','eventlist').')</label></th>
+						<th><label>'.__('Title','event-list').' ('.__('required','event-list').')</label></th>
 						<td><input type="text" class="text form-required" name="title" id="title" value="'.str_replace('"', '&quot;', isset($event->title) ? $event->title : '').'" /></td>
 					</tr>
 					<tr>
-						<th><label>'.__('Date','eventlist').' ('.__('required','eventlist').')</label></th>
+						<th><label>'.__('Date','event-list').' ('.__('required','event-list').')</label></th>
 						<td><input type="text" class="text datepicker form-required" name="start_date" id="start_date" value="'.date('Y-m-d', $start_date).'" />
 							<span id="end_date_area"> - <input type="text" class="text datepicker" name="end_date" id="end_date" value="'.date('Y-m-d', $end_date).'" /></span>
-							<label><input type="checkbox" name="multiday" id="multiday" value="1" /> '.__('Multi-Day Event','eventlist').'</label>
+							<label><input type="checkbox" name="multiday" id="multiday" value="1" /> '.__('Multi-Day Event','event-list').'</label>
 							<input type="hidden" id="sql_start_date" name="sql_start_date" value="" />
 							<input type="hidden" id="sql_end_date" name="sql_end_date" value="" />
 						</td>
 					</tr>
 					<tr>
-						<th><label>'.__('Time','eventlist').'</label></th>
+						<th><label>'.__('Time','event-list').'</label></th>
 						<td><input type="text" class="text" name="time" id="time" value="'.str_replace('"', '&quot;', isset($event->time) ? $event->time : '').'" /></td>
 					</tr>
 					<tr>
-						<th><label>'.__('Location','eventlist').'</label></th>
+						<th><label>'.__('Location','event-list').'</label></th>
 						<td><input type="text" class="text" name="location" id="location" value="'.str_replace('"', '&quot;', isset($event->location) ? $event->location : '').'" /></td>
 					</tr>
 					<tr>
-						<th><label>'.__('Details','eventlist').'</label></th>
+						<th><label>'.__('Details','event-list').'</label></th>
 						<td>';
 		$editor_settings = array('drag_drop_upload' => true,
 		                         'textarea_rows' => 20);
@@ -131,9 +131,9 @@ class EL_Admin_New {
 				</div>
 				<div id="postbox-container-1" class="postbox-container">
 				<div id="side-sortables" class="meta-box-sortables ui-sortable">';
-		add_meta_box('event-publish', __('Publish','eventlist'), array(&$this, 'render_publish_metabox'), 'event-list');
+		add_meta_box('event-publish', __('Publish','event-list'), array(&$this, 'render_publish_metabox'), 'event-list');
 		$metabox_args = isset($event->categories) ? array('event_cats' => $event->categories) : null;
-		add_meta_box('event-categories', __('Categories','eventlist'), array(&$this, 'render_category_metabox'), 'event-list', 'advanced', 'default', $metabox_args);
+		add_meta_box('event-categories', __('Categories','event-list'), array(&$this, 'render_category_metabox'), 'event-list', 'advanced', 'default', $metabox_args);
 		ob_start();
 			do_meta_boxes('event-list', 'advanced', null);
 			$out .= ob_get_contents();
@@ -148,9 +148,9 @@ class EL_Admin_New {
 	}
 
 	public function render_publish_metabox() {
-		$button_text = $this->is_new ? __('Publish','eventlist') : __('Update','eventlist');
+		$button_text = $this->is_new ? __('Publish','event-list') : __('Update','event-list');
 		$out = '<div class="submitbox">
-				<div id="delete-action"><a href="?page=el_admin_main" class="submitdelete deletion">'.__('Cancel','eventlist').'</a></div>
+				<div id="delete-action"><a href="?page=el_admin_main" class="submitdelete deletion">'.__('Cancel','event-list').'</a></div>
 				<div id="publishing-action"><input type="submit" class="button button-primary button-large" name="publish" value="'.$button_text.'" id="publish"></div>
 				<div class="clear"></div>
 			</div>';
@@ -163,7 +163,7 @@ class EL_Admin_New {
 				<div id="category-all" class="tabs-panel">';
 		$cat_array = $this->categories->get_cat_array('name', 'asc');
 		if(empty($cat_array)) {
-			$out .= __('No categories available.','eventlist');
+			$out .= __('No categories available.','event-list');
 		}
 		else {
 			$out .= '
@@ -200,16 +200,16 @@ class EL_Admin_New {
 				</div>';
 		// TODO: Adding new categories in edit event form
 		/*		<div id="category-adder" class="wp-hidden-children">
-					<h4><a id="category-add-toggle" href="#category-add" class="hide-if-no-js">'.__('+ Add New Category','eventlist').'</a></h4>
+					<h4><a id="category-add-toggle" href="#category-add" class="hide-if-no-js">'.__('+ Add New Category','event-list').'</a></h4>
 					<p id="category-add" class="category-add wp-hidden-child">
-						<label class="screen-reader-text" for="newcategory">'.__('Category Name','eventlist').'</label>
+						<label class="screen-reader-text" for="newcategory">'.__('Category Name','event-list').'</label>
 						<input type="text" name="newcategory" id="newcategory" class="form-required form-input-tip" value="" aria-required="true"/>
-						<input type="button" id="category-add-submit" class="button category-add-submit" value="'.__('Add Category','eventlist').'" />
+						<input type="button" id="category-add-submit" class="button category-add-submit" value="'.__('Add Category','event-list').'" />
 					</p>
 				</div>*/
 		$out .= '
 				<div id="category-manager">
-					<a id="category-manage-link" href="?page=el_admin_categories">'.__('Goto Category Settings','eventlist').'</a>
+					<a id="category-manage-link" href="?page=el_admin_categories">'.__('Goto Category Settings','event-list').'</a>
 				</div>
 				</div>';
 		echo $out;

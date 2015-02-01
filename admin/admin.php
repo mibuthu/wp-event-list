@@ -42,26 +42,26 @@ class EL_Admin {
 	 */
 	public function register_pages() {
 		// Main Menu page
-		add_menu_page(__('Event List','eventlist'), __('Event List','eventlist'), 'edit_posts', 'el_admin_main', array(&$this, 'show_main_page'), EL_URL.'admin/images/calendar.png', '22.2');
+		add_menu_page(__('Event List','event-list'), __('Event List','event-list'), 'edit_posts', 'el_admin_main', array(&$this, 'show_main_page'), EL_URL.'admin/images/calendar.png', '22.2');
 
 		// All Events subpage
-		$page = add_submenu_page('el_admin_main', __('Events','eventlist'), __('All Events','eventlist'), 'edit_posts', 'el_admin_main', array(&$this, 'show_main_page'));
+		$page = add_submenu_page('el_admin_main', __('Events','event-list'), __('All Events','event-list'), 'edit_posts', 'el_admin_main', array(&$this, 'show_main_page'));
 		add_action('admin_print_scripts-'.$page, array(&$this, 'embed_main_scripts'));
 
 		// New Event subpage
-		$page = add_submenu_page('el_admin_main', __('Add New Event','eventlist'), __('Add New','eventlist'), 'edit_posts', 'el_admin_new', array(&$this, 'show_new_page'));
+		$page = add_submenu_page('el_admin_main', __('Add New Event','event-list'), __('Add New','event-list'), 'edit_posts', 'el_admin_new', array(&$this, 'show_new_page'));
 		add_action('admin_print_scripts-'.$page, array(&$this, 'embed_new_scripts'));
 
 		// Categories subpage
-		$page = add_submenu_page('el_admin_main', __('Event List Categories','eventlist'), __('Categories','eventlist'), 'manage_options', 'el_admin_categories', array(&$this, 'show_categories_page'));
+		$page = add_submenu_page('el_admin_main', __('Event List Categories','event-list'), __('Categories','event-list'), 'manage_options', 'el_admin_categories', array(&$this, 'show_categories_page'));
 		add_action('admin_print_scripts-'.$page, array(&$this, 'embed_categories_scripts'));
 
 		// Settings subpage
-		$page = add_submenu_page('el_admin_main', __('Event List Settings','eventlist'), __('Settings','eventlist'), 'manage_options', 'el_admin_settings', array(&$this, 'show_settings_page'));
+		$page = add_submenu_page('el_admin_main', __('Event List Settings','event-list'), __('Settings','event-list'), 'manage_options', 'el_admin_settings', array(&$this, 'show_settings_page'));
 		add_action('admin_print_scripts-'.$page, array(&$this, 'embed_settings_scripts'));
 
 		// About subpage
-		$page = add_submenu_page('el_admin_main', __('About Event List','eventlist'), __('About','eventlist'), 'edit_posts', 'el_admin_about', array(&$this, 'show_about_page'));
+		$page = add_submenu_page('el_admin_main', __('About Event List','event-list'), __('About','event-list'), 'edit_posts', 'el_admin_about', array(&$this, 'show_about_page'));
 		add_action('admin_print_scripts-'.$page, array(&$this, 'embed_about_scripts'));
 	}
 
@@ -77,7 +77,7 @@ class EL_Admin {
 		$out = '
 			<tr>
 				<td class="first b b-events"><a href="'.$event_link.'">'.$num_events.'</a></td>
-				<td class="t events"><a href="'.$event_link.'">'.__('Events','eventlist').'</a></td>
+				<td class="t events"><a href="'.$event_link.'">'.__('Events','event-list').'</a></td>
 			</tr>';
 		echo $out;
 	}

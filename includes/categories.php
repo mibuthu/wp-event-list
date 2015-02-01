@@ -280,21 +280,34 @@ class EL_Categories {
 		return $this->cat_array[$slug];
 	}
 
-	public function get_category_string($slug_text, $type='name', $glue=', ') {
-		if(2 >= strlen($slug_text)) {
-			return '';
+	/**
+	 * Convert the slugs-string (e.g. "|slug-1|slug-2|") to another string or a slug array
+	 *
+	 * @param string $slug_string  The slug string to convert
+	 * @param string $return_type  The type to return. Possible values are:
+	 *                               "name_string" ... to return a string with the category names
+	 *                               "slug_string" ... to return a string with the category slugs
+	 *                               "slug_array"  ... to return an array with the category slugs
+	 * @param string $glue         The glue or separator when a string should be returned
+	 */
+	public function convert_db_string($slug_string, $return_type='name_string', $glue=', ') {
+		if(2 >= strlen($slug_string)) {
+			return ('slug_array' == $return_type) ? array() : '';
 		}
-		$slug_array = explode('|', substr( $slug_text, 1, -1));
-		if('slug' == $type) {
-			$catlist = $slug_array;
+		$slug_array = explode('|', substr( $slug_string, 1, -1));
+		switch($return_type) {
+			case 'slug_array':
+				return $slug_array;
+			case $return_type:
+				$string_array = $slug_array;
+				break;
+			default:   // name_string
+				$string_array = array();
+				foreach($slug_array as $slug) {
+					$string_array[] = $this->cat_array[$slug]['name'];
+				}
+				sort($string_array, SORT_STRING);
 		}
-		else { // use cat name
-			$catlist = array();
-			foreach($slug_array as $slug) {
-				$catlist[] = $this->cat_array[$slug]['name'];
-			}
-			sort($catlist, SORT_STRING);
-		}
-		return implode($glue, $catlist);
+		return implode($glue, $string_array);
 	}
 }

@@ -26,8 +26,8 @@ class EL_Event_Table extends WP_List_Table {
 		global $status, $page;
 		//Set parent defaults
 		parent::__construct(array(
-			'singular'  => __('event','eventlist'),   //singular name of the listed records
-			'plural'    => __('events','eventlist'),  //plural name of the listed records
+			'singular'  => __('event','event-list'),   //singular name of the listed records
+			'plural'    => __('events','event-list'),  //plural name of the listed records
 			'ajax'      => false                      //does this table support ajax?
 		));
 	}
@@ -51,7 +51,7 @@ class EL_Event_Table extends WP_List_Table {
 			case 'pub_date' :
 				return $this->format_pub_date($item->pub_date);
 			case 'categories' :
-				return esc_html($this->categories->get_category_string($item->$column_name));
+				return esc_html($this->categories->convert_db_string($item->$column_name));
 			default :
 				return esc_html($item->$column_name);
 		}
@@ -68,9 +68,9 @@ class EL_Event_Table extends WP_List_Table {
 	protected function column_title($item) {
 		//Prepare Columns
 		$actions = array(
-			'edit'      => '<a href="?page='.$_REQUEST['page'].'&amp;id='.$item->id.'&amp;action=edit">'.__('Edit','eventlist').'</a>',
-			'duplicate' => '<a href="?page=el_admin_new&amp;id='.$item->id.'&amp;action=copy">'.__('Duplicate','eventlist').'</a>',
-			'delete'    => '<a href="#" onClick="eventlist_deleteEvent('.$item->id.');return false;">'.__('Delete','eventlist').'</a>');
+			'edit'      => '<a href="?page='.$_REQUEST['page'].'&amp;id='.$item->id.'&amp;action=edit">'.__('Edit','event-list').'</a>',
+			'duplicate' => '<a href="?page=el_admin_new&amp;id='.$item->id.'&amp;action=copy">'.__('Duplicate','event-list').'</a>',
+			'delete'    => '<a href="#" onClick="eventlist_deleteEvent('.$item->id.');return false;">'.__('Delete','event-list').'</a>');
 
 		//Return the title contents
 		return sprintf('<b>%1$s</b> <span style="color:silver">(id:%2$s)</span>%3$s',
@@ -104,13 +104,13 @@ class EL_Event_Table extends WP_List_Table {
 	public function get_columns() {
 		return array(
 			'cb'          => '<input type="checkbox" />', //Render a checkbox instead of text
-			'date'        => __('Date','eventlist'),
-			'title'       => __('Title','eventlist'),
-			'location'    => __('Location','eventlist'),
-			'details'     => __('Details','eventlist'),
-			'categories'  => __('Categories','eventlist'),
-			'pub_user'    => __('Author','eventlist'),
-			'pub_date'    => __('Published','eventlist')
+			'date'        => __('Date','event-list'),
+			'title'       => __('Title','event-list'),
+			'location'    => __('Location','event-list'),
+			'details'     => __('Details','event-list'),
+			'categories'  => __('Categories','event-list'),
+			'pub_user'    => __('Author','event-list'),
+			'pub_date'    => __('Published','event-list')
 		);
 	}
 
@@ -143,7 +143,7 @@ class EL_Event_Table extends WP_List_Table {
 	****************************************************************************/
 	public function get_bulk_actions() {
 		$actions = array(
-			'delete_bulk' => __('Delete','eventlist')
+			'delete_bulk' => __('Delete','event-list')
 		);
 		return $actions;
 	}
@@ -171,7 +171,7 @@ class EL_Event_Table extends WP_List_Table {
 			$out .= $this->filterbar->show_cats('?page=el_admin_main', $this->args, 'dropdown', 'admin');
 			$out .= '
 				<input type="hidden" name="noheader" value="true" />
-				<input id="event-query-submit" class="button" type="submit" name ="filter" value="'.__('Filter','eventlist').'" />
+				<input id="event-query-submit" class="button" type="submit" name ="filter" value="'.__('Filter','event-list').'" />
 			</div>';
 		}
 		echo $out;
@@ -213,19 +213,12 @@ class EL_Event_Table extends WP_List_Table {
 	}
 
 	private function set_args() {
-		// filters
-		$this->args['date_filter'] = 'all';
-		$this->args['cat_filter'] = 'all';
-		// actual_date
-		$this->args['actual_date'] = 'upcoming';
-		if(isset($_GET['date']) && (is_numeric($_GET['date']) || 'all' == $_GET['date'] || 'upcoming' == $_GET['date'] || 'past' == $_GET['date'])) {
-			$this->args['actual_date'] = $_GET['date'];
-		}
-		// actual_cat
-		$this->args['actual_cat'] = 'all';
-		if(isset($_GET['cat'])) {
-			$this->args['actual_cat'] = $_GET['cat'];
-		}
+		$this->args = array('date_filter'   => 'all',
+		                    'cat_filter'    => 'all',
+		                    'sc_id_for_url' => '',
+		                    'actual_date'   => isset($_GET['date']) ? $_GET['date'] : 'upcoming',
+		                    'actual_cat'    => isset($_GET['cat'])  ? $_GET['cat']  : 'all',
+		);
 	}
 
 	private function get_events() {
@@ -300,7 +293,7 @@ class EL_Event_Table extends WP_List_Table {
 		$timestamp = strtotime($pub_date);
 		$time_diff = time() - $timestamp;
 		if($time_diff >= 0 && $time_diff < 24*60*60) {
-			$date = sprintf(__('%s ago','eventlist'), human_time_diff($timestamp));
+			$date = sprintf(__('%s ago','event-list'), human_time_diff($timestamp));
 		}
 		else {
 			$date = mysql2date(__('Y/m/d'), $pub_date);
