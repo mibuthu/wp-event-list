@@ -222,12 +222,16 @@ class EL_Filterbar {
 	}
 
 	public function show_cats($url, &$args, $type='dropdown', $subtype='std', $options=array()) {
+		$default_options = array (
+				'show_all' => 'true',
+		);
+		$options = wp_parse_args($options, $default_options);
 		$args = $this->parse_args($args);
 		$argname = 'cat'.$args['sc_id_for_url'];
 		// prepare displayed elements
 		$cat_array = $this->categories->get_cat_array();
 		$elements = array();
-		if(!isset($options['show_all']) || 'true' == $options['show_all']) {
+		if('true' == $options['show_all']) {
 			$elements[] = $this->all_element('cat', $type);
 		}
 		foreach($cat_array as $cat) {
