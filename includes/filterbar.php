@@ -111,10 +111,10 @@ class EL_Filterbar {
 		}
 		// display elements
 		if('dropdown' === $type) {
-			return $this->show_dropdown($elements, $args['sc_id_for_url'], $subtype, $args['actual_date'], $args['sc_id_for_url']);
+			return $this->show_dropdown($elements, 'date'.$args['sc_id_for_url'], $subtype, $args['actual_date'], $args['sc_id_for_url']);
 		}
 		else {
-			return $this->show_hlist($elements, $url, $args['sc_id_for_url'], $args['actual_date']);
+			return $this->show_hlist($elements, $url, 'date'.$args['sc_id_for_url'], $args['actual_date']);
 		}
 	}
 
