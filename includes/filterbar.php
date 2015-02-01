@@ -29,6 +29,7 @@ class EL_Filterbar {
 
 	// main function to show the rendered HTML output
 	public function show($url, &$args) {
+		$args = $this->parse_args($args);
 		$out = '
 				<style type="text/css">
 					.filterbar { display:table; width:100% }
@@ -94,7 +95,6 @@ class EL_Filterbar {
 				'years_order' => 'asc',
 		);
 		$options = wp_parse_args($options, $default_options);
-		$args = $this->parse_args($args);
 		$argname = 'date'.$args['sc_id_for_url'];
 		// prepare displayed elements
 		$elements = array();
@@ -111,22 +111,12 @@ class EL_Filterbar {
 		foreach($event_years as $entry) {
 			$elements[] = array('slug'=>$entry->data, 'name'=>$entry->data);
 		}
-		// set selection
-		if(is_numeric($args['event_id'])) {
-			$actual = null;
-		}
-		elseif('all' === $args['actual_date'] || 'upcoming' === $args['actual_date'] || 'past' === $args['actual_date'] || is_numeric($args['actual_date'])) {
-			$actual = $args['actual_date'];
-		}
-		else {
-			$actual = null;
-		}
 		// display elements
 		if('dropdown' === $type) {
-			return $this->show_dropdown($elements, $argname, $subtype, $actual, $args['sc_id_for_url']);
+			return $this->show_dropdown($elements, $argname, $subtype, $args['actual_date'], $args['sc_id_for_url']);
 		}
 		else {
-			return $this->show_hlist($elements, $url, $argname, $actual);
+			return $this->show_hlist($elements, $url, $argname, $args['actual_date']);
 		}
 	}
 
@@ -139,7 +129,6 @@ class EL_Filterbar {
 				'date_format' => 'Y-m',
 		);
 		$options = wp_parse_args($options, $default_options);
-		$args = $this->parse_args($args);
 		$argname = 'date'.$args['sc_id_for_url'];
 		// prepare displayed elements
 		$elements = array();
@@ -157,27 +146,16 @@ class EL_Filterbar {
 			list($year, $month) = explode('-', $entry->data);
 			$elements[] = array('slug' => $entry->data, 'name' => date($options['date_format'], mktime(0,0,0,$month,1,$year)));
 		}
-		// set actual selection
-		if(is_numeric($args['event_id'])) {
-			$actual = null;
-		}
-		elseif('all' === $args['actual_date'] || 'upcoming' === $args['actual_date'] || 'past' === $args['actual_date']) {
-			$actual = $args['actual_date'];
-		}
-		else {
-			$actual = $args["actual_date"];
-		}
 		// display elements
 		if('hlist' === $type) {
-			return $this->show_hlist($elements, $url, $argname, $actual);
+			return $this->show_hlist($elements, $url, $argname, $args['actual_date']);
 		}
 		else {
-			return $this->show_dropdown($elements, $argname, $subtype, $actual, $args['sc_id_for_url']);
+			return $this->show_dropdown($elements, $argname, $subtype, $args["actual_date"], $args['sc_id_for_url']);
 		}
 	}
 
 	public function show_daterange($url, &$args, $type='hlist', $subtype='std', $options) {
-		$args = $this->parse_args($args);
 		$argname = 'date'.$args['sc_id_for_url'];
 		// prepare displayed elements
 		if(isset($options['item_order'])) {
@@ -200,22 +178,12 @@ class EL_Filterbar {
 					$elements[] = $this->past_element();
 			}
 		}
-		// set actual selection
-		if(is_numeric($args['event_id'])) {
-			$actual = null;
-		}
-		elseif('all' === $args['actual_date'] || 'upcoming' === $args['actual_date'] || 'past' === $args['actual_date']) {
-			$actual = $args['actual_date'];
-		}
-		else {
-			$actual = null;
-		}
 		// display elements
 		if('dropdown' === $type) {
-			return $this->show_dropdown($elements, $argname, $subtype, $actual, $args['sc_id_for_url']);
+			return $this->show_dropdown($elements, $argname, $subtype, $args['actual_date'], $args['sc_id_for_url']);
 		}
 		else {
-			return $this->show_hlist($elements, $url, $argname, $actual);
+			return $this->show_hlist($elements, $url, $argname, $args['actual_date']);
 		}
 	}
 
@@ -224,7 +192,6 @@ class EL_Filterbar {
 				'show_all' => 'true',
 		);
 		$options = wp_parse_args($options, $default_options);
-		$args = $this->parse_args($args);
 		$argname = 'cat'.$args['sc_id_for_url'];
 		// prepare displayed elements
 		$elements = array();
@@ -254,14 +221,12 @@ class EL_Filterbar {
 		foreach($filtered_cat_array as $cat) {
 			$elements[] = array('slug' => $cat['slug'], 'name' => str_pad('', 12*$cat['level'], '&nbsp;', STR_PAD_LEFT).$cat['name']);
 		}
-		// set selection
-		$actual = isset($args['actual_cat']) ? $args['actual_cat'] : null;
 		// display elements
 		if('hlist' === $type) {
-			return $this->show_hlist($elements, $url, $argname, $actual);
+			return $this->show_hlist($elements, $url, $argname, $args['actual_cat']);
 		}
 		else {
-			return $this->show_dropdown($elements, $argname, $subtype, $actual, $args['sc_id_for_url']);
+			return $this->show_dropdown($elements, $argname, $subtype, $args['actual_cat'], $args['sc_id_for_url']);
 		}
 	}
 
@@ -338,6 +303,12 @@ class EL_Filterbar {
 	private function parse_args($args) {
 		$defaults = array('date' => null, 'event_id' => null, 'sc_id_for_url' => null);
 		$args = wp_parse_args($args, $defaults);
+		if(is_numeric($args['event_id']) || !isset($args['actual_date'])) {
+			$args['actual_date'] = null;
+		}
+		if(is_numeric($args['event_id']) || !isset($args['actual_cat'])) {
+			$args['actual_cat'] = null;
+		}
 		return $args;
 	}
 
