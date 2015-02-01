@@ -94,7 +94,7 @@ class EL_Filterbar {
 		// prepare displayed elements
 		$elements = array();
 		if(!isset($options['show_all']) || 'true' == $options['show_all']) {   // default is true
-			$elements[] = $this->all_element('hlist'==$type ? null : __('Show all dates','event-list'));
+			$elements[] = $this->all_element('date', $type);
 		}
 		if(!isset($options['show_upcoming']) || 'true' == $options['show_upcoming']) {   // default is true
 			$elements[] = $this->upcoming_element();
@@ -159,7 +159,7 @@ class EL_Filterbar {
 		// prepare displayed elements
 		$elements = array();
 		if('true' == $options['show_all']) {
-			$elements[] = $this->all_element('hlist'==$type ? null : __('Show all dates','event-list'));
+			$elements[] = $this->all_element('date', $type);
 		}
 		if('true' == $options['show_upcoming']) {
 			$elements[] = $this->upcoming_element();
@@ -206,7 +206,7 @@ class EL_Filterbar {
 			// show all
 			switch($item) {
 				case 'all':
-					$elements[] = $this->all_element();
+					$elements[] = $this->all_element('date');   // Always show short form ... hlist
 					break;
 				case 'upcoming':
 					$elements[] = $this->upcoming_element();
@@ -241,7 +241,7 @@ class EL_Filterbar {
 		$cat_array = $this->categories->get_cat_array();
 		$elements = array();
 		if(!isset($options['show_all']) || 'true' == $options['show_all']) {
-			$elements[] = $this->all_element('hlist'==$type ? null : __('View all categories','event-list'));
+			$elements[] = $this->all_element('cat', $type);
 		}
 		foreach($cat_array as $cat) {
 			$elements[] = array('slug' => $cat['slug'], 'name' => str_pad('', 12*$cat['level'], '&nbsp;', STR_PAD_LEFT).$cat['name']);
@@ -320,9 +320,12 @@ class EL_Filterbar {
 		return '<a href="'.esc_url($url).'"'.$class.'>'.esc_html($caption).'</a>';
 	}
 
-	private function all_element($name=null) {
-		if(null == $name) {
+	private function all_element($list_type='date', $display_type='hlist') {
+		if('hlist' == $display_type) {
 			$name = __('All','event-list');
+		}
+		else {
+			$name = ('date' == $list_type) ? __('Show all dates','event-list') :  __('Show all categories','event-list');
 		}
 		return array('slug' => 'all', 'name' => $name);
 	}
