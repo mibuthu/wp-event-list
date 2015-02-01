@@ -274,7 +274,7 @@ class EL_Filterbar {
 		if(!isset($options['caption'])) {
 			$options['caption'] = 'Reset';
 		}
-		return $this->show_link(remove_query_arg($args_to_remove, $url), __($options['caption']), 'link');
+		return $this->show_link(remove_query_arg($args_to_remove, $url), $options['caption'], 'link');
 	}
 
 	private function show_hlist($elements, $url, $name, $actual=null) {
