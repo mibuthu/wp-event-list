@@ -229,24 +229,32 @@ class EL_Filterbar {
 		$args = $this->parse_args($args);
 		$argname = 'cat'.$args['sc_id_for_url'];
 		// prepare displayed elements
-		$cat_array = $this->categories->get_cat_array();
 		$elements = array();
 		if('true' == $options['show_all']) {
 			$elements[] = $this->all_element('cat', $type);
 		}
-		foreach($cat_array as $cat) {
-			$elements[] = array('slug' => $cat['slug'], 'name' => str_pad('', 12*$cat['level'], '&nbsp;', STR_PAD_LEFT).$cat['name']);
+		//prepare required arrays
+		$cat_array = $this->categories->get_cat_array();
+		$events_cat_strings = $this->db->get_distinct_event_data('`categories`', $args['date_filter'],$args['cat_filter']);
+		$events_cat_array = array();
+		foreach($events_cat_strings as $cat_string) {
+			$events_cat_array = array_merge($events_cat_array, $this->categories->convert_db_string($cat_string->data, 'slug_array'));
 		}
-		// filter elements acc. cat_filter (if only OR connections are used)
-		if('all' !== $args['cat_filter'] && !strpos($args['cat_filter'], '&')) {
-			$tmp_filter = str_replace(array(' ', '(', ')'), '', $args['cat_filter']);
-			$tmp_filter = str_replace(',', '|', $tmp_filter);
-			$filter_array = explode('|', $tmp_filter);
-			foreach($elements as $id => $element) {
-				if(!in_array($element['slug'], $filter_array) && 'all' !== $element['slug']) {
-					unset($elements[$id]);
+		$events_cat_array = array_unique($events_cat_array);
+		//create filtered cat_array
+		$filtered_cat_array = array();
+		$required_cats = array();
+		for($i=count($cat_array)-1; 0<=$i; $i--) {   // start from the end to have the childs first and be able to add the parent to the required_cats
+			if(in_array($cat_array[$i]['slug'], $events_cat_array) || in_array($cat_array[$i]['slug'], $required_cats)) {
+				array_unshift($filtered_cat_array, $cat_array[$i]);   // add the new cat at the beginning (unshift) due to starting at the end in the loop
+				if('' != $cat_array[$i]['parent']) {   // the parent is required to show the categories correctly
+					$required_cats[] = $cat_array[$i]['parent'];
 				}
 			}
+		}
+		//create elements array
+		foreach($filtered_cat_array as $cat) {
+			$elements[] = array('slug' => $cat['slug'], 'name' => str_pad('', 12*$cat['level'], '&nbsp;', STR_PAD_LEFT).$cat['name']);
 		}
 		// set selection
 		$actual = isset($args['actual_cat']) ? $args['actual_cat'] : null;
