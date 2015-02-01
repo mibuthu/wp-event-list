@@ -29,17 +29,17 @@ class EL_Admin_About {
 				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.__('About Event List','event-list').'</h2>
 				<h3 class="el-headline">Help and Instructions</h3>
 				<p>You can manage your events <a href="admin.php?page=el_admin_main">here</a>.</p>
-				<p>To show the events on your site you have two possibilities:
-					<ul class="el-show-event-options"><li>you can place the <strong>shortcode</strong> <code>[event-list]</code> on any page or post</li>
-					<li>you can add the <strong>widget</strong> "Event List" in your sidebars</li></ul>
-					The displayed events and their style can be modified with the available widget settings and the available attributes for the shortcode.<br />
+				<p>To show the events on your site you have two possibilities:</p>
+				<ul class="el-show-event-options"><li>you can place the <strong>shortcode</strong> <code>[event-list]</code> on any page or post</li>
+				<li>you can add the <strong>widget</strong> "Event List" in your sidebars</li></ul>
+				<p>The displayed events and their style can be modified with the available widget settings and the available attributes for the shortcode.<br />
 					A list of all available shortcode attributes with their description is available below.<br />
 					The available  widget options are described in their tooltip text.<br />
 					For the widget it is important to know that you have to insert an URL to the linked event-list page if you enable one of the links options ("Add links to the single events" or "Add a link to an event page").
 					This is required because the widget didn´t know in which page or post the shortcode was included.<br />
 					Additonally you have to insert the correct Shortcode ID on the linked page. This ID describes which shortcode should be used on the given page or post if you have more than one.
 					So the standard value "1" is normally o.k., but if required you can check the ID by looking into the URL of an event link on your linked page or post.
-					The ID will be added at the end of the query parameter name (e.g. <i>http://www.your-homepage.com/?page_id=99&event_id<strong>1</strong>=11</i>).
+					The ID will be added at the end of the query parameter name (e.g. <i>http://www.your-homepage.com/?page_id=99&amp;event_id<strong>1</strong>=11</i>).
 				</p>
 				<p>Be sure to also check the <a href="admin.php?page=el_admin_settings">Settings page</a> to get Event List behaving just the way you want.</p>
 			</div>';
@@ -101,7 +101,7 @@ class EL_Admin_About {
 			'.__('Examples for cat filters:','event-list').'
 			<p><code>tennis</code> ... '.__('Show all events with category "tennis".','event-list').'<br />
 			<code>tennis,hockey</code> ... '.__('Show all events with category "tennis" or "hockey".','event-list').'<br />
-			<code>tennis|(hockey&winter)</code> ... '.__('Show all events with category "tennis" and all events where category "hockey" as well as "winter" is selected.','event-list').'</p>';
+			<code>tennis|(hockey&amp;winter)</code> ... '.__('Show all events with category "tennis" and all events where category "hockey" as well as "winter" is selected.','event-list').'</p>';
 	}
 
 	private function show_date_syntax() {

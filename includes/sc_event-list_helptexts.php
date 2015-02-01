@@ -43,7 +43,7 @@ $sc_eventlist_helptexts = array(
 	                            'desc'   => 'This attribute specifies the available items in the filterbar. This options are only valid if the filterbar is displayed (see show_filterbar attribute).<br /><br />
 	                                         Find below an overview of the available filterbar items and their options:<br />
 	                                         <small><table class="el-filterbar-table">
-	                                             <th class="el-filterbar-item">filterbar item</th><th class="el-filterbar-desc">description</th><th class="el-filterbar-options">item options</th><th class="el-filterbar-values">option values</th><th class="el-filterbar-default">default value</th><th class="el-filterbar-desc2">option description</th></thead>
+	                                             <tr><th class="el-filterbar-item">filterbar item</th><th class="el-filterbar-desc">description</th><th class="el-filterbar-options">item options</th><th class="el-filterbar-values">option values</th><th class="el-filterbar-default">default value</th><th class="el-filterbar-desc2">option description</th></tr>
 	                                             <tr><td rowspan="4">years</td><td rowspan="4">Show a list of all available years. Additional there are some special entries available (see item options).</td>
 	                                                     <td>show_all</td><td>true | false</td><td>true</td><td>Add an entry to show all events.</td></tr>
 	                                                 <tr><td>show_upcoming</td><td>true | false</td><td>true</td><td>Add an entry to show all upcoming events.</td></tr>
@@ -61,7 +61,7 @@ $sc_eventlist_helptexts = array(
 	                                         </table></small>
 	                                         Find below an overview of the available filterbar display options:<br />
 	                                         <small><table class="el-filterbar-table">
-	                                            <th class="el-filterbar-doption">display option</th><th class="el-filterbar-desc3">description</th><th class="el-filterbar-for">available for</th></thead>
+	                                            <tr><th class="el-filterbar-doption">display option</th><th class="el-filterbar-desc3">description</th><th class="el-filterbar-for">available for</th></tr>
 	                                            <tr><td>hlist</td><td>"hlist" shows a horizonal list seperated by "|" with a link to each item</td><td>years, months, daterange, cats</td></tr>
 	                                            <tr><td>dropdown</td><td>"dropdown" shows a select box where an item can be choosen. After the selection of an item the page is reloaded via javascript to show the filtered events.</td><td>years, months, daterange, cats</td></tr>
 	                                            <tr><td>link</td><td>"link" shows a simple link which can be clicked.</td><td>reset</td></tr>
