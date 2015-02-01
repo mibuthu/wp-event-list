@@ -1,5 +1,5 @@
 # This is the translation template file for Event List.
-# Copyright (C) 2014 Michael Burtscher
+# Copyright (C) 2015 Michael Burtscher
 # This file is distributed under the same license as the plugin.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-22 17:46+0100\n"
+"POT-Creation-Date: 2015-02-01 19:10+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -78,49 +78,49 @@ msgid ""
 "\t                                            With \"event_list_only\" the filterbar is only visible in the event list and with \"single_event_only\" only for a single event"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:68
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:77
 msgid ""
 "This attribute specifies if the starttime is displayed in the event list.<br />\n"
 "\t                                            Choose \"false\" to always hide and \"true\" to always show the starttime.<br />\n"
 "\t                                            With \"event_list_only\" the starttime is only visible in the event list and with \"single_event_only\" only for a single event"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:73
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:82
 msgid ""
 "This attribute specifies if the location is displayed in the event list.<br />\n"
 "\t                                            Choose \"false\" to always hide and \"true\" to always show the location.<br />\n"
 "\t                                            With \"event_list_only\" the location is only visible in the event list and with \"single_event_only\" only for a single event"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:78
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:87
 msgid ""
 "This attribute specifies if the categories are displayed in the event list.<br />\n"
 "\t                                            Choose \"false\" to always hide and \"true\" to always show the category.<br />\n"
 "\t                                            With \"event_list_only\" the categories are only visible in the event list and with \"single_event_only\" only for a single event"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:83
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:92
 msgid ""
 "This attribute specifies if the details are displayed in the event list.<br />\n"
 "\t                                            Choose \"false\" to always hide and \"true\" to always show the details.<br />\n"
 "\t                                            With \"event_list_only\" the details are only visible in the event list and with \"single_event_only\" only for a single event"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:88
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:97
 msgid ""
 "This attribute specifies if the details should be truncate to the given number of characters in the event list.<br />\n"
 "\t                                            With the standard value 0 the full details are displayed.<br />\n"
 "\t                                            This attribute has no influence if only a single event is shown."
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:93
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:102
 msgid ""
 "This attribute specifies if a link to the single event should be added onto the event name in the event list.<br />\n"
 "\t                                            Choose \"false\" to never add and \"true\" to always add the link.<br />\n"
 "\t                                            With \"event_list_only\" the link is only added in the event list and with \"single_event_only\" only for a single event"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:98
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:107
 msgid ""
 "This attribute specifies if a rss feed link should be added.<br />\n"
 "\t                                            You have to enable the feed in the eventlist settings to make this attribute workable.<br />\n"
@@ -129,22 +129,22 @@ msgid ""
 "\t                                            With \"event_list_only\" the link is only added in the event list and with \"single_event_only\" only for a single event"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:106
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:112
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:115
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:121
 msgid ""
 "This attribute specifies if the title should be truncate to the given number of characters in the event list.<br />\n"
 "\t                                            With the standard value 0 the full details are displayed.<br />\n"
 "\t                                            This attribute has no influence if only a single event is shown."
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:118
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:127
 msgid ""
 "This attribute specifies that the link should follow the given url.<br />\n"
 "\t                                            The standard is to leave this attribute empty, then the url will be calculated automatically from the actual page or post url.<br />\n"
 "\t                                            This is o.k. for the normal use of the shortcode. This attribute is normally only required for the event-list widget."
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:124
+#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:133
 msgid ""
 "This attribute the specifies shortcode id of the used shortcode on the page specified with \"url_to_page\" attribute.<br />\n"
 "\t                                            The empty standard value is o.k. for the normal use. This attribute is normally only required for the event-list widget."
@@ -371,8 +371,8 @@ msgstr ""
 
 #: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:65
 msgid ""
-"This options sets the feed name. The standard value is \"eventlist\".<br />\n"
-"\t                                                  This name will be used in the feed url (e.g. <code>domain.com/?feed=eventlist</code> or <code>domain.com/feed/eventlist</code> for an installation with permalinks"
+"This options sets the feed name. The standard value is \"event-list\".<br />\n"
+"\t                                                  This name will be used in the feed url (e.g. <code>domain.com/?feed=event-list</code> or <code>domain.com/feed/eventlist</code> for an installation with permalinks"
 msgstr ""
 
 #: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:70
@@ -491,23 +491,23 @@ msgstr ""
 msgid "\"past\" specifies a time rage from the past to the previous day."
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/filterbar.php:97
-msgid "Show all dates"
-msgstr ""
-
-#: /home/zeus/mike/workspace/wp-eventlist/includes/filterbar.php:221
-msgid "View all categories"
-msgstr ""
-
-#: /home/zeus/mike/workspace/wp-eventlist/includes/filterbar.php:301
+#: /home/zeus/mike/workspace/wp-eventlist/includes/filterbar.php:282
 msgid "All"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/filterbar.php:307
+#: /home/zeus/mike/workspace/wp-eventlist/includes/filterbar.php:285
+msgid "Show all dates"
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-eventlist/includes/filterbar.php:285
+msgid "Show all categories"
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-eventlist/includes/filterbar.php:291
 msgid "Upcoming"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/filterbar.php:311
+#: /home/zeus/mike/workspace/wp-eventlist/includes/filterbar.php:295
 msgid "Past"
 msgstr ""
 
@@ -741,9 +741,9 @@ msgid "Goto Category Settings"
 msgstr ""
 
 #: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-new.php:220
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:279
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:282
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:306
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:272
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:275
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:299
 msgid "Y/m/d"
 msgstr ""
 
@@ -759,12 +759,12 @@ msgstr ""
 msgid "Filter"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:303
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:296
 #, php-format
 msgid "%s ago"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:308
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:301
 msgid "Y/m/d g:i:s A"
 msgstr ""
 
