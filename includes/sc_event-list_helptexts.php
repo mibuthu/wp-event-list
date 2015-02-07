@@ -20,14 +20,12 @@ $sc_eventlist_helptexts = array(
 	                            'desc'   => __('This attribute specifies the dates and date ranges of which events are displayed. The standard is "all" to show all events.<br />
 	                                            Filtered events according to date_filter value are not available in the event list.<br />
 	                                            You can find all available values with a description and examples in "Available Date Formats" and "Available Date Range Formats" below.<br />
-	                                            See "Filter Syntax" description if you want to define complex filters.<br />
-	                                            When you only use OR connections (no AND connection) the years selection in the filterbar will also be filtered accordingly.','event-list')),
+	                                            See "Filter Syntax" description if you want to define complex filters.','event-list')),
 
 	'cat_filter'       => array('val'    => 'all<br />category slugs',
 	                            'desc'   => __('This attribute specifies the categories of which events are shown. The standard is "all" or an empty string to show all events.<br />
 	                                            Filtered events defined in categories which doesn´t match cat_filter are not shown in the event list. They are also not available if a manual url parameter is added.<br />
-	                                            The filter is specified via the given category slug. See "Filter Syntax" description if you want to define complex filters.<br />
-	                                            When you only use OR connections (no AND connection) the category selection in the filterbar will also be filtered accordingly.','event-list')),
+	                                            The filter is specified via the given category slug. See "Filter Syntax" description if you want to define complex filters.','event-list')),
 
 	'num_events'       => array('val'    => 'number',
 	                            'desc'   => __('This attribute specifies how many events should be displayed if upcoming events is selected.<br />

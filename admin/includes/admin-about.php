@@ -97,11 +97,11 @@ class EL_Admin_About {
 		return '
 			<h3 class="el-headline">'.__('Filter Syntax','event-list').'</h3>
 			<p>'.__('For date and cat filters you can specify complex filters with the following syntax:','event-list').'</p>
-			<p>'.__('You can use AND ( "<b>&amp;</b>" ) and OR ( "<b>&verbar;</b>" or "<b>&comma;</b>" ) connections to define complex filters. Additionally you can set brackets ( "<b>(</b>" and ("<b>)</b>" ) for nested queries.','event-list').'</p>
+			<p>'.__('You can use AND ( "<strong>&amp;</strong>" ) and OR ( "<strong>&verbar;</strong>" or "<strong>&comma;</strong>" ) connections to define complex filters. Additionally you can set brackets ( "<strong>(</strong>" and "<strong>)</strong>" ) for nested queries.','event-list').'</p>
 			'.__('Examples for cat filters:','event-list').'
-			<p><code>tennis</code> ... '.__('Show all events with category "tennis".','event-list').'<br />
-			<code>tennis,hockey</code> ... '.__('Show all events with category "tennis" or "hockey".','event-list').'<br />
-			<code>tennis|(hockey&amp;winter)</code> ... '.__('Show all events with category "tennis" and all events where category "hockey" as well as "winter" is selected.','event-list').'</p>';
+			<p><code>tennis</code>&hellip; '.__('Show all events with category "tennis".','event-list').'<br />
+			<code>tennis&comma;hockey</code>&hellip; '.__('Show all events with category "tennis" or "hockey".','event-list').'<br />
+			<code>tennis&verbar;(hockey&amp;winter)</code>&hellip; '.__('Show all events with category "tennis" and all events where category "hockey" as well as "winter" is selected.','event-list').'</p>';
 	}
 
 	private function show_date_syntax() {
