@@ -42,6 +42,11 @@ class EL_Admin_Settings {
 				require_once(EL_PATH.'includes/feed.php');
 				EL_Feed::get_instance()->update_feed_rewrite_status();
 			}
+			// check feed rewrite status and update it if required
+			if('ical' == $_GET['tab']) {
+				require_once(EL_PATH.'includes/ical.php');
+				EL_iCal::get_instance()->update_ical_rewrite_status();
+			}
 		}
 
 		// normal output
@@ -67,7 +72,8 @@ class EL_Admin_Settings {
 	private function show_tabs($current = 'category') {
 		$tabs = array('general' => 'General',
 		              'admin'   => 'Admin Page Settings',
-		              'feed'    => 'Feed Settings');
+		              'feed'    => 'Feed Settings',
+					  'ical'    => 'iCal Settings');
 		$out = '<h3 class="nav-tab-wrapper">';
 		foreach($tabs as $tab => $name){
 			$class = ($tab == $current) ? ' nav-tab-active' : '';

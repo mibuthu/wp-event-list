@@ -117,6 +117,26 @@ $options_helptexts = array(
 	                                 'caption' => __('Show rss image in feed link','event-list'),
 	                                 'desc'    => __('This option specifies if the an image should be dispayed in the feed link in front of the text.<br />
 	                                                  You have to set the shortcode attribute "add_feed_link" to "true" if you want to show the feed link.')),
+													  
+	'el_enable_ical'        => array('section' => 'ical',
+	                                 'type'    => 'checkbox',
+	                                 'label'   => __('Enable iCal feed','event-list'),
+	                                 'caption' => __('Enable support for an event iCal feed','event-list'),
+	                                 'desc'    => __('This option activates a iCal feed for the events.<br />
+	                                                  You have to enable this option if you want to use one of the iCal features.')),
+													  
+	'el_ical_name'          => array('section' => 'ical',
+	                                 'type'    => 'text',
+	                                 'label'   => __('iCal name','event-list.ics'),
+	                                 'desc'    => __('This options sets the iCal name. The standard value is "event-list.ics".<br />
+	                                                  This name will be used in the feed url (e.g. <code>domain.com/?feed=event-list.ics</code> or <code>domain.com/feed/eventlist.ics</code> for an installation with permalinks')),
+													  
+	'el_ical_upcoming_only' => array('section' => 'ical',
+	                                 'type'    => 'checkbox',
+	                                 'label'   => __('Listed events','event-list'),
+	                                 'caption' => __('Only show upcoming events in feed','event-list'),
+	                                 'desc'    => __('If this option is enabled only the upcoming events are listed in the iCal file.<br />
+	                                                  If disabled all events (upcoming and past) will be listed.')),
 );
 
 $date_formats_desc = array(

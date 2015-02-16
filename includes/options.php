@@ -47,6 +47,9 @@ class EL_Options {
 			'el_feed_link_align'    => array('std_val' => 'left'),
 			'el_feed_link_text'     => array('std_val' => 'RSS Feed'),
 			'el_feed_link_img'      => array('std_val' => '1'),
+			'el_enable_ical'        => array('std_val' => ''),
+			'el_ical_name'          => array('std_val' => 'event-list.ics'),
+			'el_ical_upcoming_only' => array('std_val' => ''),
 		);
 
 		$this->date_formats = array(

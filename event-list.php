@@ -59,7 +59,9 @@ class Event_List {
 		add_action('widgets_init', array(&$this, 'widget_init'));
 		// Register RSS feed
 		add_action('init', array(&$this, 'feed_init'), 10);
-
+		// Register iCal feed
+		add_action('init', array(&$this, 'ical_init'), 10);
+		
 		// ADMIN PAGE:
 		if(is_admin()) {
 			// Include required php-files and initialize required objects
@@ -95,6 +97,13 @@ class Event_List {
 		if($this->options->get('el_enable_feed')) {
 			include_once(EL_PATH.'includes/feed.php');
 			EL_Feed::get_instance();
+		}
+	}
+	
+	public function ical_init() {
+		if($this->options->get('el_enable_ical')) {
+			include_once(EL_PATH.'includes/ical.php');
+			EL_iCal::get_instance();
 		}
 	}
 
