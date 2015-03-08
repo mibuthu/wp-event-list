@@ -298,7 +298,7 @@ class EL_Categories {
 		switch($return_type) {
 			case 'slug_array':
 				return $slug_array;
-			case $return_type:
+			case 'slug_string':
 				$string_array = $slug_array;
 				break;
 			default:   // name_string
