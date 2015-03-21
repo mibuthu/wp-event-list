@@ -198,7 +198,7 @@ class EL_Admin_Main {
 		if(isset($eventdata['sql_end_date']) && '' != $eventdata['sql_end_date']) {
 			$eventdata['end_date'] = $eventdata['sql_end_date'];
 		}
-		return $this->db->update_event($eventdata);
+		return $this->db->update_event($eventdata, true);
 	}
 
 	private function redirect($action=false, $error=false, $query_args=array()) {
