@@ -119,7 +119,7 @@ class EL_Admin_Categories {
 						$out .= '<div id="message" class="updated below-h2"><p><strong>'.sprintf(__('New Category "%s" was added','event-list'), $_POST['name']).'.</strong></p></div>';
 					}
 					else {
-						$out .= '<div id="message" class="error below-h2"><p><strong>'.sprintf(__('Error: New Category "$s" could not be added','event-list'), $_POST['name']).'.</strong></p></div>';
+						$out .= '<div id="message" class="error below-h2"><p><strong>'.sprintf(__('Error: New Category "%s" could not be added','event-list'), $_POST['name']).'.</strong></p></div>';
 					}
 				}
 				else {
