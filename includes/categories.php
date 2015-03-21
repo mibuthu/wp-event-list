@@ -43,59 +43,32 @@ class EL_Categories {
 		}
 	}
 
-	public function add_category($cat_data, $allow_identical_names=false) {
-		// check if name was set
-		if( !isset( $cat_data['name'] ) || '' == $cat_data['name'] ) {
-			return false;
-		}
-		// check if name already exists
-		$cat_data['name'] = trim($cat_data['name']);
-		if(!$allow_identical_names) {
-			foreach( $this->cat_array as $category ) {
-				if( $category['name'] === $cat_data['name'] ) {
-					return false;
-				}
-			}
-		}
-		// set cat name
-		$cat['name'] = $cat_data['name'];
-		// set slug
-		// generate slug if no slug was given
-		if( !isset( $cat_data['slug'] ) || '' == $cat_data['slug'] ) {
-			$cat_data['slug'] = $cat_data['name'];
-		}
-		// make slug unique
-		$cat['slug'] = $slug = sanitize_title( $cat_data['slug'] );
-		$num = 1;
-		while( isset( $this->cat_array[$cat['slug']] ) ) {
-			$num++;
-			$cat['slug'] = $slug.'-'.$num;
-		}
-		// set description
-		$cat['desc'] = isset( $cat_data['desc'] ) ? trim( $cat_data['desc'] ) : '';
-		// add category
-		$this->cat_array[$cat['slug']] = $cat;
-		// set parent and level
-		if(!isset($cat_data['parent'])) {
-			$cat_data['parent'] = '';
-		}
-		$this->set_parent($cat['slug'], $cat_data['parent']);
-		return $this->safe_categories();
+	public function add_category($cat_data, $allow_duplicate_names=false) {
+		$this->add_cat_to_array($cat_data, $allow_duplicate_names);
+		return  $this->safe_categories();
 	}
 
-	public function edit_category($cat_data, $old_slug, $allow_identical_names=false) {
+	public function edit_category($cat_data, $old_slug, $allow_duplicate_names=false) {
 		// check if slug already exists
 		if(!isset($this->cat_array[$old_slug])) {
 			return false;
 		}
-		// update events if slug has changed
-		if($old_slug != $cat_data['slug']) {
-			$this->db->change_category_slug_in_events($old_slug, $cat_data['slug']);
-		}
 		// delete old category
 		unset($this->cat_array[$old_slug]);
-		// add new category
-		return $this->add_category($cat_data, $allow_identical_names);
+		// create new category
+		$new_slug = $this->add_cat_to_array($cat_data, $allow_duplicate_names);
+		// required modifications if slug was changed
+		if($old_slug != $new_slug) {
+			// update slug in events if slug has changed
+			$this->db->change_category_slug_in_events($old_slug, $new_slug);
+			// update parent slug in sub-categories
+			$subcats = $this->get_children($old_slug);
+			foreach($subcats as $subcat) {
+				$this->cat_array[$subcat]['parent'] = $new_slug;
+			}
+		}
+		// safe category
+		return $this->safe_categories();
 	}
 
 	public function remove_categories($slugs, $remove_cats_in_events=true) {
@@ -128,6 +101,46 @@ class EL_Categories {
 			return false;
 		}
 		return true;
+	}
+
+	private function add_cat_to_array($cat_data, $allow_duplicate_names=false) {
+		// check if name was set
+		if( !isset( $cat_data['name'] ) || '' == $cat_data['name'] ) {
+			return false;
+		}
+		// check if name already exists
+		$cat_data['name'] = trim($cat_data['name']);
+		if(!$allow_duplicate_names) {
+			foreach( $this->cat_array as $category ) {
+				if( $category['name'] === $cat_data['name'] ) {
+					return false;
+				}
+			}
+		}
+		// set cat name
+		$cat['name'] = $cat_data['name'];
+		// set slug
+		// generate slug if no slug was given
+		if( !isset( $cat_data['slug'] ) || '' == $cat_data['slug'] ) {
+			$cat_data['slug'] = $cat_data['name'];
+		}
+		// make slug unique
+		$cat['slug'] = $slug = sanitize_title( $cat_data['slug'] );
+		$num = 1;
+		while( isset( $this->cat_array[$cat['slug']] ) ) {
+			$num++;
+			$cat['slug'] = $slug.'-'.$num;
+		}
+		// set description
+		$cat['desc'] = isset( $cat_data['desc'] ) ? trim( $cat_data['desc'] ) : '';
+		// add category
+		$this->cat_array[$cat['slug']] = $cat;
+		// set parent and level
+		if(!isset($cat_data['parent'])) {
+			$cat_data['parent'] = '';
+		}
+		$this->set_parent($cat['slug'], $cat_data['parent']);
+		return $cat['slug'];
 	}
 
 	public function sync_with_post_cats() {
