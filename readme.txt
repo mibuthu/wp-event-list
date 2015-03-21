@@ -67,7 +67,8 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 6. Admin page: Settings (feed tab)
 7. Admin page: About page with help and shortcode attributes list
 8. Admin page: Widget with the available options
-9. Example page created with [event-list] shortcode
+9. Example page with [event-list] shortcode
+10. Example widget
 
 
 == Changelog ==
