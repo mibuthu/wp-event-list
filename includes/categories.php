@@ -43,14 +43,74 @@ class EL_Categories {
 		}
 	}
 
-	public function add_category($cat_data, $allow_identical_names=false) {
+	public function add_category($cat_data, $allow_duplicate_names=false) {
+		$this->add_cat_to_array($cat_data, $allow_duplicate_names);
+		return  $this->safe_categories();
+	}
+
+	public function edit_category($cat_data, $old_slug, $allow_duplicate_names=false) {
+		// check if slug already exists
+		if(!isset($this->cat_array[$old_slug])) {
+			return false;
+		}
+		// delete old category
+		unset($this->cat_array[$old_slug]);
+		// create new category
+		$new_slug = $this->add_cat_to_array($cat_data, $allow_duplicate_names);
+		// required modifications if slug was changed
+		if($old_slug != $new_slug) {
+			// update slug in events if slug has changed
+			$this->db->change_category_slug_in_events($old_slug, $new_slug);
+			// update parent slug in sub-categories
+			$subcats = $this->get_children($old_slug);
+			foreach($subcats as $subcat) {
+				$this->cat_array[$subcat]['parent'] = $new_slug;
+			}
+		}
+		// safe category
+		return $this->safe_categories();
+	}
+
+	public function remove_categories($slugs, $remove_cats_in_events=true) {
+		if($remove_cats_in_events) {
+			$this->db->remove_category_in_events($slugs);
+		}
+		foreach($slugs as $slug) {
+			// check for subcategories and set their parent to the parent of the cat to delete
+			$children = $this->get_children($slug);
+			foreach($children as $child) {
+				$this->set_parent($child, $this->cat_array[$slug]['parent']);
+			}
+			// unset category
+			unset($this->cat_array[$slug]);
+		}
+		return $this->safe_categories();
+	}
+
+	private function safe_categories() {
+		if(empty($this->cat_array)) {
+			$cat_array = '';
+		}
+		else {
+			$cat_array = $this->get_cat_array('slug', true);
+			if(!is_array($cat_array) || empty($cat_array)) {
+				return false;
+			}
+		}
+		if(!$this->options->set('el_categories', $cat_array)) {
+			return false;
+		}
+		return true;
+	}
+
+	private function add_cat_to_array($cat_data, $allow_duplicate_names=false) {
 		// check if name was set
 		if( !isset( $cat_data['name'] ) || '' == $cat_data['name'] ) {
 			return false;
 		}
 		// check if name already exists
 		$cat_data['name'] = trim($cat_data['name']);
-		if(!$allow_identical_names) {
+		if(!$allow_duplicate_names) {
 			foreach( $this->cat_array as $category ) {
 				if( $category['name'] === $cat_data['name'] ) {
 					return false;
@@ -71,63 +131,16 @@ class EL_Categories {
 			$num++;
 			$cat['slug'] = $slug.'-'.$num;
 		}
-		// set parent and level
-		if(!isset($cat_data['parent'])) {
-			$cat_data['parent'] = '';
-		}
-		$cat['parent'] = $cat_data['parent'];
-		if('' == $cat['parent']) {
-			$cat['level'] = 0;
-		}
-		else {
-			$cat['level'] = $this->cat_array[$cat_data['parent']]['level'] + 1;
-		}
 		// set description
 		$cat['desc'] = isset( $cat_data['desc'] ) ? trim( $cat_data['desc'] ) : '';
 		// add category
 		$this->cat_array[$cat['slug']] = $cat;
-		return $this->safe_categories();
-	}
-
-	public function edit_category($cat_data, $old_slug, $allow_identical_names=false) {
-		// check if slug already exists
-		if(!isset($this->cat_array[$old_slug])) {
-			return false;
+		// set parent and level
+		if(!isset($cat_data['parent'])) {
+			$cat_data['parent'] = '';
 		}
-		// update events if slug has changed
-		if($old_slug != $cat_data['slug']) {
-			$this->db->change_category_slug_in_events($old_slug, $cat_data['slug']);
-		}
-		// delete old category
-		unset($this->cat_array[$old_slug]);
-		// add new category
-		return $this->add_category($cat_data, $allow_identical_names);
-	}
-
-	public function remove_categories($slugs, $remove_cats_in_events=true) {
-		if($remove_cats_in_events) {
-			$this->db->remove_category_in_events($slugs);
-		}
-		foreach( $slugs as $slug ) {
-			unset( $this->cat_array[$slug] );
-		}
-		return $this->safe_categories();
-	}
-
-	private function safe_categories() {
-		if(empty($this->cat_array)) {
-			$cat_array = '';
-		}
-		else {
-			$cat_array = $this->get_cat_array('slug', true);
-			if(!is_array($cat_array) || empty($cat_array)) {
-				return false;
-			}
-		}
-		if(!$this->options->set('el_categories', $cat_array)) {
-			return false;
-		}
-		return true;
+		$this->set_parent($cat['slug'], $cat_data['parent']);
+		return $cat['slug'];
 	}
 
 	public function sync_with_post_cats() {
@@ -219,24 +232,24 @@ class EL_Categories {
 		}
 	}
 
-	public function get_cat_array($sort_key='name', $sort_order='asc') {
+	public function get_cat_array($sort_key='name', $sort_order='asc', $slug_filter=null) {
 		if(empty($this->cat_array)) {
 			return array();
 		}
 		else {
-			return $this->get_cat_child_array('', $sort_key, $sort_order);
+			return $this->get_cat_child_array('', $sort_key, $sort_order, $slug_filter);
 		}
 	}
 
-	private function get_cat_child_array($slug, $sort_key, $sort_order) {
-		$children = $this->get_children($slug, $sort_key, $sort_order);
+	private function get_cat_child_array($slug, $sort_key, $sort_order, $slug_filter=null) {
+		$children = $this->get_children($slug, $sort_key, $sort_order, $slug_filter);
 		if(empty($children)) {
 			return null;
 		}
 		$ret = array();
 		foreach($children as $child) {
 			$ret[] = $this->cat_array[$child];
-			$grandchilds = $this->get_cat_child_array($child, $sort_key, $sort_order);
+			$grandchilds = $this->get_cat_child_array($child, $sort_key, $sort_order, $slug_filter);
 			if(is_array($grandchilds)) {
 				$ret = array_merge($ret, $grandchilds);
 			}
@@ -244,11 +257,15 @@ class EL_Categories {
 		return $ret;
 	}
 
-	private function get_children($slug='', $sort_key='slug', $sort_order='asc') {
+	private function get_children($slug='', $sort_key='slug', $sort_order='asc', $slug_filter=null) {
+		// filter initialization
+		if($slug_filter === '') {
+			$slug_filter = null;
+		}
 		// create array with slugs
 		$ret = array();
 		foreach($this->cat_array as $cat) {
-			if($slug == $cat['parent']) {
+			if($slug == $cat['parent'] && $slug_filter !== $cat['slug']) {
 				$ret[] = $cat['slug'];
 			}
 		}
@@ -276,6 +293,24 @@ class EL_Categories {
 		}
 	}
 
+	private function set_parent($cat_slug, $parent_slug) {
+		if(isset($this->cat_array[$parent_slug])) {
+			// set parent and level
+			$this->cat_array[$cat_slug]['parent'] = $parent_slug;
+			$this->cat_array[$cat_slug]['level'] = $this->cat_array[$parent_slug]['level'] + 1;
+		}
+		else {
+			// set to first level category
+			$this->cat_array[$cat_slug]['parent'] = '';
+			$this->cat_array[$cat_slug]['level'] = 0;
+		}
+		// check and update children
+		$children = $this->get_children($cat_slug);
+		foreach($children as $child) {
+			$this->set_parent($child, $cat_slug);
+		}
+	}
+
 	public function get_category_data($slug) {
 		return $this->cat_array[$slug];
 	}
@@ -298,7 +333,7 @@ class EL_Categories {
 		switch($return_type) {
 			case 'slug_array':
 				return $slug_array;
-			case $return_type:
+			case 'slug_string':
 				$string_array = $slug_array;
 				break;
 			default:   // name_string

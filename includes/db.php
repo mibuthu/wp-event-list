@@ -83,7 +83,7 @@ class EL_Db {
 		return $wpdb->get_var($sql);
 	}
 
-	public function update_event($event_data) {
+	public function update_event($event_data, $check_multiday=false) {
 		global $wpdb;
 		// prepare and validate sqldata
 		$sqldata = array();
@@ -99,7 +99,7 @@ class EL_Db {
 		$sqldata['start_date'] = $this->validate_sql_date($event_data['start_date']);
 		if(false === $sqldata['start_date']) { return false; }
 		//end_date
-		if(isset($event_data['multiday']) && "1" === $event_data['multiday']) {
+		if(!$check_multiday || (isset($event_data['multiday']) && "1" === $event_data['multiday'])) {
 			if(!isset($event_data['end_date'])) { $sqldata['end_date'] = $sqldata['start_date']; }
 			$sqldata['end_date'] = $this->validate_sql_date($event_data['end_date']);
 			if(false === $sqldata['end_date']) { $sqldata['end_date'] = $sqldata['start_date']; }
@@ -181,9 +181,9 @@ class EL_Db {
 			// replace slug in categorystring
 			$event['categories'] = str_replace('|'.$old_slug.'|', '|'.$new_slug.'|', $event['categories']);
 			$event['categories'] = explode( '|', substr($event['categories'], 1, -1 ) );
-			$this->update_event( $event );
+			$this->update_event($event);
 		}
-		return count( $affected_events );
+		return count($affected_events);
 	}
 
 	public function count_events( $slug ) {

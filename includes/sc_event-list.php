@@ -207,7 +207,7 @@ class SC_Event_List {
 		// event title
 		$out .= '<div class="event-title"><h3>';
 		$title = esc_attr($this->db->truncate($event->title, $a['title_length'], $this->single_event));
-		if( $this->is_visible( $a['link_to_event'] ) ) {
+		if($this->is_visible($a['link_to_event']) || ('events_with_details_only' == $a['link_to_event'] && !$this->single_event && '' != $event->details)) {
 			$out .= '<a href="'.esc_html(add_query_arg('event_id'.$a['sc_id_for_url'], $event->id, $this->get_url($a))).'">'.$title.'</a>';
 		}
 		else {
@@ -412,10 +412,9 @@ class SC_Event_List {
 
 	private function is_visible( $attribute_value ) {
 		switch ($attribute_value) {
-			case 'false':
-				return false;
-			case '0': // = 'false'
-				return false;
+			case 'true':
+			case '1': // = 'true'
+				return true;
 			case 'event_list_only':
 				if( $this->single_event ) {
 					return false;
@@ -430,8 +429,8 @@ class SC_Event_List {
 				else {
 					return false;
 				}
-			default: // 'true' or 1
-				return true;
+			default: // 'false' or 0 or nothing handled by this function
+				return false;
 		}
 	}
 }

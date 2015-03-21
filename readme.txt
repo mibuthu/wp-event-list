@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, filter, admin, attribute, widget, sidebar, feed, rss
 Requires at least: 3.3
 Tested up to: 4.2
-Stable tag: 0.7.1
+Stable tag: 0.7.2
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -67,10 +67,19 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 6. Admin page: Settings (feed tab)
 7. Admin page: About page with help and shortcode attributes list
 8. Admin page: Widget with the available options
-9. Example page created with [event-list] shortcode
+9. Example page with [event-list] shortcode
+10. Example widget
 
 
 == Changelog ==
+
+= 0.7.2 (2015-03-21) =
+* fixed an issue with multiday events when deleting a category
+* fixed displaying the category slug instead of the category name in event listing
+* fixed sub-category handling of deleted categories
+* fixed sub-category handling when a category slug is changed
+* fixed parent selection list in category edit mode
+* some helptext fixes
 
 = 0.7.1 (2015-02-01) =
 * added options for month filterbar item

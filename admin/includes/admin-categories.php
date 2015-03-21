@@ -119,7 +119,7 @@ class EL_Admin_Categories {
 						$out .= '<div id="message" class="updated below-h2"><p><strong>'.sprintf(__('New Category "%s" was added','event-list'), $_POST['name']).'.</strong></p></div>';
 					}
 					else {
-						$out .= '<div id="message" class="error below-h2"><p><strong>'.sprintf(__('Error: New Category "$s" could not be added','event-list'), $_POST['name']).'.</strong></p></div>';
+						$out .= '<div id="message" class="error below-h2"><p><strong>'.sprintf(__('Error: New Category "%s" could not be added','event-list'), $_POST['name']).'.</strong></p></div>';
 					}
 				}
 				else {
@@ -173,14 +173,12 @@ class EL_Admin_Categories {
 		// Category Parent
 		$out .= '
 				<div class="form-field"><label for="parent">'.__('Parent','event-list').': </label>';
-		$cat_array = $this->categories->get_cat_array('name', 'asc');
+		$cat_array = $this->categories->get_cat_array('name', 'asc', $cat_data['slug']);
 		$option_array = array('' => __('None','event-list'));
 		$class_array = array();
 		foreach($cat_array as $cat) {
-			if($cat['slug'] != $cat_data['slug']) {
-				$option_array[$cat['slug']] = str_pad('', 12*$cat['level'], '&nbsp;', STR_PAD_LEFT).$cat['name'];
-				$class_array[$cat['slug']] = 'level-'.$cat['level'];
-			}
+			$option_array[$cat['slug']] = str_pad('', 12*$cat['level'], '&nbsp;', STR_PAD_LEFT).$cat['name'];
+			$class_array[$cat['slug']] = 'level-'.$cat['level'];
 		}
 		$selected = isset($cat_data['parent']) ? $cat_data['parent'] : null;
 		$out .= $this->functions->show_combobox('parent', $option_array, $selected, $class_array, $is_disabled);
