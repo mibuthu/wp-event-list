@@ -25,26 +25,26 @@ class EL_Daterange {
 
 	public function init_formats() {
 		$this->date_formats = array(
-			'year'         => array('regex' => '^[12]\d{3}$',
+			'year'         => array('regex' => '^((19[7-9]\d)|(2\d{3}))$',
 			                        'start' => '%v%-01-01',
 			                        'end'   => '%v%-12-31'),
-			'month'        => array('regex' => '^[12]\d{3}-(0[1-9]|1[012])$',
+			'month'        => array('regex' => '^((19[7-9]\d)|(2\d{3}))-(0[1-9]|1[012])$',
 			                        'start' => '%v%-01',
 			                        'end'   => '%v%-31'),
-			'day'          => array('regex' => '^[12]\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$',
+			'day'          => array('regex' => '^((19[7-9]\d)|(2\d{3}))-(0[1-9]|1[012])-(0[1-9]|[12]\d|3[01])$',
 			                        'start' => '%v%',
 			                        'end'   => '%v%'),
 		);
 		$this->daterange_formats = array(
 			'date_range'   => array('regex' => '.+~.+'),
 			'all'          => array('regex' => '^all$',
-			                        'start' => '1000-01-01',
+			                        'start' => '1970-01-01',
 			                        'end'   => '2999-12-31'),
 			'upcoming'     => array('regex' => '^upcoming$',
 			                        'start' => '--func--date("Y-m-d", current_time("timestamp"));',
 			                        'end'   => '2999-12-31'),
 			'past'         => array('regex' => '^past$',
-			                        'start' => '1000-01-01',
+			                        'start' => '1970-01-01',
 			                        'end'   => '--func--date("Y-m-d", current_time("timestamp")-86400);'),  // previous day (86400 seconds = 1*24*60*60 = 1 day
 		);
 	}
