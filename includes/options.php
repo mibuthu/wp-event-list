@@ -51,7 +51,7 @@ class EL_Options {
 	public function load_options_helptexts() {
 		require_once(EL_PATH.'includes/options_helptexts.php');
 		foreach($options_helptexts as $name => $values) {
-			$this->options[$name] = array_merge($this->options[$name], $values);
+			$this->options[$name] += $values;
 		}
 		unset($options_helptexts);
 	}
