@@ -1,17 +1,21 @@
 <?php
-if(!defined('ABSPATH')) {
+if(!defined('WPINC')) {
 	exit;
 }
+
+require_once(EL_PATH.'includes/options.php');
+require_once(EL_PATH.'includes/daterange.php');
 
 // This class handles all data for the admin about page
 class EL_Admin_About {
 	private static $instance;
 	private $options;
+	private $daterange;
 
 	public static function &get_instance() {
 		// Create class instance if required
 		if(!isset(self::$instance)) {
-			self::$instance = new EL_Admin_About();
+			self::$instance = new self();
 		}
 		// Return class instance
 		return self::$instance;
@@ -19,6 +23,7 @@ class EL_Admin_About {
 
 	private function __construct() {
 		$this->options = EL_Options::get_instance();
+		$this->daterange = EL_Daterange::get_instance();
 	}
 
 	public function show_about() {
@@ -109,7 +114,7 @@ class EL_Admin_About {
 			<h3 class="el-headline">'.__('Available Date Formats','event-list').'</h3>
 			<p>'.__('For date filters you can use the following date formats:','event-list').'</p>
 			<ul class="el-formats">
-			'.$this->show_formats($this->options->date_formats).'
+			'.$this->show_formats($this->daterange->date_formats).'
 			</ul>';
 	}
 
@@ -118,7 +123,7 @@ class EL_Admin_About {
 			<h3 class="el-headline">'.__('Available Date Range Formats','event-list').'</h3>
 			<p>'.__('For date filters you can use the following daterange formats:','event-list').'</p>
 			<ul class="el-formats">
-			'.$this->show_formats($this->options->daterange_formats).'
+			'.$this->show_formats($this->daterange->daterange_formats).'
 			</ul>';
 	}
 

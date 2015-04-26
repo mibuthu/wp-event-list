@@ -1,5 +1,5 @@
 <?php
-if(!defined('ABSPATH')) {
+if(!defined('WPINC')) {
 	exit;
 }
 
@@ -9,13 +9,11 @@ class EL_Options {
 	private static $instance;
 	public $group;
 	public $options;
-	public $date_formats;
-	public $daterange_formats;
 
 	public static function &get_instance() {
 		// Create class instance if required
 		if(!isset(self::$instance)) {
-			self::$instance = new EL_Options();
+			self::$instance = new self();
 		}
 		// Return class instance
 		return self::$instance;
@@ -48,45 +46,6 @@ class EL_Options {
 			'el_feed_link_text'     => array('std_val' => 'RSS Feed'),
 			'el_feed_link_img'      => array('std_val' => '1'),
 		);
-
-		$this->date_formats = array(
-			'year'         => array('name'  => 'Year',
-			                        'regex' => '^[12]\d{3}$',
-			                        'examp' => '2015',
-			                        'start' => '%v%-01-01',
-			                        'end'   => '%v%-12-31'),
-			'month'        => array('name'  => 'Month',
-			                        'regex' => '^[12]\d{3}-(0[1-9]|1[012])$',
-			                        'examp' => '2015-03',
-			                        'start' => '%v%-01',
-			                        'end'   => '%v%-31'),
-			'day'          => array('name'  => 'Day',
-			                        'regex' => '^[12]\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$',
-			                        'examp' => '2015-03-29',
-			                        'start' => '%v%',
-			                        'end'   => '%v%'),
-		);
-
-		$this->daterange_formats = array(
-			'date_range'   => array('name'  => 'Date range',
-			                        'regex' => '.+~.+',
-			                        'examp' => '2015-03-29~2016'),
-			'all'          => array('name'  => 'All',
-			                        'regex' => '^all$',
-			                        'value' => 'all',
-			                        'start' => '1000-01-01',
-			                        'end'   => '2999-12-31'),
-			'upcoming'     => array('name'  => 'Upcoming',
-			                        'regex' => '^upcoming$',
-			                        'value' => 'upcoming',
-			                        'start' => '--func--date("Y-m-d", current_time("timestamp"));',
-			                        'end'   => '2999-12-31'),
-			'past'         => array('name'  => 'Past',
-			                        'regex' => '^past$',
-			                        'value' => 'past',
-			                        'start' => '1000-01-01',
-			                        'end'   => '--func--date("Y-m-d", current_time("timestamp")-86400);'),  // previous day (86400 seconds = 1*24*60*60 = 1 day
-		);
 	}
 
 	public function load_options_helptexts() {
@@ -95,14 +54,6 @@ class EL_Options {
 			$this->options[$name] = array_merge($this->options[$name], $values);
 		}
 		unset($options_helptexts);
-		foreach($date_formats_desc as $name => $value) {
-			$this->date_formats[$name]['desc'] = $value;
-		}
-		unset($date_formats_desc);
-		foreach($daterange_formats_desc as $name => $value) {
-			$this->daterange_formats[$name]['desc'] = $value;
-		}
-		unset($daterange_formats_desc);
 	}
 
 	public function register_options() {
