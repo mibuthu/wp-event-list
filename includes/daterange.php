@@ -25,39 +25,25 @@ class EL_Daterange {
 
 	public function init_formats() {
 		$this->date_formats = array(
-			'year'         => array('name'  => 'Year',
-			                        'regex' => '^[12]\d{3}$',
-			                        'examp' => '2015',
+			'year'         => array('regex' => '^[12]\d{3}$',
 			                        'start' => '%v%-01-01',
 			                        'end'   => '%v%-12-31'),
-			'month'        => array('name'  => 'Month',
-			                        'regex' => '^[12]\d{3}-(0[1-9]|1[012])$',
-			                        'examp' => '2015-03',
+			'month'        => array('regex' => '^[12]\d{3}-(0[1-9]|1[012])$',
 			                        'start' => '%v%-01',
 			                        'end'   => '%v%-31'),
-			'day'          => array('name'  => 'Day',
-			                        'regex' => '^[12]\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$',
-			                        'examp' => '2015-03-29',
+			'day'          => array('regex' => '^[12]\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$',
 			                        'start' => '%v%',
 			                        'end'   => '%v%'),
 		);
 		$this->daterange_formats = array(
-			'date_range'   => array('name'  => 'Date range',
-			                        'regex' => '.+~.+',
-			                        'examp' => '2015-03-29~2016'),
-			'all'          => array('name'  => 'All',
-			                        'regex' => '^all$',
-			                        'value' => 'all',
+			'date_range'   => array('regex' => '.+~.+'),
+			'all'          => array('regex' => '^all$',
 			                        'start' => '1000-01-01',
 			                        'end'   => '2999-12-31'),
-			'upcoming'     => array('name'  => 'Upcoming',
-			                        'regex' => '^upcoming$',
-			                        'value' => 'upcoming',
+			'upcoming'     => array('regex' => '^upcoming$',
 			                        'start' => '--func--date("Y-m-d", current_time("timestamp"));',
 			                        'end'   => '2999-12-31'),
-			'past'         => array('name'  => 'Past',
-			                        'regex' => '^past$',
-			                        'value' => 'past',
+			'past'         => array('regex' => '^past$',
 			                        'start' => '1000-01-01',
 			                        'end'   => '--func--date("Y-m-d", current_time("timestamp")-86400);'),  // previous day (86400 seconds = 1*24*60*60 = 1 day
 		);
@@ -65,14 +51,14 @@ class EL_Daterange {
 
 	public function load_formats_helptexts() {
 		require_once(EL_PATH.'includes/daterange_helptexts.php');
-		foreach($date_formats_desc as $name => $value) {
-			$this->date_formats[$name]['desc'] = $value;
+		foreach($date_formats_helptexts as $name => $values) {
+			$this->date_formats[$name] += $values;
 		}
-		unset($date_formats_desc);
-		foreach($daterange_formats_desc as $name => $value) {
-			$this->daterange_formats[$name]['desc'] = $value;
+		unset($date_formats_helptexts);
+		foreach($daterange_formats_helptexts as $name => $values) {
+			$this->daterange_formats[$name] += $values;
 		}
-		unset($daterange_formats_desc);
+		unset($daterange_formats_helptexts);
 	}
 
 	public function check_date_format($element) {
