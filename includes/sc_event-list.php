@@ -10,8 +10,8 @@ require_once( EL_PATH.'includes/categories.php' );
 // This class handles the shortcode [event-list]
 class SC_Event_List {
 	private static $instance;
-	private $db;
 	private $options;
+	private $db;
 	private $categories;
 	private $atts;
 	private $num_sc_loaded;
@@ -27,8 +27,8 @@ class SC_Event_List {
 	}
 
 	private function __construct() {
-		$this->db = &EL_Db::get_instance();
 		$this->options = &EL_Options::get_instance();
+		$this->db = &EL_Db::get_instance();
 		$this->categories = &EL_Categories::get_instance();
 
 		// All available attributes
