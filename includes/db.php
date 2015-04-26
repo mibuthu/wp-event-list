@@ -197,7 +197,9 @@ class EL_Db {
 
 	private function validate_sql_date($datestring) {
 		$d = date_create_from_format('Y-m-d', $datestring);
-		if($d && $d->format('Y-m-d') == $datestring) {
+		if($d && $d->format('Y-m-d') == $datestring
+		      && 1970 <= $d->format('Y')
+		      && 2999 >= $d->format('Y')) {
 			return $datestring;
 		}
 		return false;
