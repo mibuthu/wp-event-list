@@ -40,9 +40,10 @@ class EL_Daterange {
 			'rel_month'    => array('regex' => '^([+-]?\d+|last|previous|next|this)month[s]?$',
 			                        'start' => '--func--date("Y-m", strtotime(str_replace("_", " ", "%v%")))."-01";',
 			                        'end'   => '--func--date("Y-m", strtotime(str_replace("_", " ", "%v%")))."-31";'),
-			'rel_week'     => array('regex' => '^([+-]?\d+|last|previous|next|this)_week[s]?$',
-			                        'start' => '--func--date("Y-m-d", strtotime(str_replace("_", " ", "%v%")));',  // TODO: calculation of first day of the week is not correct yet
-			                        'end'   => '--func--date("Y-m-d", strtotime(str_replace("_", " ", "%v%")));'),  // TODO: calculation of last day of the week is not correct yet
+			// TODO: adding week format (calculation of first/last day of the week is not correct yet)
+/*			'rel_week'     => array('regex' => '^([+-]?\d+|last|previous|next|this)_week[s]?$',
+			                        'start' => '--func--date("Y-m-d", strtotime("Monday ".str_replace("_", " ", "%v%")));',
+			                        'end'   => '--func--date("Y-m-d", strtotime("Sunday ".str_replace("_", " ", "%v%")));'),  */
 			'rel_day'      => array('regex' => '^((([+-]?\d+|last|previous|next|this)_day[s]?)|yesterday|today|tomorrow)$',
 			                        'start' => '--func--date("Y-m-d", strtotime(str_replace("_", " ", "%v%")));',
 			                        'end'   => '--func--date("Y-m-d", strtotime(str_replace("_", " ", "%v%")));'),
