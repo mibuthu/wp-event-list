@@ -34,6 +34,18 @@ class EL_Daterange {
 			'day'          => array('regex' => '^((19[7-9]\d)|(2\d{3}))-(0[1-9]|1[012])-(0[1-9]|[12]\d|3[01])$',
 			                        'start' => '%v%',
 			                        'end'   => '%v%'),
+			'rel_year'     => array('regex' => '^([+-]?\d+|last|next|previous|this)_year[s]?$',
+			                        'start' => '--func--date("Y", strtotime(str_replace("_", " ", "%v%")))."-01-01";',
+			                        'end'   => '--func--date("Y", strtotime(str_replace("_", " ", "%v%")))."-12-31";'),
+			'rel_month'    => array('regex' => '^([+-]?\d+|last|previous|next|this)month[s]?$',
+			                        'start' => '--func--date("Y-m", strtotime(str_replace("_", " ", "%v%")))."-01";',
+			                        'end'   => '--func--date("Y-m", strtotime(str_replace("_", " ", "%v%")))."-31";'),
+			'rel_week'     => array('regex' => '^([+-]?\d+|last|previous|next|this)_week[s]?$',
+			                        'start' => '--func--date("Y-m-d", strtotime(str_replace("_", " ", "%v%")));',  // TODO: calculation of first day of the week is not correct yet
+			                        'end'   => '--func--date("Y-m-d", strtotime(str_replace("_", " ", "%v%")));'),  // TODO: calculation of last day of the week is not correct yet
+			'rel_day'      => array('regex' => '^((([+-]?\d+|last|previous|next|this)_day[s]?)|yesterday|today|tomorrow)$',
+			                        'start' => '--func--date("Y-m-d", strtotime(str_replace("_", " ", "%v%")));',
+			                        'end'   => '--func--date("Y-m-d", strtotime(str_replace("_", " ", "%v%")));'),
 		);
 		$this->daterange_formats = array(
 			'date_range'   => array('regex' => '.+~.+'),
@@ -87,19 +99,15 @@ class EL_Daterange {
 	}
 
 	public function get_date_range($element, &$range_type) {
-		// range start
-		if(substr($range_type['start'], 0, 8) == '--func--') {
-			eval('$range[0] = '.substr($range_type['start'], 8));
+		// set range values by replacing %v% in $range_type string with $element
+		$range[0] = str_replace('%v%', $element, $range_type['start']);
+		$range[1] = str_replace('%v%', $element, $range_type['end']);
+		// enum function if required
+		if(substr($range[0], 0, 8) == '--func--') {  //start
+			eval('$range[0] = '.substr($range[0], 8));
 		}
-		else {
-			$range[0] = str_replace('%v%', $element, $range_type['start']);
-		}
-		// range end
-		if(substr($range_type['end'], 0, 8) == '--func--') {
-			eval('$range[1] = '.substr($range_type['end'], 8));
-		}
-		else {
-			$range[1] = str_replace('%v%', $element, $range_type['end']);
+		if(substr($range[1], 0, 8) == '--func--') {  //end
+			eval('$range[1] = '.substr($range[1], 8));
 		}
 		return $range;
 	}
