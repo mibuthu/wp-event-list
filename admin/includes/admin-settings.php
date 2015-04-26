@@ -31,6 +31,9 @@ class EL_Admin_Settings {
 			wp_die(__('You do not have sufficient permissions to access this page.','event-list'));
 		}
 		$out = '';
+		if(!isset($_GET['tab'])) {
+			$_GET['tab'] = 'general';
+		}
 		// check for changed settings
 		if(isset($_GET['settings-updated'])) {
 			// show "settings saved" message
@@ -48,9 +51,6 @@ class EL_Admin_Settings {
 		$out.= '
 				<div class="wrap">
 				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.__('Event List Settings','event-list').'</h2>';
-		if(!isset($_GET['tab'])) {
-			$_GET['tab'] = 'general';
-		}
 		$out .= $this->show_tabs($_GET['tab']);
 		$out .= '<div id="posttype-page" class="posttypediv">';
 		$out .= $this->show_option_tab($_GET['tab']);
