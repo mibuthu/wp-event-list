@@ -67,7 +67,7 @@ class EL_Admin_Import {
 	}
 
 	private function show_import_review() {
-		$file = $_FILES["el_import_file"]["tmp_name"];
+		$file = $_FILES['el_import_file']['tmp_name'];
 		// check for file existence (upload failed?)
 		if(!is_file($file)) {
 			echo '<h3>'.__('Sorry, there has been an error.', 'event-list').'</h3>';
@@ -76,7 +76,7 @@ class EL_Admin_Import {
 		}
 
 		// check for file extension (csv) first
-		$file_parts = pathinfo($_FILES["el_import_file"]["name"]);
+		$file_parts = pathinfo($_FILES['el_import_file']['name']);
 		if($file_parts['extension'] !== "csv") {
 			echo '<h3>'.__('Sorry, there has been an error.', 'event-list').'</h3>';
 			echo __('The file is not an CSV file.', 'event-list').'</p>';
@@ -147,12 +147,12 @@ class EL_Admin_Import {
 	private function show_event($event) {
 		echo '
 				<p>
-				<span style="font-weight: bold;">Titel:</span> <span style="font-style: italic;">'.$event["title"].'</span><br>
-				<span style="font-weight: bold;">Startdatum:</span> <span style="font-style: italic;">'.$event["start_date"].'</span><br>
-				<span style="font-weight: bold;">Enddatum:</span> <span style="font-style: italic;">'.$event["end_date"].'</span><br>
-				<span style="font-weight: bold;">Uhrzeit:</span> <span style="font-style: italic;">'.$event["time"].'</span><br>
-				<span style="font-weight: bold;">Ort:</span> <span style="font-style: italic;">'.$event["location"].'</span><br>
-				<span style="font-weight: bold;">Details:</span> <span style="font-style: italic;">'.$event["details"].'</span>
+				<span style="font-weight: bold;">Titel:</span> <span style="font-style: italic;">'.$event['title'].'</span><br>
+				<span style="font-weight: bold;">Startdatum:</span> <span style="font-style: italic;">'.$event['start_date'].'</span><br>
+				<span style="font-weight: bold;">Enddatum:</span> <span style="font-style: italic;">'.$event['end_date'].'</span><br>
+				<span style="font-weight: bold;">Uhrzeit:</span> <span style="font-style: italic;">'.$event['time'].'</span><br>
+				<span style="font-weight: bold;">Ort:</span> <span style="font-style: italic;">'.$event['location'].'</span><br>
+				<span style="font-weight: bold;">Details:</span> <span style="font-style: italic;">'.$event['details'].'</span>
 				</p>';
 	}
 
@@ -160,9 +160,9 @@ class EL_Admin_Import {
 	 * @return WP_Error
 	 */
 	private function parseImportFile($file) {
-		$delimiter = ",";
-		$header = array("Titel", "Startdatum", "Enddatum", "Uhrzeit", "Ort", "Details");
-		$separator = array("sep=,");
+		$delimiter = ',';
+		$header = array('Titel', 'Startdatum', 'Enddatum', 'Uhrzeit', 'Ort', 'Details');
+		$separator = array('sep=,');
 
 		// list of events to import
 		$events = array();
@@ -191,12 +191,12 @@ class EL_Admin_Import {
 				}
 			}
 			$events[] = array(
-				"title" => $line[0],
-				"start_date" => $line[1],
-				"end_date" => !empty($line[2]) ? $line[2] : $line[1],
-				"time" => $line[3],
-				"location" => $line[4],
-				"details" => $line[5],
+				'title'      => $line[0],
+				'start_date' => $line[1],
+				'end_date'   => !empty($line[2]) ? $line[2] : $line[1],
+				'time'       => $line[3],
+				'location'   => $line[4],
+				'details'    => $line[5],
 			);
 			$lineNum += 1;
 		}
