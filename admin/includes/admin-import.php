@@ -56,14 +56,14 @@ class EL_Admin_Import {
 	private function show_import_form() {
 		echo '
 				<form action="" id="el_import_upload" method="post" enctype="multipart/form-data">
-					<p>Select a file that contains event data.</p>
+					<p>'.__('Select a file that contains event data.', 'event-list').'</p>
 					<p><input name="el_import_file" type="file" size="50" maxlength="100000"></p>
-					<input type="submit" name="button-upload-submit" id="button-upload-submit" class="button" value="Import Event Data" />
-					<br><br>
+					<input type="submit" name="button-upload-submit" id="button-upload-submit" class="button" value="'.__('Import Event Data', 'event-list').'" />
+					<br /><br />
 				</form>
-				<h3>Example file</h3>
-				<p>Please find an example file <a href="'.EL_IMPORT_PATH.'">here</a>. (CSV delimiter is a comma!)<br>
-					Note: <em>Do not change the column header and separator line (first two lines), otherwise the import will fail!</em></p>';
+				<h3>'.__('Example file', 'event-list').'</h3>
+				<p>'.sprintf(__('Please find an example file %1$shere%2$s (CSV delimiter is a comma!)', 'event-list'), '<a href="'.EL_IMPORT_PATH.'">', '</a>').'<br />
+				'.__('Note', 'event-list').': <em>'.__('Do not change the column header and separator line (first two lines), otherwise the import will fail!', 'event-list').'</em></p>';
 	}
 
 	private function show_import_review() {
@@ -79,7 +79,7 @@ class EL_Admin_Import {
 		$file_parts = pathinfo($_FILES['el_import_file']['name']);
 		if($file_parts['extension'] !== "csv") {
 			echo '<h3>'.__('Sorry, there has been an error.', 'event-list').'</h3>';
-			echo __('The file is not an CSV file.', 'event-list').'</p>';
+			echo __('The file is not a CSV file.', 'event-list').'</p>';
 			return;
 		}
 
@@ -98,7 +98,7 @@ class EL_Admin_Import {
 		$serialized = serialize($this->import_data);
 
 		echo '
-			<h3>Please review the events to import and choose categories before importing.</h3>
+			<h3>'.__('Please review the events to import and choose categories before importing.', 'event-list').'</h3>
 			<form method="POST" action="?page=el_admin_main&action=import">';
 		wp_nonce_field('autosavenonce', 'autosavenonce', false, false);
 		wp_nonce_field('closedpostboxesnonce', 'closedpostboxesnonce', false, false);
@@ -115,13 +115,8 @@ class EL_Admin_Import {
 					<div id="postbox-container-1" class="postbox-container">
 						<div id="side-sortables" class="meta-box-sortables ui-sortable">';
 		add_meta_box('event-categories', __('Categories'), array(&$this, 'render_category_metabox'), 'event-list', 'advanced', 'default', null);
-		add_meta_box('event-publish', __('Import'), array(&$this, 'render_publish_metabox'), 'event-list');
-		// TODO: Why the buffer ?
-		ob_start();
+		add_meta_box('event-publish', __('Import', 'event-list'), array(&$this, 'render_publish_metabox'), 'event-list');
 		do_meta_boxes('event-list', 'advanced', null);
-		$out = ob_get_contents();
-		ob_end_clean();
-		echo $out;
 		echo '
 						</div>
 					</div>
@@ -134,25 +129,25 @@ class EL_Admin_Import {
 	private function show_import_finished($with_error) {
 		if(!$with_error) {
 			echo '
-				<h3>Import with errors!</h3>
-				An error occurred during import! Please send your import file to <a href="mailto:'.get_option('admin_email').'">the administrator</a> for analysis.';
+				<h3>'.__('Import with errors!', 'event-list').'</h3>
+				'.sprintf(__('An error occurred during import! Please send your import file to %1$sthe administrator%2$s for analysis.', 'event-list'), '<a href="mailto:'.get_option('admin_email').'">', '</a>');
 		}
 		else {
 			echo '
-				<h3>Import successful!</h3>
-				<a href="?page=el_admin_main">'.__('Go back to All Events').'</a>!';
+				<h3>'.__('Import successful!', 'event-list').'</h3>
+				<a href="?page=el_admin_main">'.__('Go back to All Events', 'event-list').'</a>';
 		}
 	}
 
 	private function show_event($event) {
 		echo '
 				<p>
-				<span style="font-weight: bold;">Titel:</span> <span style="font-style: italic;">'.$event['title'].'</span><br>
-				<span style="font-weight: bold;">Startdatum:</span> <span style="font-style: italic;">'.$event['start_date'].'</span><br>
-				<span style="font-weight: bold;">Enddatum:</span> <span style="font-style: italic;">'.$event['end_date'].'</span><br>
-				<span style="font-weight: bold;">Uhrzeit:</span> <span style="font-style: italic;">'.$event['time'].'</span><br>
-				<span style="font-weight: bold;">Ort:</span> <span style="font-style: italic;">'.$event['location'].'</span><br>
-				<span style="font-weight: bold;">Details:</span> <span style="font-style: italic;">'.$event['details'].'</span>
+				<span style="font-weight: bold;">'.__('Title', 'event-list').':</span> <span style="font-style: italic;">'.$event['title'].'</span><br />
+				<span style="font-weight: bold;">'.__('Start Date', 'event-list').':</span> <span style="font-style: italic;">'.$event['start_date'].'</span><br />
+				<span style="font-weight: bold;">'.__('End Date', 'event-list').':</span> <span style="font-style: italic;">'.$event['end_date'].'</span><br />
+				<span style="font-weight: bold;">'.__('Time', 'event-list').':</span> <span style="font-style: italic;">'.$event['time'].'</span><br />
+				<span style="font-weight: bold;">'.__('Location', 'event-list').':</span> <span style="font-style: italic;">'.$event['location'].'</span><br />
+				<span style="font-weight: bold;">'.__('Details', 'event-list').':</span> <span style="font-style: italic;">'.$event['details'].'</span>
 				</p>';
 	}
 
@@ -161,7 +156,7 @@ class EL_Admin_Import {
 	 */
 	private function parseImportFile($file) {
 		$delimiter = ',';
-		$header = array('Titel', 'Startdatum', 'Enddatum', 'Uhrzeit', 'Ort', 'Details');
+		$header = array('title', 'start date', 'end date', 'time', 'location', 'details');
 		$separator = array('sep=,');
 
 		// list of events to import
@@ -209,7 +204,7 @@ class EL_Admin_Import {
 		echo '
 			<div class="submitbox">
 				<div id="delete-action"><a href="?page=el_admin_main" class="submitdelete deletion">'.__('Cancel').'</a></div>
-				<div id="publishing-action"><input type="submit" class="button button-primary button-large" name="import" value="'.__('Import').'" id="import"></div>
+				<div id="publishing-action"><input type="submit" class="button button-primary button-large" name="import" value="'.__('Import', 'event-list').'" id="import"></div>
 				<div class="clear"></div>
 			</div>';
 	}

@@ -1,4 +1,4 @@
 "sep=,"
-"Titel","Startdatum","Enddatum","Uhrzeit","Ort","Details"
-"Radeln",01.01.2015,,17:00:00,"bei mir","dies ist ein testeintrag."
-"Wandern",02.02.2020,04.10.2020,10:00:00,"drüben","was soll das?<br>zweiter testeintrag."
+"title","start date","end date","time","location","details"
+"Cycling",01.01.2015,,17:00:00,"at home","This is a test entry."
+"Hiking",02.02.2020,04.10.2020,10:00:00,"in the mountains","TestTest?<br>2nd test entry."
