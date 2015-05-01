@@ -5,7 +5,6 @@ if(!defined('WPINC')) {
 
 require_once(EL_PATH.'includes/db.php');
 require_once(EL_PATH.'includes/categories.php');
-define(EL_IMPORT_PATH, EL_URL.'example/termine.csv');
 
 // This class handles all data for the admin new event page
 class EL_Admin_Import {
@@ -13,6 +12,7 @@ class EL_Admin_Import {
 	private $db;
 	private $categories;
 	private $import_data;
+	private $example_file_path;
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -26,6 +26,7 @@ class EL_Admin_Import {
 	private function __construct() {
 		$this->db = & EL_Db::get_instance();
 		$this->categories = & EL_Categories::get_instance();
+		$this->example_file_path = EL_URL.'/files/events-import-example.csv';
 	}
 
 	public function show_import() {
@@ -62,7 +63,7 @@ class EL_Admin_Import {
 					<br /><br />
 				</form>
 				<h3>'.__('Example file', 'event-list').'</h3>
-				<p>'.sprintf(__('Please find an example file %1$shere%2$s (CSV delimiter is a comma!)', 'event-list'), '<a href="'.EL_IMPORT_PATH.'">', '</a>').'<br />
+				<p>'.sprintf(__('Please find an example file %1$shere%2$s (CSV delimiter is a comma!)', 'event-list'), '<a href="'.$this->example_file_path.'">', '</a>').'<br />
 				'.__('Note', 'event-list').': <em>'.__('Do not change the column header and separator line (first two lines), otherwise the import will fail!', 'event-list').'</em></p>';
 	}
 
