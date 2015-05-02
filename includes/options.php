@@ -22,7 +22,6 @@ class EL_Options {
 	private function __construct() {
 		$this->group = 'event-list';
 		add_action('init', array(&$this, 'init_options'), 1);
-		add_action('admin_init', array(&$this, 'load_options_helptexts'), 2);
 		add_action('admin_init', array(&$this, 'register_options'));
 	}
 

@@ -29,6 +29,7 @@ class EL_Admin_Categories {
 		$this->db = &EL_Db::get_instance();
 		$this->categories = &EL_Categories::get_instance();
 		$this->options = &EL_Options::get_instance();
+		$this->options->load_options_helptexts();
 		$this->functions = &EL_Admin_Functions::get_instance();
 	}
 

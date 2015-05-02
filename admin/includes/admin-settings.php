@@ -23,6 +23,7 @@ class EL_Admin_Settings {
 
 	private function __construct() {
 		$this->options = &EL_Options::get_instance();
+		$this->options->load_options_helptexts();
 		$this->functions = &EL_Admin_Functions::get_instance();
 	}
 
