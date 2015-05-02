@@ -57,7 +57,7 @@ class EL_Options {
 
 	public function register_options() {
 		foreach($this->options as $oname => $o) {
-			register_setting('el_'.$o['section'], $oname);
+			register_setting('event-list', $oname);
 		}
 	}
 
