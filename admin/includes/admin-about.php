@@ -75,6 +75,7 @@ class EL_Admin_About {
 	private function show_atts_table() {
 		require_once(EL_PATH.'includes/sc_event-list.php');
 		$shortcode = &SC_Event_List::get_instance();
+		$shortcode->load_sc_eventlist_helptexts();
 		$atts = $shortcode->get_atts();
 		$out = '
 			<table class="el-atts-table">

@@ -57,15 +57,11 @@ class SC_Event_List {
 			//  'actual_date'
 			//  'actual_cat'
 		);
-
-		if(is_admin()) {
-			$this->load_sc_eventlist_helptexts();
-		}
 		$this->num_sc_loaded = 0;
 		$this->single_event = false;
 	}
 
-	private function load_sc_eventlist_helptexts() {
+	public function load_sc_eventlist_helptexts() {
 		require_once(EL_PATH.'includes/sc_event-list_helptexts.php');
 		foreach($sc_eventlist_helptexts as $name => $values) {
 			$this->atts[$name] = array_merge($this->atts[$name], $values);
