@@ -66,9 +66,9 @@ class EL_Admin_Settings {
 	}
 */
 	private function show_tabs($current = 'category') {
-		$tabs = array('general' => 'General',
-		              'admin'   => 'Admin Page Settings',
-		              'feed'    => 'Feed Settings');
+		$tabs = array('general' => __('General','event-list'),
+		              'admin'   => __('Admin Page Settings','event-list'),
+		              'feed'    => __('Feed Settings','event-list'));
 		$out = '<h3 class="nav-tab-wrapper">';
 		foreach($tabs as $tab => $name){
 			$class = ($tab == $current) ? ' nav-tab-active' : '';
