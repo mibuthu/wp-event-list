@@ -109,7 +109,7 @@ class EL_Admin_Main {
 			$header = __('Edit Event','event-list').' <a href="'.$duplicate_link.'" class="add-new-h2">'.__('Duplicate','event-list').'</a>';
 		}
 		else {
-			$header = __('Events', 'event-list');
+			$header = __('Events','event-list');
 		}
 		$new_link = '<a href="?page=el_admin_new" class="add-new-h2">'.__('Add New','event-list').'</a>';
 		$import_link = $editview ? '' : '<a href="?page=el_admin_main&action=import" class="add-new-h2">'.__('Import','event-list').'</a>';
