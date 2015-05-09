@@ -1,11 +1,11 @@
 <?php
-if( !defined( 'ABSPATH' ) ) {
+if(!defined('WPINC')) {
 	exit;
 }
 
-require_once( EL_PATH.'includes/db.php' );
-require_once( EL_PATH.'includes/options.php' );
-require_once( EL_PATH.'includes/categories.php' );
+require_once(EL_PATH.'includes/db.php');
+require_once(EL_PATH.'includes/options.php');
+require_once(EL_PATH.'includes/categories.php');
 
 // This class handles the shortcode [event-list]
 class SC_Event_List {
@@ -19,8 +19,8 @@ class SC_Event_List {
 
 	public static function &get_instance() {
 		// Create class instance if required
-		if( !isset( self::$instance ) ) {
-			self::$instance = new SC_Event_List();
+		if(!isset(self::$instance)) {
+			self::$instance = new self();
 		}
 		// Return class instance
 		return self::$instance;
