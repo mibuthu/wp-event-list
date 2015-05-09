@@ -175,14 +175,14 @@ class EL_Admin_Categories {
 		$out .= '
 				<div class="form-field"><label for="parent">'.__('Parent','event-list').': </label>';
 		$cat_array = $this->categories->get_cat_array('name', 'asc', $cat_data['slug']);
-		$option_array = array('' => __('None','event-list'));
+		$value_array = array('' => __('None','event-list'));
 		$class_array = array();
 		foreach($cat_array as $cat) {
-			$option_array[$cat['slug']] = str_pad('', 12*$cat['level'], '&nbsp;', STR_PAD_LEFT).$cat['name'];
+			$value_array[$cat['slug']] = str_pad('', 12*$cat['level'], '&nbsp;', STR_PAD_LEFT).$cat['name'];
 			$class_array[$cat['slug']] = 'level-'.$cat['level'];
 		}
 		$selected = isset($cat_data['parent']) ? $cat_data['parent'] : null;
-		$out .= $this->functions->show_combobox('parent', $option_array, $selected, $class_array, $is_disabled);
+		$out .= $this->functions->show_dropdown('parent', $selected, $value_array, $class_array, $is_disabled);
 		$out .= '<p>'.__('Categories can have a hierarchy. You might have a Jazz category, and under that have children categories for Bebop and Big Band. Totally optional.','event-list').'</p></div>';
 		// Category Description
 		$out .= '
