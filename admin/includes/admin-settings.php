@@ -103,6 +103,9 @@ class EL_Admin_Settings {
 					case 'checkbox':
 						$out .= $this->functions->show_checkbox($oname, $this->options->get($oname), $o['caption']);
 						break;
+					case 'dropdown':
+						$out .= $this->functions->show_dropdown($oname, $this->options->get($oname), $o['caption']);
+						break;
 					case 'radio':
 						$out .= $this->functions->show_radio($oname, $this->options->get($oname), $o['caption']);
 						break;
