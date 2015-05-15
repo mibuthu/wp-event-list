@@ -27,23 +27,28 @@ class EL_Options {
 
 	public function init_options() {
 		$this->options = array(
-			'el_db_version'         => array('std_val' => ''),
-			'el_categories'         => array('std_val' => null),
-			'el_sync_cats'          => array('std_val' => ''),
-			'el_no_event_text'      => array('std_val' => 'no event'),
-			'el_date_once_per_day'  => array('std_val' => ''),
-			'el_html_tags_in_time'  => array('std_val' => ''),
-			'el_html_tags_in_loc'   => array('std_val' => ''),
-			'el_edit_dateformat'    => array('std_val' => ''),
-			'el_enable_feed'        => array('std_val' => ''),
-			'el_feed_name'          => array('std_val' => 'event-list'),
-			'el_feed_description'   => array('std_val' => 'Eventlist Feed'),
-			'el_feed_upcoming_only' => array('std_val' => ''),
-			'el_head_feed_link'     => array('std_val' => '1'),
-			'el_feed_link_pos'      => array('std_val' => 'bottom'),
-			'el_feed_link_align'    => array('std_val' => 'left'),
-			'el_feed_link_text'     => array('std_val' => 'RSS Feed'),
-			'el_feed_link_img'      => array('std_val' => '1'),
+			'el_db_version'         => array('std_val' => '',               'section' => 'system'),
+
+			'el_categories'         => array('std_val' => null,             'section' => 'categories'),
+			'el_sync_cats'          => array('std_val' => '',               'section' => 'categories'),
+
+			'el_no_event_text'      => array('std_val' => 'no event',       'section' => 'general'),
+			'el_date_once_per_day'  => array('std_val' => '',               'section' => 'general'),
+			'el_html_tags_in_time'  => array('std_val' => '',               'section' => 'general'),
+			'el_html_tags_in_loc'   => array('std_val' => '',               'section' => 'general'),
+
+			'el_edit_dateformat'    => array('std_val' => '',               'section' => 'admin'),
+			'el_req_role_to_edit'   => array('std_val' => 'edit_posts',     'section' => 'admin'),
+
+			'el_enable_feed'        => array('std_val' => '',               'section' => 'feed'),
+			'el_feed_name'          => array('std_val' => 'event-list',     'section' => 'feed'),
+			'el_feed_description'   => array('std_val' => 'Eventlist Feed', 'section' => 'feed'),
+			'el_feed_upcoming_only' => array('std_val' => '',               'section' => 'feed'),
+			'el_head_feed_link'     => array('std_val' => '1',              'section' => 'feed'),
+			'el_feed_link_pos'      => array('std_val' => 'bottom',         'section' => 'feed'),
+			'el_feed_link_align'    => array('std_val' => 'left',           'section' => 'feed'),
+			'el_feed_link_text'     => array('std_val' => 'RSS Feed',       'section' => 'feed'),
+			'el_feed_link_img'      => array('std_val' => '1',              'section' => 'feed'),
 		);
 	}
 
@@ -57,7 +62,7 @@ class EL_Options {
 
 	public function register_options() {
 		foreach($this->options as $oname => $o) {
-			register_setting('event-list', $oname);
+			register_setting('el_'.$o['section'], $oname);
 		}
 	}
 

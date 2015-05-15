@@ -83,7 +83,7 @@ class EL_Admin_Settings {
 			<form method="post" action="options.php">
 			';
 		ob_start();
-		settings_fields('el_'.$_GET['tab']);
+		settings_fields('el_'.$section);
 		$out .= ob_get_contents();
 		ob_end_clean();
 		$out .= '
