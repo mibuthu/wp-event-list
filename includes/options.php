@@ -38,7 +38,6 @@ class EL_Options {
 			'el_html_tags_in_loc'   => array('std_val' => '',               'section' => 'general'),
 
 			'el_edit_dateformat'    => array('std_val' => '',               'section' => 'admin'),
-			'el_req_role_to_edit'   => array('std_val' => 'edit_posts',     'section' => 'admin'),
 
 			'el_enable_feed'        => array('std_val' => '',               'section' => 'feed'),
 			'el_feed_name'          => array('std_val' => 'event-list',     'section' => 'feed'),
