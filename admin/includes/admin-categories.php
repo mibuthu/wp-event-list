@@ -163,19 +163,19 @@ class EL_Admin_Categories {
 		}
 		// Category Name
 		$out .= '
-				<div class="form-field form-required"><label for="name">'.__('Name','event-list').': </label>';
+				<div class="form-field form-required"><label for="name">'.__('Name').': </label>';
 		$out .= $this->functions->show_text('name', $cat_data['name'], $is_disabled);
 		$out .= '<p>'.__('The name is how it appears on your site.','event-list').'</p></div>';
 		// Category Slug
 		$out .= '
-				<div class="form-field"><label for="name">'.__('Slug','event-list').': </label>';
+				<div class="form-field"><label for="name">'.__('Slug').': </label>';
 		$out .= $this->functions->show_text('slug', $cat_data['slug'], $is_disabled);
 		$out .= '<p>'.__('The “slug” is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens.','event-list').'</p></div>';
 		// Category Parent
 		$out .= '
-				<div class="form-field"><label for="parent">'.__('Parent','event-list').': </label>';
+				<div class="form-field"><label for="parent">'.__('Parent').': </label>';
 		$cat_array = $this->categories->get_cat_array('name', 'asc', $cat_data['slug']);
-		$value_array = array('' => __('None','event-list'));
+		$value_array = array('' => __('None'));
 		$class_array = array();
 		foreach($cat_array as $cat) {
 			$value_array[$cat['slug']] = str_pad('', 12*$cat['level'], '&nbsp;', STR_PAD_LEFT).$cat['name'];
