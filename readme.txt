@@ -1,10 +1,10 @@
 ﻿=== Event List ===
-Contributors: mibuthu
+Contributors: mibuthu, clhunsen
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W54LNZMWF9KW2
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, filter, admin, attribute, widget, sidebar, feed, rss
 Requires at least: 3.3
-Tested up to: 4.2
-Stable tag: 0.7.2
+Tested up to: 4.3
+Stable tag: 0.7.3
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -22,6 +22,7 @@ The purpose of this plugin is to to show a list of events with date, time, descr
 * Beginning and end dates for multi-day events
 * Wordpress's WYSIWYG editor for the event details. So you can include styled text, links, images and other media in your events.
 * A duplicate function for events to easier create similar event copies
+* Import multiple events via csv files
 * Event categories
 * Sync event categories with post categories
 * Filter events according to dates or categories
@@ -72,6 +73,15 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 
 
 == Changelog ==
+
+= 0.7.3 (2015-05-15) =
+* added csv import functionality
+* added relative and special date selection options for date filter
+* changed required permission to view/edit category admin page
+* added some missing translation functions
+* added some more german translations
+* only allow valid dates (>= 1.1.1970)
+* only load some data on pages where they are required
 
 = 0.7.2 (2015-03-21) =
 * fixed an issue with multiday events when deleting a category

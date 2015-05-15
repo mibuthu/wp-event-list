@@ -23,6 +23,7 @@ class EL_Admin_Settings {
 
 	private function __construct() {
 		$this->options = &EL_Options::get_instance();
+		$this->options->load_options_helptexts();
 		$this->functions = &EL_Admin_Functions::get_instance();
 	}
 
@@ -31,6 +32,9 @@ class EL_Admin_Settings {
 			wp_die(__('You do not have sufficient permissions to access this page.','event-list'));
 		}
 		$out = '';
+		if(!isset($_GET['tab'])) {
+			$_GET['tab'] = 'general';
+		}
 		// check for changed settings
 		if(isset($_GET['settings-updated'])) {
 			// show "settings saved" message
@@ -48,9 +52,6 @@ class EL_Admin_Settings {
 		$out.= '
 				<div class="wrap">
 				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.__('Event List Settings','event-list').'</h2>';
-		if(!isset($_GET['tab'])) {
-			$_GET['tab'] = 'general';
-		}
 		$out .= $this->show_tabs($_GET['tab']);
 		$out .= '<div id="posttype-page" class="posttypediv">';
 		$out .= $this->show_option_tab($_GET['tab']);
@@ -65,9 +66,9 @@ class EL_Admin_Settings {
 	}
 */
 	private function show_tabs($current = 'category') {
-		$tabs = array('general' => 'General',
-		              'admin'   => 'Admin Page Settings',
-		              'feed'    => 'Feed Settings');
+		$tabs = array('general' => __('General','event-list'),
+		              'admin'   => __('Admin Page Settings','event-list'),
+		              'feed'    => __('Feed Settings','event-list'));
 		$out = '<h3 class="nav-tab-wrapper">';
 		foreach($tabs as $tab => $name){
 			$class = ($tab == $current) ? ' nav-tab-active' : '';
@@ -82,7 +83,7 @@ class EL_Admin_Settings {
 			<form method="post" action="options.php">
 			';
 		ob_start();
-		settings_fields('el_'.$_GET['tab']);
+		settings_fields('el_'.$section);
 		$out .= ob_get_contents();
 		ob_end_clean();
 		$out .= '
@@ -101,6 +102,9 @@ class EL_Admin_Settings {
 				switch($o['type']) {
 					case 'checkbox':
 						$out .= $this->functions->show_checkbox($oname, $this->options->get($oname), $o['caption']);
+						break;
+					case 'dropdown':
+						$out .= $this->functions->show_dropdown($oname, $this->options->get($oname), $o['caption']);
 						break;
 					case 'radio':
 						$out .= $this->functions->show_radio($oname, $this->options->get($oname), $o['caption']);

@@ -35,10 +35,10 @@ class EL_Admin_Functions {
 		return $out;
 	}
 
-	public function show_combobox($name, $option_array, $selected=null, $class_array=null, $disabled=false) {
+	public function show_dropdown($name, $selected, $value_array, $class_array=null, $disabled=false) {
 		$out = '
 							<select id="'.$name.'" name="'.$name.'"'.$this->get_disabled_text($disabled).'>';
-		foreach($option_array as $key => $value) {
+		foreach($value_array as $key => $value) {
 			$class_text = isset($class_array[$key]) ? 'class="'.$class_array[$key].'" ' : '';
 			$selected_text = $selected===$key ? 'selected ' : '';
 			$out .= '
@@ -49,15 +49,15 @@ class EL_Admin_Functions {
 		return $out;
 	}
 
-	public function show_radio($name, $value, $caption, $disabled=false) {
+	public function show_radio($name, $selected, $value_array, $disabled=false) {
 		$out = '
 							<fieldset>';
-		foreach($caption as $okey => $ocaption) {
-			$checked = ($value === $okey) ? 'checked="checked" ' : '';
+		foreach($value_array as $key => $value) {
+			$checked = ($selected === $key) ? 'checked="checked" ' : '';
 			$out .= '
-								<label title="'.$ocaption.'">
-									<input type="radio" '.$checked.'value="'.$okey.'" name="'.$name.'">
-									<span>'.$ocaption.'</span>
+								<label title="'.$value.'">
+									<input type="radio" '.$checked.'value="'.$key.'" name="'.$name.'">
+									<span>'.$value.'</span>
 								</label>
 								<br />';
 		}

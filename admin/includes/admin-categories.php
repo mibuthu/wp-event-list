@@ -29,11 +29,12 @@ class EL_Admin_Categories {
 		$this->db = &EL_Db::get_instance();
 		$this->categories = &EL_Categories::get_instance();
 		$this->options = &EL_Options::get_instance();
+		$this->options->load_options_helptexts();
 		$this->functions = &EL_Admin_Functions::get_instance();
 	}
 
 	public function show_categories () {
-		if(!current_user_can('manage_options')) {
+		if(!current_user_can('manage_categories')) {
 			wp_die(__('You do not have sufficient permissions to access this page.','event-list'));
 		}
 		$out = '';
@@ -162,26 +163,26 @@ class EL_Admin_Categories {
 		}
 		// Category Name
 		$out .= '
-				<div class="form-field form-required"><label for="name">'.__('Name','event-list').': </label>';
+				<div class="form-field form-required"><label for="name">'.__('Name').': </label>';
 		$out .= $this->functions->show_text('name', $cat_data['name'], $is_disabled);
 		$out .= '<p>'.__('The name is how it appears on your site.','event-list').'</p></div>';
 		// Category Slug
 		$out .= '
-				<div class="form-field"><label for="name">'.__('Slug','event-list').': </label>';
+				<div class="form-field"><label for="name">'.__('Slug').': </label>';
 		$out .= $this->functions->show_text('slug', $cat_data['slug'], $is_disabled);
 		$out .= '<p>'.__('The “slug” is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens.','event-list').'</p></div>';
 		// Category Parent
 		$out .= '
-				<div class="form-field"><label for="parent">'.__('Parent','event-list').': </label>';
+				<div class="form-field"><label for="parent">'.__('Parent').': </label>';
 		$cat_array = $this->categories->get_cat_array('name', 'asc', $cat_data['slug']);
-		$option_array = array('' => __('None','event-list'));
+		$value_array = array('' => __('None'));
 		$class_array = array();
 		foreach($cat_array as $cat) {
-			$option_array[$cat['slug']] = str_pad('', 12*$cat['level'], '&nbsp;', STR_PAD_LEFT).$cat['name'];
+			$value_array[$cat['slug']] = str_pad('', 12*$cat['level'], '&nbsp;', STR_PAD_LEFT).$cat['name'];
 			$class_array[$cat['slug']] = 'level-'.$cat['level'];
 		}
 		$selected = isset($cat_data['parent']) ? $cat_data['parent'] : null;
-		$out .= $this->functions->show_combobox('parent', $option_array, $selected, $class_array, $is_disabled);
+		$out .= $this->functions->show_dropdown('parent', $selected, $value_array, $class_array, $is_disabled);
 		$out .= '<p>'.__('Categories can have a hierarchy. You might have a Jazz category, and under that have children categories for Bebop and Big Band. Totally optional.','event-list').'</p></div>';
 		// Category Description
 		$out .= '

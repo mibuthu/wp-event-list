@@ -1,17 +1,17 @@
 <?php
-if( !defined( 'ABSPATH' ) ) {
+if(!defined('WPINC')) {
 	exit;
 }
 
-require_once( EL_PATH.'includes/db.php' );
-require_once( EL_PATH.'includes/options.php' );
-require_once( EL_PATH.'includes/categories.php' );
+require_once(EL_PATH.'includes/db.php');
+require_once(EL_PATH.'includes/options.php');
+require_once(EL_PATH.'includes/categories.php');
 
 // This class handles the shortcode [event-list]
 class SC_Event_List {
 	private static $instance;
-	private $db;
 	private $options;
+	private $db;
 	private $categories;
 	private $atts;
 	private $num_sc_loaded;
@@ -19,16 +19,16 @@ class SC_Event_List {
 
 	public static function &get_instance() {
 		// Create class instance if required
-		if( !isset( self::$instance ) ) {
-			self::$instance = new SC_Event_List();
+		if(!isset(self::$instance)) {
+			self::$instance = new self();
 		}
 		// Return class instance
 		return self::$instance;
 	}
 
 	private function __construct() {
-		$this->db = &EL_Db::get_instance();
 		$this->options = &EL_Options::get_instance();
+		$this->db = &EL_Db::get_instance();
 		$this->categories = &EL_Categories::get_instance();
 
 		// All available attributes
@@ -57,15 +57,11 @@ class SC_Event_List {
 			//  'actual_date'
 			//  'actual_cat'
 		);
-
-		if(is_admin()) {
-			$this->load_sc_eventlist_helptexts();
-		}
 		$this->num_sc_loaded = 0;
 		$this->single_event = false;
 	}
 
-	private function load_sc_eventlist_helptexts() {
+	public function load_sc_eventlist_helptexts() {
 		require_once(EL_PATH.'includes/sc_event-list_helptexts.php');
 		foreach($sc_eventlist_helptexts as $name => $values) {
 			$this->atts[$name] = array_merge($this->atts[$name], $values);

@@ -1,5 +1,5 @@
 <?php
-if(!defined('ABSPATH')) {
+if(!defined('WPINC')) {
 	exit;
 }
 
@@ -17,7 +17,7 @@ class EL_Admin {
 	public static function &get_instance() {
 		// Create class instance if required
 		if(!isset(self::$instance)) {
-			self::$instance = new EL_Admin();
+			self::$instance = new self();
 		}
 		// Return class instance
 		return self::$instance;
@@ -53,7 +53,7 @@ class EL_Admin {
 		add_action('admin_print_scripts-'.$page, array(&$this, 'embed_new_scripts'));
 
 		// Categories subpage
-		$page = add_submenu_page('el_admin_main', __('Event List Categories','event-list'), __('Categories','event-list'), 'manage_options', 'el_admin_categories', array(&$this, 'show_categories_page'));
+		$page = add_submenu_page('el_admin_main', __('Event List Categories','event-list'), __('Categories','event-list'), 'manage_categories', 'el_admin_categories', array(&$this, 'show_categories_page'));
 		add_action('admin_print_scripts-'.$page, array(&$this, 'embed_categories_scripts'));
 
 		// Settings subpage

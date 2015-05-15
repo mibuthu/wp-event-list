@@ -27,6 +27,8 @@ jQuery(document).ready(function($) {
 		constrainInput: true,
 		altField: "#sql_start_date",
 		altFormat: "yy-mm-dd",
+		minDate: "1970-01-01",
+		maxDate: "2999-12-31",
 		onClose: function(selectedDate) {
 			// set minDate for end_date picker
 			minDate = $.datepicker.parseDate( conf.el_date_format, selectedDate );
@@ -45,7 +47,9 @@ jQuery(document).ready(function($) {
 		buttonImageOnly: true,
 		constrainInput: true,
 		altField: "#sql_end_date",
-		altFormat: "yy-mm-dd"
+		altFormat: "yy-mm-dd",
+		minDate: "1970-01-01",
+		maxDate: "2999-12-31",
 	});
 
 	// Toogle end_date visibility and insert the correct date

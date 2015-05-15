@@ -1,5 +1,5 @@
 <?php
-if(!defined('ABSPATH')) {
+if(!defined('WPINC')) {
 	exit;
 }
 
@@ -80,7 +80,11 @@ class EL_Admin_Main {
 				case 'modified':
 					$this->show_edit_view($this->action);
 					return;
-
+				// actions showing import view
+				case 'import':
+					require_once(EL_PATH.'admin/includes/admin-import.php');
+					EL_Admin_Import::get_instance()->show_import();
+					return;
 				// actions showing event list
 				case 'deleted':
 					// nothing to do
@@ -105,11 +109,13 @@ class EL_Admin_Main {
 			$header = __('Edit Event','event-list').' <a href="'.$duplicate_link.'" class="add-new-h2">'.__('Duplicate','event-list').'</a>';
 		}
 		else {
-			$header = __('Events', 'event-list');
+			$header = __('Events','event-list');
 		}
+		$new_link = '<a href="?page=el_admin_new" class="add-new-h2">'.__('Add New','event-list').'</a>';
+		$import_link = $editview ? '' : '<a href="?page=el_admin_main&action=import" class="add-new-h2">'.__('Import','event-list').'</a>';
 		echo '
 			<div class="wrap">
-				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.$header.' <a href="?page=el_admin_new" class="add-new-h2">'.__('Add New','event-list').'</a></h2>';
+				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.$header.' '.$new_link.' '.$import_link.'</h2>';
 		$this->show_message($action);
 	}
 

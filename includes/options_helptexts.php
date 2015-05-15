@@ -4,63 +4,58 @@ if(!defined('WPINC')) {
 }
 
 $options_helptexts = array(
-	'el_db_version'         => array('section' => 'system',
-	                                 'type'    => 'text'),
+	// Section: "system"
+	'el_db_version'         => array('type'    => 'text'),
 
-	'el_categories'         => array('section' => 'categories',
-	                                 'type'    => 'category',
+	// Section: "categories"
+	'el_categories'         => array('type'    => 'category',
 	                                 'label'   => __('Event Categories','event-list'),
 	                                 'caption' => '',
 	                                 'desc'    => __('This option specifies all event category data.','event-list')),
 
-	'el_sync_cats'          => array('section' => 'categories',
-	                                 'type'    => 'checkbox',
+	'el_sync_cats'          => array('type'    => 'checkbox',
 	                                 'label'   => __('Sync Categories','event-list'),
 	                                 'caption' => __('Keep event categories in sync with post categories automatically','event-list'),
 	                                 'desc'    => '<table><tr style="vertical-align:top"><td><strong>'.__('Attention','event-list').':</strong></td>
 	                                               <td>'.__('Please note that this option will delete all categories which are not available in the post categories! Existing Categories with the same slug will be updated.','event-list').'</td></tr></table>'),
 
-	'el_no_event_text'      => array('section' => 'general',
-	                                 'type'    => 'text',
+	// Section: "general"
+	'el_no_event_text'      => array('type'    => 'text',
 	                                 'label'   => __('Text for no events','event-list'),
 	                                 'caption' => '',
 	                                 'desc'    => __('This option defines the text which is displayed if no events are available for the selected view.','event-list')),
 
-	'el_date_once_per_day'  => array('section' => 'general',
-	                                 'type'    => 'checkbox',
+	'el_date_once_per_day'  => array('type'    => 'checkbox',
 	                                 'label'   => __('Date display','event-list'),
 	                                 'caption' => __('Show date only once per day','event-list'),
 	                                 'desc'    => __('With this option you can display the date only once per day if multiple events are available on the same day.<br />
 	                                                  If this option is enabled the events are ordered in a different way (end date before start time) to allow using the same date for as much events as possible.')),
 
-	'el_html_tags_in_time'  => array('section' => 'general',
-	                                 'type'    => 'checkbox',
+	'el_html_tags_in_time'  => array('type'    => 'checkbox',
 	                                 'label'   => __('HTML tags','event-list'),
 	                                 'caption' => __('Allow HTML tags in event time field','event-list'),
 	                                 'desc'    => __('This option specifies if HTML tags are allowed in the event start time field.','event-list')),
 
-	'el_html_tags_in_loc'   => array('section' => 'general',
-	                                 'type'    => 'checkbox',
+	'el_html_tags_in_loc'   => array('type'    => 'checkbox',
 	                                 'label'   => '',
 	                                 'caption' => __('Allow HTML tags in event location field','event-list'),
 	                                 'desc'    => __('This option specifies if HTML tags are allowed in the event location field.','event-list')),
 
-	'el_edit_dateformat'    => array('section' => 'admin',
-	                                 'type'    => 'text',
+	// Section: "admin"
+	'el_edit_dateformat'    => array('type'    => 'text',
 	                                 'label'   => __('Date format in edit form','event-list'),
 	                                 'desc'    => __('This option sets a specific date format for the event date fields in the new/edit event form.<br />
 	                                                  The standard is an empty string to use the wordpress standard setting.<br />
 	                                                  All available options to specify the format can be found <a href="http://php.net/manual/en/function.date.php" target="_blank">here</a>')),
 
-	'el_enable_feed'        => array('section' => 'feed',
-	                                 'type'    => 'checkbox',
+	// Section: "feed"
+	'el_enable_feed'        => array('type'    => 'checkbox',
 	                                 'label'   => __('Enable RSS feed','event-list'),
 	                                 'caption' => __('Enable support for an event RSS feed','event-list'),
 	                                 'desc'    => __('This option activates a RSS feed for the events.<br />
 	                                                  You have to enable this option if you want to use one of the RSS feed features.')),
 
-	'el_feed_name'          => array('section' => 'feed',
-	                                 'type'    => 'text',
+	'el_feed_name'          => array('type'    => 'text',
 	                                 'label'   => __('Feed name','event-list'),
 	                                 'desc'    => __('This options sets the feed name. The standard value is "event-list".<br />
 	                                                  This name will be used in the feed url (e.g. <code>domain.com/?feed=event-list</code> or <code>domain.com/feed/eventlist</code> for an installation with permalinks')),
@@ -117,18 +112,5 @@ $options_helptexts = array(
 	                                 'caption' => __('Show rss image in feed link','event-list'),
 	                                 'desc'    => __('This option specifies if the an image should be dispayed in the feed link in front of the text.<br />
 	                                                  You have to set the shortcode attribute "add_feed_link" to "true" if you want to show the feed link.')),
-);
-
-$date_formats_desc = array(
-	'year'  => __('You can specify a year in 4 digit format.<br /> Other formats will not be accepted.','event-list'),
-	'month' => __('You can specify a month with 4 digits for the year and 2 digits for the month, seperated by a hyphen (-).<br />Other formats will not be accepted.','event-list'),
-	'day'   => __('You can specify a day with 4 digits for the year, 2 digits for the month and 2 digets for the day, seperated by a hyphen (-).<br /> Other formats will not be accepted.','event-list'),
-);
-
-$daterange_formats_desc = array(
-	'date_range'   => __('You can specify a rage or dates seperated by a tilde (~).<br >You can specify any available date format before and after the tilde.','event-list'),
-	'all'          => __('"all" specifies the full time range without any limitation.','event-list'),
-	'upcoming'     => __('"upcoming" specifies a time range from the actual day to the future.','event-list'),
-	'past'         => __('"past" specifies a time rage from the past to the previous day.','event-list'),
 );
 ?>
