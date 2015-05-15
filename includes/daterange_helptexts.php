@@ -36,16 +36,16 @@ $date_formats_helptexts = array(
 );
 
 $daterange_formats_helptexts = array(
-	'date_range' => array('name'  => __('Date range'),
+	'date_range' => array('name'  => __('Date range','event-list'),
 	                      'desc'  => __('You can specify a rage or dates seperated by a tilde (~).<br >You can specify any available date format before and after the tilde.','event-list'),
 	                      'examp' => '2015-03-29~2016'),
 	'all'        => array('name'  => __('All'),
 	                      'desc'  => __('"all" specifies the full time range without any limitation.','event-list'),
 	                      'value' => 'all'),
-	'upcoming'   => array('name'  => __('Upcoming'),
+	'upcoming'   => array('name'  => __('Upcoming','event-list'),
 	                      'desc'  => __('"upcoming" specifies a time range from the actual day to the future.','event-list'),
 	                      'value' => 'upcoming'),
-	'past'       => array('name'  => __('Past'),
+	'past'       => array('name'  => __('Past','event-list'),
 	                      'desc'  => __('"past" specifies a time rage from the past to the previous day.','event-list'),
 	                      'value' => 'past'),
 );
