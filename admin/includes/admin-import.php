@@ -36,7 +36,7 @@ class EL_Admin_Import {
 		echo '
 			<div class="wrap">
 				<div id="icon-edit-pages" class="icon32"><br /></div>
-				<h2>Import Events</h2>';
+				<h2>'.__('Import Events','event-list').'</h2>';
 		// Review import
 		if(isset($_FILES['el_import_file'])) {
 			$this->show_import_review();
@@ -63,7 +63,7 @@ class EL_Admin_Import {
 					<br /><br />
 				</form>
 				<h3>'.__('Example file','event-list').'</h3>
-				<p>'.sprintf(__('Please find an example file %1$shere%2$s (CSV delimiter is a comma!)','event-list'), '<a href="'.$this->example_file_path.'">', '</a>').'<br />
+				<p>'.sprintf(__('You can find an example file %1$shere%2$s (CSV delimiter is a comma!)','event-list'), '<a href="'.$this->example_file_path.'">', '</a>').'<br />
 				'.__('Note','event-list').': <em>'.__('Do not change the column header and separator line (first two lines), otherwise the import will fail!','event-list').'</em></p>';
 	}
 
@@ -255,7 +255,7 @@ class EL_Admin_Import {
 
 	private function import_events() {
 		$reviewed_events = unserialize(stripslashes($_POST['reviewed_events']));
-		$categories = $_POST['categories'];
+		$categories = isset($_POST['categories']) ? $_POST['categories'] : '';
 		if(isset($categories)) {
 			foreach($reviewed_events as &$event) {
 				$event['categories'] = $categories;
