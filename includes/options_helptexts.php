@@ -48,6 +48,13 @@ $options_helptexts = array(
 	                                   'caption' => __('Allow HTML tags in event location field','event-list'),
 	                                   'desc'    => __('This option specifies if HTML tags are allowed in the event location field.','event-list')),
 
+	// Section: "frontend"
+	'el_disable_css_file'     => array('type'    => 'checkbox',
+	                                   'label'   => __('Disable CSS file'),
+	                                   'caption' => __('Disable the "event-list.css" file.'),
+	                                   'desc'    => __('With this option you can disable the inclusion of the "event-list.css" file.<br />
+	                                                    This normally only make sense if you have css conflicts with your theme and want to set all required css somewhere else (e.g. your theme css).')),
+
 	// Section: "admin"
 	'el_edit_dateformat'      => array('type'    => 'text',
 	                                   'label'   => __('Date format in edit form','event-list'),

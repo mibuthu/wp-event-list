@@ -112,8 +112,10 @@ class Event_List {
 	}
 
 	public function enqueue_styles() {
-		wp_register_style('event-list', EL_URL.'includes/css/event-list.css');
-		wp_enqueue_style('event-list');
+		if('' == $this->options->get('el_disable_css_file')) {
+			wp_register_style('event-list', EL_URL.'includes/css/event-list.css');
+			wp_enqueue_style('event-list');
+		}
 		$this->styles_loaded = true;
 	}
 } // end class linkview

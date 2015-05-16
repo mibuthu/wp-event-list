@@ -38,6 +38,8 @@ class EL_Options {
 			'el_html_tags_in_time'    => array('std_val' => '',               'section' => 'general'),
 			'el_html_tags_in_loc'     => array('std_val' => '',               'section' => 'general'),
 
+			'el_disable_css_file'     => array('std_val' => '',               'section' => 'frontend'),
+
 			'el_edit_dateformat'      => array('std_val' => '',               'section' => 'admin'),
 
 			'el_enable_feed'          => array('std_val' => '',               'section' => 'feed'),
