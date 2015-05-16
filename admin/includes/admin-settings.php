@@ -29,7 +29,7 @@ class EL_Admin_Settings {
 
 	public function show_settings () {
 		if(!current_user_can('manage_options')) {
-			wp_die(__('You do not have sufficient permissions to access this page.','event-list'));
+			wp_die(__('You do not have sufficient permissions to access this page.'));
 		}
 		$out = '';
 		if(!isset($_GET['tab'])) {
