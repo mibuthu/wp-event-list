@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: wp-eventlist\n"
-"POT-Creation-Date: 2015-05-15 17:41+0100\n"
-"PO-Revision-Date: 2015-05-15 17:49+0100\n"
+"Project-Id-Version: event-list\n"
+"POT-Creation-Date: 2015-05-16 13:12+0100\n"
+"PO-Revision-Date: 2015-05-16 13:12+0100\n"
 "Last-Translator: Michael Burtscher <mike@mbnet.at>\n"
 "Language-Team: Michael Burtscher\n"
 "Language: de\n"
@@ -443,198 +443,235 @@ msgid ""
 msgstr ""
 
 #: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:29
-msgid "Date display"
+msgid "Multiday filter range"
 msgstr ""
 
 #: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:30
-msgid "Show date only once per day"
+msgid "Use complete range in date filter"
 msgstr ""
 
 #: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:31
 msgid ""
+"This option defines if the complete range of a multiday event shall be "
+"considered in the date filter.<br />\n"
+"\t                                                    If disabled only the "
+"start day of an event is considered in the filter.<br />\n"
+"\t                                                    For example if you "
+"have a multiday event which started yesterday and ends tomorrow it is "
+"displayed in umcoming dates when this option is enabled, but it is hidden "
+"when the option is disabled."
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:36
+msgid "Date display"
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:37
+msgid "Show date only once per day"
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:38
+msgid ""
 "With this option you can display the date only once per day if multiple "
 "events are available on the same day.<br />\n"
-"\t                                                  If this option is "
+"\t                                                    If this option is "
 "enabled the events are ordered in a different way (end date before start "
 "time) to allow using the same date for as much events as possible."
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:35
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:42
 msgid "HTML tags"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:36
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:43
 msgid "Allow HTML tags in event time field"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:37
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:44
 msgid ""
 "This option specifies if HTML tags are allowed in the event start time field."
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:41
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:48
 msgid "Allow HTML tags in event location field"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:42
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:49
 msgid ""
 "This option specifies if HTML tags are allowed in the event location field."
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:46
-msgid "Date format in edit form"
-msgstr ""
-
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:47
-msgid ""
-"This option sets a specific date format for the event date fields in the new/"
-"edit event form.<br />\n"
-"\t                                                  The standard is an empty "
-"string to use the wordpress standard setting.<br />\n"
-"\t                                                  All available options to "
-"specify the format can be found <a href=\"http://php.net/manual/en/function."
-"date.php\" target=\"_blank\">here</a>"
-msgstr ""
-
 #: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:53
-msgid "Enable RSS feed"
+msgid "Disable CSS file"
 msgstr ""
 
 #: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:54
-msgid "Enable support for an event RSS feed"
+msgid "Disable the \"event-list.css\" file."
 msgstr ""
 
 #: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:55
 msgid ""
-"This option activates a RSS feed for the events.<br />\n"
-"\t                                                  You have to enable this "
-"option if you want to use one of the RSS feed features."
-msgstr ""
-
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:59
-msgid "Feed name"
+"With this option you can disable the inclusion of the \"event-list.css\" "
+"file.<br />\n"
+"\t                                                    This normally only "
+"make sense if you have css conflicts with your theme and want to set all "
+"required css somewhere else (e.g. your theme css)."
 msgstr ""
 
 #: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:60
+msgid "Date format in edit form"
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:61
+msgid ""
+"This option sets a specific date format for the event date fields in the new/"
+"edit event form.<br />\n"
+"\t                                                    The standard is an "
+"empty string to use the wordpress standard setting.<br />\n"
+"\t                                                    All available options "
+"to specify the format can be found <a href=\"http://php.net/manual/en/"
+"function.date.php\" target=\"_blank\">here</a>"
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:67
+msgid "Enable RSS feed"
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:68
+msgid "Enable support for an event RSS feed"
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:69
+msgid ""
+"This option activates a RSS feed for the events.<br />\n"
+"\t                                                    You have to enable "
+"this option if you want to use one of the RSS feed features."
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:73
+msgid "Feed name"
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:74
 msgid ""
 "This options sets the feed name. The standard value is \"event-list\".<br /"
 ">\n"
-"\t                                                  This name will be used "
+"\t                                                    This name will be used "
 "in the feed url (e.g. <code>domain.com/?feed=event-list</code> or "
 "<code>domain.com/feed/eventlist</code> for an installation with permalinks"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:65
-msgid "Feed Description"
-msgstr ""
-
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:66
-msgid ""
-"This options sets the feed description. The standard value is \"Eventlist "
-"Feed\".<br />\n"
-"\t                                                  This description will be "
-"used in the title for the feed link in the html head and for the description "
-"in the feed itself."
-msgstr ""
-
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:71
-msgid "Listed events"
-msgstr ""
-
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:72
-msgid "Only show upcoming events in feed"
-msgstr ""
-
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:73
-msgid ""
-"If this option is enabled only the upcoming events are listed in the feed."
-"<br />\n"
-"\t                                                  If disabled all events "
-"(upcoming and past) will be listed."
-msgstr ""
-
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:78
-msgid "Add RSS feed link in head"
-msgstr ""
-
 #: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:79
-msgid "Add RSS feed link in the html head"
+msgid "Feed Description"
 msgstr ""
 
 #: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:80
 msgid ""
+"This options sets the feed description. The standard value is \"Eventlist "
+"Feed\".<br />\n"
+"\t                                                    This description will "
+"be used in the title for the feed link in the html head and for the "
+"description in the feed itself."
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:85
+msgid "Listed events"
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:86
+msgid "Only show upcoming events in feed"
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:87
+msgid ""
+"If this option is enabled only the upcoming events are listed in the feed."
+"<br />\n"
+"\t                                                    If disabled all events "
+"(upcoming and past) will be listed."
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:92
+msgid "Add RSS feed link in head"
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:93
+msgid "Add RSS feed link in the html head"
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:94
+msgid ""
 "This option adds a RSS feed in the html head for the events.<br />\n"
-"\t                                                  You have 2 possibilities "
-"to include the RSS feed:<br />\n"
-"\t                                                  The first option is to "
+"\t                                                    You have 2 "
+"possibilities to include the RSS feed:<br />\n"
+"\t                                                    The first option is to "
 "use this option to include a link in the html head. This link will be "
 "recognized by browers or feed readers.<br />\n"
-"\t                                                  The second possibility "
+"\t                                                    The second possibility "
 "is to include a visible feed link directly in the event list. This can be "
 "done by setting the shortcode attribute \"add_feed_link\" to \"true\"<br />\n"
-"\t                                                  This option is only "
+"\t                                                    This option is only "
 "valid if the option \"Enable RSS feed\" is enabled."
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:88
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:102
 msgid "Position of the RSS feed link"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:90
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:104
 msgid ""
 "This option specifies the position of the RSS feed link in the event list."
 "<br />\n"
-"\t                                                  The options are to "
+"\t                                                    The options are to "
 "display the link at the top, at the bottom or between the navigation bar and "
 "the event list.<br />\n"
-"\t                                                  You have to set the "
+"\t                                                    You have to set the "
 "shortcode attribute \"add_feed_link\" to \"true\" if you want to show the "
 "feed link."
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:96
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:110
 msgid "Align of the RSS feed link"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:98
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:112
 msgid ""
 "This option specifies the align of the RSS feed link in the event list.<br /"
 ">\n"
-"\t                                                  The link can be "
+"\t                                                    The link can be "
 "displayed on the left side, centered or on the right.<br />\n"
-"\t                                                  You have to set the "
+"\t                                                    You have to set the "
 "shortcode attribute \"add_feed_link\" to \"true\" if you want to show the "
 "feed link."
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:104
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:118
 msgid "Feed link text"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:105
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:119
 msgid ""
 "This option specifies the caption of the RSS feed link in the event list."
 "<br />\n"
-"\t                                                  Insert an empty text to "
-"hide any text if you only want to show the rss image.<br />\n"
-"\t                                                  You have to set the "
+"\t                                                    Insert an empty text "
+"to hide any text if you only want to show the rss image.<br />\n"
+"\t                                                    You have to set the "
 "shortcode attribute \"add_feed_link\" to \"true\" if you want to show the "
 "feed link."
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:111
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:125
 msgid "Feed link image"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:112
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:126
 msgid "Show rss image in feed link"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:113
+#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:127
 msgid ""
 "This option specifies if the an image should be dispayed in the feed link in "
 "front of the text.<br />\n"
-"\t                                                  You have to set the "
+"\t                                                    You have to set the "
 "shortcode attribute \"add_feed_link\" to \"true\" if you want to show the "
 "feed link."
 msgstr ""
@@ -1085,10 +1122,14 @@ msgid "General"
 msgstr "Allgemein"
 
 #: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-settings.php:70
+msgid "Frontend Settings"
+msgstr "Frontend Einstellungen"
+
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-settings.php:71
 msgid "Admin Page Settings"
 msgstr "Admin-Seiten Einstellungen"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-settings.php:71
+#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-settings.php:72
 msgid "Feed Settings"
 msgstr "Feed Einstellungen"
 

@@ -66,7 +66,7 @@ class EL_Admin_Main {
 	public function show_main() {
 		// check permissions
 		if(!current_user_can('edit_posts')) {
-			wp_die(__('You do not have sufficient permissions to access this page.','event-list'));
+			wp_die(__('You do not have sufficient permissions to access this page.'));
 		}
 		// TODO: add check_admin_referer to improve security (see /wp-admin/edit.php)
 		// is there POST data an event was edited must be updated

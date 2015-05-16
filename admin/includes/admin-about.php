@@ -28,7 +28,7 @@ class EL_Admin_About {
 
 	public function show_about() {
 		if(!current_user_can('edit_posts')) {
-			wp_die(__('You do not have sufficient permissions to access this page.','event-list'));
+			wp_die(__('You do not have sufficient permissions to access this page.'));
 		}
 		echo '<div class="wrap">
 				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.__('About Event List','event-list').'</h2>

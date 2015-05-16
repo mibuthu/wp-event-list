@@ -35,7 +35,7 @@ class EL_Admin_Categories {
 
 	public function show_categories () {
 		if(!current_user_can('manage_categories')) {
-			wp_die(__('You do not have sufficient permissions to access this page.','event-list'));
+			wp_die(__('You do not have sufficient permissions to access this page.'));
 		}
 		$out = '';
 

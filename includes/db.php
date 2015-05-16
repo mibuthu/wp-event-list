@@ -264,7 +264,8 @@ class EL_Db {
 			//set to standard (upcoming)
 			$range = $this->daterange->get_date_range($element, $this->options->daterange_formats['upcoming']);
 		}
-		return '(end_date >= "'.$range[0].'" AND start_date <= "'.$range[1].'")';
+		$date_for_startrange = ('' == $this->options->get('el_multiday_filterrange')) ? 'start_date' : 'end_date';
+		return '('.$date_for_startrange.' >= "'.$range[0].'" AND start_date <= "'.$range[1].'")';
 	}
 
 	private function sql_cat_filter ($element) {

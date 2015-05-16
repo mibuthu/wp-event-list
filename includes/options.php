@@ -27,27 +27,30 @@ class EL_Options {
 
 	public function init_options() {
 		$this->options = array(
-			'el_db_version'         => array('std_val' => '',               'section' => 'system'),
+			'el_db_version'           => array('std_val' => '',               'section' => 'system'),
 
-			'el_categories'         => array('std_val' => null,             'section' => 'categories'),
-			'el_sync_cats'          => array('std_val' => '',               'section' => 'categories'),
+			'el_categories'           => array('std_val' => null,             'section' => 'categories'),
+			'el_sync_cats'            => array('std_val' => '',               'section' => 'categories'),
 
-			'el_no_event_text'      => array('std_val' => 'no event',       'section' => 'general'),
-			'el_date_once_per_day'  => array('std_val' => '',               'section' => 'general'),
-			'el_html_tags_in_time'  => array('std_val' => '',               'section' => 'general'),
-			'el_html_tags_in_loc'   => array('std_val' => '',               'section' => 'general'),
+			'el_no_event_text'        => array('std_val' => 'no event',       'section' => 'general'),
+			'el_multiday_filterrange' => array('std_val' => '1',              'section' => 'general'),
+			'el_date_once_per_day'    => array('std_val' => '',               'section' => 'general'),
+			'el_html_tags_in_time'    => array('std_val' => '',               'section' => 'general'),
+			'el_html_tags_in_loc'     => array('std_val' => '',               'section' => 'general'),
 
-			'el_edit_dateformat'    => array('std_val' => '',               'section' => 'admin'),
+			'el_disable_css_file'     => array('std_val' => '',               'section' => 'frontend'),
 
-			'el_enable_feed'        => array('std_val' => '',               'section' => 'feed'),
-			'el_feed_name'          => array('std_val' => 'event-list',     'section' => 'feed'),
-			'el_feed_description'   => array('std_val' => 'Eventlist Feed', 'section' => 'feed'),
-			'el_feed_upcoming_only' => array('std_val' => '',               'section' => 'feed'),
-			'el_head_feed_link'     => array('std_val' => '1',              'section' => 'feed'),
-			'el_feed_link_pos'      => array('std_val' => 'bottom',         'section' => 'feed'),
-			'el_feed_link_align'    => array('std_val' => 'left',           'section' => 'feed'),
-			'el_feed_link_text'     => array('std_val' => 'RSS Feed',       'section' => 'feed'),
-			'el_feed_link_img'      => array('std_val' => '1',              'section' => 'feed'),
+			'el_edit_dateformat'      => array('std_val' => '',               'section' => 'admin'),
+
+			'el_enable_feed'          => array('std_val' => '',               'section' => 'feed'),
+			'el_feed_name'            => array('std_val' => 'event-list',     'section' => 'feed'),
+			'el_feed_description'     => array('std_val' => 'Eventlist Feed', 'section' => 'feed'),
+			'el_feed_upcoming_only'   => array('std_val' => '',               'section' => 'feed'),
+			'el_head_feed_link'       => array('std_val' => '1',              'section' => 'feed'),
+			'el_feed_link_pos'        => array('std_val' => 'bottom',         'section' => 'feed'),
+			'el_feed_link_align'      => array('std_val' => 'left',           'section' => 'feed'),
+			'el_feed_link_text'       => array('std_val' => 'RSS Feed',       'section' => 'feed'),
+			'el_feed_link_img'        => array('std_val' => '1',              'section' => 'feed'),
 		);
 	}
 
