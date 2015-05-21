@@ -44,7 +44,7 @@ class EL_Widget extends WP_Widget {
 	public function load_widget_items_helptexts() {
 		require_once(EL_PATH.'includes/widget_helptexts.php');
 		foreach($widget_items_helptexts as $name => $values) {
-			$this->items[$name] = array_merge($this->items[$name], $values);
+			$this->items[$name] += $values;
 		}
 		unset($widget_items_helptexts);
 	}
