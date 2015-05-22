@@ -7,7 +7,6 @@ if(!defined('WPINC')) {
 class EL_Options {
 
 	private static $instance;
-	public $group;
 	public $options;
 
 	public static function &get_instance() {
@@ -20,7 +19,6 @@ class EL_Options {
 	}
 
 	private function __construct() {
-		$this->group = 'event-list';
 		add_action('init', array(&$this, 'init_options'), 1);
 		add_action('admin_init', array(&$this, 'register_options'));
 	}
