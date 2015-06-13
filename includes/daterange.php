@@ -74,10 +74,10 @@ class EL_Daterange {
 		unset($daterange_formats_helptexts);
 	}
 
-	public function check_date_format($element) {
+	public function check_date_format($element, $ret_value=null) {
 		foreach($this->date_formats as $date_type) {
 			if(preg_match('@'.$date_type['regex'].'@', $element)) {
-				return $this->get_date_range($element, $date_type);
+				return $this->get_date_range($element, $date_type, $ret_value);
 			}
 		}
 		return null;
@@ -89,8 +89,8 @@ class EL_Daterange {
 				//check for date_range which requires special handling
 				if('date_range' == $key) {
 					$sep_pos = strpos($element, "~");
-					$startrange = $this->check_date_format(substr($element, 0, $sep_pos));
-					$endrange = $this->check_date_format(substr($element, $sep_pos+1));
+					$startrange = $this->check_date_format(substr($element, 0, $sep_pos), 'start');
+					$endrange = $this->check_date_format(substr($element, $sep_pos+1), 'end');
 					return array($startrange[0], $endrange[1]);
 				}
 				return $this->get_date_range($element, $daterange_type);
@@ -99,16 +99,22 @@ class EL_Daterange {
 		return null;
 	}
 
-	public function get_date_range($element, &$range_type) {
-		// set range values by replacing %v% in $range_type string with $element
-		$range[0] = str_replace('%v%', $element, $range_type['start']);
-		$range[1] = str_replace('%v%', $element, $range_type['end']);
-		// enum function if required
-		if(substr($range[0], 0, 8) == '--func--') {  //start
-			eval('$range[0] = '.substr($range[0], 8));
+	public function get_date_range($element, &$range_type, $ret_value=null) {
+		if('end' != $ret_value) {
+			// start date:
+			// set range values by replacing %v% in $range_type string with $element
+			$range[0] = str_replace('%v%', $element, $range_type['start']);
+			// enum function if required
+			if(substr($range[0], 0, 8) == '--func--') {  //start
+				eval('$range[0] = '.substr($range[0], 8));
+			}
 		}
-		if(substr($range[1], 0, 8) == '--func--') {  //end
-			eval('$range[1] = '.substr($range[1], 8));
+		if('start' != $ret_value) {
+			// same for end date:
+			$range[1] = str_replace('%v%', $element, $range_type['end']);
+			if(substr($range[1], 0, 8) == '--func--') {  //end
+				eval('$range[1] = '.substr($range[1], 8));
+			}
 		}
 		return $range;
 	}
