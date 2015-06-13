@@ -40,10 +40,12 @@ class EL_Daterange {
 			'rel_month'    => array('regex' => '^([+-]?\d+|last|previous|next|this)month[s]?$',
 			                        'start' => '--func--date("Y-m", strtotime(str_replace("_", " ", "%v%")))."-01";',
 			                        'end'   => '--func--date("Y-m", strtotime(str_replace("_", " ", "%v%")))."-31";'),
-			// TODO: adding week format (calculation of first/last day of the week is not correct yet)
-/*			'rel_week'     => array('regex' => '^([+-]?\d+|last|previous|next|this)_week[s]?$',
-			                        'start' => '--func--date("Y-m-d", strtotime("Monday ".str_replace("_", " ", "%v%")));',
-			                        'end'   => '--func--date("Y-m-d", strtotime("Sunday ".str_replace("_", " ", "%v%")));'),  */
+			'rel_week'     => array('regex' => '^([+-]?\d+|last|previous|next|this)_week[s]?$',
+			                        'start' => '--func--date("Y-m-d", strtotime(str_replace(array("_","last","previous","next","this"), array(" ","-1","-1","+1","0"), "%v%"))-86400*((date("w")-get_option("start_of_week")+7)%7));',
+			                        'end'   => '--func--date("Y-m-d", strtotime(str_replace(array("_","last","previous","next","this"), array(" ","-1","-1","+1","0"), "%v%"))-86400*((date("w")-get_option("start_of_week")+7)%7-6));'),
+			                                   // replace special values due to some date calculation problems,
+			                                   // then calculate the new date
+			                                   // and at last remove calculated days to get first day of the week (acc. start_of_week option), add 6 day for end date (- sign due to - for first day calculation)
 			'rel_day'      => array('regex' => '^((([+-]?\d+|last|previous|next|this)_day[s]?)|yesterday|today|tomorrow)$',
 			                        'start' => '--func--date("Y-m-d", strtotime(str_replace("_", " ", "%v%")));',
 			                        'end'   => '--func--date("Y-m-d", strtotime(str_replace("_", " ", "%v%")));'),

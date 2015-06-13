@@ -23,11 +23,13 @@ $date_formats_helptexts = array(
 	                                     This means you can specify a relativ number of months from now with "+" or "-" with "_month" or "_months" attached (see also the example).<br />
 	                                     Instead of a number you can also specify one of the following special values: <em>last_month</em>, <em>next_month</em>, <em>this_month</em>','event-list'),
 	                      'examp' => '-6_months'),
-/*	'rel_week'   => array('name'  => __('Relative Week','event-list'),
+	'rel_week'   => array('name'  => __('Relative Week','event-list'),
 	                      'desc'  => __('You can specify a relative week from now with the following notation: <em>[+-]?[0-9]+_week[s]?</em><br />
 	                                     This means you can specify a relativ number of weeks from now with "+" or "-" with "_week" or "_weeks" attached (see also the example).<br />
+	                                     If you use this value for a start date the first day of the resulting week will be the first day that week. Using this value for an end date is similar, the last day of the resulting week will be used then.<br />
+	                                     The first day of the week is depending on the option "Week Starts On" which can be found and changed in Settings &rarr; General.<br />
 	                                     Instead of a number you can also specify one of the following special values: <em>last_week</em>, <em>next_week</em>, <em>this_week</em>','event-list'),
-	                      'examp' => '+3_weeks'), */
+	                      'examp' => '+3_weeks'),
 	'rel_day'    => array('name'  => __('Relative Day','event-list'),
 	                      'desc'  => __('You can specify a relative day from now with the following notation: <em>[+-]?[0-9]+_day[s]?</em><br />
 	                                     This means you can specify a relativ number of days from now with "+" or "-" with "_day" or "_days" attached (see also the example).<br />
