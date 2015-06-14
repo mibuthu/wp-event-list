@@ -30,6 +30,8 @@ class EL_Options {
 			'el_categories'           => array('section' => 'categories', 'std_val' => null),
 			'el_sync_cats'            => array('section' => 'categories', 'std_val' => ''),
 
+			'el_import_file'          => array('section' => 'import',     'std_val' => ''),
+			'el_import_date_format'   => array('section' => 'import',     'std_val' => 'Y-m-d'),
 
 			'el_no_event_text'        => array('section' => 'general',    'std_val' => 'no event'),
 			'el_multiday_filterrange' => array('section' => 'general',    'std_val' => '1'),

@@ -16,6 +16,17 @@ $options_helptexts = array(
 	                                   'desc'    => '<table><tr style="vertical-align:top"><td><strong>'.__('Attention','event-list').':</strong></td>
 	                                                 <td>'.__('Please note that this option will delete all categories which are not available in the post categories! Existing Categories with the same slug will be updated.','event-list').'</td></tr></table>'),
 
+	// Section: "import"
+	'el_import_file'          => array('type'    => 'file-upload',
+	                                   'label'   => __('CSV File to import','event-list'),
+	                                   'maxsize' => 204800,
+	                                   'desc'    => __('Please select the file which contains the event data in CSV format.','event-list')),
+
+	'el_import_date_format'   => array('type'    => 'text',
+	                                   'label'   => __('Used date format','event-list'),
+	                                   'caption' => '',
+	                                   'desc'    => __('With this option the used date format for event start and end date given in the CSV file can be specified.','event-list')),
+
 	// Section: "general"
 	'el_no_event_text'        => array('type'    => 'text',
 	                                   'label'   => __('Text for no events','event-list'),

@@ -72,6 +72,8 @@ class EL_Admin_Functions {
 					case 'textarea':
 						$out .= $this->show_textarea($oname, $this->options->get($oname));
 						break;
+					case 'file-upload':
+						$out .= $this->show_file_upload($oname, $o['maxsize']);
 				}
 				$out .= '
 					</td>
@@ -138,6 +140,12 @@ class EL_Admin_Functions {
 	public function show_textarea($name, $value, $disabled=false) {
 		$out = '
 							<textarea name="'.$name.'" id="'.$name.'" rows="5" class="large-text code"'.$this->get_disabled_text($disabled).'>'.$value.'</textarea>';
+		return $out;
+	}
+
+	public function show_file_upload($name, $max_size, $disabled=false) {
+		$out = '
+							<input name="'.$name.'" type="file" maxlength="'.$max_size.'">';
 		return $out;
 	}
 

@@ -3,12 +3,16 @@ if(!defined('WPINC')) {
 	exit;
 }
 
+require_once(EL_PATH.'includes/options.php');
+require_once(EL_PATH.'admin/includes/admin-functions.php');
 require_once(EL_PATH.'includes/db.php');
 require_once(EL_PATH.'includes/categories.php');
 
 // This class handles all data for the admin new event page
 class EL_Admin_Import {
 	private static $instance;
+	private $options;
+	private $functions;
 	private $db;
 	private $categories;
 	private $import_data;
@@ -24,8 +28,10 @@ class EL_Admin_Import {
 	}
 
 	private function __construct() {
-		$this->db = & EL_Db::get_instance();
-		$this->categories = & EL_Categories::get_instance();
+		$this->options = &EL_Options::get_instance();
+		$this->functions = &EL_Admin_Functions::get_instance();
+		$this->db = &EL_Db::get_instance();
+		$this->categories = &EL_Categories::get_instance();
 		$this->example_file_path = EL_URL.'/files/events-import-example.csv';
 	}
 
@@ -56,15 +62,15 @@ class EL_Admin_Import {
 
 	private function show_import_form() {
 		echo '
+				<h3>'.__('Step','event-list').' 1: '.__('Set import file and options','event-list').'</h3>
 				<form action="" id="el_import_upload" method="post" enctype="multipart/form-data">
-					<p>'.__('Select a file that contains event data.','event-list').'</p>
-					<p><input name="el_import_file" type="file" size="50" maxlength="100000"></p>
+					'.$this->functions->show_option_table('import').'
 					<input type="submit" name="button-upload-submit" id="button-upload-submit" class="button" value="'.__('Import Event Data','event-list').'" />
-					<br /><br />
 				</form>
-				<h3>'.__('Example file','event-list').'</h3>
-				<p>'.sprintf(__('You can find an example file %1$shere%2$s (CSV delimiter is a comma!)','event-list'), '<a href="'.$this->example_file_path.'">', '</a>').'<br />
-				'.__('Note','event-list').': <em>'.__('Do not change the column header and separator line (first two lines), otherwise the import will fail!','event-list').'</em></p>';
+				<br /><br />
+				<h3>'.__('Example file','event-list').'</h4>
+				<p>'.sprintf(__('You can download an example file %1$shere%2$s (CSV delimiter is a comma!)','event-list'), '<a href="'.$this->example_file_path.'">', '</a>').'</p>
+				<p><em>'.__('Note','event-list').':</em> '.__('Do not change the column header and separator line (first two lines), otherwise the import will fail!','event-list').'</p>';
 	}
 
 	private function show_import_review() {
@@ -84,6 +90,9 @@ class EL_Admin_Import {
 			return;
 		}
 
+		// safe settings
+		$this->safe_import_settings();
+
 		// parse file
 		$import_data = $this->parseImportFile($file);
 
@@ -98,8 +107,9 @@ class EL_Admin_Import {
 		$this->import_data = $import_data;
 		$serialized = serialize($this->import_data);
 
+		// show review page
 		echo '
-			<h3>'.__('Please review the events to import and choose categories before importing.','event-list').'</h3>
+			<h3>'.__('Step','event-list').' 2: '.__('Event review and category selection','event-list').'</h3>
 			<form method="POST" action="?page=el_admin_main&action=import">';
 		wp_nonce_field('autosavenonce', 'autosavenonce', false, false);
 		wp_nonce_field('closedpostboxesnonce', 'closedpostboxesnonce', false, false);
@@ -201,6 +211,14 @@ class EL_Admin_Import {
 		return $events;
 	}
 
+	private function safe_import_settings() {
+		foreach($this->options->options as $oname => $o) {
+			if('import' == $o['section'] && isset($_POST[$oname])) {
+				$this->options->set($oname, $_POST[$oname]);
+			}
+		}
+	}
+
 	public function render_publish_metabox() {
 		echo '
 			<div class="submitbox">
@@ -261,16 +279,27 @@ class EL_Admin_Import {
 				$event['categories'] = $categories;
 			}
 		}
-		$returnValues = array();
+		$ret = array();
 		foreach($reviewed_events as &$event) {
-			// convert date format to be SQL-friendly
-			$myDateTime = DateTime::createFromFormat('d.m.Y', $event['start_date']);
-			$event['start_date'] = $myDateTime->format('Y-m-d');
-			$myDateTime = DateTime::createFromFormat('d.m.Y', $event['end_date']);
-			$event['end_date'] = $myDateTime->format('Y-m-d');
-			$returnValues[] = $this->db->update_event($event);
+			// check if dates have correct formats
+			$start_date = DateTime::createFromFormat($this->options->get('el_import_date_format'), $event['start_date']);
+			$end_date = DateTime::createFromFormat($this->options->get('el_import_date_format'), $event['end_date']);
+			if($start_date) {
+				$event['start_date'] = $start_date->format('Y-m-d');
+				if($end_date) {
+					$event['end_date'] = $end_date->format('Y-m-d');
+				}
+				else {
+					$event['end_date'] = '';
+				}
+				$ret[] = $this->db->update_event($event);
+			}
+			else {
+				return false;
+			}
 		}
-		return $returnValues;
+		// TODO: Improve error messages
+		return $ret;
 	}
 }
 ?>
