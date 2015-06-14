@@ -53,7 +53,7 @@ class EL_Admin_Settings {
 				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.__('Event List Settings','event-list').'</h2>';
 		$out .= $this->show_tabs($_GET['tab']);
 		$out .= '<div id="posttype-page" class="posttypediv">';
-		$out .= $this->functions->show_option_table($_GET['tab']);
+		$out .= $this->functions->show_option_form($_GET['tab']);
 		$out .= '
 				</div>
 			</div>';

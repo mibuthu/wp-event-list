@@ -24,7 +24,7 @@ class EL_Admin_Functions {
 		$this->options->load_options_helptexts();
 	}
 
-	public function show_option_table($section) {
+	public function show_option_form($section) {
 		$out = '
 		<form method="post" action="options.php">
 		';
@@ -32,7 +32,18 @@ class EL_Admin_Functions {
 		settings_fields('el_'.$section);
 		$out .= ob_get_contents();
 		ob_end_clean();
-		$out .= '
+		$out .= $this->show_option_table($section);
+		ob_start();
+		submit_button();
+		$out .= ob_get_contents();
+		ob_end_clean();
+		$out .='
+		</form>';
+		return $out;
+	}
+
+	public function show_option_table($section) {
+		$out = '
 			<div class="el-settings">
 			<table class="form-table">';
 		foreach($this->options->options as $oname => $o) {
@@ -71,12 +82,6 @@ class EL_Admin_Functions {
 		$out .= '
 		</table>
 		</div>';
-		ob_start();
-		submit_button();
-		$out .= ob_get_contents();
-		ob_end_clean();
-		$out .='
-		</form>';
 		return $out;
 	}
 
