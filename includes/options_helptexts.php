@@ -4,9 +4,6 @@ if(!defined('WPINC')) {
 }
 
 $options_helptexts = array(
-	// Section: "system"
-	'el_db_version'           => array('type'    => 'text'),
-
 	// Section: "categories"
 	'el_categories'           => array('type'    => 'category',
 	                                   'label'   => __('Event Categories','event-list'),
