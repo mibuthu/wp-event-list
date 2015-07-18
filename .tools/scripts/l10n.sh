@@ -18,34 +18,32 @@ plugin_author="$(awk -F: '/Author:/ { print $2 }' "${plugin_path}/${plugin_slug}
 # available options
 declare -A options
 options=(
-	[-h, --help]="lang_help|show this help message and exit"
-	[-d, --debug]="lang_enable_debug|enable debug messages"
+	[-h, --help]="l10n_help|show this help message and exit"
+	[-d, --debug]="l10n_enable_debug|enable debug messages"
 )
 
 # available commands
 declare -A commands
 commands=(
-	[help]="lang_help|show this help message and exit"
+	[update_source]="l10n_update_source|creates or updates the language source file (*.pot)"
+	[push_source]="l10n_push_source|push local changes of source pot file to the transifex server"
+	[pull_translations]="l10n_pull_translations|pull all translation files from the transifex server"
+	[compile_translations]="l10n_compile_translations|compile all po translation files to mo files"
+	[status]="l10n_status|shows the status of the transifex repository"
+	[help]="l10n_help|show this help message and exit"
 #	[tx_init]="|not implemented yet"
-#	[tx_pull]="|not implemented yet"
-#	[tx_push]="|not implemented yet"
 #	[tx_set]="|not implemented yet"
-#	[tx_status]="|not implemented yet"
-	[update_source]="lang_update_source|creates or updates the language source file (*.pot)"
-#	[push_source]="|not implemented yet"
 #	[add_language]="|not implemented yet"
-#	[pull_languages]="|not implemented yet"
-#	[create_mo]="|not implemented yet"
 )
 
 # ===== FUNCTIONS ===== #
 
 # Function to print help messages
 # parameters: $1 ... exit code (optional)   The script will exit with the given exit code (default=0).
-function lang_help () {
+function l10n_help() {
 	echo "Usage: $(basename "$0") [option] command [cmd_options]"
 	echo ""
-	echo "This script handles all required task for multi language support in Wordpress"
+	echo "This script handles all required task for multi localisation support in Wordpress"
 	echo "plugins and the exchange the language files with Transifex service."
 	echo ""
 	echo "Options:"
@@ -67,7 +65,7 @@ function lang_help () {
 
 # Function to enable debug messages and already print some general debug info
 # parameters: none
-function lang_enable_debug () {
+function l10n_enable_debug() {
 	debug=1
 	# print some general debug messages
 	echo "Plugin Slug: $plugin_slug"
@@ -77,7 +75,7 @@ function lang_enable_debug () {
 
 # Function to create and update the language source file (*.pot)
 # parameters: none
-function lang_update_source () {
+function l10n_update_source() {
 	# create the template file for translations
 	mkdir -p "${lang_path}"
 	rm -f "${lang_source}"
@@ -94,6 +92,33 @@ function lang_update_source () {
 	sed -i 's/^"Plural-Forms:.*/"Plural-Forms: nplurals=2; plural=(n != 1);\\n"/' "${lang_source}"
 }
 
+# Function to push the source pot file to the Transifex server
+# parameters: none
+function l10n_push_source() {
+	tx push -s
+}
+
+# Function to pull the translation files from the Transifex server
+# parameters: none
+function l10n_pull_translations() {
+	tx pull
+}
+
+# Function to compile all po translation files to mo files
+# parameter: none
+function l10n_compile_translations() {
+	for po_file in $(ls "${lang_path}/${plugin_slug}"*.po); do
+		po_file=$(basename $po_file .po)
+		echo "compiling    ${po_file}.po  ->  ${po_file}.mo"
+		msgcat "${lang_path}/${po_file}.po" | msgfmt -o "${lang_path}/${po_file}.mo" -
+	done
+}
+
+# Function to show the status of the Transifex repository (tx status)
+# parameters: none
+function l10n_status() {
+	tx status
+}
 
 # ===== MAIN PROGRAM ===== #
 
@@ -113,7 +138,7 @@ if [ "${arg:0:1}" = "-" ]; then
 	if [ $valid_option -eq 0 ]; then
 		# show error, print help, then exit (if an invalid option was provided)
 		echo -e "ERROR: Invalid option provided!\n"
-		lang_help 1
+		l10n_help 1
 	fi
 fi
 
@@ -121,14 +146,14 @@ fi
 if [ -z "$arg" ]; then
 	# show error, print help, then exit (if no command was provided)
 	echo -e "ERROR: Command is missing!\n"
-	lang_help 1
+	l10n_help 1
 fi
 if [ -n "${commands[$arg]}" ]; then
 	${commands[$arg]%%|*}
 else
 	# show error, print help, then exit (if an invalid command was provided)
 	echo -e "ERROR: Invalid command provided!\n"
-	lang_help 1
+	l10n_help 1
 fi
 exit 0
 
