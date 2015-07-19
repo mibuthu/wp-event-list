@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, filter, admin, attribute, widget, sidebar, feed, rss
 Requires at least: 3.3
 Tested up to: 4.3
-Stable tag: 0.7.4
+Stable tag: 0.7.5
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -28,14 +28,22 @@ The purpose of this plugin is to to show a list of events with date, time, descr
 * Filter events according to dates or categories
 * Include an event feed in your site
 
-The event list can be placed in any page or post on your Wordpress site. Just include the following short code where you want the events to appear:
+= Usage: =
+New events can be added in the WordPress admin area.
 
-‘[event-list]’
+To display the events on your site simply insert the shortcode `[event-list]` into a page or post.
+You can modify the listed events and their style with attributes. All available attributes can be found on the Event List -> About page in the Wordpress admin area.
 
-You can modify the listed events and their style with attributes. All available attributes can be found on the Event List -> About page.
-There is also a widget available to view the upcoming events in a sidebar with many options.
+Additionally there is also a widget available to show the upcoming events in your sidebar.
 
+= Development: =
 If you want to follow the development status have a look at the [git-repository on github](https://github.com/mibuthu/wp-event-list "wp-event-list git-repository").
+Feel free to add your merge requests there, if you want to help to improve the plugin.
+
+= Translations: =
+Please help translating this plugin into multiple languages.
+You can submit your translations at [transifex.com](https://www.transifex.com/projects/p/wp-event-list "wp-event-list at transifex").
+There the source strings will always be in sync with the actual development version.
 
 
 == Installation ==
@@ -73,6 +81,18 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 
 
 == Changelog ==
+
+= 0.7.5 (2015-07-19) =
+* added support for transifex localization platform
+* added sorting option (see initial_order shortcode option)
+* added relative date format for weeks
+* added import option to set date format in import file
+* several fixes and improvements in truncate function
+* some import improvements
+* set standard import date format to mysql dateformat
+* some speed improvements
+* updated some dates and daterange helptexts and added german translations
+* added finnish translation (thanks to jvesaladesign)
 
 = 0.7.4 (2015-05-16) =
 * fixed allowed daterange for datepicker with custom date formats
