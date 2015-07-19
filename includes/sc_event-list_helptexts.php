@@ -16,6 +16,10 @@ $sc_eventlist_helptexts = array(
 	                            'desc'   => __('This attribute specifies the category of which events are initially shown. The standard is to show events of all categories.<br />
 	                                            Specify a category slug to change this behavior. It is still possible to change the displayed categories via the filterbar or url parameters.','event-list')),
 
+	'initial_order'    => array('val'    => 'date_asc<br />date_desc',
+	                            'desc'   => __('This attribute specifies the initial order of the events.<br />
+	                                            With "date_asc" (standard value) the events are sorted from old to new, with "date_desc" in the opposite direction (from new to old).','event-list')),
+
 	'date_filter'      => array('val'    => 'all<br />upcoming<br />past<br />year',
 	                            'desc'   => __('This attribute specifies the dates and date ranges of which events are displayed. The standard is "all" to show all events.<br />
 	                                            Filtered events according to date_filter value are not available in the event list.<br />

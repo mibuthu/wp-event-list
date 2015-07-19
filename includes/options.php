@@ -7,7 +7,6 @@ if(!defined('WPINC')) {
 class EL_Options {
 
 	private static $instance;
-	public $group;
 	public $options;
 
 	public static function &get_instance() {
@@ -20,37 +19,39 @@ class EL_Options {
 	}
 
 	private function __construct() {
-		$this->group = 'event-list';
 		add_action('init', array(&$this, 'init_options'), 1);
 		add_action('admin_init', array(&$this, 'register_options'));
 	}
 
 	public function init_options() {
 		$this->options = array(
-			'el_db_version'           => array('std_val' => '',               'section' => 'system'),
+			'el_db_version'           => array('section' => 'system',     'std_val' => ''),
 
-			'el_categories'           => array('std_val' => null,             'section' => 'categories'),
-			'el_sync_cats'            => array('std_val' => '',               'section' => 'categories'),
+			'el_categories'           => array('section' => 'categories', 'std_val' => null),
+			'el_sync_cats'            => array('section' => 'categories', 'std_val' => ''),
 
-			'el_no_event_text'        => array('std_val' => 'no event',       'section' => 'general'),
-			'el_multiday_filterrange' => array('std_val' => '1',              'section' => 'general'),
-			'el_date_once_per_day'    => array('std_val' => '',               'section' => 'general'),
-			'el_html_tags_in_time'    => array('std_val' => '',               'section' => 'general'),
-			'el_html_tags_in_loc'     => array('std_val' => '',               'section' => 'general'),
+			'el_import_file'          => array('section' => 'import',     'std_val' => ''),
+			'el_import_date_format'   => array('section' => 'import',     'std_val' => 'Y-m-d'),
 
-			'el_disable_css_file'     => array('std_val' => '',               'section' => 'frontend'),
+			'el_no_event_text'        => array('section' => 'general',    'std_val' => 'no event'),
+			'el_multiday_filterrange' => array('section' => 'general',    'std_val' => '1'),
+			'el_date_once_per_day'    => array('section' => 'general',    'std_val' => ''),
+			'el_html_tags_in_time'    => array('section' => 'general',    'std_val' => ''),
+			'el_html_tags_in_loc'     => array('section' => 'general',    'std_val' => ''),
 
-			'el_edit_dateformat'      => array('std_val' => '',               'section' => 'admin'),
+			'el_disable_css_file'     => array('section' => 'frontend',   'std_val' => ''),
 
-			'el_enable_feed'          => array('std_val' => '',               'section' => 'feed'),
-			'el_feed_name'            => array('std_val' => 'event-list',     'section' => 'feed'),
-			'el_feed_description'     => array('std_val' => 'Eventlist Feed', 'section' => 'feed'),
-			'el_feed_upcoming_only'   => array('std_val' => '',               'section' => 'feed'),
-			'el_head_feed_link'       => array('std_val' => '1',              'section' => 'feed'),
-			'el_feed_link_pos'        => array('std_val' => 'bottom',         'section' => 'feed'),
-			'el_feed_link_align'      => array('std_val' => 'left',           'section' => 'feed'),
-			'el_feed_link_text'       => array('std_val' => 'RSS Feed',       'section' => 'feed'),
-			'el_feed_link_img'        => array('std_val' => '1',              'section' => 'feed'),
+			'el_edit_dateformat'      => array('section' => 'admin',      'std_val' => ''),
+
+			'el_enable_feed'          => array('section' => 'feed',       'std_val' => ''),
+			'el_feed_name'            => array('section' => 'feed',       'std_val' => 'event-list'),
+			'el_feed_description'     => array('section' => 'feed',       'std_val' => 'Eventlist Feed'),
+			'el_feed_upcoming_only'   => array('section' => 'feed',       'std_val' => ''),
+			'el_head_feed_link'       => array('section' => 'feed',       'std_val' => '1'),
+			'el_feed_link_pos'        => array('section' => 'feed',       'std_val' => 'bottom'),
+			'el_feed_link_align'      => array('section' => 'feed',       'std_val' => 'left'),
+			'el_feed_link_text'       => array('section' => 'feed',       'std_val' => 'RSS Feed'),
+			'el_feed_link_img'        => array('section' => 'feed',       'std_val' => '1'),
 		);
 	}
 

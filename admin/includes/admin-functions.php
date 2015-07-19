@@ -1,5 +1,5 @@
 <?php
-if(!defined('ABSPATH')) {
+if(!defined('WPINC')) {
 	exit;
 }
 
@@ -8,6 +8,7 @@ require_once(EL_PATH.'includes/options.php');
 // This class handles general functions which can be used on different admin pages
 class EL_Admin_Functions {
 	private static $instance;
+	private $options;
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -19,7 +20,71 @@ class EL_Admin_Functions {
 	}
 
 	private function __construct() {
+		$this->options = &EL_Options::get_instance();
+		$this->options->load_options_helptexts();
+	}
 
+	public function show_option_form($section) {
+		$out = '
+		<form method="post" action="options.php">
+		';
+		ob_start();
+		settings_fields('el_'.$section);
+		$out .= ob_get_contents();
+		ob_end_clean();
+		$out .= $this->show_option_table($section);
+		ob_start();
+		submit_button();
+		$out .= ob_get_contents();
+		ob_end_clean();
+		$out .='
+		</form>';
+		return $out;
+	}
+
+	public function show_option_table($section) {
+		$out = '
+			<div class="el-settings">
+			<table class="form-table">';
+		foreach($this->options->options as $oname => $o) {
+			if($o['section'] == $section) {
+				$out .= '
+					<tr>
+						<th>';
+				if($o['label'] != '') {
+					$out .= '<label for="'.$oname.'">'.$o['label'].':</label>';
+				}
+				$out .= '</th>
+					<td>';
+				switch($o['type']) {
+					case 'checkbox':
+						$out .= $this->show_checkbox($oname, $this->options->get($oname), $o['caption']);
+						break;
+					case 'dropdown':
+						$out .= $this->show_dropdown($oname, $this->options->get($oname), $o['caption']);
+						break;
+					case 'radio':
+						$out .= $this->show_radio($oname, $this->options->get($oname), $o['caption']);
+						break;
+					case 'text':
+						$out .= $this->show_text($oname, $this->options->get($oname));
+						break;
+					case 'textarea':
+						$out .= $this->show_textarea($oname, $this->options->get($oname));
+						break;
+					case 'file-upload':
+						$out .= $this->show_file_upload($oname, $o['maxsize']);
+				}
+				$out .= '
+					</td>
+					<td class="description">'.$o['desc'].'</td>
+				</tr>';
+			}
+		}
+		$out .= '
+		</table>
+		</div>';
+		return $out;
 	}
 
 	public function show_checkbox($name, $value, $caption, $disabled=false) {
@@ -75,6 +140,12 @@ class EL_Admin_Functions {
 	public function show_textarea($name, $value, $disabled=false) {
 		$out = '
 							<textarea name="'.$name.'" id="'.$name.'" rows="5" class="large-text code"'.$this->get_disabled_text($disabled).'>'.$value.'</textarea>';
+		return $out;
+	}
+
+	public function show_file_upload($name, $max_size, $disabled=false) {
+		$out = '
+							<input name="'.$name.'" type="file" maxlength="'.$max_size.'">';
 		return $out;
 	}
 

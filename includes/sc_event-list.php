@@ -36,6 +36,7 @@ class SC_Event_List {
 			'initial_event_id' => array('std_val' => 'all'),
 			'initial_date'     => array('std_val' => 'upcoming'),
 			'initial_cat'      => array('std_val' => 'all'),
+			'initial_order'    => array('std_val' => 'date_asc'),
 			'date_filter'      => array('std_val' => 'all'),
 			'cat_filter'       => array('std_val' => 'all'),
 			'num_events'       => array('std_val' => '0'),
@@ -141,20 +142,21 @@ class SC_Event_List {
 		return $out;
 	}
 
-	private function html_events( &$a ) {
+	private function html_events(&$a) {
 		// specify to show all events if not upcoming is selected
 		if('upcoming' != $a['actual_date']) {
 			$a['num_events'] = 0;
 		}
 		$date_filter = $this->get_date_filter($a['date_filter'], $a['actual_date']);
 		$cat_filter = $this->get_cat_filter($a['cat_filter'], $a['actual_cat']);
-		if( '1' !== $this->options->get( 'el_date_once_per_day' ) ) {
+		$order = 'date_desc' == $a['initial_order'] ? 'DESC' : 'ASC';
+		if('1' !== $this->options->get('el_date_once_per_day')) {
 			// normal sort
-			$sort_array = array( 'start_date ASC', 'time ASC', 'end_date ASC' );
+			$sort_array = array('start_date '.$order, 'time ASC', 'end_date '.$order);
 		}
 		else {
 			// sort according end_date before start time (required for option el_date_once_per_day)
-			$sort_array = array( 'start_date ASC', 'end_date ASC', 'time ASC' );
+			$sort_array = array('start_date '.$order, 'end_date '.$order, 'time ASC');
 		}
 		$events = $this->db->get_events($date_filter, $cat_filter, $a['num_events'], $sort_array);
 
@@ -163,17 +165,17 @@ class SC_Event_List {
 		$out .= $this->html_feed_link($a, 'top');
 		$out .= $this->html_filterbar($a);
 		$out .= $this->html_feed_link($a, 'below_nav');
-		if( empty( $events ) ) {
+		if(empty($events)) {
 			// no events found
-			$out .= '<p>'.$this->options->get( 'el_no_event_text' ).'</p>';
+			$out .= '<p>'.$this->options->get('el_no_event_text').'</p>';
 		}
 		else {
 			// print available events
 			$out .= '
 				<ul class="event-list-view">';
-			$single_day_only = $this->is_single_day_only( $events );
+			$single_day_only = $this->is_single_day_only($events);
 			foreach ($events as $event) {
-				$out .= $this->html_event( $event, $a, $single_day_only );
+				$out .= $this->html_event($event, $a, $single_day_only);
 			}
 			$out .= '</ul>';
 		}

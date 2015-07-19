@@ -1,0 +1,9 @@
+[main]
+host = https://www.transifex.com
+
+[wp-event-list.event-list_pot]
+file_filter = languages/event-list-<lang>.po
+source_file = languages/event-list.pot
+source_lang = en
+type = PO
+

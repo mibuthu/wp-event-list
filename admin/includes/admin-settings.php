@@ -15,7 +15,7 @@ class EL_Admin_Settings {
 	public static function &get_instance() {
 		// Create class instance if required
 		if(!isset(self::$instance)) {
-			self::$instance = new EL_Admin_Settings();
+			self::$instance = new self();
 		}
 		// Return class instance
 		return self::$instance;
@@ -23,7 +23,6 @@ class EL_Admin_Settings {
 
 	private function __construct() {
 		$this->options = &EL_Options::get_instance();
-		$this->options->load_options_helptexts();
 		$this->functions = &EL_Admin_Functions::get_instance();
 	}
 
@@ -54,7 +53,7 @@ class EL_Admin_Settings {
 				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.__('Event List Settings','event-list').'</h2>';
 		$out .= $this->show_tabs($_GET['tab']);
 		$out .= '<div id="posttype-page" class="posttypediv">';
-		$out .= $this->show_option_tab($_GET['tab']);
+		$out .= $this->functions->show_option_form($_GET['tab']);
 		$out .= '
 				</div>
 			</div>';
@@ -76,62 +75,6 @@ class EL_Admin_Settings {
 			$out .= '<a class="nav-tab'.$class.'" href="?page=el_admin_settings&amp;tab='.$tab.'">'.$name.'</a>';
 		}
 		$out .= '</h3>';
-		return $out;
-	}
-
-	private function show_option_tab($section) {
-		$out = '
-			<form method="post" action="options.php">
-			';
-		ob_start();
-		settings_fields('el_'.$section);
-		$out .= ob_get_contents();
-		ob_end_clean();
-		$out .= '
-				<div class="el-settings">
-				<table class="form-table">';
-		foreach($this->options->options as $oname => $o) {
-			if($o['section'] == $section) {
-				$out .= '
-						<tr>
-							<th>';
-				if($o['label'] != '') {
-					$out .= '<label for="'.$oname.'">'.$o['label'].':</label>';
-				}
-				$out .= '</th>
-						<td>';
-				switch($o['type']) {
-					case 'checkbox':
-						$out .= $this->functions->show_checkbox($oname, $this->options->get($oname), $o['caption']);
-						break;
-					case 'dropdown':
-						$out .= $this->functions->show_dropdown($oname, $this->options->get($oname), $o['caption']);
-						break;
-					case 'radio':
-						$out .= $this->functions->show_radio($oname, $this->options->get($oname), $o['caption']);
-						break;
-					case 'text':
-						$out .= $this->functions->show_text($oname, $this->options->get($oname));
-						break;
-					case 'textarea':
-						$out .= $this->functions->show_textarea($oname, $this->options->get($oname));
-						break;
-				}
-				$out .= '
-						</td>
-						<td class="description">'.$o['desc'].'</td>
-					</tr>';
-			}
-		}
-		$out .= '
-			</table>
-			</div>';
-		ob_start();
-		submit_button();
-		$out .= ob_get_contents();
-		ob_end_clean();
-		$out .='
-		</form>';
 		return $out;
 	}
 

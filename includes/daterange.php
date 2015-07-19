@@ -40,10 +40,12 @@ class EL_Daterange {
 			'rel_month'    => array('regex' => '^([+-]?\d+|last|previous|next|this)month[s]?$',
 			                        'start' => '--func--date("Y-m", strtotime(str_replace("_", " ", "%v%")))."-01";',
 			                        'end'   => '--func--date("Y-m", strtotime(str_replace("_", " ", "%v%")))."-31";'),
-			// TODO: adding week format (calculation of first/last day of the week is not correct yet)
-/*			'rel_week'     => array('regex' => '^([+-]?\d+|last|previous|next|this)_week[s]?$',
-			                        'start' => '--func--date("Y-m-d", strtotime("Monday ".str_replace("_", " ", "%v%")));',
-			                        'end'   => '--func--date("Y-m-d", strtotime("Sunday ".str_replace("_", " ", "%v%")));'),  */
+			'rel_week'     => array('regex' => '^([+-]?\d+|last|previous|next|this)_week[s]?$',
+			                        'start' => '--func--date("Y-m-d", strtotime(str_replace(array("_","last","previous","next","this"), array(" ","-1","-1","+1","0"), "%v%"))-86400*((date("w")-get_option("start_of_week")+7)%7));',
+			                        'end'   => '--func--date("Y-m-d", strtotime(str_replace(array("_","last","previous","next","this"), array(" ","-1","-1","+1","0"), "%v%"))-86400*((date("w")-get_option("start_of_week")+7)%7-6));'),
+			                                   // replace special values due to some date calculation problems,
+			                                   // then calculate the new date
+			                                   // and at last remove calculated days to get first day of the week (acc. start_of_week option), add 6 day for end date (- sign due to - for first day calculation)
 			'rel_day'      => array('regex' => '^((([+-]?\d+|last|previous|next|this)_day[s]?)|yesterday|today|tomorrow)$',
 			                        'start' => '--func--date("Y-m-d", strtotime(str_replace("_", " ", "%v%")));',
 			                        'end'   => '--func--date("Y-m-d", strtotime(str_replace("_", " ", "%v%")));'),
@@ -74,10 +76,10 @@ class EL_Daterange {
 		unset($daterange_formats_helptexts);
 	}
 
-	public function check_date_format($element) {
+	public function check_date_format($element, $ret_value=null) {
 		foreach($this->date_formats as $date_type) {
 			if(preg_match('@'.$date_type['regex'].'@', $element)) {
-				return $this->get_date_range($element, $date_type);
+				return $this->get_date_range($element, $date_type, $ret_value);
 			}
 		}
 		return null;
@@ -89,8 +91,8 @@ class EL_Daterange {
 				//check for date_range which requires special handling
 				if('date_range' == $key) {
 					$sep_pos = strpos($element, "~");
-					$startrange = $this->check_date_format(substr($element, 0, $sep_pos));
-					$endrange = $this->check_date_format(substr($element, $sep_pos+1));
+					$startrange = $this->check_date_format(substr($element, 0, $sep_pos), 'start');
+					$endrange = $this->check_date_format(substr($element, $sep_pos+1), 'end');
 					return array($startrange[0], $endrange[1]);
 				}
 				return $this->get_date_range($element, $daterange_type);
@@ -99,16 +101,22 @@ class EL_Daterange {
 		return null;
 	}
 
-	public function get_date_range($element, &$range_type) {
-		// set range values by replacing %v% in $range_type string with $element
-		$range[0] = str_replace('%v%', $element, $range_type['start']);
-		$range[1] = str_replace('%v%', $element, $range_type['end']);
-		// enum function if required
-		if(substr($range[0], 0, 8) == '--func--') {  //start
-			eval('$range[0] = '.substr($range[0], 8));
+	public function get_date_range($element, &$range_type, $ret_value=null) {
+		if('end' != $ret_value) {
+			// start date:
+			// set range values by replacing %v% in $range_type string with $element
+			$range[0] = str_replace('%v%', $element, $range_type['start']);
+			// enum function if required
+			if(substr($range[0], 0, 8) == '--func--') {  //start
+				eval('$range[0] = '.substr($range[0], 8));
+			}
 		}
-		if(substr($range[1], 0, 8) == '--func--') {  //end
-			eval('$range[1] = '.substr($range[1], 8));
+		if('start' != $ret_value) {
+			// same for end date:
+			$range[1] = str_replace('%v%', $element, $range_type['end']);
+			if(substr($range[1], 0, 8) == '--func--') {  //end
+				eval('$range[1] = '.substr($range[1], 8));
+			}
 		}
 		return $range;
 	}

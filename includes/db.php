@@ -292,17 +292,19 @@ class EL_Db {
 		}
 		else {
 			// truncate with preserving html tags
+			$truncated = false;
 			$printedLength = 0;
 			$position = 0;
 			$tags = array();
 			$out = '';
-			while($printedLength < $length && mb_preg_match('{</?([a-z]+\d?)[^>]*>|&#?[a-zA-Z0-9]+;}', $html, $match, PREG_OFFSET_CAPTURE, $position)) {
+			while($printedLength < $length && $this->mb_preg_match('{</?([a-z]+\d?)[^>]*>|&#?[a-zA-Z0-9]+;}', $html, $match, PREG_OFFSET_CAPTURE, $position)) {
 				list($tag, $tagPosition) = $match[0];
 				// Print text leading up to the tag
 				$str = mb_substr($html, $position, $tagPosition - $position);
 				if($printedLength + mb_strlen($str) > $length) {
 					$out .= mb_substr($str, 0, $length - $printedLength);
 					$printedLength = $length;
+					$truncated = true;
 					break;
 				}
 				$out .= $str;
@@ -315,13 +317,14 @@ class EL_Db {
 				else {
 					// Handle the tag
 					$tagName = $match[1][0];
-					if('/' == $tag[1]) {
+					if($this->mb_preg_match('{^<[\b]}', $tag)) {
 						// This is a closing tag
 						$openingTag = array_pop($tags);
-						assert($openingTag == $tagName); // check that tags are properly nested
+						// Check for not properly nested tags (for debugging only)
+						//assert($openingTag == $tagName, '----- Tags not properly nested: OpeningTag: '.$openingTag.'; TagName: '.$tagName.' -----');
 						$out .= $tag;
 					}
-					else if('/' == $tag[mb_strlen($tag) - 2]) {
+					else if($this->mb_preg_match('{/\s?>$}', $tag)) {
 						// Self-closing tag
 						$out .= $tag;
 					}
@@ -338,8 +341,8 @@ class EL_Db {
 			if($printedLength < $length && $position < mb_strlen($html)) {
 				$out .= mb_substr($html, $position, $length - $printedLength);
 			}
-			// Print ellipsis ("...") if the html is not complete
-			if(mb_strlen($html) != $position) {
+			// Print ellipsis ("...") if the html was truncated
+			if($truncated) {
 				$out .= ' &hellip;';
 			}
 			// Close any open tags.
@@ -349,10 +352,8 @@ class EL_Db {
 			return $out;
 		}
 	}
-}
 
-if(!function_exists("mb_preg_match")) {
-	function mb_preg_match($ps_pattern, $ps_subject, &$pa_matches, $pn_flags=0, $pn_offset=0, $ps_encoding=NULL) {
+	private function mb_preg_match($ps_pattern, $ps_subject, &$pa_matches=null, $pn_flags=0, $pn_offset=0, $ps_encoding=null) {
 		// WARNING! - All this function does is to correct offsets, nothing else:
 		//(code is independent of PREG_PATTER_ORDER / PREG_SET_ORDER)
 		if(is_null($ps_encoding)) {
