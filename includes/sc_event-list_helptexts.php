@@ -112,6 +112,11 @@ $sc_eventlist_helptexts = array(
 	                                            On that page you can also find some settings to modify the output.<br />
 	                                            Choose "false" to never add and "true" to always add the link.<br />
 	                                            With "event_list_only" the link is only added in the event list and with "single_event_only" only for a single event','event-list')),
+	'url_to_page'      => array('val'    => 'url',
+	                            'desc'   => __('This attribute specifies the page or post url for event links.<br />
+	                                            The standard is an empty string. Then the url will be calculated automatically.<br />
+	                                            An url is normally only required for the use of the shortcode in sidebars. It is also used in the event-list widget.','event-list')),
+
 	// Invisible attributes ('hidden' = true): This attributes are required for the widget but will not be listed in the attributes table on the admin info page
 	'title_length'     => array('val'    => 'number',
 	                            'hidden' => true,
@@ -124,12 +129,6 @@ $sc_eventlist_helptexts = array(
 	                            'desc'   => __('This attribute specifies if the title should be truncate to the given number of characters in the event list.<br />
 	                                            With the standard value 0 the full details are displayed.<br />
 	                                            This attribute has no influence if only a single event is shown.','event-list')),
-
-	'url_to_page'      => array('val'    => 'url',
-	                            'hidden' => true,
-	                            'desc'   => __('This attribute specifies that the link should follow the given url.<br />
-	                                            The standard is to leave this attribute empty, then the url will be calculated automatically from the actual page or post url.<br />
-	                                            This is o.k. for the normal use of the shortcode. This attribute is normally only required for the event-list widget.','event-list')),
 
 	'sc_id_for_url'    => array('val'    => 'number',
 	                            'hidden' => true,

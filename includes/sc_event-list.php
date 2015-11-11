@@ -49,9 +49,9 @@ class SC_Event_List {
 			'details_length'   => array('std_val' => '0'),
 			'link_to_event'    => array('std_val' => 'event_list_only'),
 			'add_feed_link'    => array('std_val' => 'false'),
+			'url_to_page'      => array('std_val' => ''),
 			'title_length'     => array('std_val' => '0'),
 			'location_length'  => array('std_val' => '0'),
-			'url_to_page'      => array('std_val' => ''),
 			'sc_id_for_url'    => array('std_val' => ''),
 			// Internal attributes: This parameters will be added by the script and are not available in the shortcode
 			//  'sc_id'
