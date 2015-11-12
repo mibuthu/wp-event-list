@@ -239,7 +239,7 @@ class SC_Event_List {
 			$out .= '<div class="event-cat">'.esc_attr($this->categories->convert_db_string($event->categories)).'</div>';
 		}
 		if( $this->is_visible( $a['show_details'] ) ) {
-			$out .= '<div class="event-details">'.$this->db->truncate(do_shortcode(wpautop($event->details)), $a['details_length'], $this->single_event).'</div>';
+			$out .= $this->get_details($event, $a);
 		}
 		$out .= '</div>
 				</li>';
@@ -380,6 +380,29 @@ class SC_Event_List {
 				return '('.$cat_filter.')&('.$actual_cat.')';
 			}
 		}
+	}
+
+	private function get_details(&$event, &$a) {
+		global $more;
+		// check and handle the read more tag if available
+		$more_link_text = __('(more&hellip;)');
+		if(preg_match('/<!--more(.*?)?-->/', $event->details, $matches)) {
+			$part = explode($matches[0], $event->details, 2);
+			if(!empty($matches[1])) {
+				$more_link_text = strip_tags(wp_kses_no_null(trim($matches[1])));
+			}
+			if(isset($_GET['more'])) {
+				$details = $part[0].'<span id="more-'.$event->id.'"></span>'.$part[1];
+			}
+			else {
+				$details = apply_filters('the_content_more_link', $part[0].'<a href="'.add_query_arg('more', $event->id, get_permalink()).'#more-'.$event->id.'" class="more-link">'.$more_link_text.'</a>');
+			}
+		}
+		else {
+			$details = $event->details;
+		}
+		$details = '<div class="event-details">'.$this->db->truncate(do_shortcode(wpautop($details)), $a['details_length'], $this->single_event).'</div>';
+		return $details;
 	}
 
 	private function get_url( &$a ) {
