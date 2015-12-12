@@ -418,7 +418,8 @@ class SC_Event_List {
 		if($this->is_visible($a['collapse_details'])) {
 			wp_register_script('el_collapse_details', EL_URL.'includes/js/collapse_details.js', null, true);
 			add_action('wp_footer', array(&$this, 'print_collapse_details_script'));
-			return '<div class="event-details"><div id="event-details-'.$event->id.'" class="el-hidden">'.$details.'</div><a class="event-detail-link" id="event-detail-a'.$event->id.'" onclick="toggle_event_details('.$event->id.')" href="javascript:void(0)">Show details</a></div>';
+			return '<div class="event-details"><div id="event-details-'.$event->id.'" class="el-hidden">'.$details.
+			       '</div><a class="event-detail-link" id="event-detail-a'.$event->id.'" onclick="toggle_event_details('.$event->id.')" href="javascript:void(0)">'.$this->options->get('el_show_details_text').'</a></div>';
 		}
 		// return without collapsing
 		return '<div class="event-details">'.$details.'</div>';
@@ -483,6 +484,9 @@ class SC_Event_List {
 	}
 
 	public function print_collapse_details_script() {
+		// print variables for script
+		echo('<script type="text/javascript">el_show_details_text = "'.$this->options->get('el_show_details_text').'"; el_hide_details_text = "'.$this->options->get('el_hide_details_text').'"</script>');
+		// print script
 		wp_print_scripts('el_collapse_details');
 	}
 }
