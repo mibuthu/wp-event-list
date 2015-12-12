@@ -206,7 +206,7 @@ class SC_Event_List {
 		$out .= '<div class="event-title"><h3>';
 		$title = esc_attr($this->db->truncate($event->title, $a['title_length'], $this->single_event));
 		if($this->is_visible($a['link_to_event']) || ('events_with_details_only' == $a['link_to_event'] && !$this->single_event && '' != $event->details)) {
-			$out .= '<a href="'.esc_html(add_query_arg('event_id'.$a['sc_id_for_url'], $event->id, $this->get_url($a))).'">'.$title.'</a>';
+			$out .= $this->get_event_url($a, $event->id, $title);
 		}
 		else {
 			$out .= $title;
@@ -405,21 +405,25 @@ class SC_Event_List {
 		return $details;
 	}
 
-	private function get_url( &$a ) {
-		if( '' !== $a['url_to_page'] ) {
+	private function get_url(&$a) {
+		if('' !== $a['url_to_page']) {
 			// use given url
 			$url = $a['url_to_page'];
 		}
 		else {
 			// use actual page
 			$url = get_permalink();
-			foreach( $_GET as  $k => $v ) {
+			foreach($_GET as  $k => $v) {
 				if('date'.$a['sc_id'] !== $k && 'event_id'.$a['sc_id'] !== $k) {
-					$url = add_query_arg( $k, $v, $url );
+					$url = add_query_arg($k, $v, $url);
 				}
 			}
 		}
 		return $url;
+	}
+
+	private function get_event_url(&$a, $event_id, $title) {
+		return '<a href="'.esc_html(add_query_arg('event_id'.$a['sc_id_for_url'], $event_id, $this->get_url($a))).'">'.$title.'</a>';
 	}
 
 	private function is_single_day_only( &$events ) {
