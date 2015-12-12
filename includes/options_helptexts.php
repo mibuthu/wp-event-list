@@ -58,11 +58,11 @@ $options_helptexts = array(
 
 	// Section: "frontend"
 	'el_show_details_text'    => array('type'    => 'text',
-	                                   'label'   => __('Show details text','event-list'),
+	                                   'label'   => __('"Show details" text','event-list'),
 	                                   'desc'    => __('With this option you can change the text which will be displayed to show the event details when collapsing is enabled.','event-list')),
 
 	'el_hide_details_text'    => array('type'    => 'text',
-	                                   'label'   => __('Hide details text','event-list'),
+	                                   'label'   => __('"Hide details" text','event-list'),
 	                                   'desc'    => __('With this option you can change the text which will be displayed to hide the event details when collapsing is enabled.','event-list')),
 
 	'el_disable_css_file'     => array('type'    => 'checkbox',
