@@ -205,7 +205,7 @@ class SC_Event_List {
 		// event title
 		$out .= '<div class="event-title"><h3>';
 		$title = esc_attr($this->db->truncate($event->title, $a['title_length'], $this->single_event));
-		if($this->is_visible($a['link_to_event']) || ('events_with_details_only' == $a['link_to_event'] && !$this->single_event && '' != $event->details)) {
+		if($this->is_link_available($a, $event)) {
 			$out .= $this->get_event_url($a, $event->id, $title);
 		}
 		else {
@@ -387,7 +387,7 @@ class SC_Event_List {
 		//search fore more-tag (no more tag handling if truncate of details is set)
 		if(preg_match('/<!--more(.*?)?-->/', $event->details, $matches)) {
 			$part = explode($matches[0], $event->details, 2);
-			if(0 < $a['details_length'] || $this->single_event) {
+			if(!$this->is_link_available($a, $event->details) || 0 < $a['details_length'] || $this->single_event) {
 				//details with removed more-tag
 				$details = $part[0].$part[1];
 			}
@@ -440,20 +440,20 @@ class SC_Event_List {
 		return true;
 	}
 
-	private function is_visible( $attribute_value ) {
+	private function is_visible($attribute_value) {
 		switch ($attribute_value) {
 			case 'true':
 			case '1': // = 'true'
 				return true;
 			case 'event_list_only':
-				if( $this->single_event ) {
+				if($this->single_event) {
 					return false;
 				}
 				else {
 					return true;
 				}
 			case 'single_event_only':
-				if( $this->single_event ) {
+				if($this->single_event) {
 					return true;
 				}
 				else {
@@ -462,6 +462,10 @@ class SC_Event_List {
 			default: // 'false' or 0 or nothing handled by this function
 				return false;
 		}
+	}
+
+	private function is_link_available(&$a, &$event) {
+		return $this->is_visible($a['link_to_event']) || ('events_with_details_only' == $a['link_to_event'] && !$this->single_event && '' != $event->details);
 	}
 }
 ?>
