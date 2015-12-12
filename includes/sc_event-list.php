@@ -385,19 +385,30 @@ class SC_Event_List {
 	private function get_details(&$event, &$a) {
 		global $more;
 		// check and handle the read more tag if available
-		$more_link_text = __('(more&hellip;)');
+		//search fore more-tag (no more tag handling if truncate of details is set)
 		if(preg_match('/<!--more(.*?)?-->/', $event->details, $matches)) {
 			$part = explode($matches[0], $event->details, 2);
-			if(!empty($matches[1])) {
-				$more_link_text = strip_tags(wp_kses_no_null(trim($matches[1])));
+			if(0 < $a['details_length'] || $this->single_event) {
+				//details with removed more-tag
+				$details = $part[0].$part[1];
 			}
-			$details = apply_filters('the_content_more_link', $part[0].$this->get_event_url($a, $event->id, $more_link_text));
+			else {
+				//set more-link text
+				if(!empty($matches[1])) {
+					$more_link_text = strip_tags(wp_kses_no_null(trim($matches[1])));
+				}
+				else {
+					$more_link_text = __('(more&hellip;)');
+				}
+				//details with more-link
+				$details = apply_filters('the_content_more_link', $part[0].$this->get_event_url($a, $event->id, $more_link_text));
+			}
 		}
 		else {
+			//normal details
 			$details = $event->details;
 		}
-		$details = '<div class="event-details">'.$this->db->truncate(do_shortcode(wpautop($details)), $a['details_length'], $this->single_event).'</div>';
-		return $details;
+		return '<div class="event-details">'.$this->db->truncate(do_shortcode(wpautop($details)), $a['details_length'], $this->single_event).'</div>';
 	}
 
 	private function get_url(&$a) {
