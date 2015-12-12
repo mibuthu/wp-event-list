@@ -100,6 +100,12 @@ $sc_eventlist_helptexts = array(
 	                                            With the standard value 0 the full details are displayed.<br />
 	                                            This attribute has no influence if only a single event is shown.','event-list')),
 
+	'collapse_details' => array('val'    => 'false',
+	                            'desc'   => __('This attribute specifies if the details should be collapsed initially.<br />
+	                                            Then a link will be displayed instead of the details. By clicking this link the details are getting visible.<br />
+	                                            Available option are "false" to always disable collapsing and "true" to always enable collapsing of the details.<br />
+	                                            With "event_list_only" the details are only collapsed in the event list view and with "single_event_only" only in single event view.','event-list')),
+
 	'link_to_event'    => array('val'    => 'false<br />true<br />event_list_only<br />single_event_only<br />events_with_details_only',
 	                            'desc'   => __('This attribute specifies if a link to the single event should be added onto the event name in the event list.<br />
 	                                            Choose "false" to never add and "true" to always add the link.<br />

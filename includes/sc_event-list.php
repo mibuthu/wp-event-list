@@ -47,6 +47,7 @@ class SC_Event_List {
 			'show_cat'         => array('std_val' => 'false'),
 			'show_details'     => array('std_val' => 'true'),
 			'details_length'   => array('std_val' => '0'),
+			'collapse_details' => array('std_val' => 'false'),
 			'link_to_event'    => array('std_val' => 'event_list_only'),
 			'add_feed_link'    => array('std_val' => 'false'),
 			'url_to_page'      => array('std_val' => ''),
@@ -411,7 +412,16 @@ class SC_Event_List {
 			//normal details
 			$details = $event->details;
 		}
-		return '<div class="event-details">'.$this->db->truncate(do_shortcode(wpautop($details)), $a['details_length'], $this->single_event).'</div>';
+		// last preparations of details
+		$details = $this->db->truncate(do_shortcode(wpautop($details)), $a['details_length'], $this->single_event);
+		// preparations for collapsed details
+		if($this->is_visible($a['collapse_details'])) {
+			wp_register_script('el_collapse_details', EL_URL.'includes/js/collapse_details.js', null, true);
+			add_action('wp_footer', array(&$this, 'print_collapse_details_script'));
+			return '<div class="event-details"><div id="event-details-'.$event->id.'" class="el-hidden">'.$details.'</div><a class="event-detail-link" id="event-detail-a'.$event->id.'" onclick="toggle_event_details('.$event->id.')" href="javascript:void(0)">Show details</a></div>';
+		}
+		// return without collapsing
+		return '<div class="event-details">'.$details.'</div>';
 	}
 
 	private function get_url(&$a) {
@@ -470,6 +480,10 @@ class SC_Event_List {
 
 	private function is_link_available(&$a, &$event) {
 		return $this->is_visible($a['link_to_event']) || ('events_with_details_only' == $a['link_to_event'] && !$this->single_event && '' != $event->details);
+	}
+
+	public function print_collapse_details_script() {
+		wp_print_scripts('el_collapse_details');
 	}
 }
 ?>

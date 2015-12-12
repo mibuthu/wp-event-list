@@ -124,3 +124,7 @@ div.filterbar ul.hlist li + li:before {
 	content: "|";
 	padding: 0 1px;
 }
+
+div.el-hidden {
+	display: none;
+}
