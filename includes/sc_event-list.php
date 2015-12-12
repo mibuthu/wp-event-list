@@ -391,12 +391,7 @@ class SC_Event_List {
 			if(!empty($matches[1])) {
 				$more_link_text = strip_tags(wp_kses_no_null(trim($matches[1])));
 			}
-			if(isset($_GET['more'])) {
-				$details = $part[0].'<span id="more-'.$event->id.'"></span>'.$part[1];
-			}
-			else {
-				$details = apply_filters('the_content_more_link', $part[0].'<a href="'.add_query_arg('more', $event->id, get_permalink()).'#more-'.$event->id.'" class="more-link">'.$more_link_text.'</a>');
-			}
+			$details = apply_filters('the_content_more_link', $part[0].$this->get_event_url($a, $event->id, $more_link_text));
 		}
 		else {
 			$details = $event->details;
