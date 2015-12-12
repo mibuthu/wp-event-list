@@ -383,7 +383,6 @@ class SC_Event_List {
 	}
 
 	private function get_details(&$event, &$a) {
-		global $more;
 		// check and handle the read more tag if available
 		//search fore more-tag (no more tag handling if truncate of details is set)
 		if(preg_match('/<!--more(.*?)?-->/', $event->details, $matches)) {
