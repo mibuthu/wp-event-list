@@ -39,6 +39,8 @@ class EL_Options {
 			'el_html_tags_in_time'    => array('section' => 'general',    'std_val' => ''),
 			'el_html_tags_in_loc'     => array('section' => 'general',    'std_val' => ''),
 
+			'el_show_details_text'    => array('section' => 'frontend',   'std_val' => __('Show details','event-list')),
+			'el_hide_details_text'    => array('section' => 'frontend',   'std_val' => __('Hide details','event-list')),
 			'el_disable_css_file'     => array('section' => 'frontend',   'std_val' => ''),
 
 			'el_edit_dateformat'      => array('section' => 'admin',      'std_val' => ''),

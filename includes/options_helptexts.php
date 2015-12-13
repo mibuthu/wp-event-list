@@ -31,44 +31,52 @@ $options_helptexts = array(
 	'el_no_event_text'        => array('type'    => 'text',
 	                                   'label'   => __('Text for no events','event-list'),
 	                                   'caption' => '',
-	                                   'desc'    => __('This option defines the text which is displayed if no events are available for the selected view.','event-list')),
+	                                   'desc'    => __('This option defines the displayed text when no events are available for the selected view.','event-list')),
 
 	'el_multiday_filterrange' => array('type'    => 'checkbox',
 	                                   'label'   => __('Multiday filter range','event-list'),
-	                                   'caption' => __('Use complete range in date filter'),
-	                                   'desc'    => __('This option defines if the complete range of a multiday event shall be considered in the date filter.<br />
-	                                                    If disabled only the start day of an event is considered in the filter.<br />
-	                                                    For example if you have a multiday event which started yesterday and ends tomorrow it is displayed in umcoming dates when this option is enabled, but it is hidden when the option is disabled.','event-list')),
+	                                   'caption' => __('Use the complete event range in the date filter','event-list'),
+	                                   'desc'    => __('This option defines if the complete range of a multiday event shall be considered in the date filter.','event-list').'<br />'.
+	                                                __('If disabled, only the start day of an event is considered in the filter.','event-list').'<br />'.
+	                                                __('For an example multiday event which started yesterday and ends tomorrow this means, that it is displayed in umcoming dates when this option is enabled, but it is hidden when the option is disabled.','event-list')),
 
 	'el_date_once_per_day'    => array('type'    => 'checkbox',
 	                                   'label'   => __('Date display','event-list'),
-	                                  'caption' => __('Show date only once per day','event-list'),
-	                                   'desc'    => __('With this option you can display the date only once per day if multiple events are available on the same day.<br />
-	                                                    If this option is enabled the events are ordered in a different way (end date before start time) to allow using the same date for as much events as possible.')),
+	                                   'caption' => __('Show the date only once per day','event-list'),
+	                                   'desc'    => __('With this option enabled the date is only displayed once per day if more than one event is available on the same day.','event-list').'<br />'.
+	                                                __('If enabled, the events are ordered in a different way (end date before start time) to allow using the same date for as much events as possible.','event-list')),
 
 	'el_html_tags_in_time'    => array('type'    => 'checkbox',
 	                                   'label'   => __('HTML tags','event-list'),
-	                                   'caption' => __('Allow HTML tags in event time field','event-list'),
-	                                   'desc'    => __('This option specifies if HTML tags are allowed in the event start time field.','event-list')),
+	                                   'caption' => sprintf(__('Allow HTML tags in the event field "%1$s"','event-list'), __('Time','event-list')),
+	                                   'desc'    => sprintf(__('This option specifies if HTML tags are allowed in the event field "%1$s".','event-list'), __('Time','event-list'))),
 
 	'el_html_tags_in_loc'     => array('type'    => 'checkbox',
 	                                   'label'   => '',
-	                                   'caption' => __('Allow HTML tags in event location field','event-list'),
-	                                   'desc'    => __('This option specifies if HTML tags are allowed in the event location field.','event-list')),
+	                                   'caption' => sprintf(__('Allow HTML tags in the event field "%1$s"','event-list'), __('Location','event-list')),
+	                                   'desc'    => sprintf(__('This option specifies if HTML tags are allowed in the event field "%1$s".','event-list'), __('Location','event-list'))),
 
 	// Section: "frontend"
+	'el_show_details_text'    => array('type'    => 'text',
+	                                   'label'   => __('Text for "Show details"','event-list'),
+	                                   'desc'    => __('With this option the displayed text for the link to show the event details can be changed, when collapsing is enabled.','event-list')),
+
+	'el_hide_details_text'    => array('type'    => 'text',
+	                                   'label'   => __('Text for "Hide details"','event-list'),
+	                                   'desc'    => __('With this option the displayed text for the link to hide the event details can be changed, when collapsing is enabled.','event-list')),
+
 	'el_disable_css_file'     => array('type'    => 'checkbox',
-	                                   'label'   => __('Disable CSS file'),
-	                                   'caption' => __('Disable the "event-list.css" file.'),
-	                                   'desc'    => __('With this option you can disable the inclusion of the "event-list.css" file.<br />
-	                                                    This normally only make sense if you have css conflicts with your theme and want to set all required css somewhere else (e.g. your theme css).')),
+	                                   'label'   => __('Disable CSS file','event-list'),
+	                                   'caption' => sprintf(__('Disable the %1$s file.','event-list'), '"event-list.css"'),
+	                                   'desc'    => sprintf(__('With this option you can disable the inclusion of the %1$s file.','event-list'), '"event-list.css"').'<br />'.
+	                                                __('This normally only make sense if you have css conflicts with your theme and want to set all required css styles somewhere else (e.g. in the theme css).','event-list')),
 
 	// Section: "admin"
 	'el_edit_dateformat'      => array('type'    => 'text',
 	                                   'label'   => __('Date format in edit form','event-list'),
-	                                   'desc'    => __('This option sets a specific date format for the event date fields in the new/edit event form.<br />
-	                                                    The standard is an empty string to use the wordpress standard setting.<br />
-	                                                    All available options to specify the format can be found <a href="http://php.net/manual/en/function.date.php" target="_blank">here</a>')),
+	                                   'desc'    => __('This option sets the displayed date format for the event date fields in the event new / edit form.','event-list').'<br />'.
+	                                                __('The standard is an empty string to use the Wordpress standard setting.','event-list').'<br />'.
+	                                                sprintf(__('All available options to specify the date format can be found %1$shere%2$s.','event-list'), '<a href="http://php.net/manual/en/function.date.php" target="_blank">', '</a>')),
 
 	// Section: "feed"
 	'el_enable_feed'          => array('type'    => 'checkbox',

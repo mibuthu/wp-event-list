@@ -3,8 +3,8 @@ Contributors: mibuthu, clhunsen
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W54LNZMWF9KW2
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, filter, admin, attribute, widget, sidebar, feed, rss
 Requires at least: 3.3
-Tested up to: 4.3
-Stable tag: 0.7.5
+Tested up to: 4.5
+Stable tag: 0.7.6
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -81,6 +81,21 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 
 
 == Changelog ==
+
+= 0.7.6 (2015-12-13) =
+* added shortcode attribute "collapse_details"
+* correct handling of "more"-tag in event details
+* show "url_to_page" shortcode attribute in the documentation
+* fixed wrong date format in events import sample
+* some help texts improvements
+* updated translation de_DE (78%) and fi_FI (35%)
+* added italian translation it_IT (69%)
+* added portuguese translation pt_BR (58%)
+* added dutch translation nl_NL (46%)
+* added spanish translation es_ES (39%)
+* added spanish translation es_AR (18%)
+* added frensh translation fr_FR (0%)
+* Thanks to all translators at transifex!
 
 = 0.7.5 (2015-07-19) =
 * added support for transifex localization platform
