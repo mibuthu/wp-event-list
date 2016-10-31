@@ -76,7 +76,7 @@ $options_helptexts = array(
 	                                   'label'   => __('Date format in edit form','event-list'),
 	                                   'desc'    => __('This option sets the displayed date format for the event date fields in the event new / edit form.','event-list').'<br />'.
 	                                                __('The standard is an empty string to use the Wordpress standard setting.','event-list').'<br />'.
-	                                                sprintf(__('All available options to specify the date format can be found %1$shere%2$s.','event-list'), '<a href="http://php.net/manual/en/function.date.php" target="_blank">', '</a>')),
+	                                                sprintf(__('All available options to specify the date format can be found %1$shere%2$s.','event-list'), '<a href="http://php.net/manual/en/function.date.php" target="_blank" rel="noopener">', '</a>')),
 
 	// Section: "feed"
 	'el_enable_feed'          => array('type'    => 'checkbox',
