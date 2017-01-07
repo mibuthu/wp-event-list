@@ -54,9 +54,14 @@ class EL_Admin_Main {
 				// proceed with header if a bulk action was triggered (required due to "noheader" attribute for all action above)
 				case 'delete_bulk':
 					require_once(ABSPATH.'wp-admin/admin-header.php');
+					break;
 			}
 		}
-		// cleanup query args when filter button was pressed
+		// cleanup query args if the button for bulk action was clicked, but no bulk action was selected
+		if(isset($_REQUEST['action']) && '-1' == $_REQUEST['action'] && isset($_REQUEST['action2']) && '-1' == $_REQUEST['action2']) {
+			$this->redirect();
+		}
+		// cleanup query args if filter button was pressed
 		if(isset($_GET['filter'])) {
 			$this->redirect();
 		}

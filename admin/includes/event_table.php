@@ -28,7 +28,7 @@ class EL_Event_Table extends WP_List_Table {
 		parent::__construct(array(
 			'singular'  => __('event','event-list'),   //singular name of the listed records
 			'plural'    => __('events','event-list'),  //plural name of the listed records
-			'ajax'      => false                      //does this table support ajax?
+			'ajax'      => false                       //does this table support ajax?
 		));
 	}
 
@@ -70,7 +70,7 @@ class EL_Event_Table extends WP_List_Table {
 		$actions = array(
 			'edit'      => '<a href="?page='.$_REQUEST['page'].'&amp;id='.$item->id.'&amp;action=edit">'.__('Edit','event-list').'</a>',
 			'duplicate' => '<a href="?page=el_admin_new&amp;id='.$item->id.'&amp;action=copy">'.__('Duplicate','event-list').'</a>',
-			'delete'    => '<a href="#" onClick="eventlist_deleteEvent('.$item->id.');return false;">'.__('Delete','event-list').'</a>');
+			'delete'    => '<a href="#" onClick=\''.$this->call_js_deleteEvent($item->id).'\'>'.__('Delete','event-list').'</a>');
 
 		//Return the title contents
 		return sprintf('<b>%1$s</b> <span style="color:silver">(id:%2$s)</span>%3$s',
@@ -157,7 +157,8 @@ class EL_Event_Table extends WP_List_Table {
 		//Detect when a bulk action is being triggered...
 		if('delete_bulk'===$this->current_action()) {
 			// Show confirmation window before deleting
-			echo '<script language="JavaScript">eventlist_deleteEvent ("'.implode(', ', $_GET['id']).'");</script>';
+			$del_string = isset($_GET['id']) ? implode(', ', $_GET['id']) : '';
+			echo '<script language="JavaScript">'.$this->call_js_deleteEvent($del_string).'</script>';
 		}
 	}
 
@@ -300,6 +301,14 @@ class EL_Event_Table extends WP_List_Table {
 		}
 		$datetime = mysql2date(__('Y/m/d g:i:s A'), $pub_date);
 		return '<abbr title="'.$datetime.'">'.$date.'</abbr>';
+	}
+
+	private function call_js_deleteEvent($del_ids) {
+		$ref = wp_get_referer();
+		if(!$ref) {
+			$ref = '?page=el_admin_main';
+		}
+		return 'eventlist_deleteEvent("'.$del_ids.'","'.$ref.'");';
 	}
 }
 
