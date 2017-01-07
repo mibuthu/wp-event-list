@@ -273,12 +273,13 @@ class EL_Db {
 	}
 
 	/** ************************************************************************************************************
-	 * Function to truncate and shorten text
+	 * Truncate HTML, close opened tags
 	 *
-	 * @param string $html The html code which should be shortened
-	 * @param int $length The length to which the text should be shortened
-	 * @param bool skip If this value is true the truncate will be skipped (nothing will be done)
-	 * @param bool perserve_tags Specifies if html tags should be preserved or if only the text should be shortened
+	 * @param string $html        The html code which should be shortened.
+	 * @param int $length         The length (number of characters) to which the text will be shortened.
+	 * @param bool $skip          If this value is true the truncate will be skipped (nothing will be done)
+	 * @param bool $perserve_tags Specifies if html tags should be preserved or if only the text should be
+	 *                            shortened.
 	 ***************************************************************************************************************/
 	public function truncate($html, $length, $skip=false, $preserve_tags=true) {
 		mb_internal_encoding("UTF-8");
@@ -320,8 +321,6 @@ class EL_Db {
 					if($this->mb_preg_match('{^<[\b]}', $tag)) {
 						// This is a closing tag
 						$openingTag = array_pop($tags);
-						// Check for not properly nested tags (for debugging only)
-						//assert($openingTag == $tagName, '----- Tags not properly nested: OpeningTag: '.$openingTag.'; TagName: '.$tagName.' -----');
 						$out .= $tag;
 					}
 					else if($this->mb_preg_match('{/\s?>$}', $tag)) {
