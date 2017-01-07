@@ -75,6 +75,11 @@ $sc_eventlist_helptexts = array(
 	                                         In this example you can see that filterbar options can be added in brackets in format "option_name=value". You can also add multiple options seperated by a pipe ("|").<br />
 	                                         The 2 semicolon (";") devides the bar in 3 section. The first section will be displayed left-justified, the second section will be centered and the third section will be right-aligned. So in this example the 2 dropdown will be left-aligned and the reset link will be on the right side.</p>'),
 
+	'title_length'     => array('val'    => __('number','event-list').'<br />auto',
+	                            'desc'   => __('This attribute specifies if the title should be truncated to the given number of characters in the event list.','event-list').'<br />'.
+	                                        sprintf(__('With the standard value %1$s the full text is displayed, with %2$s the text is automatically truncated via css.','event-list'), '[0]', '[auto]').'<br />'.
+	                                        __('This attribute has no influence if only a single event is shown.','event-list')),
+
 	'show_starttime'   => array('val'    => 'false<br />true<br />event_list_only<br />single_event_only',
 	                            'desc'   => __('This attribute specifies if the starttime is displayed in the event list.<br />
 	                                            Choose "false" to always hide and "true" to always show the starttime.<br />
@@ -84,6 +89,11 @@ $sc_eventlist_helptexts = array(
 	                            'desc'   => __('This attribute specifies if the location is displayed in the event list.<br />
 	                                            Choose "false" to always hide and "true" to always show the location.<br />
 	                                            With "event_list_only" the location is only visible in the event list and with "single_event_only" only for a single event','event-list')),
+
+	'location_length'  => array('val'    => __('number','event-list').'<br />auto',
+	                            'desc'   => __('This attribute specifies if the title should be truncated to the given number of characters in the event list.','event-list').'<br />'.
+	                                        sprintf(__('With the standard value %1$s the full text is displayed, with %2$s the text is automatically truncated via css.','event-list'), '[0]', '[auto]').'<br />'.
+	                                        __('This attribute has no influence if only a single event is shown.','event-list')),
 
 	'show_cat'         => array('val'    => 'false<br />true<br />event_list_only<br />single_event_only',
 	                            'desc'   => __('This attribute specifies if the categories are displayed in the event list.<br />
@@ -95,10 +105,10 @@ $sc_eventlist_helptexts = array(
 	                                            Choose "false" to always hide and "true" to always show the details.<br />
 	                                            With "event_list_only" the details are only visible in the event list and with "single_event_only" only for a single event','event-list')),
 
-	'details_length'   => array('val'    => 'number',
-	                            'desc'   => __('This attribute specifies if the details should be truncate to the given number of characters in the event list.<br />
-	                                            With the standard value 0 the full details are displayed.<br />
-	                                            This attribute has no influence if only a single event is shown.','event-list')),
+	'details_length'   => array('val'    => __('number','event-list'),
+	                            'desc'   => __('This attribute specifies if the details should be truncate to the given number of characters in the event list.','event-list').'<br />'.
+	                                        sprintf(__('With the standard value %1$s the full text is displayed.','event-list'), '[0]').'<br />'.
+	                                        __('This attribute has no influence if only a single event is shown.','event-list')),
 
 	'collapse_details' => array('val'    => 'false',
 	                            'desc'   => __('This attribute specifies if the details should be collapsed initially.<br />
@@ -124,18 +134,6 @@ $sc_eventlist_helptexts = array(
 	                                            An url is normally only required for the use of the shortcode in sidebars. It is also used in the event-list widget.','event-list')),
 
 	// Invisible attributes ('hidden' = true): This attributes are required for the widget but will not be listed in the attributes table on the admin info page
-	'title_length'     => array('val'    => 'number',
-	                            'hidden' => true,
-	                            'desc'   => __('This attribute specifies if the title should be truncate to the given number of characters in the event list.<br />
-	                                            With the standard value 0 the full details are displayed.<br />
-	                                            This attribute has no influence if only a single event is shown.','event-list')),
-
-	'location_length'  => array('val'    => 'number',
-	                            'hidden' => true,
-	                            'desc'   => __('This attribute specifies if the title should be truncate to the given number of characters in the event list.<br />
-	                                            With the standard value 0 the full details are displayed.<br />
-	                                            This attribute has no influence if only a single event is shown.','event-list')),
-
 	'sc_id_for_url'    => array('val'    => 'number',
 	                            'hidden' => true,
 	                            'desc'   => __('This attribute the specifies shortcode id of the used shortcode on the page specified with "url_to_page" attribute.<br />

@@ -42,8 +42,10 @@ class SC_Event_List {
 			'num_events'       => array('std_val' => '0'),
 			'show_filterbar'   => array('std_val' => 'true'),
 			'filterbar_items'  => array('std_val' => 'years_hlist'),
+			'title_length'     => array('std_val' => '0'),
 			'show_starttime'   => array('std_val' => 'true'),
 			'show_location'    => array('std_val' => 'true'),
+			'location_length'  => array('std_val' => '0'),
 			'show_cat'         => array('std_val' => 'false'),
 			'show_details'     => array('std_val' => 'true'),
 			'details_length'   => array('std_val' => '0'),
@@ -51,8 +53,6 @@ class SC_Event_List {
 			'link_to_event'    => array('std_val' => 'event_list_only'),
 			'add_feed_link'    => array('std_val' => 'false'),
 			'url_to_page'      => array('std_val' => ''),
-			'title_length'     => array('std_val' => '0'),
-			'location_length'  => array('std_val' => '0'),
 			'sc_id_for_url'    => array('std_val' => ''),
 			// Internal attributes: This parameters will be added by the script and are not available in the shortcode
 			//  'sc_id'
@@ -205,7 +205,7 @@ class SC_Event_List {
 		$out .= '">';
 		// event title
 		$out .= '<div class="event-title"><h3>';
-		$title = esc_attr($this->db->truncate($event->title, $a['title_length'], $this->single_event));
+		$title = $this->db->truncate(esc_attr($event->title), $a['title_length'], $this->single_event);
 		if($this->is_link_available($a, $event)) {
 			$out .= $this->get_event_link($a, $event->id, $title);
 		}
@@ -229,7 +229,7 @@ class SC_Event_List {
 		// event location
 		if('' != $event->location && $this->is_visible($a['show_location'])) {
 			if('' == $this->options->get('el_html_tags_in_loc')) {
-				$location = esc_attr($this->db->truncate($event->location, $a['location_length'], $this->single_event, false));
+				$location =$this->db->truncate(esc_attr($event->location), $a['location_length'], $this->single_event, false);
 			}
 			else {
 				$location = $this->db->truncate($event->location, $a['location_length'], $this->single_event);

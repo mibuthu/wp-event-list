@@ -45,7 +45,7 @@ class EL_Event_Table extends WP_List_Table {
 			case 'date' :
 				return $this->format_event_date($item->start_date, $item->end_date, $item->time);
 			case 'details' :
-				return '<div>'.$this->db->truncate(wpautop($item->details), 100).'</div>';
+				return $this->db->truncate(wpautop('<div>'.$item->details.'</div>'), 100);
 			case 'pub_user' :
 				return get_userdata($item->pub_user)->user_login;
 			case 'pub_date' :
@@ -311,4 +311,3 @@ class EL_Event_Table extends WP_List_Table {
 		return 'eventlist_deleteEvent("'.$del_ids.'","'.$ref.'");';
 	}
 }
-

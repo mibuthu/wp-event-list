@@ -28,9 +28,10 @@ $widget_items_helptexts = array(
 	'title_length' =>         array('type'          => 'text',
 	                                'caption'       => __('Truncate event title to','event-list'),
 	                                'caption_after' => __('characters','event-list'),
-	                                'tooltip'       => __('This option defines the number of displayed characters for the event title. Set this value to 0 to view the full title.','event-list'),
+	                                'tooltip'       => __('This option defines the number of displayed characters for the event title.','event-list').' '.
+	                                                   sprintf(__('Set this value to %1$s to view the full text, or set it to %2$s to automatically truncate the text via css.','event-list'), '[0]', '[auto]'),
 	                                'form_style'    => null,
-	                                'form_width'    => 30),
+	                                'form_width'    => 40),
 
 	'show_starttime' =>       array('type'          => 'checkbox',
 	                                'caption'       => __('Show event starttime','event-list'),
@@ -49,9 +50,10 @@ $widget_items_helptexts = array(
 	'location_length' =>      array('type'          => 'text',
 	                                'caption'       => __('Truncate location to','event-list'),
 	                                'caption_after' => __('characters','event-list'),
-	                                'tooltip'       => __('If the event location is diplayed this option defines the number of displayed characters. Set this value to 0 to view the full location.','event-list'),
+	                                'tooltip'       => __('If the event location is diplayed this option defines the number of displayed characters.','event-list').' '.
+	                                                   sprintf(__('Set this value to %1$s to view the full text, or set it to %2$s to automatically truncate the text via css.','event-list'), '[0]', '[auto]'),
 	                                'form_style'    => 'margin:0 0 0.6em 0.9em',
-	                                'form_width'    => 30),
+	                                'form_width'    => 40),
 
 	'show_details' =>         array('type'          => 'checkbox',
 	                                'caption'       => __('Show event details','event-list'),
@@ -63,9 +65,10 @@ $widget_items_helptexts = array(
 	'details_length' =>       array('type'          => 'text',
 	                                'caption'       => __('Truncate details to','event-list'),
 	                                'caption_after' => __('characters','event-list'),
-	                                'tooltip'       => __('If the event details are diplayed this option defines the number of diplayed characters. Set this value to 0 to view the full details.','event-list'),
+	                                'tooltip'       => __('If the event details are diplayed this option defines the number of diplayed characters.','event-list').' '.
+	                                                   sprintf(__('Set this value to %1$s to view the full text.','event-list'), '[0]'),
 	                                'form_style'    => 'margin:0 0 0.6em 0.9em',
-	                                'form_width'    => 30),
+	                                'form_width'    => 40),
 
 	'url_to_page' =>          array('type'          => 'text',
 	                                'caption'       => __('URL to the linked Event List page','event-list').':',
@@ -79,7 +82,7 @@ $widget_items_helptexts = array(
 	                                'caption_after' => null,
 	                                'tooltip'       => __('This option defines the shortcode-id for the Event List on the linked page. Normally the standard value 1 is correct, you only have to change it if you use multiple event-list shortcodes on the linked page.','event-list'),
 	                                'form_style'    => null,
-	                                'form_width'    => 30),
+	                                'form_width'    => 35),
 
 	'link_to_event' =>        array('type'          => 'checkbox',
 	                                'caption'       => __('Add links to the single events','event-list'),

@@ -275,16 +275,23 @@ class EL_Db {
 	/** ************************************************************************************************************
 	 * Truncate HTML, close opened tags
 	 *
-	 * @param string $html        The html code which should be shortened.
-	 * @param int $length         The length (number of characters) to which the text will be shortened.
-	 * @param bool $skip          If this value is true the truncate will be skipped (nothing will be done)
-	 * @param bool $perserve_tags Specifies if html tags should be preserved or if only the text should be
-	 *                            shortened.
-	 * @param string $link        If an url is given a link to the given url will be added for the ellipsis at the
-	 *                            end of the truncated text.
+	 * @param string $html          The html code which should be shortened.
+	 * @param int    $length        The length (number of characters) to which the text will be shortened.
+	 *                              With [0] the full text will be returned. With [auto] also the complete text
+	 *                              will be used, but a wrapper div will be added which shortens the text to 1 full
+	 *                              line via css.
+	 * @param bool   $skip          If this value is true the truncate will be skipped (nothing will be done)
+	 * @param bool   $perserve_tags Specifies if html tags should be preserved or if only the text should be
+	 *                              shortened.
+	 * @param string $link          If an url is given a link to the given url will be added for the ellipsis at
+	 *                              the end of the truncated text.
 	 ***************************************************************************************************************/
 	public function truncate($html, $length, $skip=false, $preserve_tags=true, $link=false) {
 		mb_internal_encoding("UTF-8");
+		if('auto' == $length) {
+			// add wrapper div with css styles for css truncate and return
+			return '<div style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis">'.$html.'</div>';
+		}
 		if(0 >= $length || mb_strlen($html) <= $length || $skip) {
 			// do nothing
 			return $html;
