@@ -207,7 +207,7 @@ class SC_Event_List {
 		$out .= '<div class="event-title"><h3>';
 		$title = esc_attr($this->db->truncate($event->title, $a['title_length'], $this->single_event));
 		if($this->is_link_available($a, $event)) {
-			$out .= $this->get_event_url($a, $event->id, $title);
+			$out .= $this->get_event_link($a, $event->id, $title);
 		}
 		else {
 			$out .= $title;
@@ -236,9 +236,11 @@ class SC_Event_List {
 			}
 			$out .= '<span class="event-location">'.$location.'</span>';
 		}
+		// event categories
 		if( $this->is_visible( $a['show_cat'] ) ) {
 			$out .= '<div class="event-cat">'.esc_attr($this->categories->convert_db_string($event->categories)).'</div>';
 		}
+		// event details
 		if( $this->is_visible( $a['show_details'] ) ) {
 			$out .= $this->get_details($event, $a);
 		}
@@ -388,6 +390,7 @@ class SC_Event_List {
 		if('' == $event->details) {
 			return '';
 		}
+		$truncate_url = false;
 		// check and handle the read more tag if available
 		//search fore more-tag (no more tag handling if truncate of details is set)
 		if(preg_match('/<!--more(.*?)?-->/', $event->details, $matches)) {
@@ -405,15 +408,18 @@ class SC_Event_List {
 					$more_link_text = __('(more&hellip;)');
 				}
 				//details with more-link
-				$details = apply_filters('the_content_more_link', $part[0].$this->get_event_url($a, $event->id, $more_link_text));
+				$details = apply_filters('the_content_more_link', $part[0].$this->get_event_link($a, $event->id, $more_link_text));
 			}
 		}
 		else {
 			//normal details
 			$details = $event->details;
+			if($this->is_link_available($a, $event)) {
+				$truncate_url = $this->get_event_url($a, $event->id);
+			}
 		}
 		// last preparations of details
-		$details = $this->db->truncate(do_shortcode(wpautop($details)), $a['details_length'], $this->single_event);
+		$details = $this->db->truncate(do_shortcode(wpautop($details)), $a['details_length'], $this->single_event, true, $truncate_url);
 		// preparations for collapsed details
 		if($this->is_visible($a['collapse_details'])) {
 			wp_register_script('el_collapse_details', EL_URL.'includes/js/collapse_details.js', null, true);
@@ -423,6 +429,14 @@ class SC_Event_List {
 		}
 		// return without collapsing
 		return '<div class="event-details">'.$details.'</div>';
+	}
+
+	private function get_event_link(&$a, $event_id, $title) {
+		return '<a href="'.$this->get_event_url($a, $event_id).'">'.$title.'</a>';
+	}
+
+	private function get_event_url(&$a, $event_id) {
+		return esc_html(add_query_arg('event_id'.$a['sc_id_for_url'], $event_id, $this->get_url($a)));
 	}
 
 	private function get_url(&$a) {
@@ -440,10 +454,6 @@ class SC_Event_List {
 			}
 		}
 		return $url;
-	}
-
-	private function get_event_url(&$a, $event_id, $title) {
-		return '<a href="'.esc_html(add_query_arg('event_id'.$a['sc_id_for_url'], $event_id, $this->get_url($a))).'">'.$title.'</a>';
 	}
 
 	private function is_single_day_only( &$events ) {

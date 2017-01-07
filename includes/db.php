@@ -280,8 +280,10 @@ class EL_Db {
 	 * @param bool $skip          If this value is true the truncate will be skipped (nothing will be done)
 	 * @param bool $perserve_tags Specifies if html tags should be preserved or if only the text should be
 	 *                            shortened.
+	 * @param string $link        If an url is given a link to the given url will be added for the ellipsis at the
+	 *                            end of the truncated text.
 	 ***************************************************************************************************************/
-	public function truncate($html, $length, $skip=false, $preserve_tags=true) {
+	public function truncate($html, $length, $skip=false, $preserve_tags=true, $link=false) {
 		mb_internal_encoding("UTF-8");
 		if(0 >= $length || mb_strlen($html) <= $length || $skip) {
 			// do nothing
@@ -342,7 +344,12 @@ class EL_Db {
 			}
 			// Print ellipsis ("...") if the html was truncated
 			if($truncated) {
-				$out .= ' &hellip;';
+				if($link) {
+					$out .= ' <a href="'.$link.'">&hellip;</a>';
+				}
+				else {
+					$out .= ' &hellip;';
+				}
 			}
 			// Close any open tags.
 			while(!empty($tags)) {
