@@ -304,8 +304,10 @@ class EL_Event_Table extends WP_List_Table {
 	}
 
 	private function call_js_deleteEvent($del_ids) {
-		$ref = wp_get_referer();
-		if(!$ref) {
+		if(!empty($_REQUEST['_wp_http_referer'])) {
+			$ref = wp_unslash($_REQUEST['_wp_http_referer']);
+		}
+		else {
 			$ref = '?page=el_admin_main';
 		}
 		return 'eventlist_deleteEvent("'.$del_ids.'","'.$ref.'");';
