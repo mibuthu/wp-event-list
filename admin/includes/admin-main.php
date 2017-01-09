@@ -39,6 +39,7 @@ class EL_Admin_Main {
 						$error = !$id;
 						$this->redirect('added', $error, array('title' => urlencode($_POST['title']), 'id' => $id));
 					}
+					break;
 				case 'edited':
 					if(!empty($_POST)) {
 						$error = !$this->update_event($_POST);
