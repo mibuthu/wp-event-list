@@ -1,15 +1,16 @@
 # This is the translation template file for Event List.
-# Copyright (C) 2015 Michael Burtscher
+# Copyright (C) 2017 Michael Burtscher
 # This file is distributed under the same license as the plugin.
 # 
 # Translators:
 # Gwenael Jan <gwejan@gmail.com>, 2015
+# patoudss <patrice@desaintsteban.fr>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: wp-event-list\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-13 21:31+0100\n"
-"PO-Revision-Date: 2015-12-13 20:38+0000\n"
+"POT-Creation-Date: 2017-01-07 21:13+0100\n"
+"PO-Revision-Date: 2017-01-07 20:39+0000\n"
 "Last-Translator: mibuthu\n"
 "Language-Team: French (France) (http://www.transifex.com/mibuthu/wp-event-list/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -18,1375 +19,1410 @@ msgstr ""
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/admin.php:45
+#: /home/zeus/mike/workspace/wp-event-list/admin/admin.php:45
 msgid "Event List"
 msgstr "Liste des événements"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/admin.php:48
-#: /home/zeus/mike/workspace/wp-eventlist/admin/admin.php:80
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-main.php:112
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/category_table.php:110
+#: /home/zeus/mike/workspace/wp-event-list/admin/admin.php:48
+#: /home/zeus/mike/workspace/wp-event-list/admin/admin.php:80
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-main.php:117
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/category_table.php:110
 msgid "Events"
 msgstr "Evénements"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/admin.php:48
+#: /home/zeus/mike/workspace/wp-event-list/admin/admin.php:48
 msgid "All Events"
-msgstr ""
+msgstr "Tous les évènements"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/admin.php:52
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-new.php:41
+#: /home/zeus/mike/workspace/wp-event-list/admin/admin.php:52
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-new.php:41
 msgid "Add New Event"
-msgstr ""
+msgstr "Ajouter un nouvel évènement"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/admin.php:52
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-main.php:114
+#: /home/zeus/mike/workspace/wp-event-list/admin/admin.php:52
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-main.php:119
 msgid "Add New"
-msgstr ""
+msgstr "Ajouter"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/admin.php:56
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:50
+#: /home/zeus/mike/workspace/wp-event-list/admin/admin.php:56
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:50
 msgid "Event List Categories"
-msgstr ""
+msgstr "Liste des catégories d'évènements"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/admin.php:56
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:128
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-new.php:136
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:111
+#: /home/zeus/mike/workspace/wp-event-list/admin/admin.php:56
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:128
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-new.php:136
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/event_table.php:111
 msgid "Categories"
-msgstr ""
+msgstr "Catégories"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/admin.php:60
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-settings.php:53
+#: /home/zeus/mike/workspace/wp-event-list/admin/admin.php:60
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-settings.php:53
 msgid "Event List Settings"
-msgstr ""
+msgstr "Préférences"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/admin.php:60
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:37
+#: /home/zeus/mike/workspace/wp-event-list/admin/admin.php:60
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:37
 msgid "Settings"
-msgstr ""
+msgstr "Préférences"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/admin.php:64
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:34
+#: /home/zeus/mike/workspace/wp-event-list/admin/admin.php:64
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:34
 msgid "About Event List"
-msgstr ""
+msgstr "A propos de la liste d'évènement"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/admin.php:64
+#: /home/zeus/mike/workspace/wp-event-list/admin/admin.php:64
 msgid "About"
-msgstr ""
+msgstr "A propos"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:31
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:37
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:40
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-main.php:69
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-new.php:38
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-settings.php:31
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:31
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:37
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:40
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-main.php:74
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-new.php:38
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-settings.php:31
 msgid "You do not have sufficient permissions to access this page."
-msgstr ""
+msgstr "Vous n'avez pas la permission d’accéder à cette page."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:35
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:35
 msgid "Help and Instructions"
-msgstr ""
+msgstr "Aide et instructions"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:36
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:36
 #, php-format
 msgid "You can manage your events %1$shere%2$s"
-msgstr ""
+msgstr "Vous pouvez gérer vos évènements %1$sici%2$s"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:37
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:37
 msgid "To show the events on your site you have 2 possibilities"
-msgstr ""
+msgstr "Pour voir les évènements sur votre site, vous avez 2 possibilités."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:38
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:38
 #, php-format
 msgid "you can place the <strong>shortcode</strong> %1$s on any page or post"
-msgstr ""
+msgstr "Vous pouvez placer le <strong>shortcode</strong> %1$s sur n'importe quel page ou article."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:39
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:39
 #, php-format
 msgid "you can add the <strong>widget</strong> %1$s in your sidebars"
-msgstr ""
+msgstr "Vous pouvez ajouter le <strong>widget</strong> %1$s dans votre barre latérale."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:40
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:40
 msgid ""
 "The displayed events and their style can be modified with the available "
 "widget settings and the available attributes for the shortcode."
-msgstr ""
+msgstr "L'évènement affiché et son style peut être modifié avec les paramètres du widget et attributs disponible pour le shortcode."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:41
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:41
 msgid ""
 "A list of all available shortcode attributes with their description is "
 "available below."
-msgstr ""
+msgstr "Une liste de tous les attributs disponible avec leurs description est disponible ci-dessous."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:42
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:42
 msgid "The available  widget options are described in their tooltip text."
-msgstr ""
+msgstr "Les options disponibles du widget sont disponible dans leurs infobulles"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:43
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:43
 #, php-format
 msgid ""
 "For the widget it is important to know that you have to insert an URL to the linked event-list page if you enable one of the links options\n"
 "\t\t\t\t\t(%1$s or %2$s). This is required because the widget didn´t know in which page or post the shortcode was included."
-msgstr ""
+msgstr "Pour le widget, il est important de savoir que vous devez insérer une URL vers la page de la liste des évènements si vous activez une des options de liens\n⇥⇥⇥⇥⇥(%1$s ou %2$s). Cela est requis parce que le widget ne sait sur pas quel page ou article le shortcode est inclus."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:44
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:85
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:44
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:88
 msgid "Add links to the single events"
-msgstr ""
+msgstr "Ajoute un lien vers le détail de l'évènement."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:44
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:92
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:44
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:95
 msgid "Add a link to the Event List page"
-msgstr ""
+msgstr "Ajoute un liens vers la page des évènements."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:45
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:45
 #, php-format
 msgid ""
 "Additionally you have to insert the correct Shortcode ID on the linked page. This ID describes which shortcode should be used on the given page or post if you have more than one.\n"
 "\t\t\t\t\tSo the standard value \"1\" is normally o.k., but if required you can check the ID by looking into the URL of an event link on your linked page or post.\n"
 "\t\t\t\t\tThe ID will be added at the end of the query parameter name (e.g. %1$s)."
-msgstr ""
+msgstr "En plus, vous devez insérer le bon identifiant du shortcode sur la page lié. Cet identifiant indique quel shortcode doit être utilisé sur la page ou l'article si vous avez plus d'un shortcode.\n⇥⇥⇥⇥⇥Alors la valeur par défaut \"1\" est normalement exacte, mais si nécessaire, vous pouvez vérifier l'identifiant en regardant dans l'url de la liste des évènements sur la page ou l'article lié.\n⇥⇥⇥⇥⇥l'identifiant sera ajouté à la fin de la liste des paramètres dans l'URL (e.g. %1$s)."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:49
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:49
 #, php-format
 msgid ""
 "Be sure to also check the %1$sSettings page%2$s to get Event List behaving "
 "just the way you want."
-msgstr ""
+msgstr "Soyez sûr de vérifier la %1$spage de paramètres%2$s pour que la liste des évènements se comporte exactement comme vous le souhaitiez."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:63
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:63
 msgid "Shortcode Attributes"
-msgstr ""
+msgstr "Attributs du shortcode"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:65
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:65
 msgid ""
 "You have the possibility to modify the output if you add some of the "
 "following attributes to the shortcode."
-msgstr ""
+msgstr "Vous avez la possibilité de modifier le résultat si vous ajoutez certains des attributs suivant dans le shortcode."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:66
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:66
 #, php-format
 msgid ""
 "You can combine and add as much attributes as you want. E.g. the shortcode "
 "including the attributes %1$s and %2$s would looks like this:"
-msgstr ""
+msgstr "Vous pouvez combiner et ajouter autant d'attributs que vous voulez. I.E le shortcode incluant les attributs %1$s et %2$s devrait ressembler à cela:"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:68
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:68
 msgid ""
 "Below you can find a list of all supported attributes with their "
 "descriptions and available options:"
-msgstr ""
+msgstr "Ci-dessous, vous pouvez trouver une liste de tous les attributs supporté avec leurs descriptions et les options valables."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:83
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:83
 msgid "Attribute name"
-msgstr ""
+msgstr "Nom de l'attribut"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:84
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:84
 msgid "Value options"
-msgstr ""
+msgstr "Valeurs possibles"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:85
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:85
 msgid "Default value"
-msgstr ""
+msgstr "Valeur par défaut"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:86
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:188
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/category_table.php:108
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:86
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:188
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/category_table.php:108
 msgid "Description"
-msgstr ""
+msgstr "Description"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:104
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:104
 msgid "Filter Syntax"
-msgstr ""
+msgstr "Syntaxe des filtres"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:105
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:105
 msgid ""
 "For date and cat filters you can specify complex filters with the following "
 "syntax:"
-msgstr ""
+msgstr "Pour les filtres de dates et catégories, vous pouvez spécifier des filtres complexe avec la syntaxe suivante."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:106
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:106
 #, php-format
 msgid ""
 "You can use %1$s and %2$s connections to define complex filters. "
 "Additionally you can set brackets %3$s for nested queries."
-msgstr ""
+msgstr "Vous pouvez utiliser les connections %1$s et %2$s pour définir des filtres complexes. De plus vous pouvez ajouter des parenthèses %3$s pour les requêtes imbriquées."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:106
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:106
 msgid "AND"
-msgstr ""
+msgstr "ET"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:106
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:106
 msgid "OR"
-msgstr ""
+msgstr "OU"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:106
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:106
 msgid "or"
-msgstr ""
+msgstr "ou"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:106
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:106
 msgid "and"
-msgstr ""
+msgstr "et"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:107
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:107
 msgid "Examples for cat filters:"
-msgstr ""
+msgstr "Exemple de filtre de catégorie :"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:108
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:108
 #, php-format
 msgid "Show all events with category %1$s."
-msgstr ""
+msgstr "Voir tous les évènements de la catégorie %1$s."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:109
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:109
 #, php-format
 msgid "Show all events with category %1$s or %2$s."
-msgstr ""
+msgstr "Voir tous les évènements de la catégorie %1$s ou %2$s."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:110
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:110
 #, php-format
 msgid ""
 "Show all events with category %1$s and all events where category %2$s as "
 "well as %3$s is selected."
-msgstr ""
+msgstr "Voir tous les évènements de la catégorie %1$s et tous les évènements qui on les catégories %2$s et %3$s sélectionnés."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:115
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:115
 msgid "Available Date Formats"
-msgstr ""
+msgstr "Formats de date disponible"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:116
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:116
 msgid "For date filters you can use the following date formats:"
-msgstr ""
+msgstr "Pour les filtres de dates, vous pouvez utiliser les formats de dates suivants:"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:124
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:124
 msgid "Available Date Range Formats"
-msgstr ""
+msgstr "Formats de d'intervalle de date disponible"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:125
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:125
 msgid "For date filters you can use the following daterange formats:"
-msgstr ""
+msgstr "Pour les filtres d'intervalles de date, vous pouvez utiliser les formats de dates suivants."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:137
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:137
 msgid "Value"
-msgstr ""
+msgstr "Valeur"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-about.php:141
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-about.php:141
 msgid "Example"
-msgstr ""
+msgstr "Exemple"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:53
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:53
 msgid "Edit Category"
-msgstr ""
+msgstr "Modifier catégorie"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:53
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:53
 msgid "Update Category"
-msgstr ""
+msgstr "Mettre à jour catégorie"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:59
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:59
 msgid "Add New Category"
-msgstr ""
+msgstr "Ajouter une nouvelle catégorie"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:84
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:84
 #, php-format
 msgid "Category \"%s\" deleted."
-msgstr ""
+msgstr "Catégorie \"%s\" supprimé."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:86
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:86
 #, php-format
 msgid "This Category was also removed from %d events."
-msgstr ""
+msgstr "Cette catégorie a aussi été supprimé de %d évènements."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:92
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:92
 #, php-format
 msgid "Error while deleting category \"%s\""
-msgstr ""
+msgstr "Erreur lors de la suppression de la catégorie \"%s\""
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:102
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:102
 msgid "Sync with post categories enabled."
-msgstr ""
+msgstr "Synchronisation avec les catégories d'articles activé"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:105
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:105
 msgid "Sync with post categories disabled."
-msgstr ""
+msgstr "Synchronisation avec les catégories d'articles désactivé."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:111
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:111
 msgid "Manual sync with post categories sucessfully finished."
-msgstr ""
+msgstr "Synchronisation manuel avec les catégories d'article achevé avec sucés."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:119
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:119
 #, php-format
 msgid "New Category \"%s\" was added"
-msgstr ""
+msgstr "Nouvelle catégorie \"%s\" ajouté."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:122
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:122
 #, php-format
 msgid "Error: New Category \"%s\" could not be added"
-msgstr ""
+msgstr "Erreur: la nouvelle catégorie \"%s\" ne peut pas être ajoutée."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:128
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:128
 #, php-format
 msgid "Category \"%s\" was modified"
-msgstr ""
+msgstr "La catégorie \"%s\" a été modifié."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:131
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:131
 #, php-format
 msgid "Error: Category \"%s\" could not be modified"
-msgstr ""
+msgstr "Erreur: La catégorie \"%s\" ne peut pas être modifié."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:138
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:138
 msgid ""
 "Categories are automatically synced with the post categories.<br />\n"
 "\t\t\t                                                    Because of this all options to add new categories or editing existing categories are disabled.<br />\n"
 "\t\t\t                                                    If you want to manually edit the categories you have to disable this option."
-msgstr ""
+msgstr "Les catégories sont automatiquement synchronisé avec les catégories des articles.<br/>\n⇥⇥⇥ C'est pourquoi toutes les options pour ajouter ou modifier les catégories existantes sont désactivés.<br/>\n⇥⇥⇥ Si vous voulez éditer manuellement les catégories vous devez désactiver cette option."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:165
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/category_table.php:107
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:165
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/category_table.php:107
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:167
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:167
 msgid "The name is how it appears on your site."
-msgstr ""
+msgstr "Le nom est la façon dont il apparaît sur votre site."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:170
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/category_table.php:109
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:170
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/category_table.php:109
 msgid "Slug"
-msgstr ""
+msgstr "Slug"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:172
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:172
 msgid ""
 "The “slug” is the URL-friendly version of the name. It is usually all "
 "lowercase and contains only letters, numbers, and hyphens."
-msgstr ""
+msgstr "Le \"slug\" est la version du nom dans l'URL, c'est la version du nom ne contenant que des lettres minuscules (sans accents), des chiffres et des tirets."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:175
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:175
 msgid "Parent"
-msgstr ""
+msgstr "Parent"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:177
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:177
 msgid "None"
-msgstr ""
+msgstr "Aucune"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:185
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:185
 msgid ""
 "Categories can have a hierarchy. You might have a Jazz category, and under "
 "that have children categories for Bebop and Big Band. Totally optional."
-msgstr ""
+msgstr "Les catégories peuvent avoir une hierarchie. Vous pouvez avoir une catégorie Jazz et avoir en dessous les catégories enfants Bebop et Big Band. Totalement optionnel."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:232
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:232
 msgid "Apply"
-msgstr ""
+msgstr "Appliquer"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-categories.php:242
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-categories.php:242
 msgid "Do a manual sync with post categories"
-msgstr ""
+msgstr "Faire une synchronisation manuel avec les catégories d'articles."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:45
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:45
 msgid "Import Events"
-msgstr ""
+msgstr "Importer évènements."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:65
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:112
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:65
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:112
 msgid "Step"
-msgstr ""
+msgstr "Etape"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:65
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:65
 msgid "Set import file and options"
-msgstr ""
+msgstr "Sélection du fichier à importer et des options."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:68
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:68
 msgid "Import Event Data"
-msgstr ""
+msgstr "Importer les données des évènements"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:71
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:71
 msgid "Example file"
-msgstr ""
+msgstr "Fichier d'exemple"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:72
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:72
 #, php-format
 msgid ""
 "You can download an example file %1$shere%2$s (CSV delimiter is a comma!)"
-msgstr ""
+msgstr "Vous pouvez télécharger un fichier d'exemble %1$sici%2$s (Le séparateur du fichier CSV est une virgule!)"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:73
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:73
 msgid "Note"
-msgstr ""
+msgstr "Remarque"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:73
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:73
 msgid ""
 "Do not change the column header and separator line (first two lines), "
 "otherwise the import will fail!"
-msgstr ""
+msgstr "Ne pas changer la colonne d'entête et de séparateur (deux premières lignes), sinon l'import de fonctionnera pas!"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:80
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:88
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:101
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:80
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:88
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:101
 msgid "Sorry, there has been an error."
-msgstr ""
+msgstr "Désolé, il y a eu une erreur."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:81
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:81
 msgid "The file does not exist, please try again."
-msgstr ""
+msgstr "Le fichier n'existe pas, essayez encore."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:89
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:89
 msgid "The file is not a CSV file."
-msgstr ""
+msgstr "Le fichier n'est pas un fichier CSV valide."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:112
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:112
 msgid "Event review and category selection"
-msgstr ""
+msgstr "Revue des évènements et sélection de la catégorie."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:129
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:226
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-main.php:115
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:129
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:226
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-main.php:120
 msgid "Import"
-msgstr ""
+msgstr "Importer"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:143
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:143
 msgid "Import with errors!"
-msgstr ""
+msgstr "Importé avec des erreurs!"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:144
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:144
 #, php-format
 msgid ""
 "An error occurred during import! Please send your import file to %1$sthe "
 "administrator%2$s for analysis."
-msgstr ""
+msgstr "Une erreur est survenue durant l'import! Merci d'envoyer votre fichier d'import à l'%1$sadministrateur%2$s pour analyse."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:148
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:148
 msgid "Import successful!"
-msgstr ""
+msgstr "Importation réussis!"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:149
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:149
 msgid "Go back to All Events"
-msgstr ""
+msgstr "Retour à la liste des évènements"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:156
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-new.php:97
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:108
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:8
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:156
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-new.php:97
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/event_table.php:108
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:8
 msgid "Title"
-msgstr ""
+msgstr "Titre"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:157
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:157
 msgid "Start Date"
-msgstr ""
+msgstr "Date de début"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:158
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:158
 msgid "End Date"
-msgstr ""
+msgstr "Date de fin"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:159
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-new.php:110
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:51
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:52
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:159
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-new.php:110
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:51
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:52
 msgid "Time"
-msgstr ""
+msgstr "Heure"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:160
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-new.php:114
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:109
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:56
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:57
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:160
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-new.php:114
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/event_table.php:109
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:56
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:57
 msgid "Location"
-msgstr ""
+msgstr "Lieu"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:161
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-new.php:118
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:110
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:161
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-new.php:118
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/event_table.php:110
 msgid "Details"
-msgstr ""
+msgstr "Détails"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:196
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:196
 msgid "There was an error when reading this CSV file."
-msgstr ""
+msgstr "Il y a une erreur lors de la lecture du fichier CSV"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:225
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-new.php:153
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:225
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-new.php:153
 msgid "Cancel"
-msgstr ""
+msgstr "Annuler"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-import.php:237
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-new.php:166
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-import.php:237
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-new.php:166
 msgid "No categories available."
-msgstr ""
+msgstr "Pas de catégories disponible."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-main.php:109
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-main.php:114
 msgid "Edit Event"
-msgstr ""
+msgstr "Modifier évènement"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-main.php:109
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:72
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-main.php:114
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/event_table.php:72
 msgid "Duplicate"
-msgstr ""
+msgstr "Dupliquer"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-new.php:43
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-new.php:43
 #, php-format
 msgid "Duplicate of event id:%d"
-msgstr ""
+msgstr "Duplication de l'évènement: %d"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-new.php:97
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-new.php:101
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-new.php:97
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-new.php:101
 msgid "required"
-msgstr ""
+msgstr "Requis"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-new.php:101
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:107
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-new.php:101
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/event_table.php:107
 msgid "Date"
-msgstr ""
+msgstr "Date"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-new.php:104
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-new.php:104
 msgid "Multi-Day Event"
-msgstr ""
+msgstr "Evènement sur plusieurs jours"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-new.php:134
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-new.php:151
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-new.php:134
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-new.php:151
 msgid "Publish"
-msgstr ""
+msgstr "Publier"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-new.php:151
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-new.php:151
 msgid "Update"
-msgstr ""
+msgstr "Modifier"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-new.php:212
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-new.php:212
 msgid "Goto Category Settings"
-msgstr ""
+msgstr "Aller sur les paramètres des catégories"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-new.php:220
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:272
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:275
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:299
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-new.php:220
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/event_table.php:273
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/event_table.php:276
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/event_table.php:300
 msgid "Y/m/d"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-settings.php:41
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-settings.php:41
 msgid "Settings saved."
-msgstr ""
+msgstr "Paramètres sauvegardé."
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-settings.php:68
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:37
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-settings.php:68
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:37
 msgid "General"
-msgstr ""
+msgstr "Général"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-settings.php:69
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-settings.php:69
 msgid "Frontend Settings"
-msgstr ""
+msgstr "Frontend Préférences"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-settings.php:70
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-settings.php:70
 msgid "Admin Page Settings"
-msgstr ""
+msgstr "Administration Préférences"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/admin-settings.php:71
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/admin-settings.php:71
 msgid "Feed Settings"
-msgstr ""
+msgstr "Flux RSS Préférences"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/category_table.php:27
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:29
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/category_table.php:27
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/event_table.php:29
 msgid "event"
-msgstr ""
+msgstr "évènement"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/category_table.php:28
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:30
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/category_table.php:28
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/event_table.php:30
 msgid "events"
-msgstr ""
+msgstr "évènements"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/category_table.php:70
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:71
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/category_table.php:70
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/event_table.php:71
 msgid "Edit"
-msgstr ""
+msgstr "Modifier"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/category_table.php:71
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/category_table.php:145
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:73
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:146
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/category_table.php:71
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/category_table.php:145
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/event_table.php:73
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/event_table.php:146
 msgid "Delete"
-msgstr ""
+msgstr "Supprimer"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:112
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/event_table.php:112
 msgid "Author"
-msgstr ""
+msgstr "Auteur"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:113
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/event_table.php:113
 msgid "Published"
-msgstr ""
+msgstr "Publié"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:174
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/event_table.php:175
 msgid "Filter"
-msgstr ""
+msgstr "Filtrer"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:296
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/event_table.php:297
 #, php-format
 msgid "%s ago"
-msgstr ""
+msgstr "depuis %s"
 
-#: /home/zeus/mike/workspace/wp-eventlist/admin/includes/event_table.php:301
+#: /home/zeus/mike/workspace/wp-event-list/admin/includes/event_table.php:302
 msgid "Y/m/d g:i:s A"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:7
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:7
 msgid "Year"
-msgstr ""
+msgstr "Année"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:8
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:8
 msgid "A year can be specified in 4 digit format."
-msgstr ""
+msgstr "Une année peut être spécifié au format 4 chiffres."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:9
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:14
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:36
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:9
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:14
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:36
 #, php-format
 msgid ""
 "For a start date filter the first day of %1$s is used, in an end date the "
 "last day."
-msgstr ""
+msgstr "Pour un filtre de date de début, le premier jour de %1$s est utilisé, dans une date de fin, le dernier jours est utilisé."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:9
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:9
 msgid "the resulting year"
-msgstr ""
+msgstr "Année résultante"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:12
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:12
 msgid "Month"
-msgstr ""
+msgstr "Mois"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:13
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:13
 msgid ""
 "A month can be specified with 4 digits for the year and 2 digits for the "
 "month, seperated by a hyphen (-)."
-msgstr ""
+msgstr "Un mois peut être spécifié avec 4 chiffres pour l'année et 2 chiffres pour le mois, séparé par un tiret (-)."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:14
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:14
 msgid "the resulting month"
-msgstr ""
+msgstr "Mois résultant"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:17
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:17
 msgid "Day"
-msgstr ""
+msgstr "Jour"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:18
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:18
 msgid ""
 "A day can be specified in the format 4 digits for the year, 2 digits for the"
 " month and 2 digets for the day, seperated by hyphens (-)."
-msgstr ""
+msgstr "Un jour peut être spécifié avec le format de 4 chiffres pour l'année, 2 chiffres pour le mois et 2 chiffres pour le jour, séparé par un tiret (-)."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:21
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:21
 msgid "Relative Year"
-msgstr ""
+msgstr "Année relative"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:22
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:28
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:34
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:42
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:22
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:28
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:34
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:42
 #, php-format
 msgid "%1$s from now can be specified in the following notation: %2$s"
-msgstr ""
+msgstr "%1$s peut maintenant être spécifié avec la notation suivante : %2$s"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:22
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:22
 msgid "A relative year"
-msgstr ""
+msgstr "Une année relative"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:23
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:29
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:35
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:43
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:23
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:29
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:35
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:43
 #, php-format
 msgid ""
 "This means you can specify a positive or negative (%1$s) %2$s from now with "
 "%3$s or %4$s attached (see also the example below)."
-msgstr ""
+msgstr "Cela signifie que vous pouvez spécifier un %2$s positif ou négatif (%1$s) à partir de maintenant suffixé par %3$s ou %4$s (voir l'exemple ci-dessous)"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:23
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:23
 msgid "number of years"
-msgstr ""
+msgstr "nombre d'année"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:24
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:30
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:38
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:44
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:24
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:30
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:38
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:44
 #, php-format
 msgid "Additionally the following values are available: %1$s"
-msgstr ""
+msgstr "De plus, les valeurs suivantes sont disponibles : %1$s"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:27
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:27
 msgid "Relative Month"
-msgstr ""
+msgstr "Mois relatif"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:28
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:28
 msgid "A relative month"
-msgstr ""
+msgstr "Un mois relatif"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:29
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:29
 msgid "number of months"
-msgstr ""
+msgstr "Nombre de mois"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:33
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:33
 msgid "Relative Week"
-msgstr ""
+msgstr "Semaine relative"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:34
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:34
 msgid "A relative week"
-msgstr ""
+msgstr "Une semaine relative"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:35
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:35
 msgid "number of weeks"
-msgstr ""
+msgstr "Nombre de semaines"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:36
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:36
 msgid "the resulting week"
-msgstr ""
+msgstr "Une semaine relative"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:37
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:37
 #, php-format
 msgid ""
 "The first day of the week is depending on the option %1$s which can be found"
 " and changed in %2$s."
-msgstr ""
+msgstr "Le premier jour de la semaine dépens de l'option %1$s qui peut être trouvé et changé dans %2$s"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:37
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:37
 msgid "Week Starts On"
-msgstr ""
+msgstr "Semaine commence le "
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:41
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:41
 msgid "Relative Day"
-msgstr ""
+msgstr "Jour relatif"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:42
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:42
 msgid "A relative day"
-msgstr ""
+msgstr "Un jour relatif"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:43
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:43
 msgid "number of days"
-msgstr ""
+msgstr "nombre de jours"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:49
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:49
 msgid "Date range"
-msgstr ""
+msgstr "Période"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:50
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:50
 msgid ""
 "A date rage can be specified via a start date and end date seperated by a tilde (~).<br />\n"
 "\t                                     For the start and end date any available date format can be used."
-msgstr ""
+msgstr "Une période peut être spécifié via une date de début et une date de fin séparé par un tilde (~).<br/>\n⇥ Pour la date de début et de fin, n'importe quel format de date peut être utilisé."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:54
-#: /home/zeus/mike/workspace/wp-eventlist/includes/filterbar.php:282
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:54
+#: /home/zeus/mike/workspace/wp-event-list/includes/filterbar.php:282
 msgid "All"
-msgstr ""
+msgstr "Tous"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:55
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:55
 msgid "This value defines a range without any limits."
-msgstr ""
+msgstr "Cette valeur définie une période sans aucune limites"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:56
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:61
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:66
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:56
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:61
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:66
 #, php-format
 msgid "The corresponding date_range format is: %1$s"
-msgstr ""
+msgstr "Le période correspondant est : %1$s"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:59
-#: /home/zeus/mike/workspace/wp-eventlist/includes/filterbar.php:291
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:59
+#: /home/zeus/mike/workspace/wp-event-list/includes/filterbar.php:291
 msgid "Upcoming"
-msgstr ""
+msgstr "A venir"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:60
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:60
 msgid "This value defines a range from the actual day to the future."
-msgstr ""
+msgstr "Cette valeur définie une période à partir du jour actuel juste que dans le future."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:64
-#: /home/zeus/mike/workspace/wp-eventlist/includes/filterbar.php:295
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:64
+#: /home/zeus/mike/workspace/wp-event-list/includes/filterbar.php:295
 msgid "Past"
-msgstr ""
+msgstr "Passé"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/daterange_helptexts.php:65
+#: /home/zeus/mike/workspace/wp-event-list/includes/daterange_helptexts.php:65
 msgid "This value defines a range from the past to the previous day."
-msgstr ""
+msgstr "Cette valeur définie une période antérieur à la date du jour."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/filterbar.php:285
+#: /home/zeus/mike/workspace/wp-event-list/includes/filterbar.php:285
 msgid "Show all dates"
-msgstr ""
+msgstr "Voir toutes les dates"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/filterbar.php:285
+#: /home/zeus/mike/workspace/wp-event-list/includes/filterbar.php:285
 msgid "Show all categories"
-msgstr ""
+msgstr "Voir toutes les catégories"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:9
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:9
 msgid "Event Categories"
-msgstr ""
+msgstr "Catégories d'évènements"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:11
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:11
 msgid "This option specifies all event category data."
-msgstr ""
+msgstr "Cette option spécifie toutes les données de la catégorie d'événement."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:14
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:14
 msgid "Sync Categories"
-msgstr ""
+msgstr "Synchroniser les catégories"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:15
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:15
 msgid "Keep event categories in sync with post categories automatically"
-msgstr ""
+msgstr "Garder automatiquement synchronisé les catégories d'évènements avec les catégories d'articles."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:16
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:16
 msgid "Attention"
-msgstr ""
+msgstr "Attention"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:17
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:17
 msgid ""
 "Please note that this option will delete all categories which are not "
 "available in the post categories! Existing Categories with the same slug "
 "will be updated."
-msgstr ""
+msgstr "Veuillez notez que cette option va supprimer toutes les catégories qui ne sont pas disponibles dans les catégories d'articles!"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:21
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:21
 msgid "CSV File to import"
-msgstr ""
+msgstr "Fichier CSV à importer"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:23
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:23
 msgid "Please select the file which contains the event data in CSV format."
-msgstr ""
+msgstr "Veuillez sélectionner le fichier qui contient les évènements au format CSV."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:26
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:26
 msgid "Used date format"
-msgstr ""
+msgstr "Utilise le format de date suivant"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:28
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:28
 msgid ""
 "With this option the used date format for event start and end date given in "
 "the CSV file can be specified."
-msgstr ""
+msgstr "Avec cette option le format de la date de début et de fin peut être spécifié pour le fichier CSV importé."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:32
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:32
 msgid "Text for no events"
-msgstr ""
+msgstr "Texte si pas d'événements."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:34
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:34
 msgid ""
 "This option defines the displayed text when no events are available for the "
 "selected view."
-msgstr ""
+msgstr "Cette option définie le texte affiché lorsque aucun évènement n'est disponible dans la période sélectionné."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:37
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:37
 msgid "Multiday filter range"
-msgstr ""
+msgstr "Filtre sur plusieurs jours"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:38
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:38
 msgid "Use the complete event range in the date filter"
-msgstr ""
+msgstr "Utiliser la période complète dans le filtre par date."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:39
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:39
 msgid ""
 "This option defines if the complete range of a multiday event shall be "
 "considered in the date filter."
-msgstr ""
+msgstr "Cette option définie si la période complète doit être pris en compte dans les filtres par dates."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:40
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:40
 msgid ""
 "If disabled, only the start day of an event is considered in the filter."
-msgstr ""
+msgstr "Si désactivé, seulement le jour de départ est pris en compte dans le filtre."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:41
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:41
 msgid ""
 "For an example multiday event which started yesterday and ends tomorrow this"
 " means, that it is displayed in umcoming dates when this option is enabled, "
 "but it is hidden when the option is disabled."
-msgstr ""
+msgstr "Par exemple, un événement sur plusieurs jours commence hier et finit demain, cela signifie que qu'il sera affiché dans les prochaines dates si l'option est active, mais il sera caché si l'option est désactivé."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:44
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:44
 msgid "Date display"
-msgstr ""
+msgstr "Affichage de la date"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:45
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:45
 msgid "Show the date only once per day"
-msgstr ""
+msgstr "Afficher la date seulement une fois par jour."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:46
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:46
 msgid ""
 "With this option enabled the date is only displayed once per day if more "
 "than one event is available on the same day."
-msgstr ""
+msgstr "Avec cette option activé, la date n'est affiché seulement une fois par jour si plusieurs événements sont disponible le même jour."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:47
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:47
 msgid ""
 "If enabled, the events are ordered in a different way (end date before start"
 " time) to allow using the same date for as much events as possible."
-msgstr ""
+msgstr "Si activé, les évènements sont ordonné d'une différente manière (la date de fin avant la date de début) pour mettre d'utiliser la même date sur le plus d'évènements possible."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:50
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:50
 msgid "HTML tags"
-msgstr ""
+msgstr "Tags HTML"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:51
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:56
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:51
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:56
 #, php-format
 msgid "Allow HTML tags in the event field \"%1$s\""
-msgstr ""
+msgstr "Autoriser les tags HTML dans le champs \"%1$s\""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:52
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:57
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:52
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:57
 #, php-format
 msgid ""
 "This option specifies if HTML tags are allowed in the event field \"%1$s\"."
-msgstr ""
+msgstr "Cette option indique que les tags html sont autorisé dans le champs \"%1$s\""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:61
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:61
 msgid "Text for \"Show details\""
-msgstr ""
+msgstr "Texte pour \"Afficher détails\""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:62
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:62
 msgid ""
 "With this option the displayed text for the link to show the event details "
 "can be changed, when collapsing is enabled."
-msgstr ""
+msgstr "Avec cette option, le texte affiché pour le lien qui permet de lire le texte d'un évènement peut être changé, lorsque l'option Replier est activé."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:65
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:65
 msgid "Text for \"Hide details\""
-msgstr ""
+msgstr "Texte pour \"Cacher les détails\""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:66
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:66
 msgid ""
 "With this option the displayed text for the link to hide the event details "
 "can be changed, when collapsing is enabled."
-msgstr ""
+msgstr "Avec cette option, le texte affiché pour le lien qui permet de cacher le texte d'un évènement peut être changé, lorsque l'option Replier est activé."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:69
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:69
 msgid "Disable CSS file"
-msgstr ""
+msgstr "Désactiver le fichier CSS"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:70
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:70
 #, php-format
 msgid "Disable the %1$s file."
-msgstr ""
+msgstr "Désactiver le fichier %1$s."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:71
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:71
 #, php-format
 msgid "With this option you can disable the inclusion of the %1$s file."
-msgstr ""
+msgstr "Avec cette option vous pouvez désactiver l'inclusion du fichier CSS %1$s."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:72
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:72
 msgid ""
 "This normally only make sense if you have css conflicts with your theme and "
 "want to set all required css styles somewhere else (e.g. in the theme css)."
-msgstr ""
+msgstr "Cela n'a de sens que si vous avez un conflit de CSS avec votre theme et voulez définir tous les styles CSS à un autre endroit (I.E. dans le CSS de votre thème)."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:76
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:76
 msgid "Date format in edit form"
-msgstr ""
+msgstr "Format de la date dans le formulaire d'édition."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:77
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:77
 msgid ""
 "This option sets the displayed date format for the event date fields in the "
 "event new / edit form."
-msgstr ""
+msgstr "Cette option définie le format de la date affiché dans le champ date pour le formulaire d'ajout/édition d'évènements."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:78
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:78
 msgid "The standard is an empty string to use the Wordpress standard setting."
-msgstr ""
+msgstr "Si cette option est vide, le format définie dans les paramètres Wordpress est utilisé."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:79
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:79
 #, php-format
 msgid ""
 "All available options to specify the date format can be found %1$shere%2$s."
-msgstr ""
+msgstr "Toutes les options disponibles pour spécifier le format de la date peut être trouvé %1$sici%2$s"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:83
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:83
 msgid "Enable RSS feed"
-msgstr ""
+msgstr "Activer flux RSS"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:84
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:84
 msgid "Enable support for an event RSS feed"
-msgstr ""
+msgstr "Activer le support pour un flux RSS des évènements"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:85
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:85
 msgid ""
 "This option activates a RSS feed for the events.<br />\n"
 "\t                                                    You have to enable this option if you want to use one of the RSS feed features."
-msgstr ""
+msgstr "Cette option active un flux RSS pour les évènements.<br/>\n⇥ Vous devez activer cette option si vous voulez utiliser une des fonctionnalités sur les flux RSS."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:89
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:89
 msgid "Feed name"
-msgstr ""
+msgstr "Nom du flux"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:90
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:90
 msgid ""
 "This options sets the feed name. The standard value is \"event-list\".<br />\n"
 "\t                                                    This name will be used in the feed url (e.g. <code>domain.com/?feed=event-list</code> or <code>domain.com/feed/eventlist</code> for an installation with permalinks"
-msgstr ""
+msgstr "Cette option définie le nom du flux. La valeur par défaut est \"event-list\".<br />\n⇥ Ce nom sera utilisé dans l'URL du flux (i.e.. <code>domain.com/?feed=event-list</code> ou <code>domain.com/feed/eventlist</code> pour une installation avec des permaliens)"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:95
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:95
 msgid "Feed Description"
-msgstr ""
+msgstr "Description du Flux"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:96
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:96
 msgid ""
 "This options sets the feed description. The standard value is \"Eventlist Feed\".<br />\n"
 "\t                                                    This description will be used in the title for the feed link in the html head and for the description in the feed itself."
-msgstr ""
+msgstr "Cette option définie la description du flux. La valeur par défaut est \"EventList Feed\".<br/>\n⇥ Cette description sera utilisé dans le titre pour le liens vers le flux RSS dans l'entête de la page et dans la description du flux RSS."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:101
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:101
 msgid "Listed events"
-msgstr ""
+msgstr "Evènements listés"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:102
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:102
 msgid "Only show upcoming events in feed"
-msgstr ""
+msgstr "Voir seulement les prochains évènements dans le flux."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:103
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:103
 msgid ""
 "If this option is enabled only the upcoming events are listed in the feed.<br />\n"
 "\t                                                    If disabled all events (upcoming and past) will be listed."
-msgstr ""
+msgstr "Si cette option est activé, seulement les prochains évènements seront listés dans le flux.<br/>\n⇥ Si désactivé, tous les évènements (prochain et passé) seront listés."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:108
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:108
 msgid "Add RSS feed link in head"
-msgstr ""
+msgstr "Ajouter le lien du flux RSS dans l'entête de la page"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:109
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:109
 msgid "Add RSS feed link in the html head"
-msgstr ""
+msgstr "Ajouter le lien vers le flux dans l'entête de la page HTML"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:110
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:110
 msgid ""
 "This option adds a RSS feed in the html head for the events.<br />\n"
 "\t                                                    You have 2 possibilities to include the RSS feed:<br />\n"
 "\t                                                    The first option is to use this option to include a link in the html head. This link will be recognized by browers or feed readers.<br />\n"
 "\t                                                    The second possibility is to include a visible feed link directly in the event list. This can be done by setting the shortcode attribute \"add_feed_link\" to \"true\"<br />\n"
 "\t                                                    This option is only valid if the option \"Enable RSS feed\" is enabled."
-msgstr ""
+msgstr "Cette option ajoute un lien vers le flux RSS dans l'entête de la page HTML.<br/>\n⇥ Vous avez 2 possibilités pour inclure un flux RSS:<br/>\n⇥ La première option est d'utiliser cette option pour inclure un lien dans l'entête HTML. Ce lien sera reconnue par les navigateurs ou les lecteurs RSS.<br/>\n⇥ La seconde possibilité est d'inclure un lien visible vers le flux directement dans la liste des évènements. Cela peut se faire en ajoutant l'attribut add_feed_link=true dans le shortcode.<br/>\n⇥ Cette option est seulement valable si l'option \"Activer le flux RSS\" est actif."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:118
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:118
 msgid "Position of the RSS feed link"
-msgstr ""
+msgstr "Position du flux RSS"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:120
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:120
 msgid ""
 "This option specifies the position of the RSS feed link in the event list.<br />\n"
 "\t                                                    The options are to display the link at the top, at the bottom or between the navigation bar and the event list.<br />\n"
 "\t                                                    You have to set the shortcode attribute \"add_feed_link\" to \"true\" if you want to show the feed link."
-msgstr ""
+msgstr "Cette option spécifie la position du lien vers le flux RSS dans la liste des évènements.<br/>\n⇥ Cette option permet d'afficher un lien au dessus, en dessous ou entre la bare de navigation et la liste d'évènement.<br/>\n⇥ Vous devez ajouter l'attribut add_feed_link=true is vous voulez voir ce lien."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:126
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:126
 msgid "Align of the RSS feed link"
-msgstr ""
+msgstr "Alignement du lien RSS"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:128
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:128
 msgid ""
 "This option specifies the align of the RSS feed link in the event list.<br />\n"
 "\t                                                    The link can be displayed on the left side, centered or on the right.<br />\n"
 "\t                                                    You have to set the shortcode attribute \"add_feed_link\" to \"true\" if you want to show the feed link."
-msgstr ""
+msgstr "Cette option spécifie l'alignement du lien RSS dans la liste des évènements.<br/>\n⇥ Ce lien sera aligné à gauche, à droite ou centré.<br/>\n⇥ Vous devez ajouter l'attribut add_feed_link=true au shortcode si vous voulez voir ce lien."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:134
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:134
 msgid "Feed link text"
-msgstr ""
+msgstr "Text du lien du flux"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:135
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:135
 msgid ""
 "This option specifies the caption of the RSS feed link in the event list.<br />\n"
 "\t                                                    Insert an empty text to hide any text if you only want to show the rss image.<br />\n"
 "\t                                                    You have to set the shortcode attribute \"add_feed_link\" to \"true\" if you want to show the feed link."
-msgstr ""
+msgstr "Cette option spécifie le texte du lien vers le flux RSS des évènements dans la liste.<br/>\n⇥ Insérer un text vide pour cacher le texte du lien si vous voulez seulement afficher l'image.<br/>\n⇥ Vous devez ajouter l'attribut add_feed_link=true au shortcode si vous voulez voir ce lien."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:141
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:141
 msgid "Feed link image"
-msgstr ""
+msgstr "Image du flux RSS"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:142
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:142
 msgid "Show rss image in feed link"
-msgstr ""
+msgstr "Afficher l'image dans le lien vers le flux RSS"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options_helptexts.php:143
+#: /home/zeus/mike/workspace/wp-event-list/includes/options_helptexts.php:143
 msgid ""
 "This option specifies if the an image should be dispayed in the feed link in front of the text.<br />\n"
 "\t                                                    You have to set the shortcode attribute \"add_feed_link\" to \"true\" if you want to show the feed link."
-msgstr ""
+msgstr "Cette option indique si l'image doit être affiché devant le texte dans le lien vers le flux RSS.<br/>\n⇥ Vous devez ajouter l'attribut add_feed_link=true au shortcode si vous voulez voir ce lien."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options.php:42
+#: /home/zeus/mike/workspace/wp-event-list/includes/options.php:42
 msgid "Show details"
-msgstr ""
+msgstr "Afficher les détails"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/options.php:43
+#: /home/zeus/mike/workspace/wp-event-list/includes/options.php:43
 msgid "Hide details"
-msgstr ""
+msgstr "Cacher les détails"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:8
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:8
 msgid ""
 "With this attribute you can specify an event from which the event-details are shown initially. The standard is to show the event-list.<br />\n"
 "\t                                            Specify an event-id e.g. \"13\" to change this behavior. It is still possible to go back to the event-list via the filterbar or url parameters."
-msgstr ""
+msgstr "Avec cette attribut vous indiquer si l'évènement que vous spécifiez doit afficher son détail à la place de la liste des évènements. Par défaut c'est la liste des évènements qui est affichée.<br/>\n⇥ Spécifiez un identifiant d'évènement i.e. \"13\" pour changer ce comportement. Il est toujours possible de revenir à la liste des évènements via la bare de filtrage ou les paramètres de l'URL."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:12
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:12
 msgid ""
 "This attribute specifies which events are initially shown. The standard is to show the upcoming events.<br />\n"
 "\t                                            Specify a year e.g. \"2014\" to change this behavior. It is still possible to change the displayed event date range via the filterbar or url parameters."
-msgstr ""
+msgstr "Cet attribut spécifie quels évènements sont affichés initialement. Par défaut, les prochains évènements sont affichés.<br/>\n⇥ Spécifiez une année i.e. \"2014\" pour changer ce comportement. Il est toujours possible de changer la période d'affichage via la bare de filtrage ou les paramètres de l'URL."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:16
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:16
 msgid ""
 "This attribute specifies the category of which events are initially shown. The standard is to show events of all categories.<br />\n"
 "\t                                            Specify a category slug to change this behavior. It is still possible to change the displayed categories via the filterbar or url parameters."
-msgstr ""
+msgstr "Cet attribut spécifie la catégorie des évènements  qui sont initialement affiché. Par défaut tous les évènements de toutes les catégories sont affichés.<br/>\n⇥ Spécifiez un slug de catégorie pour changer ce comportement. Il est toujours possible de changer ce comportement via la bare de filtrage ou les paramètres de l'URL."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:20
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:20
 msgid ""
 "This attribute specifies the initial order of the events.<br />\n"
 "\t                                            With \"date_asc\" (standard value) the events are sorted from old to new, with \"date_desc\" in the opposite direction (from new to old)."
-msgstr ""
+msgstr "Cet attribut spécifie le trie initiale des évènements.<br/>\n⇥ Avec \"date_asc\" (par défaut) les évènements sont triés par les plus anciens au plus récent, avec \"date_desc\" les évènements sont triés dans l'autre sens (du plus récent au plus ancien)."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:24
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:24
 msgid ""
 "This attribute specifies the dates and date ranges of which events are displayed. The standard is \"all\" to show all events.<br />\n"
 "\t                                            Filtered events according to date_filter value are not available in the event list.<br />\n"
 "\t                                            You can find all available values with a description and examples in \"Available Date Formats\" and \"Available Date Range Formats\" below.<br />\n"
 "\t                                            See \"Filter Syntax\" description if you want to define complex filters."
-msgstr ""
+msgstr "Cet attribut spécifie les dates et la période des évènements qui seront affichés. La valeur par défaut est \"all\" pour afficher tous les évènments.<br/>\n⇥ Les évènements filtrés selon la valeur de ce filtre ne seront pas affiché dans la liste des évènements.\n⇥ Vous pouvez trouver toutes les valeurs disponible avec une description et des exemples dans les sections \"Format de date disponible\" et \"Format de période de date disponible\" ci-dessous.\n⇥ Voir la section \"Syntaxe des filtres\" si vous voulez définir des filtres complexes."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:30
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:30
 msgid ""
 "This attribute specifies the categories of which events are shown. The standard is \"all\" or an empty string to show all events.<br />\n"
 "\t                                            Filtered events defined in categories which doesn´t match cat_filter are not shown in the event list. They are also not available if a manual url parameter is added.<br />\n"
 "\t                                            The filter is specified via the given category slug. See \"Filter Syntax\" description if you want to define complex filters."
-msgstr ""
+msgstr "Cet attribut spécifie les catégories des évènements qui seront affichés. La valeur par défaut est \"all\" ou une chaine vide pour afficher tous les évènements.<br/>\n⇥ Les évènements filtrés selon la valeur de ce filtre ne seront pas affiché dans la liste des évènements. Ils ne seront pas disponible si un paramètre dans l'URL est ajouté manuellement.\n⇥ Le filtre utilise les sluf de catégories.\n⇥ Voir la section \"Syntaxe des filtres\" si vous voulez définir des filtres complexes."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:35
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:35
 msgid ""
 "This attribute specifies how many events should be displayed if upcoming events is selected.<br />\n"
 "\t                                            0 is the standard value which means that all events will be displayed.<br />\n"
 "\t                                            Please not that in the actual version there is no pagination of the events available."
-msgstr ""
+msgstr "Cet attribut définie combien d'évènements sont affiché si l'option prochain évènements est selectionné.<br/>\n⇥ 0 est la valeur par défaut et signifie que tous les évènements sont affichés.\n⇥ Veuillez noter que dans cette version actuel il n'y a pas de pagination de disponible."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:40
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:40
 msgid ""
 "This attribute specifies if the filterbar should be displayed. The filterbar allows the users to select filters to limit the listed events.<br />\n"
 "\t                                            Choose \"false\" to always hide and \"true\" to always show the navigation.<br />\n"
 "\t                                            With \"event_list_only\" the filterbar is only visible in the event list and with \"single_event_only\" only for a single event"
+msgstr "Cet attribut spécifie si la barre de filtre doit être affiché. La bare de filtre permet à l'utilisateur de sélectionner le filtre pour limiter les évènements affichés.<br/>\n⇥ Choisissez \"false\" pour toujours cacher et \"true\" pour toujours afficher la barre de filtre.<br/>\n⇥ Avec la valeur \"event_list_only\" la barre de filtre est seulement visible sur la liste des évènements, avec la valeur \"single_event_only\" la barre de filtre est visible seulement sur l'affichage d'un évènement simple."
+
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:78
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:93
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:108
+msgid "number"
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:79
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:79
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:94
+msgid ""
+"This attribute specifies if the title should be truncated to the given "
+"number of characters in the event list."
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:80
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:95
+#, php-format
+msgid ""
+"With the standard value %1$s the full text is displayed, with %2$s the text "
+"is automatically truncated via css."
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:81
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:96
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:111
+msgid "This attribute has no influence if only a single event is shown."
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:84
 msgid ""
 "This attribute specifies if the starttime is displayed in the event list.<br />\n"
 "\t                                            Choose \"false\" to always hide and \"true\" to always show the starttime.<br />\n"
 "\t                                            With \"event_list_only\" the starttime is only visible in the event list and with \"single_event_only\" only for a single event"
-msgstr ""
+msgstr "Cet attribut spécifie si la date de début doit être affiché.<br/>\n⇥ Choisissez \"false\" pour toujours cacher et \"true\" pour toujours afficher la date de début.<br/>\n⇥ Avec la valeur \"event_list_only\" la date de début est seulement visible sur la liste des évènements, avec la valeur \"single_event_only\" la date de début est visible seulement sur l'affichage d'un évènement simple."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:84
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:89
 msgid ""
 "This attribute specifies if the location is displayed in the event list.<br />\n"
 "\t                                            Choose \"false\" to always hide and \"true\" to always show the location.<br />\n"
 "\t                                            With \"event_list_only\" the location is only visible in the event list and with \"single_event_only\" only for a single event"
-msgstr ""
+msgstr "Cet attribut spécifie si la localisation doit être affiché.<br/>\n⇥ Choisissez \"false\" pour toujours cacher et \"true\" pour toujours afficher la localisation.<br/>\n⇥ Avec la valeur \"event_list_only\" la localisation  est seulement visible sur la liste des évènements, avec la valeur \"single_event_only\" la localisation est visible seulement sur l'affichage d'un évènement simple."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:89
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:99
 msgid ""
 "This attribute specifies if the categories are displayed in the event list.<br />\n"
 "\t                                            Choose \"false\" to always hide and \"true\" to always show the category.<br />\n"
 "\t                                            With \"event_list_only\" the categories are only visible in the event list and with \"single_event_only\" only for a single event"
-msgstr ""
+msgstr "Cet attribut spécifie si la catégorie doit être affiché.<br/>\n⇥ Choisissez \"false\" pour toujours cacher et \"true\" pour toujours afficher la catégorie.<br/>\n⇥ Avec la valeur \"event_list_only\" la catégorie est seulement visible sur la liste des évènements, avec la valeur \"single_event_only\" la catégorie est visible seulement sur l'affichage d'un évènement simple."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:94
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:104
 msgid ""
 "This attribute specifies if the details are displayed in the event list.<br />\n"
 "\t                                            Choose \"false\" to always hide and \"true\" to always show the details.<br />\n"
 "\t                                            With \"event_list_only\" the details are only visible in the event list and with \"single_event_only\" only for a single event"
-msgstr ""
+msgstr "Cet attribut spécifie si le détail doit être affiché.<br/>\n⇥ Choisissez \"false\" pour toujours cacher et \"true\" pour toujours afficher le détail.<br/>\n⇥ Avec la valeur \"event_list_only\" le détail est seulement visible sur la liste des évènements, avec la valeur \"single_event_only\" le détail est visible seulement sur l'affichage d'un évènement simple."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:99
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:109
 msgid ""
-"This attribute specifies if the details should be truncate to the given number of characters in the event list.<br />\n"
-"\t                                            With the standard value 0 the full details are displayed.<br />\n"
-"\t                                            This attribute has no influence if only a single event is shown."
+"This attribute specifies if the details should be truncate to the given "
+"number of characters in the event list."
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:104
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:110
+#, php-format
+msgid "With the standard value %1$s the full text is displayed."
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:114
 msgid ""
 "This attribute specifies if the details should be collapsed initially.<br />\n"
 "\t                                            Then a link will be displayed instead of the details. By clicking this link the details are getting visible.<br />\n"
 "\t                                            Available option are \"false\" to always disable collapsing and \"true\" to always enable collapsing of the details.<br />\n"
 "\t                                            With \"event_list_only\" the details are only collapsed in the event list view and with \"single_event_only\" only in single event view."
-msgstr ""
+msgstr "Cet attribut spécifie si le détail doit être initialement replier.<br/>\n⇥ Alors un lien apparaitra à la place du détail. En cliquant sur le lien le détails sera visible.<br/>\n⇥ Choisissez \"false\" pour désactiver et \"true\" pour activer l'option pour replier le détail.<br/>\n⇥ Avec la valeur \"event_list_only\" le détail est seulement replié sur la liste des évènements, avec la valeur \"single_event_only\" le détail est replié seulement sur l'affichage d'un évènement simple."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:110
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:120
 msgid ""
 "This attribute specifies if a link to the single event should be added onto the event name in the event list.<br />\n"
 "\t                                            Choose \"false\" to never add and \"true\" to always add the link.<br />\n"
 "\t                                            With \"event_list_only\" the link is only added in the event list and with \"single_event_only\" only for a single event.<br />\n"
 "\t                                            With \"events_with_details_only\" the link is only added in the event list for events with event details."
-msgstr ""
+msgstr "Cet attribut spécifie si un lien vers l'évènement simple doit être ajouté sur le nom de l'évènement dans la liste des évènements.<br/>\n⇥ Choisissez \"false\" pour jamais et \"true\" pour toujours ajouter le lien.<br/>\n⇥ Avec la valeur \"event_list_only\" le lien est seulement visible sur la liste des évènements, avec la valeur \"single_event_only\" le lien est visible seulement sur l'affichage d'un évènement simple."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:116
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:126
 msgid ""
 "This attribute specifies if a rss feed link should be added.<br />\n"
 "\t                                            You have to enable the feed in the eventlist settings to make this attribute workable.<br />\n"
 "\t                                            On that page you can also find some settings to modify the output.<br />\n"
 "\t                                            Choose \"false\" to never add and \"true\" to always add the link.<br />\n"
 "\t                                            With \"event_list_only\" the link is only added in the event list and with \"single_event_only\" only for a single event"
-msgstr ""
+msgstr "Cet attribut spécifie si un lien vers le flux RSS doit être ajouté dans la liste des évènements.<br/>\n⇥ Vous devez activer le flux RSS dans les paramètres du plugin pour que cette option fonctionne.<br/>\n⇥ Sur cette page, des options sont disponible pour modifier ce lien<br/>\n⇥ Choisissez \"false\" pour jamais et \"true\" pour toujours ajouter le lien.<br/>\n⇥ Avec la valeur \"event_list_only\" le lien est seulement visible sur la liste des évènements, avec la valeur \"single_event_only\" le lien est visible seulement sur l'affichage d'un évènement simple."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:122
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:132
 msgid ""
 "This attribute specifies the page or post url for event links.<br />\n"
 "\t                                            The standard is an empty string. Then the url will be calculated automatically.<br />\n"
 "\t                                            An url is normally only required for the use of the shortcode in sidebars. It is also used in the event-list widget."
-msgstr ""
+msgstr "Cet attribut spécifie l'url de la page ou de l'article pour la liste des évènements.<br/>\n⇥ Par défaut, c'est une chaine vide. Alors l'url de la page courante est automatiquement utilisé.<br/>\n⇥ Une url est normale requis seulement pour utiliser le shortcode dans une barre latérale. Il est aussi utilisé dans le widget liste des évènements."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:129
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:135
-msgid ""
-"This attribute specifies if the title should be truncate to the given number of characters in the event list.<br />\n"
-"\t                                            With the standard value 0 the full details are displayed.<br />\n"
-"\t                                            This attribute has no influence if only a single event is shown."
-msgstr ""
-
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list_helptexts.php:141
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list_helptexts.php:139
 msgid ""
 "This attribute the specifies shortcode id of the used shortcode on the page specified with \"url_to_page\" attribute.<br />\n"
 "\t                                            The empty standard value is o.k. for the normal use. This attribute is normally only required for the event-list widget."
-msgstr ""
+msgstr "Cet attribut spécifie l'identifiant du shortcode utilisé sur la page.\n⇥ La valeur par défaut est suffisant pour une utilisation normale, cet attribut est simplement requis par le widget liste des évènements si plusieurs shortcode sont affichés sur la même page ou article."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list.php:138
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list.php:138
 msgid "Event Information:"
-msgstr ""
+msgstr "Information sur l'évènement"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/sc_event-list.php:405
+#: /home/zeus/mike/workspace/wp-event-list/includes/sc_event-list.php:408
 msgid "(more&hellip;)"
-msgstr ""
+msgstr "(plus&hellip;)"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:10
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:10
 msgid "This option defines the displayed title for the widget."
-msgstr ""
+msgstr "Cette option définie le titre affiché pour le widget"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:15
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:15
 msgid "Category Filter"
-msgstr ""
+msgstr "Filtre par catégories"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:17
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:17
 msgid ""
 "This option defines the categories of which events are shown. The standard "
 "is all or an empty string to show all events. Specify a category slug or a "
 "list of category slugs to only show events of the specified categories. See "
 "description of the shortcode attribute cat_filter for detailed info about "
 "all possibilities."
-msgstr ""
+msgstr "Cette option définie la catégorie d'évènement qui doit être affiché. Par défaut est \"all\" ou une chaîne vide pour afficher tous les évènements.\nSpécifiez un slug de catégorie ou une liste de slug de catégories pour afficher seulement les évènements de ces catégories.\nVoir la description des attributs du shortcode cat_filter pour avoir les informations détaillées de toutes les possibilités."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:22
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:22
 msgid "Number of listed events"
-msgstr ""
+msgstr "Nombre d'événement listés."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:24
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:24
 msgid "The number of upcoming events to display"
-msgstr ""
+msgstr "Le nombre des prochains d'évènements à afficher."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:29
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:29
 msgid "Truncate event title to"
-msgstr ""
+msgstr "Tronquer le titre à"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:30
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:51
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:65
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:30
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:52
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:67
 msgid "characters"
-msgstr ""
+msgstr "caractères"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:31
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:31
 msgid ""
-"This option defines the number of displayed characters for the event title. "
-"Set this value to 0 to view the full title."
+"This option defines the number of displayed characters for the event title."
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:36
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:32
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:54
+#, php-format
+msgid ""
+"Set this value to %1$s to view the full text, or set it to %2$s to "
+"automatically truncate the text via css."
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:37
 msgid "Show event starttime"
-msgstr ""
+msgstr "Afficher l'horaire de début de l'évènement"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:38
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:39
 msgid "This option defines if the event start time will be displayed."
-msgstr ""
+msgstr "Cette option définie si l’horaire de début doit être affiché."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:43
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:44
 msgid "Show event location"
-msgstr ""
+msgstr "Afficher la localisation de l'évènement"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:45
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:46
 msgid "This option defines if the event location will be displayed."
-msgstr ""
+msgstr "Cette option définie si la localisation de l'évènement doit être affiché."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:50
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:51
 msgid "Truncate location to"
-msgstr ""
+msgstr "Tronquer la localisation à"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:52
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:53
 msgid ""
 "If the event location is diplayed this option defines the number of "
-"displayed characters. Set this value to 0 to view the full location."
+"displayed characters."
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:57
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:59
 msgid "Show event details"
-msgstr ""
+msgstr "Afficher les détails de l'évènements"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:59
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:61
 msgid "This option defines if the event details will be displayed."
-msgstr ""
+msgstr "Cette option définie si les détails des évènements doit être affiché."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:64
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:66
 msgid "Truncate details to"
-msgstr ""
+msgstr "Tronquer les détails à "
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:66
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:68
 msgid ""
 "If the event details are diplayed this option defines the number of diplayed"
-" characters. Set this value to 0 to view the full details."
+" characters."
 msgstr ""
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:71
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:69
+#, php-format
+msgid "Set this value to %1$s to view the full text."
+msgstr ""
+
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:74
 msgid "URL to the linked Event List page"
-msgstr ""
+msgstr "URL vers la page d'évènement"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:73
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:76
 msgid ""
 "This option defines the url to the linked Event List page. This option is "
 "required if you want to use one of the options below."
-msgstr ""
+msgstr "Cette option définie l'url de la page affichant la liste des évènements. Cette option est obligatoire si vous voulez utiliser une des options ci-dessous."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:78
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:81
 msgid "Shortcode ID on linked page"
-msgstr ""
+msgstr "Identifiant du shortcode sur la page lié"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:80
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:83
 msgid ""
 "This option defines the shortcode-id for the Event List on the linked page. "
 "Normally the standard value 1 is correct, you only have to change it if you "
 "use multiple event-list shortcodes on the linked page."
-msgstr ""
+msgstr "Cette option définie l'identifiant dans le shortcode sur la page lié. Normalement, la valeur 1 est correct, vous avez à changer cela seulement si vous afficher plusieurs shortcode sur la page lié."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:87
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:90
 msgid ""
 "With this option you can add a link to the single event page for every "
 "displayed event. You have to specify the url to the page and the shortcode "
 "id option if you want to use it."
-msgstr ""
+msgstr "Avec cette option vous pouvez afficher un lien vers une page spécifique pour chaque évènement. Vous devez spécifier une url vers la page et le shortcode identifiant pour utiliser cette option."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:94
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:97
 msgid ""
 "With this option you can add a link to the event-list page below the "
 "diplayed events. You have to specify the url to page option if you want to "
 "use it."
-msgstr ""
+msgstr "Avec cette option, vous pouvez ajouter un lien vers la liste des évènements affiché en dessous des évènements affichés. Vous devez spécifier l'url de la page si vous voulez utiliser cette option."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:99
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:102
 msgid "Caption for the link"
-msgstr ""
+msgstr "Texte du lien."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget_helptexts.php:101
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget_helptexts.php:104
 msgid ""
 "This option defines the text for the link to the Event List page if the "
 "approriate option is selected."
-msgstr ""
+msgstr "Cette option définie le texte du lien vers la liste des évènements si l'option est activé."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget.php:20
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget.php:20
 msgid "With this widget a list of upcoming events can be displayed."
-msgstr ""
+msgstr "Avec ce widget une liste des prochains évènements peut être affichées."
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget.php:25
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget.php:25
 msgid "Upcoming events"
-msgstr ""
+msgstr "Prochains évènements"
 
-#: /home/zeus/mike/workspace/wp-eventlist/includes/widget.php:38
+#: /home/zeus/mike/workspace/wp-event-list/includes/widget.php:38
 msgid "show events page"
-msgstr ""
+msgstr "Voir tous les évènements"

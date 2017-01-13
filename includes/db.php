@@ -273,15 +273,25 @@ class EL_Db {
 	}
 
 	/** ************************************************************************************************************
-	 * Function to truncate and shorten text
+	 * Truncate HTML, close opened tags
 	 *
-	 * @param string $html The html code which should be shortened
-	 * @param int $length The length to which the text should be shortened
-	 * @param bool skip If this value is true the truncate will be skipped (nothing will be done)
-	 * @param bool perserve_tags Specifies if html tags should be preserved or if only the text should be shortened
+	 * @param string $html          The html code which should be shortened.
+	 * @param int    $length        The length (number of characters) to which the text will be shortened.
+	 *                              With [0] the full text will be returned. With [auto] also the complete text
+	 *                              will be used, but a wrapper div will be added which shortens the text to 1 full
+	 *                              line via css.
+	 * @param bool   $skip          If this value is true the truncate will be skipped (nothing will be done)
+	 * @param bool   $perserve_tags Specifies if html tags should be preserved or if only the text should be
+	 *                              shortened.
+	 * @param string $link          If an url is given a link to the given url will be added for the ellipsis at
+	 *                              the end of the truncated text.
 	 ***************************************************************************************************************/
-	public function truncate($html, $length, $skip=false, $preserve_tags=true) {
+	public function truncate($html, $length, $skip=false, $preserve_tags=true, $link=false) {
 		mb_internal_encoding("UTF-8");
+		if('auto' == $length) {
+			// add wrapper div with css styles for css truncate and return
+			return '<div style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis">'.$html.'</div>';
+		}
 		if(0 >= $length || mb_strlen($html) <= $length || $skip) {
 			// do nothing
 			return $html;
@@ -320,8 +330,6 @@ class EL_Db {
 					if($this->mb_preg_match('{^<[\b]}', $tag)) {
 						// This is a closing tag
 						$openingTag = array_pop($tags);
-						// Check for not properly nested tags (for debugging only)
-						//assert($openingTag == $tagName, '----- Tags not properly nested: OpeningTag: '.$openingTag.'; TagName: '.$tagName.' -----');
 						$out .= $tag;
 					}
 					else if($this->mb_preg_match('{/\s?>$}', $tag)) {
@@ -343,7 +351,12 @@ class EL_Db {
 			}
 			// Print ellipsis ("...") if the html was truncated
 			if($truncated) {
-				$out .= ' &hellip;';
+				if($link) {
+					$out .= ' <a href="'.$link.'">&hellip;</a>';
+				}
+				else {
+					$out .= ' &hellip;';
+				}
 			}
 			// Close any open tags.
 			while(!empty($tags)) {

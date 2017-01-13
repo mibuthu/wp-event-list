@@ -42,7 +42,7 @@ class EL_Admin {
 	 */
 	public function register_pages() {
 		// Main Menu page
-		add_menu_page(__('Event List','event-list'), __('Event List','event-list'), 'edit_posts', 'el_admin_main', array(&$this, 'show_main_page'), EL_URL.'admin/images/calendar.png', '22.2');
+		add_menu_page(__('Event List','event-list'), __('Event List','event-list'), 'edit_posts', 'el_admin_main', array(&$this, 'show_main_page'), 'dashicons-calendar-alt', '22.2');
 
 		// All Events subpage
 		$page = add_submenu_page('el_admin_main', __('Events','event-list'), __('All Events','event-list'), 'edit_posts', 'el_admin_main', array(&$this, 'show_main_page'));

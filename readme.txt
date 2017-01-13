@@ -3,8 +3,8 @@ Contributors: mibuthu, clhunsen
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W54LNZMWF9KW2
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, filter, admin, attribute, widget, sidebar, feed, rss
 Requires at least: 3.3
-Tested up to: 4.5
-Stable tag: 0.7.6
+Tested up to: 4.7
+Stable tag: 0.7.7
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -81,6 +81,15 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 
 
 == Changelog ==
+
+= 0.7.7 (2017-01-13) =
+* replaced custom admin menu icon with wordpress integrated icon for a consistent styling
+* added support to truncate text via css to exactly 1 line (length='auto')
+* added a link to the event at the ellipsis of a truncated details text
+* improved code for deleting of events
+* fixed some issues with the bulk action menu and button in admin event table
+* improved security for external links
+* updated translations
 
 = 0.7.6 (2015-12-13) =
 * added shortcode attribute "collapse_details"
