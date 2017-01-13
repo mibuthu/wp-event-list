@@ -7,6 +7,7 @@ function eventlist_deleteEvent (del_ids, referer_url) {
 	}
 	else if (window.confirm("Are you sure you want to delete this event?")) {
 		document.location.href = referer_url + "&id=" + del_ids + "&action=delete&noheader=true";
+		return;
 	}
 	document.location.href = referer_url;
 }
