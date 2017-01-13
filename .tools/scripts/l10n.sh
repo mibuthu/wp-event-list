@@ -80,7 +80,8 @@ function l10n_update_source() {
 	mkdir -p "${lang_path}"
 	rm -f "${lang_source}"
 	wp_keywords="-k__ -k_e -k_n:1,2 -k_x:1,2c -k_ex:1,2c -k_nx:4c,1,2 -kesc_attr__ -kesc_attr_e -kesc_attr_x:1,2c -kesc_html__ -kesc_html_e -kesc_html_x:1,2c -k_n_noop:1,2 -k_nx_noop:4c,1,2"
-	find "${plugin_path}" -iname "*.php" | sort | xargs xgettext --from-code=UTF-8 --default-domain=${plugin_slug} --output="${lang_source}" --language=PHP --no-wrap --copyright-holder="${plugin_author}" ${wp_keywords}
+	cd "${plugin_path}";
+	find "." -iname "*.php" | sort | xargs xgettext --from-code=UTF-8 --default-domain=${plugin_slug} --output="${lang_source}" --language=PHP --no-wrap --copyright-holder="${plugin_author}" ${wp_keywords}
 
 	# fix the header information in the file
 	now=$(date +%Y)
