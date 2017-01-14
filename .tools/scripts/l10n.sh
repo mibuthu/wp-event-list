@@ -13,8 +13,8 @@ debug=0
 tx_arg=""
 
 # get project information from the plugin header
-plugin_name="$(awk -F: '/Plugin Name:/ { print $2 }' "${plugin_path}/${plugin_slug}.php" | sed 's/^ *//g')"
-plugin_author="$(awk -F: '/Author:/ { print $2 }' "${plugin_path}/${plugin_slug}.php" | sed 's/^ *//g')"
+plugin_name="$(awk -F: '/Plugin Name:/ { print $2 }' "${plugin_path}/${plugin_slug}.php" | sed 's/^ *//g' | tr -d '\r')"
+plugin_author="$(awk -F: '/Author:/ { print $2 }' "${plugin_path}/${plugin_slug}.php" | sed 's/^ *//g' | tr -d '\r')"
 
 # available options
 declare -A options
@@ -79,17 +79,26 @@ function l10n_update_source() {
 	# create the template file for translations
 	mkdir -p "${lang_path}"
 	rm -f "${lang_source}"
-	wp_keywords="-k__ -k_e -k_n:1,2 -k_x:1,2c -k_ex:1,2c -k_nx:4c,1,2 -kesc_attr__ -kesc_attr_e -kesc_attr_x:1,2c -kesc_html__ -kesc_html_e -kesc_html_x:1,2c -k_n_noop:1,2 -k_nx_noop:4c,1,2"
+	# define the wp keywords
+	# specify all keywords with numargs parmameter (t) to exclude functions without specified text-domain which will be used to use wordpress standard translations
+	wp_keywords="-k__:1,2t -k_e:1,2t -k_n:1,2,4t -k_x:1,2c,3t -k_ex:1,2c,3t -k_nx:1,2,4c,5t -kesc_attr__:1,2t -kesc_attr_e:1,2t -kesc_attr_x:1,2c,3t -kesc_html__:1,2t -kesc_html_e:1,2t -kesc_html_x:1,2c,3t -k_n_noop:1,2,3t -k_nx_noop:1,2,3c,4t"
 	cd "${plugin_path}";
-	find "." -iname "*.php" | sort | xargs xgettext --from-code=UTF-8 --default-domain=${plugin_slug} --output="${lang_source}" --language=PHP --no-wrap --copyright-holder="${plugin_author}" ${wp_keywords}
+	find "." -iname "*.php" | sort | xargs xgettext --from-code=UTF-8 --default-domain=${plugin_slug} --output="${lang_source}" --language=PHP --no-wrap --copyright-holder="${plugin_author}" --msgid-bugs-address="https://wordpress.org/support/plugin/${plugin_slug}/" ${wp_keywords}
 
-	# fix the header information in the file
+	# fix the header comments in the file
 	now=$(date +%Y)
-	sed -i "s/SOME DESCRIPTIVE TITLE./This is the translation template file for ${plugin_name}./g" "${lang_source}"
-	sed -i "s/(C) YEAR/(C) ${now}/g" "${lang_source}"
-	sed -i "s/the PACKAGE package./the plugin./g" "${lang_source}"
+	sed -i "s/SOME DESCRIPTIVE TITLE./Translation file for the '${plugin_name}' WordPress plugin/g" "${lang_source}"
+	sed -i "s/(C) YEAR/(C) ${now} by/g" "${lang_source}"
+	sed -i "s/the PACKAGE package./the corresponding wordpress plugin./g" "${lang_source}"
+	sed -i "/# FIRST AUTHOR*/d" "${lang_source}"
 
-	# current plural forms for english
+	# fix the header entries in the file
+	sed -i '/^"Project-Id-Version*/d' "${lang_source}"
+	sed -i '/^"PO-Revision-Date*/d' "${lang_source}"
+	sed -i '/^"Last-Translator*/d' "${lang_source}"
+	sed -i '/^"Language-Team*/d' "${lang_source}"
+	sed -i 's/^"Language: /"Language: en/g' "${lang_source}"
+	sed -i 's/charset=CHARSET/charset=UTF-8/g' "${lang_source}"
 	sed -i 's/^"Plural-Forms:.*/"Plural-Forms: nplurals=2; plural=(n != 1);\\n"/' "${lang_source}"
 }
 
