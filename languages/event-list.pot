@@ -1,18 +1,13 @@
-# This is the translation template file for Event List.
-# Copyright (C) 2017 Michael Burtscher
-# This file is distributed under the same license as the plugin.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Translation file for the 'Event List' WordPress plugin
+# Copyright (C) 2017 by mibuthu
+# This file is distributed under the same license as the corresponding wordpress plugin.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-13 20:02+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/event-list/\n"
+"POT-Creation-Date: 2017-01-14 20:34+0100\n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -42,8 +37,8 @@ msgstr ""
 msgid "Event List Categories"
 msgstr ""
 
-#: admin/admin.php:56 admin/includes/admin-import.php:128
-#: admin/includes/admin-new.php:136 admin/includes/event_table.php:111
+#: admin/admin.php:56 admin/includes/admin-new.php:136
+#: admin/includes/event_table.php:111
 msgid "Categories"
 msgstr ""
 
@@ -51,7 +46,7 @@ msgstr ""
 msgid "Event List Settings"
 msgstr ""
 
-#: admin/admin.php:60 includes/daterange_helptexts.php:37
+#: admin/admin.php:60
 msgid "Settings"
 msgstr ""
 
@@ -61,12 +56,6 @@ msgstr ""
 
 #: admin/admin.php:64
 msgid "About"
-msgstr ""
-
-#: admin/includes/admin-about.php:31 admin/includes/admin-categories.php:37
-#: admin/includes/admin-import.php:40 admin/includes/admin-main.php:75
-#: admin/includes/admin-new.php:38 admin/includes/admin-settings.php:31
-msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
 #: admin/includes/admin-about.php:35
@@ -304,30 +293,12 @@ msgid ""
 "\t\t\t                                                    If you want to manually edit the categories you have to disable this option."
 msgstr ""
 
-#: admin/includes/admin-categories.php:165
-#: admin/includes/category_table.php:107
-msgid "Name"
-msgstr ""
-
 #: admin/includes/admin-categories.php:167
 msgid "The name is how it appears on your site."
 msgstr ""
 
-#: admin/includes/admin-categories.php:170
-#: admin/includes/category_table.php:109
-msgid "Slug"
-msgstr ""
-
 #: admin/includes/admin-categories.php:172
 msgid "The “slug” is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens."
-msgstr ""
-
-#: admin/includes/admin-categories.php:175
-msgid "Parent"
-msgstr ""
-
-#: admin/includes/admin-categories.php:177
-msgid "None"
 msgstr ""
 
 #: admin/includes/admin-categories.php:185
@@ -447,14 +418,6 @@ msgstr ""
 msgid "There was an error when reading this CSV file."
 msgstr ""
 
-#: admin/includes/admin-import.php:225 admin/includes/admin-new.php:153
-msgid "Cancel"
-msgstr ""
-
-#: admin/includes/admin-import.php:237 admin/includes/admin-new.php:166
-msgid "No categories available."
-msgstr ""
-
 #: admin/includes/admin-main.php:115
 msgid "Edit Event"
 msgstr ""
@@ -488,20 +451,23 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: admin/includes/admin-new.php:212
-msgid "Goto Category Settings"
+#: admin/includes/admin-new.php:153
+msgid "Cancel"
 msgstr ""
 
-#: admin/includes/admin-new.php:220 admin/includes/event_table.php:273
-#: admin/includes/event_table.php:276 admin/includes/event_table.php:300
-msgid "Y/m/d"
+#: admin/includes/admin-new.php:166
+msgid "No categories available."
+msgstr ""
+
+#: admin/includes/admin-new.php:212
+msgid "Goto Category Settings"
 msgstr ""
 
 #: admin/includes/admin-settings.php:41
 msgid "Settings saved."
 msgstr ""
 
-#: admin/includes/admin-settings.php:68 includes/daterange_helptexts.php:37
+#: admin/includes/admin-settings.php:68
 msgid "General"
 msgstr ""
 
@@ -534,6 +500,14 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
+#: admin/includes/category_table.php:107
+msgid "Name"
+msgstr ""
+
+#: admin/includes/category_table.php:109
+msgid "Slug"
+msgstr ""
+
 #: admin/includes/event_table.php:112
 msgid "Author"
 msgstr ""
@@ -549,10 +523,6 @@ msgstr ""
 #: admin/includes/event_table.php:297
 #, php-format
 msgid "%s ago"
-msgstr ""
-
-#: admin/includes/event_table.php:302
-msgid "Y/m/d g:i:s A"
 msgstr ""
 
 #: includes/daterange_helptexts.php:7
@@ -656,10 +626,6 @@ msgstr ""
 msgid "The first day of the week is depending on the option %1$s which can be found and changed in %2$s."
 msgstr ""
 
-#: includes/daterange_helptexts.php:37
-msgid "Week Starts On"
-msgstr ""
-
 #: includes/daterange_helptexts.php:41
 msgid "Relative Day"
 msgstr ""
@@ -680,10 +646,6 @@ msgstr ""
 msgid ""
 "A date rage can be specified via a start date and end date seperated by a tilde (~).<br />\n"
 "\t                                     For the start and end date any available date format can be used."
-msgstr ""
-
-#: includes/daterange_helptexts.php:54 includes/filterbar.php:282
-msgid "All"
 msgstr ""
 
 #: includes/daterange_helptexts.php:55
@@ -710,6 +672,10 @@ msgstr ""
 
 #: includes/daterange_helptexts.php:65
 msgid "This value defines a range from the past to the previous day."
+msgstr ""
+
+#: includes/filterbar.php:282
+msgid "All"
 msgstr ""
 
 #: includes/filterbar.php:285
@@ -877,30 +843,12 @@ msgstr ""
 msgid "Enable support for an event RSS feed"
 msgstr ""
 
-#: includes/options_helptexts.php:85
-msgid ""
-"This option activates a RSS feed for the events.<br />\n"
-"\t                                                    You have to enable this option if you want to use one of the RSS feed features."
-msgstr ""
-
 #: includes/options_helptexts.php:89
 msgid "Feed name"
 msgstr ""
 
-#: includes/options_helptexts.php:90
-msgid ""
-"This options sets the feed name. The standard value is \"event-list\".<br />\n"
-"\t                                                    This name will be used in the feed url (e.g. <code>domain.com/?feed=event-list</code> or <code>domain.com/feed/eventlist</code> for an installation with permalinks"
-msgstr ""
-
 #: includes/options_helptexts.php:95
 msgid "Feed Description"
-msgstr ""
-
-#: includes/options_helptexts.php:96
-msgid ""
-"This options sets the feed description. The standard value is \"Eventlist Feed\".<br />\n"
-"\t                                                    This description will be used in the title for the feed link in the html head and for the description in the feed itself."
 msgstr ""
 
 #: includes/options_helptexts.php:101
@@ -911,12 +859,6 @@ msgstr ""
 msgid "Only show upcoming events in feed"
 msgstr ""
 
-#: includes/options_helptexts.php:103
-msgid ""
-"If this option is enabled only the upcoming events are listed in the feed.<br />\n"
-"\t                                                    If disabled all events (upcoming and past) will be listed."
-msgstr ""
-
 #: includes/options_helptexts.php:108
 msgid "Add RSS feed link in head"
 msgstr ""
@@ -925,46 +867,16 @@ msgstr ""
 msgid "Add RSS feed link in the html head"
 msgstr ""
 
-#: includes/options_helptexts.php:110
-msgid ""
-"This option adds a RSS feed in the html head for the events.<br />\n"
-"\t                                                    You have 2 possibilities to include the RSS feed:<br />\n"
-"\t                                                    The first option is to use this option to include a link in the html head. This link will be recognized by browers or feed readers.<br />\n"
-"\t                                                    The second possibility is to include a visible feed link directly in the event list. This can be done by setting the shortcode attribute \"add_feed_link\" to \"true\"<br />\n"
-"\t                                                    This option is only valid if the option \"Enable RSS feed\" is enabled."
-msgstr ""
-
 #: includes/options_helptexts.php:118
 msgid "Position of the RSS feed link"
-msgstr ""
-
-#: includes/options_helptexts.php:120
-msgid ""
-"This option specifies the position of the RSS feed link in the event list.<br />\n"
-"\t                                                    The options are to display the link at the top, at the bottom or between the navigation bar and the event list.<br />\n"
-"\t                                                    You have to set the shortcode attribute \"add_feed_link\" to \"true\" if you want to show the feed link."
 msgstr ""
 
 #: includes/options_helptexts.php:126
 msgid "Align of the RSS feed link"
 msgstr ""
 
-#: includes/options_helptexts.php:128
-msgid ""
-"This option specifies the align of the RSS feed link in the event list.<br />\n"
-"\t                                                    The link can be displayed on the left side, centered or on the right.<br />\n"
-"\t                                                    You have to set the shortcode attribute \"add_feed_link\" to \"true\" if you want to show the feed link."
-msgstr ""
-
 #: includes/options_helptexts.php:134
 msgid "Feed link text"
-msgstr ""
-
-#: includes/options_helptexts.php:135
-msgid ""
-"This option specifies the caption of the RSS feed link in the event list.<br />\n"
-"\t                                                    Insert an empty text to hide any text if you only want to show the rss image.<br />\n"
-"\t                                                    You have to set the shortcode attribute \"add_feed_link\" to \"true\" if you want to show the feed link."
 msgstr ""
 
 #: includes/options_helptexts.php:141
@@ -973,12 +885,6 @@ msgstr ""
 
 #: includes/options_helptexts.php:142
 msgid "Show rss image in feed link"
-msgstr ""
-
-#: includes/options_helptexts.php:143
-msgid ""
-"This option specifies if the an image should be dispayed in the feed link in front of the text.<br />\n"
-"\t                                                    You have to set the shortcode attribute \"add_feed_link\" to \"true\" if you want to show the feed link."
 msgstr ""
 
 #: includes/options.php:42
@@ -1142,10 +1048,6 @@ msgstr ""
 
 #: includes/sc_event-list.php:138
 msgid "Event Information:"
-msgstr ""
-
-#: includes/sc_event-list.php:408
-msgid "(more&hellip;)"
 msgstr ""
 
 #: includes/widget_helptexts.php:10
