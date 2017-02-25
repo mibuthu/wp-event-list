@@ -51,7 +51,16 @@ class EL_Admin_New {
 		wp_enqueue_script('jquery-ui-datepicker');
 		wp_enqueue_script('link');
 		wp_enqueue_script('eventlist_admin_new_js', EL_URL.'admin/js/admin_new.js');
+		// TODO: wp_localize_jquery_ui_datepicker is available since wordpress version 4.6.0.
+		//       For compatibility to older versions the function_exists test was added, this test can be removed again in a later version.
+		if(function_exists("wp_localize_jquery_ui_datepicker")) {
+			wp_localize_jquery_ui_datepicker();
+		}
 		wp_enqueue_style('eventlist_admin_new', EL_URL.'admin/css/admin_new.css');
+		// add the jquery-ui style "smooth" (see https://jqueryui.com/download/) (required for the xwp datepicker skin)
+		wp_enqueue_style('eventlist_jqueryui', EL_URL.'admin/css/jquery-ui.min.css');
+		// add the xwp datepicker skin (see https://github.com/xwp/wp-jquery-ui-datepicker-skins)
+		wp_enqueue_style('eventlist_datepicker', EL_URL.'admin/css/jquery-ui-datepicker.css');
 	}
 
 	public function edit_event() {
@@ -68,8 +77,9 @@ class EL_Admin_New {
 			$end_date = strtotime($event->end_date);
 		}
 		// Add required data for javascript in a hidden field
-		$json = json_encode(array('el_url'         => EL_URL,
-		                          'el_date_format' => $this->datepicker_format($dateformat)));
+		$json = json_encode(array('el_url'           => EL_URL,
+		                          'el_date_format'   => $this->datepicker_format($dateformat),
+		                          'el_start_of_week' => get_option('start_of_week')));
 		$out = '
 				<form method="POST" action="'.add_query_arg('noheader', 'true', '?page=el_admin_main').'">';
 		$out .= "
@@ -231,15 +241,18 @@ class EL_Admin_New {
 	 * @return string
 	 */
 	private function datepicker_format($format) {
-		$chars = array(
-				// Day
-				'd' => 'dd', 'j' => 'd', 'l' => 'DD', 'D' => 'D',
-				// Month
-				'm' => 'mm', 'n' => 'm', 'F' => 'MM', 'M' => 'M',
-				// Year
-				'Y' => 'yy', 'y' => 'y',
-		);
-		return strtr((string)$format, $chars);
+		return str_replace(
+        array(
+            'd', 'j', 'l', 'z', // Day.
+            'F', 'M', 'n', 'm', // Month.
+            'Y', 'y'            // Year.
+        ),
+        array(
+            'dd', 'd', 'DD', 'o',
+            'MM', 'M', 'm', 'mm',
+            'yy', 'y'
+        ),
+		  $format);
 	}
 }
 ?>
