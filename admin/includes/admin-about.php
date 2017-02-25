@@ -71,15 +71,15 @@ class EL_Admin_About {
 			<ul class="el-show-event-options"><li>'.sprintf(__('you can place the <strong>shortcode</strong> %1$s on any page or post','event-list'), '<code>[event-list]</code>').'</li>
 			<li>'.sprintf(__('you can add the <strong>widget</strong> %1$s in your sidebars','event-list'), '"Event List"').'</li></ul>
 			<p>'.__('The displayed events and their style can be modified with the available widget settings and the available attributes for the shortcode.','event-list').'<br />
-				'.__('A list of all available shortcode attributes with their description is available below.','event-list').'<br />
+				'.sprintf(__('A list of all available shortcode attributes with their descriptions is available in the %1$s tab.','event-list'), '<a href="admin.php?page=el_admin_about&tab=atts">'.__('Shortcode Attributes','event-list').'</a>').'<br />
 				'.__('The available  widget options are described in their tooltip text.','event-list').'<br />
 				'.sprintf(__('For the widget it is important to know that you have to insert an URL to the linked event-list page if you enable one of the links options
 				(%1$s or %2$s). This is required because the widget didn´t know in which page or post the shortcode was included.','event-list'), '"'.__('Add links to the single events','event-list').'"', '"'.__('Add a link to the Event List page','event-list').'"').'<br />
 				'.sprintf(__('Additionally you have to insert the correct Shortcode ID on the linked page. This ID describes which shortcode should be used on the given page or post if you have more than one.
 				So the standard value "1" is normally o.k., but if required you can check the ID by looking into the URL of an event link on your linked page or post.
-				The ID will be added at the end of the query parameter name (e.g. %1$s).','event-list'), '<i>http://www.your-homepage.com/?page_id=99&amp;event_id<strong>1</strong>=11</i>').'
+				The ID will be added at the end of the query parameter name (e.g. %1$s).','event-list'), '<i>https://www.your-homepage.com/?page_id=99&amp;event_id<strong>1</strong>=11</i>').'
 			</p>
-			<p>'.sprintf(__('Be sure to also check the %1$sSettings page%2$s to get Event List behaving just the way you want.','event-list'), '<a href="admin.php?page=el_admin_settings">', '</a>').'</p>
+			<p>'.sprintf(__('Be sure to also check the %1$s to get Event List behaving just the way you want.','event-list'), '<a href="admin.php?page=el_admin_settings">'.__('Settings page','event-list').'</a>').'</p>
 		</div>';
 	}
 	private function show_atts() {
