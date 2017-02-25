@@ -46,6 +46,8 @@ class EL_Admin_About {
 			$this->show_help();
 			$this->show_author();
 		}
+		echo '
+			</div>';
 	}
 
 	public function embed_about_scripts() {
@@ -80,8 +82,7 @@ class EL_Admin_About {
 				So the standard value "1" is normally o.k., but if required you can check the ID by looking into the URL of an event link on your linked page or post.
 				The ID will be added at the end of the query parameter name (e.g. %1$s).','event-list'), '<i>https://www.your-homepage.com/?page_id=99&amp;event_id<strong>1</strong>=11</i>').'
 			</p>
-			<p>'.sprintf(__('Be sure to also check the %1$s to get Event List behaving just the way you want.','event-list'), '<a href="admin.php?page=el_admin_settings">'.__('Settings page','event-list').'</a>').'</p>
-		</div>';
+			<p>'.sprintf(__('Be sure to also check the %1$s to get Event List behaving just the way you want.','event-list'), '<a href="admin.php?page=el_admin_settings">'.__('Settings page','event-list').'</a>').'</p>';
 	}
 
 	private function show_author() {
