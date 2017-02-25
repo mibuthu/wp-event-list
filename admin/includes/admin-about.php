@@ -44,6 +44,7 @@ class EL_Admin_About {
 		}
 		else {
 			$this->show_help();
+			$this->show_author();
 		}
 	}
 
@@ -82,6 +83,20 @@ class EL_Admin_About {
 			<p>'.sprintf(__('Be sure to also check the %1$s to get Event List behaving just the way you want.','event-list'), '<a href="admin.php?page=el_admin_settings">'.__('Settings page','event-list').'</a>').'</p>
 		</div>';
 	}
+
+	private function show_author() {
+		echo '
+			<br />
+			<h3>'.__('About the plugin author','event-list').'</h3>
+			<div class="help-content">
+				<p>'.sprintf(__('This plugin is developed by %1$s, you can find more information about the plugin on the %2$s.','event-list'), 'mibuthu', '<a href="http://wordpress.org/plugins/event-list" target="_blank" rel="noopener">'.__('wordpress plugin site','event-list').'</a>').'</p>
+				<p>'.sprintf(__('If you like the plugin please rate it on the %1$s.','event-list'), '<a href="http://wordpress.org/support/view/plugin-reviews/event-list" target="_blank" rel="noopener">'.__('wordpress plugin review site','event-list').'</a>').'<br />
+				<p>'.__('If you want to support the plugin I would be happy to get a small donation','event-list').':<br />
+				<a class="donate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W54LNZMWF9KW2" target="_blank" rel="noopener"><img src="'.EL_URL.'admin/images/paypal_btn_donate.gif" alt="PayPal Donation" title="Donate with PayPal" border="0"></a>
+				<a class="donate" href="https://flattr.com/submit/auto?user_id=mibuthu&url=https%3A%2F%2Fwordpress.org%2Fplugins%2Fevent-list" target="_blank" rel="noopener"><img src="'.EL_URL.'admin/images/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0"></a></p>
+			</div>';
+	}
+
 	private function show_atts() {
 		echo '
 			<h3 class="el-headline">'.__('Shortcode Attributes', 'event-list').'</h3>
