@@ -20,9 +20,6 @@ jQuery(document).ready(function($) {
 		"changeMonth": true,
 		"changeYear": true,
 		"numberOfMonths": 3,
-		"showOn": "both",
-		"buttonImage": conf.el_url + "admin/images/calendar.png",
-		"buttonImageOnly": true,
 		"constrainInput": true,
 		"altFormat": "yy-mm-dd",
 		"minDate": $.datepicker.parseDate('yy-mm-dd', "1970-01-01"),
@@ -31,6 +28,7 @@ jQuery(document).ready(function($) {
 
 	// Datepickers
 	$("#start_date").datepicker( {
+		dateFormat: conf.el_date_format, // don't work when only set with setDefaults
 		altField: "#sql_start_date",
 		onClose: function(selectedDate) {
 			// set minDate for end_date picker
@@ -40,8 +38,8 @@ jQuery(document).ready(function($) {
 		}
 	});
 	$("#end_date").datepicker( {
+		dateFormat: conf.el_date_format, // don't work when only set with setDefaults
 		altField: "#sql_end_date",
-		altFormat: "yy-mm-dd",
 	});
 
 	// Toogle end_date visibility and insert the correct date
@@ -50,8 +48,8 @@ jQuery(document).ready(function($) {
 		if (this.checked) {
 			timestamp = enddate.getTime() + 1*24*60*60*1000;
 			enddate.setTime(timestamp);
-			$("#end_date_area").fadeIn();
 			$("#end_date").datepicker("option", "minDate", enddate);
+			$("#end_date_area").fadeIn();
 		}
 		else {
 			$("#end_date_area").fadeOut();
