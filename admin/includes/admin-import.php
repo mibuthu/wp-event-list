@@ -64,8 +64,8 @@ class EL_Admin_Import {
 		echo '
 				<h3>'.__('Step','event-list').' 1: '.__('Set import file and options','event-list').'</h3>
 				<form action="" id="el_import_upload" method="post" enctype="multipart/form-data">
-					'.$this->functions->show_option_table('import').'
-					<input type="submit" name="button-upload-submit" id="button-upload-submit" class="button" value="'.__('Import Event Data','event-list').'" />
+					'.$this->functions->show_option_table('import').'<br />
+					<input type="submit" name="button-upload-submit" id="button-upload-submit" class="button" value="'.sprintf(__('Proceed with Step %1$s','event-list'), '2').' &gt;&gt;" />
 				</form>
 				<br /><br />
 				<h3>'.__('Example file','event-list').'</h4>
@@ -94,17 +94,15 @@ class EL_Admin_Import {
 		$this->safe_import_settings();
 
 		// parse file
-		$import_data = $this->parseImportFile($file);
+		$this->import_data = $this->parseImportFile($file);
 
 		// parsing failed?
-		if(is_wp_error($import_data)) {
+		if(is_wp_error($this->import_data)) {
 			echo '<h3>'.__('Sorry, there has been an error.','event-list').'</h3>';
-			echo '<p>' . esc_html($import_data->get_error_message()).'</p>';
+			echo '<p>' . esc_html($this->import_data->get_error_message()).'</p>';
 			return;
 		}
 
-		// TODO: $this->import_data vs. $import_data ?
-		$this->import_data = $import_data;
 		$serialized = serialize($this->import_data);
 
 		// show review page
@@ -175,27 +173,32 @@ class EL_Admin_Import {
 
 		$file_handle = fopen($file, 'r');
 		$lineNum = 0;
+		$emptyLines = 0;
 		while(!feof($file_handle)) {
-			$line = fgetcsv($file_handle, 1024);
+			$line = fgetcsv($file_handle, 0);
 
-			// skip empty line
+			// skip empty lines
 			if(empty($line)) {
+				$emptyLines += 1;
 				continue;
 			}
+			// check header
 			if($lineNum === 0) {
+				// check optional separator line
 				if($line === $separator) {
+					$emptyLines += 1;
 					continue;
 				}
-				if($line === $header) {
+				// check header line
+				elseif($line === $header || $line === array_slice($header,0,-1)) {
 					$lineNum += 1;
 					continue;
 				}
 				else {
-					var_dump($line);
-					var_dump($header);
-					return new WP_Error('CSV_parse_error', __('There was an error when reading this CSV file.','event-list'));
+					return new WP_Error('CSV_parse_error', __('There was an error at line '.$lineNum+$emptyLines.' when reading this CSV file: Header line is missing or not correct!','event-list'));
 				}
 			}
+			// handle lines with events
 			$events[] = array(
 				'title'      => $line[0],
 				'start_date' => $line[1],
