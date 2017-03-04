@@ -90,21 +90,23 @@ $options_helptexts = array(
 	                                   'desc'    => __('This options sets the feed name. The standard value is "event-list".<br />
 	                                                    This name will be used in the feed url (e.g. <code>domain.com/?feed=event-list</code> or <code>domain.com/feed/eventlist</code> for an installation with permalinks')),
 
-	'el_feed_description'     => array('section' => 'feed',
-	                                   'type'    => 'text',
+	'el_feed_description'     => array('type'    => 'text',
 	                                   'label'   => __('Feed Description','event-list'),
 	                                   'desc'    => __('This options sets the feed description. The standard value is "Eventlist Feed".<br />
 	                                                    This description will be used in the title for the feed link in the html head and for the description in the feed itself.')),
 
-	'el_feed_upcoming_only'   => array('section' => 'feed',
-	                                   'type'    => 'checkbox',
+	'el_feed_upcoming_only'   => array('type'    => 'checkbox',
 	                                   'label'   => __('Listed events','event-list'),
 	                                   'caption' => __('Only show upcoming events in feed','event-list'),
 	                                   'desc'    => __('If this option is enabled only the upcoming events are listed in the feed.<br />
 	                                                    If disabled all events (upcoming and past) will be listed.')),
 
-	'el_head_feed_link'       => array('section' => 'feed',
-	                                   'type'    => 'checkbox',
+	'el_feed_include_cats'    => array('type'    => 'checkbox',
+	                                   'label'   => __('List categories','event-list'),
+	                                   'caption' => __('Include the event categories in the feed','event-list'),
+	                                   'desc'    => __('If this option is enabled the categories of each event are listed in the feed.','event-list')),
+
+	'el_head_feed_link'       => array('type'    => 'checkbox',
 	                                   'label'   => __('Add RSS feed link in head','event-list'),
 	                                   'caption' => __('Add RSS feed link in the html head','event-list'),
 	                                   'desc'    => __('This option adds a RSS feed in the html head for the events.<br />
@@ -113,31 +115,27 @@ $options_helptexts = array(
 	                                                    The second possibility is to include a visible feed link directly in the event list. This can be done by setting the shortcode attribute "add_feed_link" to "true"<br />
 	                                                    This option is only valid if the option "Enable RSS feed" is enabled.')),
 
-	'el_feed_link_pos'        => array('section' => 'feed',
-	                                   'type'    => 'radio',
+	'el_feed_link_pos'        => array('type'    => 'radio',
 	                                   'label'   => __('Position of the RSS feed link','event-list'),
 	                                   'caption' => array('top' => 'at the top (above the navigation bar)', 'below_nav' => 'between navigation bar and events', 'bottom' => 'at the bottom'),
 	                                   'desc'    => __('This option specifies the position of the RSS feed link in the event list.<br />
 	                                                    The options are to display the link at the top, at the bottom or between the navigation bar and the event list.<br />
 	                                                    You have to set the shortcode attribute "add_feed_link" to "true" if you want to show the feed link.')),
 
-	'el_feed_link_align'      => array('section' => 'feed',
-	                                   'type'    => 'radio',
+	'el_feed_link_align'      => array('type'    => 'radio',
 	                                   'label'   => __('Align of the RSS feed link','event-list'),
 	                                   'caption' => array('left' => 'left', 'center' => 'center', 'right' => 'right'),
 	                                   'desc'    => __('This option specifies the align of the RSS feed link in the event list.<br />
 	                                                    The link can be displayed on the left side, centered or on the right.<br />
 	                                                    You have to set the shortcode attribute "add_feed_link" to "true" if you want to show the feed link.')),
 
-	'el_feed_link_text'       => array('section' => 'feed',
-	                                   'type'    => 'text',
+	'el_feed_link_text'       => array('type'    => 'text',
 	                                   'label'   => __('Feed link text','event-list'),
 	                                   'desc'    => __('This option specifies the caption of the RSS feed link in the event list.<br />
 	                                                    Insert an empty text to hide any text if you only want to show the rss image.<br />
 	                                                    You have to set the shortcode attribute "add_feed_link" to "true" if you want to show the feed link.')),
 
-	'el_feed_link_img'        => array('section' => 'feed',
-	                                   'type'    => 'checkbox',
+	'el_feed_link_img'        => array('type'    => 'checkbox',
 	                                   'label'   => __('Feed link image','event-list'),
 	                                   'caption' => __('Show rss image in feed link','event-list'),
 	                                   'desc'    => __('This option specifies if the an image should be dispayed in the feed link in front of the text.<br />
