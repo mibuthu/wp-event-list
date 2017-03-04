@@ -151,12 +151,13 @@ class EL_Admin_Import {
 	private function show_event($event) {
 		echo '
 				<p>
-				<span style="font-weight: bold;">'.__('Title','event-list').':</span> <span style="font-style: italic;">'.$event['title'].'</span><br />
-				<span style="font-weight: bold;">'.__('Start Date','event-list').':</span> <span style="font-style: italic;">'.$event['start_date'].'</span><br />
-				<span style="font-weight: bold;">'.__('End Date','event-list').':</span> <span style="font-style: italic;">'.$event['end_date'].'</span><br />
-				<span style="font-weight: bold;">'.__('Time','event-list').':</span> <span style="font-style: italic;">'.$event['time'].'</span><br />
-				<span style="font-weight: bold;">'.__('Location','event-list').':</span> <span style="font-style: italic;">'.$event['location'].'</span><br />
-				<span style="font-weight: bold;">'.__('Details','event-list').':</span> <span style="font-style: italic;">'.$event['details'].'</span>
+				<span class="el-event-header">'.__('Title','event-list').':</span> <span class="el-event-data">'.$event['title'].'</span><br />
+				<span class="el-event-header">'.__('Start Date','event-list').':</span> <span class="el-event-data">'.$event['start_date'].'</span><br />
+				<span class="el-event-header">'.__('End Date','event-list').':</span> <span class="el-event-data">'.$event['end_date'].'</span><br />
+				<span class="el-event-header">'.__('Time','event-list').':</span> <span class="el-event-data">'.$event['time'].'</span><br />
+				<span class="el-event-header">'.__('Location','event-list').':</span> <span class="el-event-data">'.$event['location'].'</span><br />
+				<span class="el-event-header">'.__('Details','event-list').':</span> <span class="el-event-data">'.$event['details'].'</span><br />
+				<span class="el-event-header">'.__('Category slugs','event-list').':</span> <span class="el-event-data">'.implode(', ', $event['categories']).'</span>
 				</p>';
 	}
 
@@ -303,6 +304,11 @@ class EL_Admin_Import {
 		}
 		// TODO: Improve error messages
 		return $ret;
+	}
+
+	public function embed_import_scripts() {
+		error_log('embed admin-import');
+		wp_enqueue_style('eventlist_admin_import', EL_URL.'admin/css/admin_import.css');
 	}
 }
 ?>
