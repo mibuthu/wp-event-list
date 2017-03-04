@@ -43,6 +43,10 @@ class EL_Categories {
 		}
 	}
 
+	public function is_set($category_slug) {
+		return isset($this->cat_array[$category_slug]);
+	}
+
 	public function add_category($cat_data, $allow_duplicate_names=false) {
 		$this->add_cat_to_array($cat_data, $allow_duplicate_names);
 		return  $this->safe_categories();
@@ -50,7 +54,7 @@ class EL_Categories {
 
 	public function edit_category($cat_data, $old_slug, $allow_duplicate_names=false) {
 		// check if slug already exists
-		if(!isset($this->cat_array[$old_slug])) {
+		if(!$this->is_set($old_slug)) {
 			return false;
 		}
 		// delete old category
@@ -127,7 +131,7 @@ class EL_Categories {
 		// make slug unique
 		$cat['slug'] = $slug = sanitize_title( $cat_data['slug'] );
 		$num = 1;
-		while( isset( $this->cat_array[$cat['slug']] ) ) {
+		while($this->is_set($cat['slug'])) {
 			$num++;
 			$cat['slug'] = $slug.'-'.$num;
 		}
@@ -294,7 +298,7 @@ class EL_Categories {
 	}
 
 	private function set_parent($cat_slug, $parent_slug) {
-		if(isset($this->cat_array[$parent_slug])) {
+		if($this->is_set($parent_slug)) {
 			// set parent and level
 			$this->cat_array[$cat_slug]['parent'] = $parent_slug;
 			$this->cat_array[$cat_slug]['level'] = $this->cat_array[$parent_slug]['level'] + 1;
