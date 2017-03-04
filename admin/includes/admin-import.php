@@ -105,9 +105,30 @@ class EL_Admin_Import {
 
 		$serialized = serialize($this->import_data);
 
+		// Check categories
+		$not_available_cats = array();
+		foreach($this->import_data as $event) {
+			foreach($event['categories'] as $cat) {
+				if(!$this->categories->is_set($cat) && !in_array($cat, $not_available_cats)) {
+					$not_available_cats[] = $cat;
+				}
+			}
+		}
+
 		// show review page
 		echo '
-			<h3>'.__('Step','event-list').' 2: '.__('Event review and category selection','event-list').'</h3>
+			<h3>'.__('Step','event-list').' 2: '.__('Events review and additonal category selection','event-list').'</h3>';
+		if(!empty($not_available_cats)) {
+			echo '
+				<div class="el-warning">'.__('Warning: The following category slugs are not available and will be removed from the imported events:','event-list').'
+					<ul class="el-categories">';
+			foreach($not_available_cats as $cat) {
+				echo '<li><code>'.$cat.'</code></li>';
+			}
+			echo '</ul>
+					'.__('If you want to keep them, please create these Categories first and do the import afterwards.','event-list').'</div>';
+		}
+		echo '
 			<form method="POST" action="?page=el_admin_main&action=import">';
 		wp_nonce_field('autosavenonce', 'autosavenonce', false, false);
 		wp_nonce_field('closedpostboxesnonce', 'closedpostboxesnonce', false, false);
@@ -123,8 +144,8 @@ class EL_Admin_Import {
 					</div>
 					<div id="postbox-container-1" class="postbox-container">
 						<div id="side-sortables" class="meta-box-sortables ui-sortable">';
-		add_meta_box('event-categories', __('Categories'), array(&$this, 'render_category_metabox'),'event-list', 'advanced', 'default', null);
-		add_meta_box('event-publish', __('Import','event-list'), array(&$this, 'render_publish_metabox'), 'event-list');
+		add_meta_box('event-categories', __('Add additional categories','event-list'), array(&$this, 'render_category_metabox'),'event-list', 'advanced', 'default', null);
+		add_meta_box('event-publish', __('Import events','event-list'), array(&$this, 'render_publish_metabox'), 'event-list');
 		do_meta_boxes('event-list', 'advanced', null);
 		echo '
 						</div>
@@ -166,7 +187,7 @@ class EL_Admin_Import {
 	 */
 	private function parseImportFile($file) {
 		$delimiter = ',';
-		$header = array('title', 'start date', 'end date', 'time', 'location', 'details');
+		$header = array('title', 'start date', 'end date', 'time', 'location', 'details', 'category_slugs');
 		$separator = array('sep=,');
 
 		// list of events to import
@@ -207,6 +228,7 @@ class EL_Admin_Import {
 				'time'       => $line[3],
 				'location'   => $line[4],
 				'details'    => $line[5],
+				'categories' => isset($line[6]) ? explode('|', $line[6]) : array(),
 			);
 			$lineNum += 1;
 		}
@@ -277,10 +299,16 @@ class EL_Admin_Import {
 
 	private function import_events() {
 		$reviewed_events = unserialize(stripslashes($_POST['reviewed_events']));
-		$categories = isset($_POST['categories']) ? $_POST['categories'] : '';
-		if(isset($categories)) {
-			foreach($reviewed_events as &$event) {
-				$event['categories'] = $categories;
+		// Category handling
+		$additional_cats = isset($_POST['categories']) ? $_POST['categories'] : array();
+		foreach($reviewed_events as &$event) {
+			// Remove not available categories of import file
+			$event['categories'] = array_filter($event['categories'], function($e) {
+				return $this->categories->is_set($e);
+			});
+			// Add the additionally specified categories to the event
+			if(!empty($additional_cats)) {
+				$event['categories'] = array_unique(array_merge($event['categories'], $additional_cats));
 			}
 		}
 		$ret = array();
@@ -307,7 +335,6 @@ class EL_Admin_Import {
 	}
 
 	public function embed_import_scripts() {
-		error_log('embed admin-import');
 		wp_enqueue_style('eventlist_admin_import', EL_URL.'admin/css/admin_import.css');
 	}
 }
