@@ -240,7 +240,7 @@ class EL_Admin_Import {
 			echo '
 				<ul id="categorychecklist" class="categorychecklist form-no-clear">';
 			$level = 0;
-			$event_cats = explode('|', substr($metabox['args']['event_cats'], 1, -1));
+			$event_cats = $this->categories->convert_db_string($metabox['args']['event_cats'], 'slug_array');
 			foreach($cat_array as $cat) {
 				if($cat['level'] > $level) {
 					//new sub level
