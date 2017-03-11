@@ -50,7 +50,6 @@ class EL_Options {
 			'el_feed_name'            => array('section' => 'feed',       'std_val' => 'event-list'),
 			'el_feed_description'     => array('section' => 'feed',       'std_val' => 'Eventlist Feed'),
 			'el_feed_upcoming_only'   => array('section' => 'feed',       'std_val' => ''),
-			'el_feed_include_cats'    => array('section' => 'feed',       'std_val' => ''),
 			'el_head_feed_link'       => array('section' => 'feed',       'std_val' => '1'),
 			'el_feed_link_pos'        => array('section' => 'feed',       'std_val' => 'bottom'),
 			'el_feed_link_align'      => array('section' => 'feed',       'std_val' => 'left'),

@@ -107,11 +107,6 @@ $options_helptexts = array(
 	                                   'desc'    => __('If this option is enabled only the upcoming events are listed in the feed.<br />
 	                                                    If disabled all events (upcoming and past) will be listed.')),
 
-	'el_feed_include_cats'    => array('type'    => 'checkbox',
-	                                   'label'   => __('List categories','event-list'),
-	                                   'caption' => __('Include the event categories in the feed','event-list'),
-	                                   'desc'    => __('If this option is enabled the categories of each event are listed in the feed.','event-list')),
-
 	'el_head_feed_link'       => array('type'    => 'checkbox',
 	                                   'label'   => __('Add RSS feed link in head','event-list'),
 	                                   'caption' => __('Add RSS feed link in the html head','event-list'),

@@ -73,12 +73,11 @@ class EL_Feed {
 			<item>
 				<title>'.esc_attr($this->format_date($event->start_date, $event->end_date).' - '.$event->title).'</title>
 				<pubDate>'.mysql2date('D, d M Y H:i:s +0000', $event->start_date, false).'</pubDate>';
-				if($this->options->get('el_feed_include_cats') && $event->categories) {
-					$cats = $this->categories->convert_db_string($event->categories, 'name_array');
-					foreach ($cats as $cat) {
+				// Feed categories
+				$cats = $this->categories->convert_db_string($event->categories, 'name_array');
+				foreach ($cats as $cat) {
 					echo '
-				<category>'.$cat.'</category>';
-					}
+				<category>'.esc_attr($cat).'</category>';
 				}
 				echo '
 				<description>'.esc_attr($this->format_date($event->start_date, $event->end_date).' '.
