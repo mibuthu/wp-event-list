@@ -76,7 +76,19 @@ class Event_List {
 	} // end constructor
 
 	public function load_textdomain() {
-		load_plugin_textdomain('event-list', false, basename(EL_PATH).'/languages');
+		$el_lang_path = basename(EL_PATH).'/languages';
+		$domain = 'event-list';
+		if('' !== get_option('el_mo_lang_dir_first', '')) { // this->option->get not available in this early stage
+			// use default wordpress function (language files from language dir wp-content/languages/plugins/ are preferred)
+			load_plugin_textdomain($domain, false, $el_lang_path);
+		}
+		else {
+			// use fork of wordpress function load_plugin_textdomain (see wp-includes/l10n.php) to prefer language files included in plugin (wp-content/plugins/event-list/languages/) and additionally from language dir
+			$locale = apply_filters('plugin_locale', is_admin() ? get_user_locale() : get_locale(), $domain);
+			$mofile = $domain.'-'.$locale.'.mo';
+			load_textdomain($domain, WP_PLUGIN_DIR.'/'.$el_lang_path.'/'.$mofile);
+			load_textdomain($domain, WP_LANG_DIR.'/plugins/'.$mofile);
+		}
 	}
 
 	public function shortcode_event_list($atts) {

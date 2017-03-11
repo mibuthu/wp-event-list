@@ -56,6 +56,12 @@ $options_helptexts = array(
 	                                   'caption' => sprintf(__('Allow HTML tags in the event field "%1$s"','event-list'), __('Location','event-list')),
 	                                   'desc'    => sprintf(__('This option specifies if HTML tags are allowed in the event field "%1$s".','event-list'), __('Location','event-list'))),
 
+	'el_mo_lang_dir_first'    => array('type'    => 'checkbox',
+	                                   'label'   => __('Preferred language file','event-list'),
+	                                   'caption' => __('Load translations from general language directory first','event-list'),
+	                                   'desc'    => sprintf(__('The default is to load the %1$s translation file from the plugin language directory first (%2$s).','event-list'), '<code>*.mo</code>', '<code>wp-content/plugins/event-list/languages/</code>').'<br />
+	                                                '.sprintf(__('If you want to load your own language file from the general language directory %1$s for a language which is already included in the plugin language directory, you have to enable this option.','event-list'), '<code>wp-content/languages/plugins/</code>')),
+
 	// Section: "frontend"
 	'el_show_details_text'    => array('type'    => 'text',
 	                                   'label'   => __('Text for "Show details"','event-list'),

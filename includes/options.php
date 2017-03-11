@@ -38,6 +38,7 @@ class EL_Options {
 			'el_date_once_per_day'    => array('section' => 'general',    'std_val' => ''),
 			'el_html_tags_in_time'    => array('section' => 'general',    'std_val' => ''),
 			'el_html_tags_in_loc'     => array('section' => 'general',    'std_val' => ''),
+			'el_mo_lang_dir_first'    => array('section' => 'general',    'std_val' => ''), // default value must be set also in load_textdomain function in Event-List class
 
 			'el_show_details_text'    => array('section' => 'frontend',   'std_val' => __('Show details','event-list')),
 			'el_hide_details_text'    => array('section' => 'frontend',   'std_val' => __('Hide details','event-list')),
