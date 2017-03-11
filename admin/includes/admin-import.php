@@ -126,7 +126,7 @@ class EL_Admin_Import {
 				echo '<li><code>'.$cat.'</code></li>';
 			}
 			echo '</ul>
-					'.__('If you want to keep them, please create these Categories first and do the import afterwards.','event-list').'</div>';
+					'.__('If you want to keep these categories, please create these Categories first and do the import afterwards.','event-list').'</div>';
 		}
 		echo '
 			<form method="POST" action="?page=el_admin_main&action=import">';
@@ -217,7 +217,7 @@ class EL_Admin_Import {
 					continue;
 				}
 				else {
-					return new WP_Error('CSV_parse_error', __('There was an error at line '.$lineNum+$emptyLines.' when reading this CSV file: Header line is missing or not correct!','event-list'));
+					return new WP_Error('CSV_parse_error', sprintf(__('There was an error at line %1$s when reading this CSV file: Header line is missing or not correct!','event-list'), $lineNum+$emptyLines));
 				}
 			}
 			// handle lines with events
