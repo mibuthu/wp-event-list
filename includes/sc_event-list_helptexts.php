@@ -4,42 +4,40 @@ if(!defined('WPINC')) {
 }
 
 $sc_eventlist_helptexts = array(
-	'initial_event_id' => array('val'    => 'all<br />event-id',
-	                            'desc'   => __('With this attribute you can specify an event from which the event-details are shown initially. The standard is to show the event-list.<br />
-	                                            Specify an event-id e.g. "13" to change this behavior. It is still possible to go back to the event-list via the filterbar or url parameters.','event-list')),
+	'initial_event_id' => array('val'    => 'all<br />'.strtoupper(__('event-id','event-list')),
+	                            'desc'   => sprintf(__('By default the event-list is displayed initially. But if an event-id (e.g. %1$s) is provided for this attribute, directly the event-details view of this event is shown.','event-list'), '"13"')),
 
-	'initial_date'     => array('val'    => 'all<br />upcoming<br />past<br />year',
-	                            'desc'   => __('This attribute specifies which events are initially shown. The standard is to show the upcoming events.<br />
-	                                            Specify a year e.g. "2014" to change this behavior. It is still possible to change the displayed event date range via the filterbar or url parameters.','event-list')),
+	'initial_date'     => array('val'    => 'all<br />upcoming<br />past<br />'.strtoupper(__('year','event-list')),
+	                            'desc'   => __('This attribute defines which events are initially shown. The default is to show the upcoming events only.','event-list').'<br />'.
+	                                        sprintf(__('Provide a year (e.g. %1$s) to change this behavior. It is still possible to change the displayed event date range via the filterbar or url parameters.','event-list'), '"2017"')),
 
-	'initial_cat'      => array('val'    => 'all<br />category slug',
-	                            'desc'   => __('This attribute specifies the category of which events are initially shown. The standard is to show events of all categories.<br />
-	                                            Specify a category slug to change this behavior. It is still possible to change the displayed categories via the filterbar or url parameters.','event-list')),
+	'initial_cat'      => array('val'    => 'all<br />'.strtoupper(__('category slug','event-list')),
+	                            'desc'   => __('This attribute defines the category of which events are initially shown. The default is to show events of all categories.','event-list').'<br />'.
+	                                        __('Provide a category slug to change this behavior. It is still possible to change the displayed categories via the filterbar or url parameters.','event-list')),
 
 	'initial_order'    => array('val'    => 'date_asc<br />date_desc',
-	                            'desc'   => __('This attribute specifies the initial order of the events.<br />
-	                                            With "date_asc" (standard value) the events are sorted from old to new, with "date_desc" in the opposite direction (from new to old).','event-list')),
+	                            'desc'   => __('This attribute defines the initial order of the events.','event-list').'<br />'.
+	                                        sprintf(__('With %1$S (default value) the events are sorted from old to new, with %2$s in the opposite direction (from new to old).','event-list'), '"date_asc"', '"date_desc"')),
 
-	'date_filter'      => array('val'    => 'all<br />upcoming<br />past<br />year',
-	                            'desc'   => __('This attribute specifies the dates and date ranges of which events are displayed. The standard is "all" to show all events.<br />
-	                                            Filtered events according to date_filter value are not available in the event list.<br />
-	                                            You can find all available values with a description and examples in "Available Date Formats" and "Available Date Range Formats" below.<br />
-	                                            See "Filter Syntax" description if you want to define complex filters.','event-list')),
+	'date_filter'      => array('val'    => 'all<br />upcoming<br />past<br />'.strtoupper(__('year','event-list')),
+	                            'desc'   => sprintf(__('This attribute defines the dates and date ranges of which events are displayed. The default is %1$s to show all events.','event-list'), '"all"').'<br />'.
+	                                        sprintf(__('Filtered events according to %1$s value are not available in the event list.','event-list'), 'date_filter').'<br />'.
+	                                        sprintf(__('You can find all available values with a description and examples in the sections %1$s and %2$s below.','event-list'), '"'.__('Available Date Formats','event-list').'"', '"'.__('Available Date Range Formats','event-list').'"').'<br />'.
+	                                        sprintf(__('See %1$s description if you want to define complex filters.','event-list'), '"'.__('Filter Syntax','event-list').'"')),
 
-	'cat_filter'       => array('val'    => 'all<br />category slugs',
-	                            'desc'   => __('This attribute specifies the categories of which events are shown. The standard is "all" or an empty string to show all events.<br />
-	                                            Filtered events defined in categories which doesn´t match cat_filter are not shown in the event list. They are also not available if a manual url parameter is added.<br />
-	                                            The filter is specified via the given category slug. See "Filter Syntax" description if you want to define complex filters.','event-list')),
+	'cat_filter'       => array('val'    => 'all<br />'.strtoupper(__('category slugs','event-list')),
+	                            'desc'   => sprintf(__('This attribute defines the category filter which filters the events to show. The default is $1$s or an empty string to show all events.','event-list'), '"all"').'<br />'.
+	                                        sprintf(__('Events with categories that doesn´t match %1$s are not shown in the event list. They are also not available if a manual url parameter is added.','event-list'), 'cat_filter').'<br />'.
+	                                        sprintf(__('The filter is specified via the given category slugs. See %1$s description if you want to define complex filters.','event-list'), '"'.__('Filter Syntax','event-list').'"')),
 
-	'num_events'       => array('val'    => 'number',
-	                            'desc'   => __('This attribute specifies how many events should be displayed if upcoming events is selected.<br />
-	                                            0 is the standard value which means that all events will be displayed.<br />
-	                                            Please not that in the actual version there is no pagination of the events available.','event-list')),
+	'num_events'       => array('val'    => strtoupper(__('number','event-list')),
+	                            'desc'   => sprintf(__('This attribute defines how many events should be displayed if upcoming events is selected. With the default value %1$s all events will be displayed.','event-list'), '"0"').'<br />'.
+	                                        __('Please not that in the actual version there is no pagination of the events available, so the event list can be very long.','event-list')),
 
 	'show_filterbar'   => array('val'    => 'false<br />true<br />event_list_only<br />single_event_only',
-	                            'desc'   => __('This attribute specifies if the filterbar should be displayed. The filterbar allows the users to select filters to limit the listed events.<br />
-	                                            Choose "false" to always hide and "true" to always show the navigation.<br />
-	                                            With "event_list_only" the filterbar is only visible in the event list and with "single_event_only" only for a single event','event-list')),
+	                            'desc'   => __('This attribute defines if the filterbar should be displayed. The filterbar allows the users to specify filters for the listed events.','event-list').'<br />'.
+	                                        sprintf(__('Choose %1$s to always hide and %2$s to always show the filterbar.','event-list'), '"false"', '"true"').'<br />'.
+	                                        sprintf(__('With %1$s the filterbar is only visible in the event list and with %2$s only in the single event view.','event-list'), '"event_list_only"', '"single_event_only"')),
 
 	'filterbar_items'  => array('val'    => 'years_hlist<br />years_dropdown<br />months_hlist<br />months_dropdown<br />daterange_hlist<br />daterange_dropdown<br />cats_hlist<br />cats_dropdown<br />reset_link',
 	                            'desc'   => 'This attribute specifies the available items in the filterbar. This options are only valid if the filterbar is displayed (see show_filterbar attribute).<br /><br />

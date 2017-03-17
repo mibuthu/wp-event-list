@@ -135,9 +135,9 @@ class EL_Admin_Categories {
 		}
 		// add message if forms are disabled
 		if($is_disabled) {
-			$out .= '<div id="message" class="updated"><p>'.__('Categories are automatically synced with the post categories.<br />
-			                                                    Because of this all options to add new categories or editing existing categories are disabled.<br />
-			                                                    If you want to manually edit the categories you have to disable this option.','event-list').'</p></div>';
+			$out .= '<div id="message" class="updated"><p>'.__('Categories are automatically synced with the post categories.','event-list').'<br />'.
+			                                                __('Because of this all options to add new categories or editing existing categories are disabled.','event-list').'<br />'.
+			                                                __('If you want to manually edit the categories you have to disable this option.','event-list').'</p></div>';
 		}
 		return $out;
 	}
