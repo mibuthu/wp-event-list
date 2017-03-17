@@ -43,6 +43,10 @@ class EL_Categories {
 		}
 	}
 
+	public function is_set($category_slug) {
+		return isset($this->cat_array[$category_slug]);
+	}
+
 	public function add_category($cat_data, $allow_duplicate_names=false) {
 		$this->add_cat_to_array($cat_data, $allow_duplicate_names);
 		return  $this->safe_categories();
@@ -50,7 +54,7 @@ class EL_Categories {
 
 	public function edit_category($cat_data, $old_slug, $allow_duplicate_names=false) {
 		// check if slug already exists
-		if(!isset($this->cat_array[$old_slug])) {
+		if(!$this->is_set($old_slug)) {
 			return false;
 		}
 		// delete old category
@@ -127,7 +131,7 @@ class EL_Categories {
 		// make slug unique
 		$cat['slug'] = $slug = sanitize_title( $cat_data['slug'] );
 		$num = 1;
-		while( isset( $this->cat_array[$cat['slug']] ) ) {
+		while($this->is_set($cat['slug'])) {
 			$num++;
 			$cat['slug'] = $slug.'-'.$num;
 		}
@@ -294,7 +298,7 @@ class EL_Categories {
 	}
 
 	private function set_parent($cat_slug, $parent_slug) {
-		if(isset($this->cat_array[$parent_slug])) {
+		if($this->is_set($parent_slug)) {
 			// set parent and level
 			$this->cat_array[$cat_slug]['parent'] = $parent_slug;
 			$this->cat_array[$cat_slug]['level'] = $this->cat_array[$parent_slug]['level'] + 1;
@@ -321,28 +325,34 @@ class EL_Categories {
 	 * @param string $slug_string  The slug string to convert
 	 * @param string $return_type  The type to return. Possible values are:
 	 *                               "name_string" ... to return a string with the category names
+	 *                               "name_array"  ... to return an array with the category names
 	 *                               "slug_string" ... to return a string with the category slugs
 	 *                               "slug_array"  ... to return an array with the category slugs
 	 * @param string $glue         The glue or separator when a string should be returned
 	 */
 	public function convert_db_string($slug_string, $return_type='name_string', $glue=', ') {
 		if(2 >= strlen($slug_string)) {
-			return ('slug_array' == $return_type) ? array() : '';
+			return (strpos($return_type, 'array') !== false) ? array() : '';
 		}
-		$slug_array = explode('|', substr( $slug_string, 1, -1));
+		$slug_array = explode('|', substr($slug_string, 1, -1));
 		switch($return_type) {
 			case 'slug_array':
-				return $slug_array;
 			case 'slug_string':
-				$string_array = $slug_array;
+				$ret_array = $slug_array;
 				break;
+			case 'name_array':
 			default:   // name_string
-				$string_array = array();
+				$ret_array = array();
 				foreach($slug_array as $slug) {
-					$string_array[] = $this->cat_array[$slug]['name'];
+					$ret_array[] = $this->cat_array[$slug]['name'];
 				}
-				sort($string_array, SORT_STRING);
 		}
-		return implode($glue, $string_array);
+		sort($ret_array, SORT_STRING);
+		if(strpos($return_type, 'array') !== false) {
+			return $ret_array;
+		}
+		else {
+			return implode($glue, $ret_array);
+		}
 	}
 }

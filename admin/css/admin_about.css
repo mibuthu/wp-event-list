@@ -80,3 +80,7 @@ div.el-format-desc {
 div.el-format-desc em {
 	font-weight: bold;
 }
+
+a.donate img {
+	margin: 3px;
+}

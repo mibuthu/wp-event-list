@@ -88,7 +88,6 @@ class EL_Admin_Main {
 					return;
 				// actions showing import view
 				case 'import':
-					require_once(EL_PATH.'admin/includes/admin-import.php');
 					EL_Admin_Import::get_instance()->show_import();
 					return;
 				// actions showing event list
@@ -141,6 +140,11 @@ class EL_Admin_Main {
 				// embed admin new script
 				require_once(EL_PATH.'admin/includes/admin-new.php');
 				EL_Admin_New::get_instance()->embed_new_scripts();
+				break;
+			case 'import':
+				require_once(EL_PATH.'admin/includes/admin-import.php');
+				EL_Admin_Import::get_instance()->embed_import_scripts();
+				break;
 			default:
 				// embed admin_main script
 				wp_enqueue_script('eventlist_admin_main_js', EL_URL.'admin/js/admin_main.js');

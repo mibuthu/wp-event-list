@@ -64,8 +64,8 @@ class EL_Admin_Import {
 		echo '
 				<h3>'.__('Step','event-list').' 1: '.__('Set import file and options','event-list').'</h3>
 				<form action="" id="el_import_upload" method="post" enctype="multipart/form-data">
-					'.$this->functions->show_option_table('import').'
-					<input type="submit" name="button-upload-submit" id="button-upload-submit" class="button" value="'.__('Import Event Data','event-list').'" />
+					'.$this->functions->show_option_table('import').'<br />
+					<input type="submit" name="button-upload-submit" id="button-upload-submit" class="button" value="'.sprintf(__('Proceed with Step %1$s','event-list'), '2').' &gt;&gt;" />
 				</form>
 				<br /><br />
 				<h3>'.__('Example file','event-list').'</h4>
@@ -94,22 +94,41 @@ class EL_Admin_Import {
 		$this->safe_import_settings();
 
 		// parse file
-		$import_data = $this->parseImportFile($file);
+		$this->import_data = $this->parseImportFile($file);
 
 		// parsing failed?
-		if(is_wp_error($import_data)) {
+		if(is_wp_error($this->import_data)) {
 			echo '<h3>'.__('Sorry, there has been an error.','event-list').'</h3>';
-			echo '<p>' . esc_html($import_data->get_error_message()).'</p>';
+			echo '<p>' . esc_html($this->import_data->get_error_message()).'</p>';
 			return;
 		}
 
-		// TODO: $this->import_data vs. $import_data ?
-		$this->import_data = $import_data;
 		$serialized = serialize($this->import_data);
+
+		// Check categories
+		$not_available_cats = array();
+		foreach($this->import_data as $event) {
+			foreach($event['categories'] as $cat) {
+				if(!$this->categories->is_set($cat) && !in_array($cat, $not_available_cats)) {
+					$not_available_cats[] = $cat;
+				}
+			}
+		}
 
 		// show review page
 		echo '
-			<h3>'.__('Step','event-list').' 2: '.__('Event review and category selection','event-list').'</h3>
+			<h3>'.__('Step','event-list').' 2: '.__('Events review and additonal category selection','event-list').'</h3>';
+		if(!empty($not_available_cats)) {
+			echo '
+				<div class="el-warning">'.__('Warning: The following category slugs are not available and will be removed from the imported events:','event-list').'
+					<ul class="el-categories">';
+			foreach($not_available_cats as $cat) {
+				echo '<li><code>'.$cat.'</code></li>';
+			}
+			echo '</ul>
+					'.__('If you want to keep these categories, please create these Categories first and do the import afterwards.','event-list').'</div>';
+		}
+		echo '
 			<form method="POST" action="?page=el_admin_main&action=import">';
 		wp_nonce_field('autosavenonce', 'autosavenonce', false, false);
 		wp_nonce_field('closedpostboxesnonce', 'closedpostboxesnonce', false, false);
@@ -125,8 +144,8 @@ class EL_Admin_Import {
 					</div>
 					<div id="postbox-container-1" class="postbox-container">
 						<div id="side-sortables" class="meta-box-sortables ui-sortable">';
-		add_meta_box('event-categories', __('Categories'), array(&$this, 'render_category_metabox'),'event-list', 'advanced', 'default', null);
-		add_meta_box('event-publish', __('Import','event-list'), array(&$this, 'render_publish_metabox'), 'event-list');
+		add_meta_box('event-categories', __('Add additional categories','event-list'), array(&$this, 'render_category_metabox'),'event-list', 'advanced', 'default', null);
+		add_meta_box('event-publish', __('Import events','event-list'), array(&$this, 'render_publish_metabox'), 'event-list');
 		do_meta_boxes('event-list', 'advanced', null);
 		echo '
 						</div>
@@ -153,12 +172,13 @@ class EL_Admin_Import {
 	private function show_event($event) {
 		echo '
 				<p>
-				<span style="font-weight: bold;">'.__('Title','event-list').':</span> <span style="font-style: italic;">'.$event['title'].'</span><br />
-				<span style="font-weight: bold;">'.__('Start Date','event-list').':</span> <span style="font-style: italic;">'.$event['start_date'].'</span><br />
-				<span style="font-weight: bold;">'.__('End Date','event-list').':</span> <span style="font-style: italic;">'.$event['end_date'].'</span><br />
-				<span style="font-weight: bold;">'.__('Time','event-list').':</span> <span style="font-style: italic;">'.$event['time'].'</span><br />
-				<span style="font-weight: bold;">'.__('Location','event-list').':</span> <span style="font-style: italic;">'.$event['location'].'</span><br />
-				<span style="font-weight: bold;">'.__('Details','event-list').':</span> <span style="font-style: italic;">'.$event['details'].'</span>
+				<span class="el-event-header">'.__('Title','event-list').':</span> <span class="el-event-data">'.$event['title'].'</span><br />
+				<span class="el-event-header">'.__('Start Date','event-list').':</span> <span class="el-event-data">'.$event['start_date'].'</span><br />
+				<span class="el-event-header">'.__('End Date','event-list').':</span> <span class="el-event-data">'.$event['end_date'].'</span><br />
+				<span class="el-event-header">'.__('Time','event-list').':</span> <span class="el-event-data">'.$event['time'].'</span><br />
+				<span class="el-event-header">'.__('Location','event-list').':</span> <span class="el-event-data">'.$event['location'].'</span><br />
+				<span class="el-event-header">'.__('Details','event-list').':</span> <span class="el-event-data">'.$event['details'].'</span><br />
+				<span class="el-event-header">'.__('Category slugs','event-list').':</span> <span class="el-event-data">'.implode(', ', $event['categories']).'</span>
 				</p>';
 	}
 
@@ -167,7 +187,7 @@ class EL_Admin_Import {
 	 */
 	private function parseImportFile($file) {
 		$delimiter = ',';
-		$header = array('title', 'start date', 'end date', 'time', 'location', 'details');
+		$header = array('title', 'start date', 'end date', 'time', 'location', 'details', 'category_slugs');
 		$separator = array('sep=,');
 
 		// list of events to import
@@ -175,27 +195,32 @@ class EL_Admin_Import {
 
 		$file_handle = fopen($file, 'r');
 		$lineNum = 0;
+		$emptyLines = 0;
 		while(!feof($file_handle)) {
-			$line = fgetcsv($file_handle, 1024);
+			$line = fgetcsv($file_handle, 0);
 
-			// skip empty line
+			// skip empty lines
 			if(empty($line)) {
+				$emptyLines += 1;
 				continue;
 			}
+			// check header
 			if($lineNum === 0) {
+				// check optional separator line
 				if($line === $separator) {
+					$emptyLines += 1;
 					continue;
 				}
-				if($line === $header) {
+				// check header line
+				elseif($line === $header || $line === array_slice($header,0,-1)) {
 					$lineNum += 1;
 					continue;
 				}
 				else {
-					var_dump($line);
-					var_dump($header);
-					return new WP_Error('CSV_parse_error', __('There was an error when reading this CSV file.','event-list'));
+					return new WP_Error('CSV_parse_error', sprintf(__('There was an error at line %1$s when reading this CSV file: Header line is missing or not correct!','event-list'), $lineNum+$emptyLines));
 				}
 			}
+			// handle lines with events
 			$events[] = array(
 				'title'      => $line[0],
 				'start_date' => $line[1],
@@ -203,6 +228,7 @@ class EL_Admin_Import {
 				'time'       => $line[3],
 				'location'   => $line[4],
 				'details'    => $line[5],
+				'categories' => isset($line[6]) ? explode('|', $line[6]) : array(),
 			);
 			$lineNum += 1;
 		}
@@ -240,7 +266,7 @@ class EL_Admin_Import {
 			echo '
 				<ul id="categorychecklist" class="categorychecklist form-no-clear">';
 			$level = 0;
-			$event_cats = explode('|', substr($metabox['args']['event_cats'], 1, -1));
+			$event_cats = $this->categories->convert_db_string($metabox['args']['event_cats'], 'slug_array');
 			foreach($cat_array as $cat) {
 				if($cat['level'] > $level) {
 					//new sub level
@@ -273,10 +299,16 @@ class EL_Admin_Import {
 
 	private function import_events() {
 		$reviewed_events = unserialize(stripslashes($_POST['reviewed_events']));
-		$categories = isset($_POST['categories']) ? $_POST['categories'] : '';
-		if(isset($categories)) {
-			foreach($reviewed_events as &$event) {
-				$event['categories'] = $categories;
+		// Category handling
+		$additional_cats = isset($_POST['categories']) ? $_POST['categories'] : array();
+		foreach($reviewed_events as &$event) {
+			// Remove not available categories of import file
+			$event['categories'] = array_filter($event['categories'], function($e) {
+				return $this->categories->is_set($e);
+			});
+			// Add the additionally specified categories to the event
+			if(!empty($additional_cats)) {
+				$event['categories'] = array_unique(array_merge($event['categories'], $additional_cats));
 			}
 		}
 		$ret = array();
@@ -300,6 +332,10 @@ class EL_Admin_Import {
 		}
 		// TODO: Improve error messages
 		return $ret;
+	}
+
+	public function embed_import_scripts() {
+		wp_enqueue_style('eventlist_admin_import', EL_URL.'admin/css/admin_import.css');
 	}
 }
 ?>

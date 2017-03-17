@@ -1,0 +1,19 @@
+.el-warning {
+	background: #fff;
+	border-left: 4px solid #dc3232;
+	margin: 5px 0 15px;
+	padding: 1px 12px;
+}
+
+ul.el-categories {
+	list-style: circle inside;
+	margin: 8px 0;
+}
+
+.el-event-header {
+	font-weight: bold;
+}
+
+.el-event-data {
+	font-style: italic;
+}

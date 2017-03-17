@@ -292,12 +292,12 @@ class EL_Db {
 			// add wrapper div with css styles for css truncate and return
 			return '<div style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis">'.$html.'</div>';
 		}
-		if(0 >= $length || mb_strlen($html) <= $length || $skip) {
+		elseif(0 >= $length || mb_strlen($html) <= $length || $skip) {
 			// do nothing
 			return $html;
 		}
 		elseif(!$preserve_tags) {
-			// only shorten text
+			// only shorten the text
 			return mb_substr($html, 0, $length);
 		}
 		else {
@@ -327,12 +327,19 @@ class EL_Db {
 				else {
 					// Handle the tag
 					$tagName = $match[1][0];
-					if($this->mb_preg_match('{^<[\b]}', $tag)) {
+					if($this->mb_preg_match('{^</}', $tag)) {
 						// This is a closing tag
 						$openingTag = array_pop($tags);
-						$out .= $tag;
+						if($openingTag != $tagName) {
+							// Not properly nested tag found: trigger a warning and add the not matching opening tag again
+							trigger_error('Not properly nested tag found (last opening tag: '.$openingTag.', closing tag: '.$tagName.')', E_USER_WARNING);
+							$tags[] = $openingTag;
+						}
+						else {
+							$out .= $tag;
+						}
 					}
-					else if($this->mb_preg_match('{/\s?>$}', $tag)) {
+					else if($this->mb_preg_match('{/\s*>$}', $tag)) {
 						// Self-closing tag
 						$out .= $tag;
 					}

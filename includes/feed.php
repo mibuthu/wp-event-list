@@ -5,6 +5,7 @@ if(!defined('ABSPATH')) {
 
 require_once(EL_PATH.'includes/db.php');
 require_once(EL_PATH.'includes/options.php');
+require_once(EL_PATH.'includes/categories.php');
 
 // This class handles rss feeds
 class EL_Feed {
@@ -12,6 +13,7 @@ class EL_Feed {
 	private static $instance;
 	private $db;
 	private $options;
+	private $categories;
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -25,6 +27,7 @@ class EL_Feed {
 	private function __construct() {
 		$this->db = EL_Db::get_instance();
 		$this->options = EL_Options::get_instance();
+		$this->categories = EL_Categories::get_instance();
 		$this->init();
 	}
 
@@ -69,7 +72,14 @@ class EL_Feed {
 				echo '
 			<item>
 				<title>'.esc_attr($this->format_date($event->start_date, $event->end_date).' - '.$event->title).'</title>
-				<pubDate>'.mysql2date('D, d M Y H:i:s +0000', $event->start_date, false).'</pubDate>
+				<pubDate>'.mysql2date('D, d M Y H:i:s +0000', $event->start_date, false).'</pubDate>';
+				// Feed categories
+				$cats = $this->categories->convert_db_string($event->categories, 'name_array');
+				foreach ($cats as $cat) {
+					echo '
+				<category>'.esc_attr($cat).'</category>';
+				}
+				echo '
 				<description>'.esc_attr($this->format_date($event->start_date, $event->end_date).' '.
 						('' != $event->time ? $event->time : '').('' != $event->location ? ' - '.$event->location : '')).'</description>
 				'.('' != $event->details ?
