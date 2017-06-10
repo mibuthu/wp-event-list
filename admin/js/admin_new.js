@@ -4,7 +4,7 @@
 jQuery(document).ready(function($) {
 	// Read required config data from hidden field json_for_js
 	var json = $("#json_for_js").val();
-	var conf = eval('(' + json + ')');
+	var conf = JSON.parse(json);
 
 	// Show or hide end_date
 	if ($("#start_date").val() == $("#end_date").val()) {
