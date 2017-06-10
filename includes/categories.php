@@ -316,7 +316,10 @@ class EL_Categories {
 	}
 
 	public function get_category_data($slug) {
-		return $this->cat_array[$slug];
+		if(isset($this->cat_array[$slug])) {
+			return $this->cat_array[$slug];
+		}
+		return false;
 	}
 
 	/**

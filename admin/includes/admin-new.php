@@ -30,7 +30,7 @@ class EL_Admin_New {
 		$this->options = &EL_Options::get_instance();
 		$this->categories = &EL_Categories::get_instance();
 		$this->is_new = !(isset($_GET['action']) && ('edit' === $_GET['action'] || 'added' === $_GET['action'] || 'modified' === $_GET['action']));
-		$this->is_duplicate = $this->is_new && isset($_GET['id']) && is_numeric($_GET['id']);
+		$this->is_duplicate = $this->is_new && isset($_GET['id']) && intval($_GET['id']) > 0;
 	}
 
 	public function show_new() {
@@ -40,7 +40,7 @@ class EL_Admin_New {
 		$out = '<div class="wrap">
 				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.__('Add New Event','event-list').'</h2>';
 		if($this->is_duplicate) {
-			$out .= '<span style="color:silver">('.sprintf(__('Duplicate of event id:%d','event-list'), $_GET['id']).')</span>';
+			$out .= '<span style="color:silver">('.sprintf(__('Duplicate of event id:%d','event-list'), absint($_GET['id'])).')</span>';
 		}
 		$out .= $this->edit_event();
 		$out .= '</div>';
@@ -72,7 +72,7 @@ class EL_Admin_New {
 		}
 		else {
 			// set event data and existing date
-			$event = $this->db->get_event($_GET['id']);
+			$event = $this->db->get_event(absint($_GET['id']));
 			$start_date = strtotime($event->start_date);
 			$end_date = strtotime($event->end_date);
 		}
@@ -98,7 +98,7 @@ class EL_Admin_New {
 		else {
 			$out .= '
 					<input type="hidden" name="action" value="edited" />
-					<input type="hidden" name="id" value="'.$_GET['id'].'" />';
+					<input type="hidden" name="id" value="'.absint($_GET['id']).'" />';
 		}
 		$out .= '
 					<table class="form-table">
