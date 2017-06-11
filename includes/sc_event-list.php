@@ -215,16 +215,10 @@ class SC_Event_List {
 		$out .= '</h3></div>';
 		// event time
 		if('' != $event->time && $this->is_visible($a['show_starttime'])) {
-			// set time format if a known format is available, else only show the text
-			$date_array = date_parse($event->time);
-			$time = $event->time;
-			if(empty($date_array['errors']) && is_numeric($date_array['hour']) && is_numeric($date_array['minute'])) {
-				$time = mysql2date(get_option('time_format'), $event->time);
-			}
 			if('' == $this->options->get('el_html_tags_in_time')) {
-				$time = esc_attr($time);
+				$event->time = esc_attr($event->time);
 			}
-			$out .= '<span class="event-time">'.$time.'</span>';
+			$out .= '<span class="event-time">'.$event->time.'</span>';
 		}
 		// event location
 		if('' != $event->location && $this->is_visible($a['show_location'])) {
