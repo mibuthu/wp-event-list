@@ -358,7 +358,7 @@ class EL_Db {
 						$openingTag = array_pop($tags);
 						if($openingTag != $tagName) {
 							// Not properly nested tag found: trigger a warning and add the not matching opening tag again
-							trigger_error('Not properly nested tag found (last opening tag: '.$openingTag.', closing tag: '.$tagName.')', E_USER_WARNING);
+							trigger_error('Not properly nested tag found (last opening tag: '.$openingTag.', closing tag: '.$tagName.')', E_USER_NOTICE);
 							$tags[] = $openingTag;
 						}
 						else {
