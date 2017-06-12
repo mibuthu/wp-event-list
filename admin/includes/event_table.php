@@ -45,7 +45,7 @@ class EL_Event_Table extends WP_List_Table {
 			case 'date' :
 				return $this->format_event_date($item->start_date, $item->end_date, $item->time);
 			case 'details' :
-				return $this->db->truncate(wpautop('<div>'.$item->details.'</div>'), 100);
+				return $this->db->truncate('<div>'.wpautop($item->details).'</div>', 100);
 			case 'pub_user' :
 				return get_userdata($item->pub_user)->user_login;
 			case 'pub_date' :
@@ -277,11 +277,6 @@ class EL_Event_Table extends WP_List_Table {
 		}
 		// event time
 		if('' !== $start_time) {
-			// set time format if a known format is available, else only show the text
-			$date_array = date_parse($start_time);
-			if(empty($date_array['errors']) && is_numeric($date_array['hour']) && is_numeric($date_array['minute'])) {
-				$start_time = mysql2date(get_option('time_format'), $start_time);
-			}
 			$out .= '<br />
 				<span class="time">'.esc_html($start_time).'</span>';
 		}

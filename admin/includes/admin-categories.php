@@ -78,10 +78,11 @@ class EL_Admin_Categories {
 			if(!$is_disabled) {
 				// delete categories
 				$slug_array = explode(', ', $_GET['slug']);
+				$slug_array = array_map('sanitize_title_for_query', $slug_array);
 				$num_affected_events = $this->db->remove_category_in_events($slug_array);
 				if($this->categories->remove_categories($slug_array, false)) {
 					$out .= '<div id="message" class="updated">
-						<p><strong>'.sprintf(__('Category "%s" deleted.','event-list'), $_GET['slug']);
+						<p><strong>'.sprintf(__('Category "%s" deleted.','event-list'), implode(', ', $slug_array));
 					if($num_affected_events > 0) {
 						$out .= '<br />'.sprintf(__('This Category was also removed from %d events.','event-list'), $num_affected_events);
 					}
@@ -89,7 +90,7 @@ class EL_Admin_Categories {
 					</div>';
 				}
 				else {
-					$out .= '<div id="message" class="error below-h2"><p><strong>'.sprintf(__('Error while deleting category "%s"','event-list'), $_GET['slug']).'.</strong></p></div>';
+					$out .= '<div id="message" class="error below-h2"><p><strong>'.sprintf(__('Error while deleting category "%s"','event-list'), implode(', ', $slug_array)).'.</strong></p></div>';
 				}
 			}
 		}

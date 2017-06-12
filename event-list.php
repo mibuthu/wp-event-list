@@ -3,7 +3,7 @@
 Plugin Name: Event List
 Plugin URI: http://wordpress.org/extend/plugins/event-list/
 Description: Manage your events and show them in a list view on your site.
-Version: 0.7.8
+Version: 0.7.9
 Author: mibuthu
 Author URI: http://wordpress.org/extend/plugins/event-list/
 Text Domain: event-list
@@ -84,7 +84,7 @@ class Event_List {
 		}
 		else {
 			// use fork of wordpress function load_plugin_textdomain (see wp-includes/l10n.php) to prefer language files included in plugin (wp-content/plugins/event-list/languages/) and additionally from language dir
-			$locale = apply_filters('plugin_locale', is_admin() ? get_user_locale() : get_locale(), $domain);
+			$locale = apply_filters('plugin_locale', is_callable('get_user_locale') ? get_user_locale() : get_locale(), $domain);
 			$mofile = $domain.'-'.$locale.'.mo';
 			load_textdomain($domain, WP_PLUGIN_DIR.'/'.$el_lang_path.'/'.$mofile);
 			load_textdomain($domain, WP_LANG_DIR.'/plugins/'.$mofile);

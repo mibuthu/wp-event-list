@@ -48,8 +48,10 @@ class EL_Admin_Main {
 					break;
 				case 'delete':
 					if(isset($_GET['id'])) {
-						$error = !$this->db->delete_events(explode(',', $_GET['id']));
-						$this->redirect('deleted', $error, array('id' => $_GET['id']));
+						$id_array = explode(',', $_GET['id']);
+						$id_array = array_map('absint', $id_array);
+						$error = !$this->db->delete_events($id_array);
+						$this->redirect('deleted', $error, array('id' => implode(',', $id_array)));
 					}
 					break;
 				// proceed with header if a bulk action was triggered (required due to "noheader" attribute for all action above)
@@ -110,7 +112,7 @@ class EL_Admin_Main {
 
 	private function show_page_header($action, $editview=false) {
 		if($editview) {
-			$duplicate_link = add_query_arg(array('id'=>$_GET['id'], 'action'=>'copy'), '?page=el_admin_new');
+			$duplicate_link = add_query_arg(array('id'=>absint($_GET['id']), 'action'=>'copy'), '?page=el_admin_new');
 			$header = __('Edit Event','event-list').' <a href="'.$duplicate_link.'" class="add-new-h2">'.__('Duplicate','event-list').'</a>';
 		}
 		else {
@@ -188,9 +190,9 @@ class EL_Admin_Main {
 				$num_deleted = count(explode(',', $_GET['id']));
 				$plural = ($num_deleted > 1) ? 's' : '';
 				if(!$error)
-					$this->show_update_message($num_deleted.' Event'.$plural.' deleted (id'.$plural.': '.$_GET['id'].').');
+					$this->show_update_message($num_deleted.' Event'.$plural.' deleted (id'.$plural.': '.htmlentities($_GET['id']).').');
 				else
-					$this->show_error_message('Error while deleting '.$num_deleted.' Event'.$plural.'.');
+					$this->show_error_message('Error: Deleting failed (Event id'.$plural.': '.htmlentities($_GET['id']).')!');
 				break;
 		}
 	}

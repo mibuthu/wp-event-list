@@ -61,13 +61,13 @@ class EL_Db {
 		if('upcoming' === $date_filter && is_numeric($num_events) && 0 < $num_events) {
 			$sql .= ' LIMIT '.$num_events;
 		}
-		return $wpdb->get_results($sql);
+		return $this->convert_events_timeformat($wpdb->get_results($sql));
 	}
 
 	public function get_event( $id ) {
 		global $wpdb;
 		$sql = 'SELECT * FROM '.$this->table.' WHERE id = '.$id.' LIMIT 1';
-		return $wpdb->get_row( $sql );
+		return $this->convert_event_timeformat($wpdb->get_row($sql));
 	}
 
 	public function get_distinct_event_data($search_string, $date_filter, $cat_filter, $order='asc') {
@@ -113,7 +113,7 @@ class EL_Db {
 		}
 		//time
 		if( !isset( $event_data['time'] ) ) { $sqldata['time'] = ''; }
-		else { $sqldata['time'] = stripslashes($event_data['time']); }
+		else { $sqldata['time'] = $this->validate_time($event_data['time']); }
 		//title
 		if( !isset( $event_data['title'] ) || $event_data['title'] === '' ) { return false; }
 		$sqldata['title'] = stripslashes( $event_data['title'] );
@@ -203,6 +203,32 @@ class EL_Db {
 			return $datestring;
 		}
 		return false;
+	}
+
+	private function validate_time($timestring) {
+		// Try to extract a correct time from the provided text
+		$timestamp = strtotime(stripslashes($timestring));
+		// Return a standard time format if the conversion was successful
+		if($timestamp) {
+			return date('H:i:s', $timestamp);
+		}
+		// Else return the given text
+		return $timestring;
+	}
+
+	private function convert_events_timeformat($events) {
+		foreach($events as $event) {
+			$this->convert_event_timeformat($event);
+		}
+		return $events;
+	}
+
+	private function convert_event_timeformat($event) {
+		$timestamp = strtotime($event->time);
+		if($timestamp) {
+			$event->time = date_i18n(get_option('time_format'), $timestamp);
+		}
+		return $event;
 	}
 
 	private function get_sql_filter_string($date_filter=null, $cat_filter=null) {
@@ -332,7 +358,7 @@ class EL_Db {
 						$openingTag = array_pop($tags);
 						if($openingTag != $tagName) {
 							// Not properly nested tag found: trigger a warning and add the not matching opening tag again
-							trigger_error('Not properly nested tag found (last opening tag: '.$openingTag.', closing tag: '.$tagName.')', E_USER_WARNING);
+							trigger_error('Not properly nested tag found (last opening tag: '.$openingTag.', closing tag: '.$tagName.')', E_USER_NOTICE);
 							$tags[] = $openingTag;
 						}
 						else {
