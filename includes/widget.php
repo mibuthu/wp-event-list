@@ -86,7 +86,7 @@ class EL_Widget extends WP_Widget {
 			$shortcode .= ' link_to_event=false';
 		}
 		$shortcode .= ']';
-		echo do_shortcode($shortcode);
+		echo apply_filters( 'widget_text', do_shortcode($shortcode));
 		if('true' === $instance['link_to_page'] && $linked_page_is_set) {
 			echo '<div style="clear:both"><a title="'.$instance['link_to_page_caption'].'" href="'.$instance[ 'url_to_page'].'">'.$instance['link_to_page_caption'].'</a></div>';
 		}
