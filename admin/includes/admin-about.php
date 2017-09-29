@@ -54,7 +54,7 @@ class EL_Admin_About {
 		wp_enqueue_style('eventlist_admin_about', EL_URL.'admin/css/admin_about.css');
 	}
 
-	private function show_tabs($current = 'about') {
+	private function show_tabs($current = 'general') {
 		$tabs = array('general' => __('General','event-list'),
 		              'atts'    => __('Shortcode Attributes','event-list'));
 		$out = '<h3 class="nav-tab-wrapper">';
