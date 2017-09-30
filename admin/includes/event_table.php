@@ -66,9 +66,12 @@ class EL_Event_Table extends WP_List_Table {
 	* @return string Text to be placed inside the column <td> (movie title only)
 	***************************************************************************/
 	protected function column_title($item) {
+		// check used parameters
+		$page = isset($_REQUEST['page']) ? sanitize_key($_REQUEST['page']) : '';
+
 		//Prepare Columns
 		$actions = array(
-			'edit'      => '<a href="?page='.$_REQUEST['page'].'&amp;id='.$item->id.'&amp;action=edit">'.__('Edit','event-list').'</a>',
+			'edit'      => '<a href="?page='.$page.'&amp;id='.$item->id.'&amp;action=edit">'.__('Edit','event-list').'</a>',
 			'duplicate' => '<a href="?page=el_admin_new&amp;id='.$item->id.'&amp;action=copy">'.__('Duplicate','event-list').'</a>',
 			'delete'    => '<a href="#" onClick=\''.$this->call_js_deleteEvent($item->id).'\'>'.__('Delete','event-list').'</a>');
 
@@ -154,11 +157,13 @@ class EL_Event_Table extends WP_List_Table {
 	* @see $this->prepare_items()
 	***************************************************************************/
 	private function process_bulk_action() {
+		// check used get parameters
+		$id_array = isset($_GET['id']) && is_array($_GET['id']) ? array_map('intval', $_GET['id']) : array();
+
 		//Detect when a bulk action is being triggered...
 		if('delete_bulk'===$this->current_action()) {
 			// Show confirmation window before deleting
-			$del_string = isset($_GET['id']) ? implode(', ', $_GET['id']) : '';
-			echo '<script language="JavaScript">'.$this->call_js_deleteEvent($del_string).'</script>';
+			echo '<script language="JavaScript">'.$this->call_js_deleteEvent(implode(', ', $id_array)).'</script>';
 		}
 	}
 
@@ -214,23 +219,26 @@ class EL_Event_Table extends WP_List_Table {
 	}
 
 	private function set_args() {
+		// check used get parameters
+		$date = isset($_GET['date']) ? sanitize_title($_GET['date']) : 'upcoming';
+		$cat = isset($_GET['cat']) ? sanitize_title($_GET['cat'])  : 'all';
+
 		$this->args = array('date_filter'   => 'all',
 		                    'cat_filter'    => 'all',
 		                    'sc_id_for_url' => '',
-		                    'actual_date'   => isset($_GET['date']) ? $_GET['date'] : 'upcoming',
-		                    'actual_cat'    => isset($_GET['cat'])  ? $_GET['cat']  : 'all',
+		                    'actual_date'   => $date,
+		                    'actual_cat'    => $cat,
 		);
 	}
 
 	private function get_events() {
+		// check used get parameters
+		$order = isset($_GET['order']) ? strtoupper(sanitize_key($_GET['order'])) : '';
+		$orderby = isset($_GET['orderby']) ? sanitize_key($_GET['orderby']) : '';
+
 		// define sort_array
-		$order = 'ASC';
-		if(isset($_GET['order']) && $_GET['order'] === 'desc') {
-			$order = 'DESC';
-		}
-		$orderby = '';
-		if(isset($_GET['orderby'])){
-			$orderby = $_GET['orderby'];
+		if('DESC' != $order) {
+			$order = 'ASC';
 		}
 		// set standard sort according date ASC, only when date should be sorted desc, DESC should be used
 		if($orderby == 'date' && $order == 'DESC') {
@@ -299,8 +307,11 @@ class EL_Event_Table extends WP_List_Table {
 	}
 
 	private function call_js_deleteEvent($del_ids) {
-		if(!empty($_REQUEST['_wp_http_referer'])) {
-			$ref = wp_unslash($_REQUEST['_wp_http_referer']);
+		// sanitize used parameters
+		$referer = isset($_REQUEST['_wp_http_referer']) ? esc_url_raw($_REQUEST['_wp_http_referer']) : '';
+
+		if(!empty($referer)) {
+			$ref = wp_unslash($referer);
 		}
 		else {
 			$ref = '?page=el_admin_main';
