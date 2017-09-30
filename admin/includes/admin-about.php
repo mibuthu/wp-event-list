@@ -30,13 +30,13 @@ class EL_Admin_About {
 		if(!current_user_can('edit_posts')) {
 			wp_die(__('You do not have sufficient permissions to access this page.'));
 		}
-		if(!isset($_GET['tab'])) {
-			$_GET['tab'] = 'general';
-		}
+		// check used get parameters
+		$tab = isset($_GET['tab']) ? sanitize_key($_GET['tab']) : 'general';
+
 		echo '<div class="wrap">
 				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.__('About Event List','event-list').'</h2>';
-		echo $this->show_tabs($_GET['tab']);
-		if('atts' == $_GET['tab']) {
+		echo $this->show_tabs($tab);
+		if('atts' == $tab) {
 			$this->show_atts();
 			$this->show_filter_syntax();
 			$this->show_date_syntax();
