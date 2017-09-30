@@ -43,7 +43,7 @@ class EL_Filterbar {
 		$sections = explode(";", html_entity_decode($args['filterbar_items']));
 		$section_align = array('left', 'center', 'right');
 		for($i=0; $i<sizeof($sections) && $i<3; $i++) {
-			if(strlen($sections[$i]) > 0) {
+			if(empty($sections[$i])) {
 				$out .= '
 					<div style="text-align:'.$section_align[$i].'">';
 				//split items in section seperated by comma
