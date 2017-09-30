@@ -29,30 +29,33 @@ class EL_Admin_Main {
 		$this->filterbar = &EL_Filterbar::get_instance();
 		$this->event_table = new EL_Event_Table();
 		$this->action = $this->event_table->current_action();
+
 		// check for real actions
 		if($this->action) {
+			// check used post parameters
+			$title = isset($_POST['title']) ? sanitize_title($_POST['title']) : '';
+
 			switch($this->action) {
 				// real actions (redirect when finished)
 				case 'new':
 					if(!empty($_POST)) {
-						$id = $this->update_event($_POST);
+						$id = $this->update_event();
 						$error = !$id;
-						$this->redirect('added', $error, array('title' => urlencode($_POST['title']), 'id' => $id));
+						$this->redirect('added', $error, array('title' => urlencode($title), 'id' => $id));
 					}
 					break;
 				case 'edited':
 					if(!empty($_POST)) {
-						$error = !$this->update_event($_POST);
-						$this->redirect('modified', $error, array('title' => urlencode($_POST['title']), 'id' => $_POST['id']));
+						$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+						$error = !$this->update_event();
+						$this->redirect('modified', $error, array('title' => urlencode($title), 'id' => $id));
 					}
 					break;
 				case 'delete':
-					if(isset($_GET['id'])) {
-						$id_array = explode(',', $_GET['id']);
-						$id_array = array_map('absint', $id_array);
-						$error = !$this->db->delete_events($id_array);
-						$this->redirect('deleted', $error, array('id' => implode(',', $id_array)));
-					}
+					$ids_string = isset($_GET['id']) ? preg_replace('/[^0-9,]/', '', $_GET['id']) : '';
+					$id_array = explode(',', $ids_string);
+					$error = !$this->db->delete_events($id_array);
+					$this->redirect('deleted', $error, array('id' => implode(',', $id_array)));
 					break;
 				// proceed with header if a bulk action was triggered (required due to "noheader" attribute for all action above)
 				case 'delete_bulk':
@@ -60,12 +63,17 @@ class EL_Admin_Main {
 					break;
 			}
 		}
+		// check used get parameters
+		$filter = isset($_GET['filter']) ? sanitize_title($_GET['filter']) : '';
+		$action1 = isset($_REQUEST['action']) ? intval($_REQUEST['action']) : 0;
+		$action2 = isset($_REQUEST['action2']) ? intval($_REQUEST['action2']) : 0;
+
 		// cleanup query args if the button for bulk action was clicked, but no bulk action was selected
-		if(isset($_REQUEST['action']) && '-1' == $_REQUEST['action'] && isset($_REQUEST['action2']) && '-1' == $_REQUEST['action2']) {
+		if(-1 == $action1 && -1 == $action2) {
 			$this->redirect();
 		}
 		// cleanup query args if filter button was pressed
-		if(isset($_GET['filter'])) {
+		if('' != $filter) {
 			$this->redirect();
 		}
 	}
@@ -99,12 +107,6 @@ class EL_Admin_Main {
 			}
 		}
 
-		// proceed with normal event list page
-		if(!isset($_GET['orderby'])) {
-			// set initial sorting
-			$_GET['orderby'] = 'date';
-			$_GET['order'] = 'asc';
-		}
 		$this->show_page_header($this->action);
 		echo $this->show_event_table();
 		echo '</div>';
@@ -112,7 +114,10 @@ class EL_Admin_Main {
 
 	private function show_page_header($action, $editview=false) {
 		if($editview) {
-			$duplicate_link = add_query_arg(array('id'=>absint($_GET['id']), 'action'=>'copy'), '?page=el_admin_new');
+			// check used get parameters
+			$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+			$duplicate_link = add_query_arg(array('id'=>$id, 'action'=>'copy'), '?page=el_admin_new');
 			$header = __('Edit Event','event-list').' <a href="'.$duplicate_link.'" class="add-new-h2">'.__('Duplicate','event-list').'</a>';
 		}
 		else {
@@ -155,12 +160,13 @@ class EL_Admin_Main {
 	}
 
 	private function show_event_table() {
-		// show filterbar
-		$out = '';
+		// check used parameters
+		$page = isset($_REQUEST['page']) ? sanitize_key($_REQUEST['page']) : '';
+
 		// show event table
 		// the form is required for bulk actions, the page field is required for plugins to ensure that the form posts back to the current page
-		$out .= '<form id="event-filter" method="get">
-				<input type="hidden" name="page" value="'.$_REQUEST['page'].'" />';
+		$out = '<form id="event-filter" method="get">
+				<input type="hidden" name="page" value="'.$page.'" />';
 		// show table
 		$this->event_table->prepare_items();
 		ob_start();
@@ -172,27 +178,40 @@ class EL_Admin_Main {
 	}
 
 	private function show_message($action) {
-		$error = isset($_GET['error']);
+		if(empty($action)) {
+			return;
+		}
+
+		// check used get parameters
+		$error = isset($_GET['error']) ? 0 < intval($_GET['error']) : false;
+		$title = isset($_GET['title']) ? sanitize_text_field($_GET['title']) : 'No title available!';
+
 		switch($action) {
 			case 'added':
 				if(!$error)
-					$this->show_update_message('New Event "'.esc_html(stripslashes($_GET['title'])).'" was added.');
+					$this->show_update_message('New Event "'.esc_html(stripslashes($title)).'" was added.');
 				else
-					$this->show_error_message('Error: New Event "'.esc_html(stripslashes($_GET['title'])).'" could not be added.');
+					$this->show_error_message('Error: New Event "'.esc_html(stripslashes($title)).'" could not be added.');
 				break;
 			case 'modified':
+				// check used get parameters
+				$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
 				if(!$error)
-					$this->show_update_message('Event "'.esc_html(stripslashes($_GET['title'])).'" (id: '.$_GET['id'].') was modified.');
+					$this->show_update_message('Event "'.esc_html(stripslashes($title)).'" (id: '.$id.') was modified.');
 				else
-					$this->show_error_message('Error: Event "'.esc_html(stripslashes($_GET['title'])).'" (id: '.$_GET['id'].') could not be modified.');
+					$this->show_error_message('Error: Event "'.esc_html(stripslashes($title)).'" (id: '.$id.') could not be modified.');
 				break;
 			case 'deleted':
-				$num_deleted = count(explode(',', $_GET['id']));
+				// check used get parameters
+				$ids_string = isset($_GET['id']) ? preg_replace('/[^0-9,]/', '', $_GET['id']) : '';
+
+				$num_deleted = count(explode(',', $ids_string));
 				$plural = ($num_deleted > 1) ? 's' : '';
 				if(!$error)
-					$this->show_update_message($num_deleted.' Event'.$plural.' deleted (id'.$plural.': '.htmlentities($_GET['id']).').');
+					$this->show_update_message($num_deleted.' Event'.$plural.' deleted (id'.$plural.': '.htmlentities($ids_string).').');
 				else
-					$this->show_error_message('Error: Deleting failed (Event id'.$plural.': '.htmlentities($_GET['id']).')!');
+					$this->show_error_message('Error: Deleting failed (Event id'.$plural.': '.htmlentities($ids_string).')!');
 				break;
 		}
 	}
