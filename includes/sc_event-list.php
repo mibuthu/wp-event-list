@@ -389,7 +389,7 @@ class SC_Event_List {
 		//search fore more-tag (no more tag handling if truncate of details is set)
 		if(preg_match('/<!--more(.*?)?-->/', $event->details, $matches)) {
 			$part = explode($matches[0], $event->details, 2);
-			if(!$this->is_link_available($a, $event->details) || 0 < $a['details_length'] || $this->single_event) {
+			if(!$this->is_link_available($a, $event) || 0 < $a['details_length'] || $this->single_event) {
 				//details with removed more-tag
 				$details = $part[0].$part[1];
 			}
