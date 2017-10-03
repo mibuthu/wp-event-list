@@ -88,6 +88,7 @@ class EL_Db {
 
 	public function update_event($event_data, $check_multiday=false) {
 		global $wpdb;
+		// TODO: Check sanitation and validation of event data is sufficient.
 		// prepare and validate sqldata
 		$sqldata = array();
 		if(!isset($event_data['id'])) {
@@ -137,23 +138,17 @@ class EL_Db {
 		}
 	}
 
-	public function delete_events( $event_ids ) {
+	public function delete_events($id_array) {
 		global $wpdb;
-		// filter event_ids string to int values only
-		$filtered_ids = array_map( 'intval', $event_ids );
-		if( count( $event_ids ) != count( $filtered_ids ) )
-		{
+		// sanitize to int values only
+		$id_array = array_map('intval', $id_array);
+		if(in_array(0, $id_array)) {
 			// something is wrong with the event_ids array
 			return false;
 		}
 		// sql query
-		$num_deleted = (int) $wpdb->query( 'DELETE FROM '.$this->table.' WHERE id IN ('.implode( ',', $filtered_ids ).')' );
-		if( $num_deleted == count( $event_ids ) ) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		$num_deleted = intval($wpdb->query('DELETE FROM '.$this->table.' WHERE id IN ('.implode(',', $id_array).')'));
+		return $num_deleted == count($id_array);
 	}
 
 	public function remove_category_in_events($category_slugs) {
@@ -172,7 +167,7 @@ class EL_Db {
 				$event['categories'] = explode( '|', substr($event['categories'], 1, -1));
 			}
 			$this->update_event($event);
-			}
+		}
 		return count($affected_events);
 	}
 
@@ -318,7 +313,7 @@ class EL_Db {
 			// add wrapper div with css styles for css truncate and return
 			return '<div style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis">'.$html.'</div>';
 		}
-		elseif(0 >= $length || mb_strlen($html) <= $length || $skip) {
+		elseif(empty($length) || mb_strlen($html) <= $length || $skip) {
 			// do nothing
 			return $html;
 		}
