@@ -239,8 +239,11 @@ class EL_Admin_Import {
 
 	private function safe_import_settings() {
 		foreach($this->options->options as $oname => $o) {
-			if('import' == $o['section'] && isset($_POST[$oname])) {
-				$this->options->set($oname, $_POST[$oname]);
+			// check used post parameters
+			$ovalue = isset($_POST[$oname]) ? sanitize_text_field($_POST[$oname]) : '';
+
+			if('import' == $o['section'] && !empty($ovalue)) {
+				$this->options->set($oname, $ovalue);
 			}
 		}
 	}
@@ -298,17 +301,18 @@ class EL_Admin_Import {
 	}
 
 	private function import_events() {
+		// check used post parameters
 		$reviewed_events = unserialize(stripslashes($_POST['reviewed_events']));
+		$additional_cat_array = isset($_POST['categories']) && is_array($_POST['categories']) ? array_map('sanitize_key', $_POST['categories']) : array();
 		// Category handling
-		$additional_cats = isset($_POST['categories']) ? $_POST['categories'] : array();
 		foreach($reviewed_events as &$event) {
 			// Remove not available categories of import file
 			$event['categories'] = array_filter($event['categories'], function($e) {
 				return $this->categories->is_set($e);
 			});
 			// Add the additionally specified categories to the event
-			if(!empty($additional_cats)) {
-				$event['categories'] = array_unique(array_merge($event['categories'], $additional_cats));
+			if(!empty($additional_cat_array)) {
+				$event['categories'] = array_unique(array_merge($event['categories'], $additional_cat_array));
 			}
 		}
 		$ret = array();
@@ -316,7 +320,7 @@ class EL_Admin_Import {
 			// check if dates have correct formats
 			$start_date = DateTime::createFromFormat($this->options->get('el_import_date_format'), $event['start_date']);
 			$end_date = DateTime::createFromFormat($this->options->get('el_import_date_format'), $event['end_date']);
-			if($start_date) {
+			if($start_date instanceof DateTime) {
 				$event['start_date'] = $start_date->format('Y-m-d');
 				if($end_date) {
 					$event['end_date'] = $end_date->format('Y-m-d');
