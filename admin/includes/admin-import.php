@@ -160,7 +160,7 @@ class EL_Admin_Import {
 		if(!$with_error) {
 			echo '
 				<h3>'.__('Import with errors!','event-list').'</h3>
-				'.sprintf(__('An error occurred during import! Please send your import file to %1$sthe administrator%2$s for analysis.','event-list'), '<a href="mailto:'.get_option('admin_email').'">', '</a>');
+				'.__('Sorry, an error occurred during import!','event-list');
 		}
 		else {
 			echo '
@@ -205,7 +205,7 @@ class EL_Admin_Import {
 				continue;
 			}
 			// check header
-			if($lineNum === 0) {
+			if(empty($lineNum)) {
 				// check optional separator line
 				if($line === $separator) {
 					$emptyLines += 1;
