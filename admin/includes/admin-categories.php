@@ -36,21 +36,19 @@ class EL_Admin_Categories {
 		if(!current_user_can('manage_categories')) {
 			wp_die(__('You do not have sufficient permissions to access this page.'));
 		}
-		$out = '';
+		// check used get parameters
+		$action = isset($_GET['action']) ? sanitize_key($_GET['action']) : '';
+		$slug = isset($_GET['id']) ? sanitize_key($_GET['id']) : 0;
 
-		// get action
-		$action = '';
-		if(isset($_GET['action'])) {
-			$action = $_GET['action'];
-		}
-		$out .= $this->check_actions_and_show_messages($action);
+		// check actions
+		$out = $this->check_actions_and_show_messages($action);
 
 		// normal output
 		$out.= '<div class="wrap">
 				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.__('Event List Categories','event-list').'</h2>
 				<div id="posttype-page" class="posttypediv">';
-		if('edit' === $action && isset($_GET['id'])) {
-			$out .=$this->show_edit_category_form(__('Edit Category','event-list'), __('Update Category','event-list'), $this->categories->get_category_data($_GET['id']));
+		if('edit' === $action && !empty($slug)) {
+			$out .= $this->show_edit_category_form(__('Edit Category','event-list'), __('Update Category','event-list'), $this->categories->get_category_data($slug));
 		}
 		else {
 			// show category table
@@ -72,30 +70,32 @@ class EL_Admin_Categories {
 	}
 
 	private function check_actions_and_show_messages($action) {
+		// check used get parameters
+		$slugs = isset($_GET['slug']) ? preg_replace('/[^a-z0-9,_\-]/', '', $_GET['slug']) : '';
+
 		$is_disabled = '1' == $this->options->get('el_sync_cats');
 		$out = '';
-		if('delete' === $action && isset($_GET['slug'])) {
-			if(!$is_disabled) {
-				// delete categories
-				$slug_array = explode(', ', $_GET['slug']);
-				$slug_array = array_map('sanitize_title_for_query', $slug_array);
-				$num_affected_events = $this->db->remove_category_in_events($slug_array);
-				if($this->categories->remove_categories($slug_array, false)) {
-					$out .= '<div id="message" class="updated">
-						<p><strong>'.sprintf(__('Category "%s" deleted.','event-list'), implode(', ', $slug_array));
-					if($num_affected_events > 0) {
-						$out .= '<br />'.sprintf(__('This Category was also removed from %d events.','event-list'), $num_affected_events);
-					}
-					$out .= '</strong></p>
-					</div>';
+		if('delete' === $action && !empty($slugs) && !$is_disabled) {
+			// delete categories
+			$slug_array = array_map('sanitize_key', explode(',', $slugs));
+			$num_affected_events = $this->db->remove_category_in_events($slug_array);
+			if($this->categories->remove_categories($slug_array, false)) {
+				$out .= '<div id="message" class="updated">
+					<p><strong>'.sprintf(__('Category "%s" deleted.','event-list'), implode(', ', $slug_array));
+				if(0 < $num_affected_events) {
+					$out .= '<br />'.sprintf(__('This Category was also removed from %d events.','event-list'), $num_affected_events);
 				}
-				else {
-					$out .= '<div id="message" class="error below-h2"><p><strong>'.sprintf(__('Error while deleting category "%s"','event-list'), implode(', ', $slug_array)).'.</strong></p></div>';
-				}
+				$out .= '</strong></p>
+				</div>';
+			}
+			else {
+				$out .= '<div id="message" class="error below-h2"><p><strong>'.sprintf(__('Error while deleting category "%s"','event-list'), implode(', ', $slug_array)).'.</strong></p></div>';
 			}
 		}
 		else if('setcatsync' === $action) {
-			$el_sync_cats = isset($_POST['el_sync_cats']) ? '1' : '';
+			// check used post parameters
+			$el_sync_cats = isset($_POST['el_sync_cats']) && intval($_POST['el_sync_cats']) ? '1' : '';
+
 			$this->options->set('el_sync_cats', $el_sync_cats);
 			$is_disabled = '1' == $this->options->get('el_sync_cats');
 			if($is_disabled) {
@@ -114,22 +114,27 @@ class EL_Admin_Categories {
 		}
 		else if('editcat' === $action && !empty($_POST)) {
 			if(!$is_disabled) {
-				if(!isset($_POST['id'])) {
+				// check used post parameters
+				$oldslug = isset($_POST['oldslug']) ? sanitize_key($_POST['oldslug']) : 0;
+				$slug = isset($_POST['slug']) ? sanitize_key($_POST['slug']) : 0;
+				$name = isset($_POST['name']) ? sanitize_text_field($_POST['name']) : 'No name available!';
+
+				if(empty($oldslug)) {
 					// add new category
 					if($this->categories->add_category($_POST)) {
-						$out .= '<div id="message" class="updated below-h2"><p><strong>'.sprintf(__('New Category "%s" was added','event-list'), $_POST['name']).'.</strong></p></div>';
+						$out .= '<div id="message" class="updated below-h2"><p><strong>'.sprintf(__('New Category "%s" was added','event-list'), $name).'.</strong></p></div>';
 					}
 					else {
-						$out .= '<div id="message" class="error below-h2"><p><strong>'.sprintf(__('Error: New Category "%s" could not be added','event-list'), $_POST['name']).'.</strong></p></div>';
+						$out .= '<div id="message" class="error below-h2"><p><strong>'.sprintf(__('Error: New Category "%s" could not be added','event-list'), $name).'.</strong></p></div>';
 					}
 				}
 				else {
 					// edit category
-					if($this->categories->edit_category($_POST, $_POST['id'])) {
-						$out .= '<div id="message" class="updated below-h2"><p><strong>'.sprintf(__('Category "%s" was modified','event-list'), $_POST['id']).'.</strong></p></div>';
+					if($this->categories->edit_category($_POST, $oldslug)) {
+						$out .= '<div id="message" class="updated below-h2"><p><strong>'.sprintf(__('Category "%s" was modified','event-list'), $oldslug).'.</strong></p></div>';
 					}
 					else {
-						$out .= '<div id="message" class="error below-h2"><p><strong>'.sprintf(__('Error: Category "%s" could not be modified','event-list'), $_POST['id']).'.</strong></p></div>';
+						$out .= '<div id="message" class="error below-h2"><p><strong>'.sprintf(__('Error: Category "%s" could not be modified','event-list'), $oldslug).'.</strong></p></div>';
 					}
 				}
 			}
@@ -159,7 +164,7 @@ class EL_Admin_Categories {
 							<form id="addtag" method="POST" action="?page=el_admin_categories&amp;action=editcat">';
 		if(!$is_new_event) {
 			$out .= '
-				<input type="hidden" name="id" value="'.$cat_data['slug'].'">';
+				<input type="hidden" name="oldslug" value="'.$cat_data['slug'].'">';
 		}
 		// Category Name
 		$out .= '
@@ -199,12 +204,15 @@ class EL_Admin_Categories {
 	}
 
 	private function show_category_table() {
+		// check used parameters
+		$page = isset($_REQUEST['page']) ? sanitize_key($_REQUEST['page']) : '';
+
 		$out = '
 				<div id="col-container">
 					<div id="col-right">
 						<div class="col-wrap">
 							<form id="category-filter" method="get">
-								<input type="hidden" name="page" value="'.$_REQUEST['page'].'" />';
+								<input type="hidden" name="page" value="'.$page.'" />';
 		$is_disabled = '1' == $this->options->get('el_sync_cats');
 		require_once(EL_PATH.'admin/includes/category_table.php');
 		$category_table = new EL_Category_Table($is_disabled);
