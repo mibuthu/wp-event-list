@@ -303,7 +303,7 @@ class EL_Filterbar {
 		                  'sc_id_for_url' => '',
 		);
 		$args = wp_parse_args($args, $defaults);
-		if(empty($args['event_id'])) {
+		if(!empty($args['event_id'])) {
 			$args['actual_date'] = null;
 			$args['actual_cat'] = null;
 		};
