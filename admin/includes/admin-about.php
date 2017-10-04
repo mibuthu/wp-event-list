@@ -69,12 +69,12 @@ class EL_Admin_About {
 	private function show_help() {
 		echo '
 			<h3 class="el-headline">'.__('Help and Instructions','event-list').'</h3>
-			<p>'.sprintf(__('You can manage the events %1$shere%2$s','event-list'), '<a href="admin.php?page=el_admin_main">', '</a>').'.</p>
+			<p>'.sprintf(__('You can manage the events %1$shere%2$s','event-list'), '<a href="'.admin_url('admin.php?page=el_admin_main').'">', '</a>').'.</p>
 			<p>'.__('To show the events on your site you have 2 possibilities','event-list').':</p>
 			<ul class="el-show-event-options"><li>'.sprintf(__('you can place the <strong>shortcode</strong> %1$s on any page or post','event-list'), '<code>[event-list]</code>').'</li>
 			<li>'.sprintf(__('you can add the <strong>widget</strong> %1$s in your sidebars','event-list'), '"Event List"').'</li></ul>
 			<p>'.__('The displayed events and their style can be modified with the available widget settings and the available attributes for the shortcode.','event-list').'<br />
-				'.sprintf(__('A list of all available shortcode attributes with their descriptions is available in the %1$s tab.','event-list'), '<a href="admin.php?page=el_admin_about&tab=atts">'.__('Shortcode Attributes','event-list').'</a>').'<br />
+				'.sprintf(__('A list of all available shortcode attributes with their descriptions is available in the %1$s tab.','event-list'), '<a href="'.admin_url('admin.php?page=el_admin_about&tab=atts').'">'.__('Shortcode Attributes','event-list').'</a>').'<br />
 				'.__('The available  widget options are described in their tooltip text.','event-list').'<br />
 				'.sprintf(__('If you enable one of the links options (%1$s or %2$s) in the widget you have to insert an URL to the linked event-list page.','event-list'), '"'.__('Add links to the single events','event-list').'"', '"'.__('Add a link to the Event List page','event-list').'"')
 				.__('This is required because the widget does not know in which page or post the shortcode was included.','event-list').'<br />
@@ -82,7 +82,7 @@ class EL_Admin_About {
 				.sprintf(__('The default value %1$s is normally o.k. (for pages with 1 shortcode only), but if required you can check the id by looking into the URL of an event link on your linked page or post.','event-list'), '[1]')
 				.sprintf(__('The id is available at the end of the URL parameters (e.g. %1$s).','event-list'), '<i>https://www.your-homepage.com/?page_id=99&amp;event_id<strong>1</strong>=11</i>').'
 			</p>
-			<p>'.sprintf(__('Be sure to also check the %1$s to get the plugin behaving just the way you want.','event-list'), '<a href="admin.php?page=el_admin_settings">'.__('Settings page','event-list').'</a>').'</p>';
+			<p>'.sprintf(__('Be sure to also check the %1$s to get the plugin behaving just the way you want.','event-list'), '<a href="'.admin_url('admin.php?page=el_admin_settings').'">'.__('Settings page','event-list').'</a>').'</p>';
 	}
 
 	private function show_author() {
