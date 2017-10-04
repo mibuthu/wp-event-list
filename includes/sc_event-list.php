@@ -58,6 +58,7 @@ class SC_Event_List {
 			//  'sc_id'
 			//  'actual_date'
 			//  'actual_cat'
+			//  'event_id'
 		);
 		$this->num_sc_loaded = 0;
 		$this->single_event = false;
@@ -95,28 +96,23 @@ class SC_Event_List {
 		foreach($this->atts as $aname => $attribute) {
 			$std_values[$aname] = $attribute['std_val'];
 		}
+		// TODO: sanitize all provided shortcode attributes ($atts) before going further
 		$a = shortcode_atts($std_values, $atts);
 		// add internal attributes
 		$a['sc_id'] = $this->num_sc_loaded;
 		$a['actual_date'] = $this->get_actual_date($a);
 		$a['actual_cat'] = $this->get_actual_cat($a);
-		if(isset($_GET['event_id'.$a['sc_id']])) {
-			$a['event_id'] = absint($_GET['event_id'.$a['sc_id']]);
-		}
-		elseif('all' != $a['initial_event_id'] && !isset($_GET['date'.$a['sc_id']]) && !isset($_GET['cat'.$a['sc_id']])) {
-			$a['event_id'] = intval($a['initial_event_id']);
-		}
-		else {
-			$a['event_id'] = null;
-		}
-		// fix sc_id_for_url if required
-		if(!is_numeric($a['sc_id_for_url'])) {
-			$a['sc_id_for_url'] = intval($a['sc_id']);
+		$a['event_id'] = $this->get_event_id($a);
+
+		// set sc_id_for_url if empty
+		if(empty(intval($a['sc_id_for_url']))) {
+			$a['sc_id_for_url'] = $a['sc_id'];
 		}
 
+		// actual output
 		$out = '
 				<div class="event-list">';
-		if(is_numeric($a['event_id'])) {
+		if(!empty($a['event_id'])) {
 			// show events details if event_id is set
 			$this->single_event = true;
 			$out .= $this->html_event_details($a);
@@ -162,8 +158,7 @@ class SC_Event_List {
 		$events = $this->db->get_events($date_filter, $cat_filter, $a['num_events'], $sort_array);
 
 		// generate output
-		$out = '';
-		$out .= $this->html_feed_link($a, 'top');
+		$out  = $this->html_feed_link($a, 'top');
 		$out .= $this->html_filterbar($a);
 		$out .= $this->html_feed_link($a, 'below_nav');
 		if(empty($events)) {
@@ -318,23 +313,41 @@ class SC_Event_List {
 	}
 
 	private function get_actual_date(&$a) {
-		if(isset($_GET['event_id'.$a['sc_id']])) {
-			return null;
+		// check used get parameters
+		$date = isset($_GET['date'.$a['sc_id']]) ? sanitize_key($_GET['date'.$a['sc_id']]) : null;
+
+		if('all' === $date || 'upcoming' === $date) {
+			return $date;
 		}
-		elseif(isset($_GET['date'.$a['sc_id']])) {
-			return $_GET['date'.$a['sc_id']];
+		else if(preg_match('/^[0-9]{4}(-[0-9]{2})?(-[0-9]{2})?$/', $date)) {
+			return $date;
 		}
 		return $a['initial_date'];
 	}
 
 	private function get_actual_cat(&$a) {
-		if(isset($_GET['event_id'.$a['sc_id']])) {
-			return null;
-		}
-		elseif(isset($_GET['cat'.$a['sc_id']])) {
-			return $_GET['cat'.$a['sc_id']];
+		// check used get parameters
+		$cat = isset($_GET['cat'.$a['sc_id']]) ? sanitize_key($_GET['cat'.$a['sc_id']]) : '';
+
+		if(!empty($cat)) {
+			return $cat;
 		}
 		return $a['initial_cat'];
+	}
+
+	private function get_event_id(&$a) {
+		// check used get parameters
+		$event_id = isset($_GET['event_id'.$a['sc_id']]) ? intval($_GET['event_id'.$a['sc_id']]) : 0;
+
+		if(0 < $event_id) {
+			return $event_id;
+		}
+		elseif('all' !== $a['initial_event_id'] && $a['actual_date'] === $a['initial_date'] && $a['actual_cat'] === $a['initial_cat']) {
+			return intval($a['initial_event_id']);
+		}
+		else {
+			return 0;
+		}
 	}
 
 	private function get_date_filter($date_filter, $actual_date) {
@@ -484,7 +497,7 @@ class SC_Event_List {
 	}
 
 	private function is_link_available(&$a, &$event) {
-		return $this->is_visible($a['link_to_event']) || ('events_with_details_only' == $a['link_to_event'] && !$this->single_event && '' != $event->details);
+		return $this->is_visible($a['link_to_event']) || ('events_with_details_only' == $a['link_to_event'] && !$this->single_event && !empty($event->details));
 	}
 
 	public function print_collapse_details_script() {
