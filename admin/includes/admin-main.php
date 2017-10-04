@@ -33,7 +33,7 @@ class EL_Admin_Main {
 		// check for real actions
 		if($this->action) {
 			// check used post parameters
-			$title = isset($_POST['title']) ? sanitize_title($_POST['title']) : '';
+			$title = isset($_POST['title']) ? sanitize_text_field($_POST['title']) : '';
 
 			switch($this->action) {
 				// real actions (redirect when finished)
@@ -64,16 +64,11 @@ class EL_Admin_Main {
 			}
 		}
 		// check used get parameters
-		$filter = isset($_GET['filter']) ? sanitize_title($_GET['filter']) : '';
 		$action1 = isset($_REQUEST['action']) ? intval($_REQUEST['action']) : 0;
 		$action2 = isset($_REQUEST['action2']) ? intval($_REQUEST['action2']) : 0;
 
 		// cleanup query args if the button for bulk action was clicked, but no bulk action was selected
 		if(-1 == $action1 && -1 == $action2) {
-			$this->redirect();
-		}
-		// cleanup query args if filter button was pressed
-		if('' != $filter) {
 			$this->redirect();
 		}
 	}
