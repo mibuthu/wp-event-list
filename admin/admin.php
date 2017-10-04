@@ -10,10 +10,6 @@ class EL_Admin {
 	private static $instance;
 	private $options;
 
-	private function __construct() {
-		$this->options = &EL_Options::get_instance();
-	}
-
 	public static function &get_instance() {
 		// Create class instance if required
 		if(!isset(self::$instance)) {
@@ -23,13 +19,19 @@ class EL_Admin {
 		return self::$instance;
 	}
 
-	public function init_admin_page() {
+	private function __construct() {
+		$this->options = &EL_Options::get_instance();
 		// Register actions
+		add_action('admin_init', array(&$this, 'sync_post_categories'), 11);
 		add_action('admin_menu', array(&$this, 'register_pages'));
 		add_action('plugins_loaded', array(&$this, 'db_upgrade_check'));
+		// TODO: change to new version since WordPress 4.0 with 'dashboard_glance_items' filter
 		add_action('right_now_content_table_end', array(&$this, 'add_events_to_right_now'));
+	}
 
-		// Register syncing if required
+	public function sync_post_categories() {
+		// Register syncing actions if enabled.
+		// Has to be done after Options::register_options, so that $this->options->get returns the correct value.
 		if(1 == $this->options->get('el_sync_cats')) {
 			add_action('create_category', array(&$this, 'action_add_category'));
 			add_action('edit_category', array(&$this, 'action_edit_category'));

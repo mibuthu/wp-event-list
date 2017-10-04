@@ -63,9 +63,9 @@ class Event_List {
 
 		// ADMIN PAGE:
 		if(is_admin()) {
-			// Include required php-files and initialize required objects
+			// Init admin page
 			require_once(EL_PATH.'admin/admin.php');
-			EL_Admin::get_instance()->init_admin_page();
+			EL_Admin::get_instance();
 		}
 
 		// FRONT PAGE:
