@@ -44,7 +44,7 @@ class EL_Feed {
 
 	public function print_eventlist_feed() {
 		header('Content-Type: '.feed_content_type('rss-http').'; charset='.get_option('blog_charset'), true);
-		$events = $this->db->get_events($this->options->get('el_feed_upcoming_only') ? 'upcoming' : null);
+		$events = $this->db->get_events(($this->options->get('el_feed_upcoming_only') ? 'upcoming' : null), null, 0, array('start_date DESC', 'time DESC', 'end_date DESC'));
 
 		// Print feeds
 		echo
