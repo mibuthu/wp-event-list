@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-event-list\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/event-list/\n"
-"POT-Creation-Date: 2017-03-17 17:25+0100\n"
-"PO-Revision-Date: 2017-03-17 16:25+0000\n"
+"POT-Creation-Date: 2017-10-05 22:35+0200\n"
+"PO-Revision-Date: 2017-10-05 20:35+0000\n"
 "Last-Translator: mibuthu\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/mibuthu/wp-event-list/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -18,58 +18,65 @@ msgstr ""
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin/admin.php:45
+#: admin/admin.php:48
 msgid "Event List"
 msgstr "Lista Eventi"
 
-#: admin/admin.php:48 admin/admin.php:80 admin/includes/admin-main.php:117
-#: admin/includes/category_table.php:110
+#: admin/admin.php:51 admin/includes/admin-main.php:119
+#: admin/includes/category_table.php:113
 msgid "Events"
 msgstr "Eventi"
 
-#: admin/admin.php:48
+#: admin/admin.php:51
 msgid "All Events"
 msgstr "Tutti gli eventi"
 
-#: admin/admin.php:52 admin/includes/admin-new.php:41
+#: admin/admin.php:55 admin/includes/admin-new.php:46
 msgid "Add New Event"
 msgstr "Aggiungi un nuovo evento"
 
-#: admin/admin.php:52 admin/includes/admin-main.php:119
+#: admin/admin.php:55 admin/includes/admin-main.php:121
 msgid "Add New"
 msgstr "Aggiungi nuovo"
 
-#: admin/admin.php:56 admin/includes/admin-categories.php:50
+#: admin/admin.php:59 admin/includes/admin-categories.php:48
 msgid "Event List Categories"
 msgstr "Categorie Lista Eventi"
 
-#: admin/admin.php:56 admin/includes/admin-new.php:145
-#: admin/includes/event_table.php:111
+#: admin/admin.php:59 admin/includes/admin-new.php:150
+#: admin/includes/event_table.php:114
 msgid "Categories"
 msgstr "Categorie"
 
-#: admin/admin.php:60 admin/includes/admin-settings.php:53
+#: admin/admin.php:63 admin/includes/admin-settings.php:54
 msgid "Event List Settings"
 msgstr "Impostazioni Eventi Lista"
 
-#: admin/admin.php:60
+#: admin/admin.php:63
 msgid "Settings"
 msgstr "Impostazioni"
 
-#: admin/admin.php:64 admin/includes/admin-about.php:37
+#: admin/admin.php:67 admin/includes/admin-about.php:37
 msgid "About Event List"
 msgstr "Informazioni su Lista Eventi"
 
-#: admin/admin.php:64
+#: admin/admin.php:67
 msgid "About"
 msgstr "Informazioni su"
 
-#: admin/includes/admin-about.php:58 admin/includes/admin-settings.php:68
+#: admin/admin.php:87
+#, php-format
+msgid "%s Event"
+msgid_plural "%s Events"
+msgstr[0] ""
+msgstr[1] ""
+
+#: admin/includes/admin-about.php:58 admin/includes/admin-settings.php:69
 msgid "General"
 msgstr "Generico"
 
 #: admin/includes/admin-about.php:59 admin/includes/admin-about.php:77
-#: admin/includes/admin-about.php:103
+#: admin/includes/admin-about.php:104
 msgid "Shortcode Attributes"
 msgstr "Attributi dello Shortcode"
 
@@ -194,130 +201,136 @@ msgid ""
 "If you want to support the plugin I would be happy to get a small donation"
 msgstr ""
 
-#: admin/includes/admin-about.php:105
+#: admin/includes/admin-about.php:96 admin/includes/admin-about.php:97
+#: admin/includes/admin-about.php:98
+#, php-format
+msgid "Donate with %1$s"
+msgstr ""
+
+#: admin/includes/admin-about.php:106
 msgid ""
 "You have the possibility to modify the output if you add some of the "
 "following attributes to the shortcode."
 msgstr "Hai la possibilità di modificare l'output se aggiungi alcuni dei seguenti attributi allo Shortcode."
 
-#: admin/includes/admin-about.php:106
+#: admin/includes/admin-about.php:107
 #, php-format
 msgid ""
 "You can combine and add as much attributes as you want. E.g. the shortcode "
 "including the attributes %1$s and %2$s would looks like this:"
 msgstr "È possibile combinare e aggiungere attributi come si desidera . Es Lo Shortcode, inclusi gli attributi %1$s e %2$s sarebbe simile a questo:"
 
-#: admin/includes/admin-about.php:108
+#: admin/includes/admin-about.php:109
 msgid ""
 "Below you can find a list of all supported attributes with their "
 "descriptions and available options:"
 msgstr "Qui di seguito potete trovare una lista di tutti gli attributi supportati con relative descrizioni e le opzioni disponibili:"
 
-#: admin/includes/admin-about.php:122
+#: admin/includes/admin-about.php:123
 msgid "Attribute name"
 msgstr "Nome attributo"
 
-#: admin/includes/admin-about.php:123
+#: admin/includes/admin-about.php:124
 msgid "Value options"
 msgstr "Valore opzioni"
 
-#: admin/includes/admin-about.php:124
+#: admin/includes/admin-about.php:125
 msgid "Default value"
 msgstr "Valore di default"
 
-#: admin/includes/admin-about.php:125 admin/includes/admin-categories.php:188
-#: admin/includes/category_table.php:108
+#: admin/includes/admin-about.php:126 admin/includes/admin-categories.php:194
+#: admin/includes/category_table.php:111
 msgid "Description"
 msgstr "Descrizione"
 
-#: admin/includes/admin-about.php:143 includes/sc_event-list_helptexts.php:26
+#: admin/includes/admin-about.php:144 includes/sc_event-list_helptexts.php:26
 #: includes/sc_event-list_helptexts.php:31
 msgid "Filter Syntax"
 msgstr "Sintassi del filtro"
 
-#: admin/includes/admin-about.php:144
+#: admin/includes/admin-about.php:145
 msgid ""
 "For date and cat filters you can specify complex filters with the following "
 "syntax:"
 msgstr ""
 
-#: admin/includes/admin-about.php:145
+#: admin/includes/admin-about.php:146
 #, php-format
 msgid ""
 "You can use %1$s and %2$s connections to define complex filters. "
 "Additionally you can set brackets %3$s for nested queries."
 msgstr ""
 
-#: admin/includes/admin-about.php:145
+#: admin/includes/admin-about.php:146
 msgid "AND"
 msgstr "E"
 
-#: admin/includes/admin-about.php:145
+#: admin/includes/admin-about.php:146
 msgid "OR"
 msgstr "O"
 
-#: admin/includes/admin-about.php:145
+#: admin/includes/admin-about.php:146
 msgid "or"
 msgstr "o"
 
-#: admin/includes/admin-about.php:145
+#: admin/includes/admin-about.php:146
 msgid "and"
 msgstr "e"
 
-#: admin/includes/admin-about.php:146
+#: admin/includes/admin-about.php:147
 msgid "Examples for cat filters:"
 msgstr "Esempio per il filtro di categorie:"
 
-#: admin/includes/admin-about.php:147
+#: admin/includes/admin-about.php:148
 #, php-format
 msgid "Show all events with category %1$s."
 msgstr "Mostra tutti gli eventi aventi categoria %1$s."
 
-#: admin/includes/admin-about.php:148
+#: admin/includes/admin-about.php:149
 #, php-format
 msgid "Show all events with category %1$s or %2$s."
 msgstr "Mostra tutti gli eventi aventi categoria %1$s o %2$s."
 
-#: admin/includes/admin-about.php:149
+#: admin/includes/admin-about.php:150
 #, php-format
 msgid ""
 "Show all events with category %1$s and all events where category %2$s as "
 "well as %3$s is selected."
 msgstr "Mostra tutti gli eventi aventi categoria %1$s e tutti gli eventi in cui è selezionata sia categoria %2$s che %3$s."
 
-#: admin/includes/admin-about.php:154 includes/sc_event-list_helptexts.php:25
+#: admin/includes/admin-about.php:155 includes/sc_event-list_helptexts.php:25
 msgid "Available Date Formats"
 msgstr "Formati data disponibili"
 
-#: admin/includes/admin-about.php:155
+#: admin/includes/admin-about.php:156
 msgid "For date filters you can use the following date formats:"
 msgstr "Per il filtro sulle date puoi utilizzare il seguente formato date:"
 
-#: admin/includes/admin-about.php:163 includes/sc_event-list_helptexts.php:25
+#: admin/includes/admin-about.php:164 includes/sc_event-list_helptexts.php:25
 msgid "Available Date Range Formats"
 msgstr "Formati intervallo date disponibili"
 
-#: admin/includes/admin-about.php:164
+#: admin/includes/admin-about.php:165
 msgid "For date filters you can use the following daterange formats:"
 msgstr "Per il filtro sulle date puoi utilizzare il seguente formato di intervallo date:"
 
-#: admin/includes/admin-about.php:176
+#: admin/includes/admin-about.php:177
 msgid "Value"
 msgstr "Valore"
 
-#: admin/includes/admin-about.php:180
+#: admin/includes/admin-about.php:181
 msgid "Example"
 msgstr "Esempio"
 
-#: admin/includes/admin-categories.php:53
+#: admin/includes/admin-categories.php:51
 msgid "Edit Category"
 msgstr "Modifica categoria"
 
-#: admin/includes/admin-categories.php:53
+#: admin/includes/admin-categories.php:51
 msgid "Update Category"
 msgstr "Categoria aggiornata"
 
-#: admin/includes/admin-categories.php:59
+#: admin/includes/admin-categories.php:57
 msgid "Add New Category"
 msgstr "Aggiunta nuova categoria"
 
@@ -336,74 +349,74 @@ msgstr "Questa categoria è stato rimossa anche da %d eventi."
 msgid "Error while deleting category \"%s\""
 msgstr "Errore durante la cancellazione della categoria \"%s\""
 
-#: admin/includes/admin-categories.php:102
+#: admin/includes/admin-categories.php:103
 msgid "Sync with post categories enabled."
 msgstr "La sincronizzazione con le categorie degli articoli è abilitata."
 
-#: admin/includes/admin-categories.php:105
+#: admin/includes/admin-categories.php:106
 msgid "Sync with post categories disabled."
 msgstr "Sincronizzazione con le categorie dei post abilitata"
 
-#: admin/includes/admin-categories.php:111
+#: admin/includes/admin-categories.php:112
 msgid "Manual sync with post categories sucessfully finished."
 msgstr "Sincronizzazione manuale con le categorie dei post terminata con successo."
 
-#: admin/includes/admin-categories.php:119
+#: admin/includes/admin-categories.php:125
 #, php-format
 msgid "New Category \"%s\" was added"
 msgstr "La nuova categoria \"%s\" è stata aggiunta"
 
-#: admin/includes/admin-categories.php:122
+#: admin/includes/admin-categories.php:128
 #, php-format
 msgid "Error: New Category \"%s\" could not be added"
 msgstr "Errore: la nuova categoria \"%s\" non può essere aggiunta"
 
-#: admin/includes/admin-categories.php:128
+#: admin/includes/admin-categories.php:134
 #, php-format
 msgid "Category \"%s\" was modified"
 msgstr "Categoria \"%s\" è stata modificata"
 
-#: admin/includes/admin-categories.php:131
+#: admin/includes/admin-categories.php:137
 #, php-format
 msgid "Error: Category \"%s\" could not be modified"
 msgstr "Errore: Categoria \"%s\" non può essere modificata"
 
-#: admin/includes/admin-categories.php:138
+#: admin/includes/admin-categories.php:144
 msgid "Categories are automatically synced with the post categories."
 msgstr ""
 
-#: admin/includes/admin-categories.php:139
+#: admin/includes/admin-categories.php:145
 msgid ""
 "Because of this all options to add new categories or editing existing "
 "categories are disabled."
 msgstr ""
 
-#: admin/includes/admin-categories.php:140
+#: admin/includes/admin-categories.php:146
 msgid ""
 "If you want to manually edit the categories you have to disable this option."
 msgstr ""
 
-#: admin/includes/admin-categories.php:167
+#: admin/includes/admin-categories.php:173
 msgid "The name is how it appears on your site."
 msgstr "Il nome è come appare sul tuo sito."
 
-#: admin/includes/admin-categories.php:172
+#: admin/includes/admin-categories.php:178
 msgid ""
 "The “slug” is the URL-friendly version of the name. It is usually all "
 "lowercase and contains only letters, numbers, and hyphens."
 msgstr "Lo \"slug\" è la versione amichevole del nome adatto ad una URL . Di solito è tutto minuscolo e contiene solo lettere, numeri e trattini."
 
-#: admin/includes/admin-categories.php:185
+#: admin/includes/admin-categories.php:191
 msgid ""
 "Categories can have a hierarchy. You might have a Jazz category, and under "
 "that have children categories for Bebop and Big Band. Totally optional."
 msgstr "Le categorie possono avere una gerarchia. Si potrebbe avere una categoria Jazz, e due sotto-categorie figlie Bebop e Big Band. Totalmente opzionale."
 
-#: admin/includes/admin-categories.php:232
+#: admin/includes/admin-categories.php:241
 msgid "Apply"
 msgstr "Applica"
 
-#: admin/includes/admin-categories.php:242
+#: admin/includes/admin-categories.php:251
 msgid "Do a manual sync with post categories"
 msgstr "Eseguire una sincronizzazione manuale con le categorie degli articoli"
 
@@ -486,11 +499,8 @@ msgid "Import with errors!"
 msgstr "Importazione avvenuta con errori!"
 
 #: admin/includes/admin-import.php:163
-#, php-format
-msgid ""
-"An error occurred during import! Please send your import file to %1$sthe "
-"administrator%2$s for analysis."
-msgstr "Si è verificato un errore durante l'importazione! Si prega di inviare il file di importazione %1$s all' amministratore %2$s per l'analisi."
+msgid "Sorry, an error occurred during import!"
+msgstr ""
 
 #: admin/includes/admin-import.php:167
 msgid "Import successful!"
@@ -500,8 +510,8 @@ msgstr "Importazione avvenuta con successo"
 msgid "Go back to All Events"
 msgstr "Torna a Tutti gli Eventi"
 
-#: admin/includes/admin-import.php:175 admin/includes/admin-new.php:106
-#: admin/includes/event_table.php:108 includes/widget_helptexts.php:8
+#: admin/includes/admin-import.php:175 admin/includes/admin-new.php:111
+#: admin/includes/event_table.php:111 includes/widget_helptexts.php:8
 msgid "Title"
 msgstr "Titolo"
 
@@ -513,19 +523,19 @@ msgstr "Data di inizio"
 msgid "End Date"
 msgstr "Data di fine"
 
-#: admin/includes/admin-import.php:178 admin/includes/admin-new.php:119
+#: admin/includes/admin-import.php:178 admin/includes/admin-new.php:124
 #: includes/options_helptexts.php:48 includes/options_helptexts.php:49
 msgid "Time"
 msgstr "Ora"
 
-#: admin/includes/admin-import.php:179 admin/includes/admin-new.php:123
-#: admin/includes/event_table.php:109 includes/options_helptexts.php:53
+#: admin/includes/admin-import.php:179 admin/includes/admin-new.php:128
+#: admin/includes/event_table.php:112 includes/options_helptexts.php:53
 #: includes/options_helptexts.php:54
 msgid "Location"
 msgstr "Ubicazione"
 
-#: admin/includes/admin-import.php:180 admin/includes/admin-new.php:127
-#: admin/includes/event_table.php:110
+#: admin/includes/admin-import.php:180 admin/includes/admin-new.php:132
+#: admin/includes/event_table.php:113
 msgid "Details"
 msgstr "Dettagli"
 
@@ -540,68 +550,68 @@ msgid ""
 "missing or not correct!"
 msgstr ""
 
-#: admin/includes/admin-import.php:252 admin/includes/admin-main.php:120
+#: admin/includes/admin-import.php:255 admin/includes/admin-main.php:122
 msgid "Import"
 msgstr "Importazione"
 
-#: admin/includes/admin-main.php:114
+#: admin/includes/admin-main.php:116
 msgid "Edit Event"
 msgstr "Modifica Evento"
 
-#: admin/includes/admin-main.php:114 admin/includes/event_table.php:72
+#: admin/includes/admin-main.php:116 admin/includes/event_table.php:75
 msgid "Duplicate"
 msgstr "Duplica"
 
-#: admin/includes/admin-new.php:43
+#: admin/includes/admin-new.php:48
 #, php-format
 msgid "Duplicate of event id:%d"
 msgstr "Duplicazione di evento avente id: %d"
 
-#: admin/includes/admin-new.php:106 admin/includes/admin-new.php:110
+#: admin/includes/admin-new.php:111 admin/includes/admin-new.php:115
 msgid "required"
 msgstr "richiesto"
 
-#: admin/includes/admin-new.php:110 admin/includes/event_table.php:107
+#: admin/includes/admin-new.php:115 admin/includes/event_table.php:110
 msgid "Date"
 msgstr "Data"
 
-#: admin/includes/admin-new.php:113
+#: admin/includes/admin-new.php:118
 msgid "Multi-Day Event"
 msgstr "Evento multi giornaliero"
 
-#: admin/includes/admin-new.php:143 admin/includes/admin-new.php:160
+#: admin/includes/admin-new.php:148 admin/includes/admin-new.php:165
 msgid "Publish"
 msgstr "Pubblica"
 
-#: admin/includes/admin-new.php:160
+#: admin/includes/admin-new.php:165
 msgid "Update"
 msgstr "Aggiorna"
 
-#: admin/includes/admin-new.php:162
+#: admin/includes/admin-new.php:167
 msgid "Cancel"
 msgstr "Annulla"
 
-#: admin/includes/admin-new.php:175
+#: admin/includes/admin-new.php:180
 msgid "No categories available."
 msgstr "Nessuna categoria disponibile"
 
-#: admin/includes/admin-new.php:221
+#: admin/includes/admin-new.php:226
 msgid "Goto Category Settings"
 msgstr "Vai alle impostazioni delle categorie"
 
-#: admin/includes/admin-settings.php:41
+#: admin/includes/admin-settings.php:42
 msgid "Settings saved."
 msgstr "Impostazioni salvate."
 
-#: admin/includes/admin-settings.php:69
+#: admin/includes/admin-settings.php:70
 msgid "Frontend Settings"
 msgstr "Impostazioni interfaccia grafica"
 
-#: admin/includes/admin-settings.php:70
+#: admin/includes/admin-settings.php:71
 msgid "Admin Page Settings"
 msgstr "Impostazioni di amministrazione"
 
-#: admin/includes/admin-settings.php:71
+#: admin/includes/admin-settings.php:72
 msgid "Feed Settings"
 msgstr "Impostazioni Feed"
 
@@ -613,36 +623,36 @@ msgstr "evento"
 msgid "events"
 msgstr "eventi"
 
-#: admin/includes/category_table.php:70 admin/includes/event_table.php:71
+#: admin/includes/category_table.php:73 admin/includes/event_table.php:74
 msgid "Edit"
 msgstr "Modifica"
 
-#: admin/includes/category_table.php:71 admin/includes/category_table.php:145
-#: admin/includes/event_table.php:73 admin/includes/event_table.php:146
+#: admin/includes/category_table.php:74 admin/includes/category_table.php:148
+#: admin/includes/event_table.php:76 admin/includes/event_table.php:149
 msgid "Delete"
 msgstr "Cancella"
 
-#: admin/includes/category_table.php:107
+#: admin/includes/category_table.php:110
 msgid "Name"
 msgstr "Nome"
 
-#: admin/includes/category_table.php:109
+#: admin/includes/category_table.php:112
 msgid "Slug"
 msgstr "Slug"
 
-#: admin/includes/event_table.php:112
+#: admin/includes/event_table.php:115
 msgid "Author"
 msgstr "Autore"
 
-#: admin/includes/event_table.php:113
+#: admin/includes/event_table.php:116
 msgid "Published"
 msgstr "Pubblicato"
 
-#: admin/includes/event_table.php:175
+#: admin/includes/event_table.php:180
 msgid "Filter"
 msgstr "Filtro"
 
-#: admin/includes/event_table.php:297
+#: admin/includes/event_table.php:300
 #, php-format
 msgid "%s ago"
 msgstr "%s fa"
@@ -1438,7 +1448,7 @@ msgid ""
 "\t                                            The empty standard value is o.k. for the normal use. This attribute is normally only required for the event-list widget."
 msgstr ""
 
-#: includes/sc_event-list.php:138
+#: includes/sc_event-list.php:134
 msgid "Event Information:"
 msgstr "Informazioni Evento"
 
