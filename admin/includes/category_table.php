@@ -41,14 +41,14 @@ class EL_Category_Table extends WP_List_Table {
 	protected function column_default($item, $column_name) {
 		switch($column_name){
 			case 'desc' :
-				return '<div>'.$item[$column_name].'</div>';
+				return '<div>'.esc_html($item[$column_name]).'</div>';
 			case 'slug' :
 				return $item[$column_name];
 			case 'num_events' :
-				return $this->db->count_events( $item['slug'] );
+				return $this->db->count_events($item['slug']);
 			default :
 				echo $column_name;
-				return $item[$column_name];
+				return esc_html($item[$column_name]);
 		}
 	}
 
