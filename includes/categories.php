@@ -108,42 +108,33 @@ class EL_Categories {
 	}
 
 	private function add_cat_to_array($cat_data, $allow_duplicate_names=false) {
+		// sanitize cat_data
+		$cat['name'] = isset($cat_data['name']) ? sanitize_text_field($cat_data['name']) : '';
+		$cat['slug'] = isset($cat_data['slug']) ? sanitize_title($cat_data['slug']) : '';
+		$cat['desc'] = isset($cat_data['desc']) ? sanitize_text_field($cat_data['desc']) : '';
+		$parent = isset($cat_data['parent']) ? sanitize_key($cat_data['parent']) : '';
+
 		// check if name was set
-		if( !isset( $cat_data['name'] ) || '' == $cat_data['name'] ) {
+		if(empty($cat['name'])) {
 			return false;
 		}
 		// check if name already exists
-		$cat_data['name'] = trim($cat_data['name']);
 		if(!$allow_duplicate_names) {
 			foreach( $this->cat_array as $category ) {
-				if( $category['name'] === $cat_data['name'] ) {
+				if($category['name'] === $cat['name']) {
 					return false;
 				}
 			}
 		}
-		// set cat name
-		$cat['name'] = $cat_data['name'];
-		// set slug
-		// generate slug if no slug was given
-		if( !isset( $cat_data['slug'] ) || '' == $cat_data['slug'] ) {
-			$cat_data['slug'] = $cat_data['name'];
+		// prepare slug
+		$cat['slug'] = $this->prepare_slug($cat['slug'], $cat['name']);
+		if(empty($cat['slug'])) {
+			return false;
 		}
-		// make slug unique
-		$cat['slug'] = $slug = sanitize_title( $cat_data['slug'] );
-		$num = 1;
-		while($this->is_set($cat['slug'])) {
-			$num++;
-			$cat['slug'] = $slug.'-'.$num;
-		}
-		// set description
-		$cat['desc'] = isset( $cat_data['desc'] ) ? trim( $cat_data['desc'] ) : '';
 		// add category
 		$this->cat_array[$cat['slug']] = $cat;
 		// set parent and level
-		if(!isset($cat_data['parent'])) {
-			$cat_data['parent'] = '';
-		}
-		$this->set_parent($cat['slug'], $cat_data['parent']);
+		$this->set_parent($cat['slug'], $parent);
 		return $cat['slug'];
 	}
 
@@ -212,14 +203,20 @@ class EL_Categories {
 	public function edit_post_category($cat_id) {
 		// the get_category still holds the old cat_data
 		// the new data is available in $_POST
-		if(isset($_POST['name'])) {
+
+		// check used post parameters
+		$cat_data['name'] = isset($_POST['name']) ? sanitize_text_field($_POST['name']) : '';
+
+		if(!empty($cat_data['name'])) {
+			// check used post parameters
+			$cat_data['slug'] = isset($_POST['slug']) ? sanitize_title($_POST['slug']) : '';
+			$cat_data['desc'] = isset($_POST['description']) ? sanitize_text_field($_POST['description']) : '';
+			$parent_id = isset($_POST['parent']) ? intval($_POST['parent']) : 0;
+
 			$old_slug = get_category($cat_id)->slug;
-			// set new cat_data from $_POST
-			$cat_data['name'] = $_POST['name'];
-			$cat_data['slug'] = isset($_POST['slug']) ? $_POST['slug'] : '';
-			$cat_data['desc'] = isset($_POST['description']) ? $_POST['description'] : '';
-			if(isset($_POST['parent']) && 0 != $_POST['parent']) {
-				$cat_data['parent'] = get_category($_POST['parent'])->slug;
+			$cat_data['slug'] = $this->prepare_slug($cat_data['slug'], $cat_data['name'], $old_slug);
+			if(0 <= $parent_id) {
+				$cat_data['parent'] = get_category($parent_id)->slug;
 			}
 			// edit event category
 			$this->edit_category($cat_data, $old_slug, true);
@@ -313,6 +310,35 @@ class EL_Categories {
 		foreach($children as $child) {
 			$this->set_parent($child, $cat_slug);
 		}
+	}
+
+	private function prepare_slug($slug, $name=null, $old_slug=null) {
+		// generate slug from name if no slug was given
+		if(empty($slug)) {
+			if(is_null($name)) {
+				return false;
+			}
+			else {
+				$slug = sanitize_title($name);
+				if(empty($slug)) {
+					return false;
+				}
+			}
+		}
+		// no action if slug is same as old_slug
+		if($slug === $old_slug) {
+			return $slug;
+		}
+		// make slug unique
+		if($this->is_set($slug)) {
+			$tmpslug = $slug.'-';
+			$num = 1;
+			while($this->is_set($slug)) {
+				$slug = $tmpslug.$num;
+				$num++;
+			}
+		}
+		return $slug;
 	}
 
 	public function get_category_data($slug) {

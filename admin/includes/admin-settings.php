@@ -30,18 +30,19 @@ class EL_Admin_Settings {
 		if(!current_user_can('manage_options')) {
 			wp_die(__('You do not have sufficient permissions to access this page.'));
 		}
+		// check used get parameters
+		$tab = isset($_GET['tab']) ? sanitize_key($_GET['tab']) : 'general';
+		$settings_updated = isset($_GET['settings-updated']) ? sanitize_key($_GET['settings-updated']) : '';
+
 		$out = '';
-		if(!isset($_GET['tab'])) {
-			$_GET['tab'] = 'general';
-		}
 		// check for changed settings
-		if(isset($_GET['settings-updated'])) {
+		if('true' === $settings_updated) {
 			// show "settings saved" message
 			$out .= '<div id="message" class="updated">
 				<p><strong>'.__('Settings saved.','event-list').'</strong></p>
 			</div>';
 			// check feed rewrite status and update it if required
-			if('feed' == $_GET['tab']) {
+			if('feed' == $tab) {
 				require_once(EL_PATH.'includes/feed.php');
 				EL_Feed::get_instance()->update_feed_rewrite_status();
 			}
@@ -51,9 +52,9 @@ class EL_Admin_Settings {
 		$out.= '
 				<div class="wrap">
 				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.__('Event List Settings','event-list').'</h2>';
-		$out .= $this->show_tabs($_GET['tab']);
+		$out .= $this->show_tabs($tab);
 		$out .= '<div id="posttype-page" class="posttypediv">';
-		$out .= $this->functions->show_option_form($_GET['tab']);
+		$out .= $this->functions->show_option_form($tab);
 		$out .= '
 				</div>
 			</div>';

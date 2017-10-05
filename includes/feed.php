@@ -44,7 +44,7 @@ class EL_Feed {
 
 	public function print_eventlist_feed() {
 		header('Content-Type: '.feed_content_type('rss-http').'; charset='.get_option('blog_charset'), true);
-		$events = $this->db->get_events($this->options->get('el_feed_upcoming_only') ? 'upcoming' : null);
+		$events = $this->db->get_events(($this->options->get('el_feed_upcoming_only') ? 'upcoming' : null), null, 0, array('start_date DESC', 'time DESC', 'end_date DESC'));
 
 		// Print feeds
 		echo
@@ -71,21 +71,26 @@ class EL_Feed {
 			foreach ($events as $event) {
 				echo '
 			<item>
-				<title>'.esc_attr($this->format_date($event->start_date, $event->end_date).' - '.$event->title).'</title>
+				<title>'.$this->format_date($event->start_date, $event->end_date).' - '.$this->sanitize_feed_text($event->title).'</title>
 				<pubDate>'.mysql2date('D, d M Y H:i:s +0000', $event->start_date, false).'</pubDate>';
 				// Feed categories
 				$cats = $this->categories->convert_db_string($event->categories, 'name_array');
 				foreach ($cats as $cat) {
 					echo '
-				<category>'.esc_attr($cat).'</category>';
+				<category>'.$this->sanitize_feed_text($cat).'</category>';
 				}
 				echo '
-				<description>'.esc_attr($this->format_date($event->start_date, $event->end_date).' '.
-						('' != $event->time ? $event->time : '').('' != $event->location ? ' - '.$event->location : '')).'</description>
-				'.('' != $event->details ?
-						'<content:encoded><![CDATA['.esc_attr($this->format_date($event->start_date, $event->end_date).' '.
-						('' != $event->time ? $event->time : '').('' != $event->location ? ' - '.$event->location : '')).
-						$event->details.']]></content:encoded>' : '').'
+				<description>
+					'.$this->feed_description($event).'
+				</description>';
+				if(!empty($event->details)) {
+					echo '
+				<content:encoded>
+					'.$this->feed_description($event).':
+					'.$this->sanitize_feed_text(do_shortcode($event->details)).'
+				</content:encoded>';
+				}
+				echo '
 			</item>';
 			}
 		}
@@ -115,6 +120,14 @@ class EL_Feed {
 			// remove eventlist feed from rewrite rules
 			flush_rewrite_rules(false);
 		}
+	}
+
+	private function feed_description(&$event) {
+		return $this->format_date($event->start_date, $event->end_date). (empty($event->time) ? '' : ' '.$this->sanitize_feed_text($event->time)).(empty($event->location) ? '' : ' - '.$this->sanitize_feed_text($event->location));
+	}
+
+	private function sanitize_feed_text($text) {
+		return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
 	}
 
 	private function format_date($start_date, $end_date) {

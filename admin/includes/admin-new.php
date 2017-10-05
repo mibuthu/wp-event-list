@@ -13,6 +13,7 @@ class EL_Admin_New {
 	private $db;
 	private $options;
 	private $categories;
+	private $id;
 	private $is_new;
 	private $is_duplicate;
 
@@ -26,11 +27,15 @@ class EL_Admin_New {
 	}
 
 	private function __construct() {
+		// check used get parameters
+		$action = isset($_GET['action']) ? sanitize_key($_GET['action']) : '';
+		$this->id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
 		$this->db = &EL_Db::get_instance();
 		$this->options = &EL_Options::get_instance();
 		$this->categories = &EL_Categories::get_instance();
-		$this->is_new = !(isset($_GET['action']) && ('edit' === $_GET['action'] || 'added' === $_GET['action'] || 'modified' === $_GET['action']));
-		$this->is_duplicate = $this->is_new && isset($_GET['id']) && intval($_GET['id']) > 0;
+		$this->is_new = !('edit' == $action || 'added' == $action || 'modified' == $action);
+		$this->is_duplicate = $this->is_new && '' != $action && 0 < $this->id;
 	}
 
 	public function show_new() {
@@ -40,7 +45,7 @@ class EL_Admin_New {
 		$out = '<div class="wrap">
 				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.__('Add New Event','event-list').'</h2>';
 		if($this->is_duplicate) {
-			$out .= '<span style="color:silver">('.sprintf(__('Duplicate of event id:%d','event-list'), absint($_GET['id'])).')</span>';
+			$out .= '<span style="color:silver">('.sprintf(__('Duplicate of event id:%d','event-list'), $this->id).')</span>';
 		}
 		$out .= $this->edit_event();
 		$out .= '</div>';
@@ -72,7 +77,7 @@ class EL_Admin_New {
 		}
 		else {
 			// set event data and existing date
-			$event = $this->db->get_event(absint($_GET['id']));
+			$event = $this->db->get_event($this->id);
 			$start_date = strtotime($event->start_date);
 			$end_date = strtotime($event->end_date);
 		}
@@ -98,7 +103,7 @@ class EL_Admin_New {
 		else {
 			$out .= '
 					<input type="hidden" name="action" value="edited" />
-					<input type="hidden" name="id" value="'.absint($_GET['id']).'" />';
+					<input type="hidden" name="id" value="'.$this->id.'" />';
 		}
 		$out .= '
 					<table class="form-table">

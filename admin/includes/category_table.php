@@ -41,14 +41,14 @@ class EL_Category_Table extends WP_List_Table {
 	protected function column_default($item, $column_name) {
 		switch($column_name){
 			case 'desc' :
-				return '<div>'.$item[$column_name].'</div>';
+				return '<div>'.esc_html($item[$column_name]).'</div>';
 			case 'slug' :
 				return $item[$column_name];
 			case 'num_events' :
-				return $this->db->count_events( $item['slug'] );
+				return $this->db->count_events($item['slug']);
 			default :
 				echo $column_name;
-				return $item[$column_name];
+				return esc_html($item[$column_name]);
 		}
 	}
 
@@ -65,10 +65,13 @@ class EL_Category_Table extends WP_List_Table {
 		$prefix = str_pad('', 7*$item['level'], '&#8212;', STR_PAD_LEFT).' ';
 		$out = '<b>'.$prefix.$item['name'].'</b>';
 		if(!$this->is_disabled) {
+			// check used parameters
+			$page = isset($_REQUEST['page']) ? sanitize_key($_REQUEST['page']) : '';
+
 			// prepare Actions
 			$actions = array(
-				'edit'      => '<a href="?page='.$_REQUEST['page'].'&amp;id='.$item['slug'].'&amp;action=edit">'.__('Edit','event-list').'</a>',
-				'delete'    => '<a href="#" onClick="eventlist_deleteCategory(\''.$item['slug'].'\');return false;">'.__('Delete','event-list').'</a>'
+				'edit'      => '<a href="?page='.$page.'&amp;id='.$item['slug'].'&amp;action=edit">'.__('Edit','event-list').'</a>',
+				'delete'    => '<a href="#" onClick=\''.$this->call_js_deleteCategory($item['slug']).'\'>'.__('Delete','event-list').'</a>'
 			);
 			//Return the title contents
 			$out .= $this->row_actions($actions);
@@ -157,11 +160,14 @@ class EL_Category_Table extends WP_List_Table {
 	* @see $this->prepare_items()
 	***************************************************************************/
 	private function process_bulk_action() {
+		// check used get parameters
+		$slug_array = isset($_GET['slug']) && is_array($_GET['slug']) ? array_map('sanitize_key', $_GET['slug']) : array();
+
 		if(!$this->is_disabled) {
 			//Detect when a bulk action is being triggered...
 			if( 'delete_bulk' === $this->current_action() ) {
 				// Show confirmation window before deleting
-				echo '<script language="JavaScript">eventlist_deleteCategory ("'.implode( ', ', $_GET['slug'] ).'");</script>';
+				echo '<script language="JavaScript">'.$this->call_js_deleteCategory(implode(',', $slug_array)).'</script>';
 			}
 		}
 	}
@@ -199,6 +205,10 @@ class EL_Category_Table extends WP_List_Table {
 		) );
 		// setup items which are used by the rest of the class
 		$this->items = $data;
+	}
+
+	private function call_js_deleteCategory($del_slugs) {
+		return 'eventlist_deleteCategory("'.$del_slugs.'");';
 	}
 }
 

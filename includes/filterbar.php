@@ -40,14 +40,14 @@ class EL_Filterbar {
 				<div class="filterbar subsubsub">';
 		// prepare filterbar-items
 		//split 3 section (left, center, right) seperated by semicolon
-		$sections = explode(";", html_entity_decode($args['filterbar_items']));
+		$sections = array_slice(explode(";", html_entity_decode($args['filterbar_items'])), 0, 3);
 		$section_align = array('left', 'center', 'right');
-		for($i=0; $i<sizeof($sections) && $i<3; $i++) {
-			if(strlen($sections[$i]) > 0) {
+		for($i=0; $i<sizeof($sections); $i++) {
+			if(!empty($sections[$i])) {
 				$out .= '
 					<div style="text-align:'.$section_align[$i].'">';
 				//split items in section seperated by comma
-				$items = explode(",", $sections[$i]);
+				$items = explode(',', $sections[$i]);
 				foreach($items as $item) {
 					//search for item options
 					$options = array();
@@ -303,7 +303,7 @@ class EL_Filterbar {
 		                  'sc_id_for_url' => '',
 		);
 		$args = wp_parse_args($args, $defaults);
-		if(is_numeric($args['event_id'])) {
+		if(!empty($args['event_id'])) {
 			$args['actual_date'] = null;
 			$args['actual_cat'] = null;
 		};

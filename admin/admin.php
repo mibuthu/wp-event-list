@@ -10,10 +10,6 @@ class EL_Admin {
 	private static $instance;
 	private $options;
 
-	private function __construct() {
-		$this->options = &EL_Options::get_instance();
-	}
-
 	public static function &get_instance() {
 		// Create class instance if required
 		if(!isset(self::$instance)) {
@@ -23,13 +19,20 @@ class EL_Admin {
 		return self::$instance;
 	}
 
-	public function init_admin_page() {
+	private function __construct() {
+		$this->options = &EL_Options::get_instance();
 		// Register actions
+		add_action('admin_init', array(&$this, 'sync_post_categories'), 11);
+		add_action('admin_head', array(&$this, 'add_dashboard_styles'));
 		add_action('admin_menu', array(&$this, 'register_pages'));
 		add_action('plugins_loaded', array(&$this, 'db_upgrade_check'));
-		add_action('right_now_content_table_end', array(&$this, 'add_events_to_right_now'));
+		add_filter('dashboard_glance_items', array($this, 'add_events_to_glance')
+);;;
+	}
 
-		// Register syncing if required
+	public function sync_post_categories() {
+		// Register syncing actions if enabled.
+		// Has to be done after Options::register_options, so that $this->options->get returns the correct value.
 		if(1 == $this->options->get('el_sync_cats')) {
 			add_action('create_category', array(&$this, 'action_add_category'));
 			add_action('edit_category', array(&$this, 'action_edit_category'));
@@ -70,16 +73,20 @@ class EL_Admin {
 		EL_Db::get_instance()->upgrade_check();
 	}
 
-	public function add_events_to_right_now() {
-		require_once(EL_PATH.'includes/db.php');
-		$num_events = EL_Db::get_instance()->get_num_events();
-		$event_link = 'admin.php?page=el_admin_main';
-		$out = '
-			<tr>
-				<td class="first b b-events"><a href="'.$event_link.'">'.$num_events.'</a></td>
-				<td class="t events"><a href="'.$event_link.'">'.__('Events','event-list').'</a></td>
-			</tr>';
-		echo $out;
+	public function add_dashboard_styles() {
+		if(current_user_can('edit_posts') && 'dashboard' === get_current_screen()->base) {
+			echo '<style>#dashboard_right_now .el-events-count:before {content: "\f508"}</style>';
+		}
+	}
+
+	public function add_events_to_glance() {
+		if(current_user_can('edit_posts')) {
+			require_once(EL_PATH.'includes/db.php');
+			$num = EL_Db::get_instance()->get_num_events();
+			$url = admin_url('admin.php?page=el_admin_main');
+			$text = sprintf(_n('%s Event','%s Events',$num,'event-list'), number_format_i18n($num));
+			return array('<a class="el-events-count" href="'.$url.'">'.$text.'</a>');
+		}
 	}
 
 	public function show_main_page() {

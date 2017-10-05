@@ -30,13 +30,13 @@ class EL_Admin_About {
 		if(!current_user_can('edit_posts')) {
 			wp_die(__('You do not have sufficient permissions to access this page.'));
 		}
-		if(!isset($_GET['tab'])) {
-			$_GET['tab'] = 'general';
-		}
+		// check used get parameters
+		$tab = isset($_GET['tab']) ? sanitize_key($_GET['tab']) : 'general';
+
 		echo '<div class="wrap">
 				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.__('About Event List','event-list').'</h2>';
-		echo $this->show_tabs($_GET['tab']);
-		if('atts' == $_GET['tab']) {
+		echo $this->show_tabs($tab);
+		if('atts' == $tab) {
 			$this->show_atts();
 			$this->show_filter_syntax();
 			$this->show_date_syntax();
@@ -54,7 +54,7 @@ class EL_Admin_About {
 		wp_enqueue_style('eventlist_admin_about', EL_URL.'admin/css/admin_about.css');
 	}
 
-	private function show_tabs($current = 'about') {
+	private function show_tabs($current = 'general') {
 		$tabs = array('general' => __('General','event-list'),
 		              'atts'    => __('Shortcode Attributes','event-list'));
 		$out = '<h3 class="nav-tab-wrapper">';
@@ -69,12 +69,12 @@ class EL_Admin_About {
 	private function show_help() {
 		echo '
 			<h3 class="el-headline">'.__('Help and Instructions','event-list').'</h3>
-			<p>'.sprintf(__('You can manage the events %1$shere%2$s','event-list'), '<a href="admin.php?page=el_admin_main">', '</a>').'.</p>
+			<p>'.sprintf(__('You can manage the events %1$shere%2$s','event-list'), '<a href="'.admin_url('admin.php?page=el_admin_main').'">', '</a>').'.</p>
 			<p>'.__('To show the events on your site you have 2 possibilities','event-list').':</p>
 			<ul class="el-show-event-options"><li>'.sprintf(__('you can place the <strong>shortcode</strong> %1$s on any page or post','event-list'), '<code>[event-list]</code>').'</li>
 			<li>'.sprintf(__('you can add the <strong>widget</strong> %1$s in your sidebars','event-list'), '"Event List"').'</li></ul>
 			<p>'.__('The displayed events and their style can be modified with the available widget settings and the available attributes for the shortcode.','event-list').'<br />
-				'.sprintf(__('A list of all available shortcode attributes with their descriptions is available in the %1$s tab.','event-list'), '<a href="admin.php?page=el_admin_about&tab=atts">'.__('Shortcode Attributes','event-list').'</a>').'<br />
+				'.sprintf(__('A list of all available shortcode attributes with their descriptions is available in the %1$s tab.','event-list'), '<a href="'.admin_url('admin.php?page=el_admin_about&tab=atts').'">'.__('Shortcode Attributes','event-list').'</a>').'<br />
 				'.__('The available  widget options are described in their tooltip text.','event-list').'<br />
 				'.sprintf(__('If you enable one of the links options (%1$s or %2$s) in the widget you have to insert an URL to the linked event-list page.','event-list'), '"'.__('Add links to the single events','event-list').'"', '"'.__('Add a link to the Event List page','event-list').'"')
 				.__('This is required because the widget does not know in which page or post the shortcode was included.','event-list').'<br />
@@ -82,7 +82,7 @@ class EL_Admin_About {
 				.sprintf(__('The default value %1$s is normally o.k. (for pages with 1 shortcode only), but if required you can check the id by looking into the URL of an event link on your linked page or post.','event-list'), '[1]')
 				.sprintf(__('The id is available at the end of the URL parameters (e.g. %1$s).','event-list'), '<i>https://www.your-homepage.com/?page_id=99&amp;event_id<strong>1</strong>=11</i>').'
 			</p>
-			<p>'.sprintf(__('Be sure to also check the %1$s to get the plugin behaving just the way you want.','event-list'), '<a href="admin.php?page=el_admin_settings">'.__('Settings page','event-list').'</a>').'</p>';
+			<p>'.sprintf(__('Be sure to also check the %1$s to get the plugin behaving just the way you want.','event-list'), '<a href="'.admin_url('admin.php?page=el_admin_settings').'">'.__('Settings page','event-list').'</a>').'</p>';
 	}
 
 	private function show_author() {
@@ -93,8 +93,9 @@ class EL_Admin_About {
 				<p>'.sprintf(__('This plugin is developed by %1$s, you can find more information about the plugin on the %2$s.','event-list'), 'mibuthu', '<a href="http://wordpress.org/plugins/event-list" target="_blank" rel="noopener">'.__('wordpress plugin site','event-list').'</a>').'</p>
 				<p>'.sprintf(__('If you like the plugin please rate it on the %1$s.','event-list'), '<a href="http://wordpress.org/support/view/plugin-reviews/event-list" target="_blank" rel="noopener">'.__('wordpress plugin review site','event-list').'</a>').'<br />
 				<p>'.__('If you want to support the plugin I would be happy to get a small donation','event-list').':<br />
-				<a class="donate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W54LNZMWF9KW2" target="_blank" rel="noopener"><img src="'.EL_URL.'admin/images/paypal_btn_donate.gif" alt="PayPal Donation" title="Donate with PayPal" border="0"></a>
-				<a class="donate" href="https://flattr.com/submit/auto?user_id=mibuthu&url=https%3A%2F%2Fwordpress.org%2Fplugins%2Fevent-list" target="_blank" rel="noopener"><img src="'.EL_URL.'admin/images/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0"></a></p>
+				<a class="donate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W54LNZMWF9KW2" target="_blank" rel="noopener"><img src="'.EL_URL.'admin/images/paypal_btn_donate.gif" alt="PayPal Donation" title="'.sprintf(__('Donate with %1$s','event-list'), 'PayPal').'" border="0"></a>
+				<a class="donate" href="https://liberapay.com/mibuthu/donate" target="_blank" rel="noopener"><img src="'.EL_URL.'admin/images/liberapay-donate.svg" alt="Liberapay Donation" title="'.sprintf(__('Donate with %1$s','event-list'), 'Liberapay').'" border="0"></a>
+				<a class="donate" href="https://flattr.com/submit/auto?user_id=mibuthu&url=https%3A%2F%2Fwordpress.org%2Fplugins%2Fevent-list" target="_blank" rel="noopener"><img src="'.EL_URL.'admin/images/flattr-badge-large.png" alt="Flattr this" title="'.sprintf(__('Donate with %1$s','event-list'), 'Flattr').'" border="0"></a></p>
 			</div>';
 	}
 

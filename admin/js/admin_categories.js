@@ -1,9 +1,12 @@
 // Javascript functions for event-list admin_settings page
 
 // Confirmation for event deletion
-function eventlist_deleteCategory(id) {
-	if(confirm("Are you sure you want to delete this event category? This is a permanent action.")) {
-		document.location.href = "?page=el_admin_categories&slug=" + id + "&action=delete";
+function eventlist_deleteCategory(del_slugs) {
+	if(del_slugs == "") {
+		window.alert("No categories selected for deletion! Deletion aborted!");
+	}
+	else if(window.confirm("Are you sure you want to delete this event category?")) {
+		document.location.href = "?page=el_admin_categories&slug=" + del_slugs + "&action=delete";
 	}
 }
 
