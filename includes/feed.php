@@ -81,11 +81,12 @@ class EL_Feed {
 				}
 				echo '
 				<description>
-					'.$this->format_date($event->start_date, $event->end_date). (empty($event->time) ? '' : ' '.$this->sanitize_feed_text($event->time)).(empty($event->location) ? '' : ' - '.$this->sanitize_feed_text($event->location)).'
+					'.$this->feed_description($event).'
 				</description>';
 				if(!empty($event->details)) {
 					echo '
 				<content:encoded>
+					'.$this->feed_description($event).':
 					'.$this->sanitize_feed_text(do_shortcode($event->details)).'
 				</content:encoded>';
 				}
@@ -119,6 +120,10 @@ class EL_Feed {
 			// remove eventlist feed from rewrite rules
 			flush_rewrite_rules(false);
 		}
+	}
+
+	private function feed_description(&$event) {
+		return $this->format_date($event->start_date, $event->end_date). (empty($event->time) ? '' : ' '.$this->sanitize_feed_text($event->time)).(empty($event->location) ? '' : ' - '.$this->sanitize_feed_text($event->location));
 	}
 
 	private function sanitize_feed_text($text) {
