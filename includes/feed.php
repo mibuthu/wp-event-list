@@ -80,12 +80,16 @@ class EL_Feed {
 				<category>'.$this->sanitize_feed_text($cat).'</category>';
 				}
 				echo '
-				<description>'.esc_attr($this->format_date($event->start_date, $event->end_date).' '.
-						('' != $event->time ? $event->time : '').('' != $event->location ? ' - '.$event->location : '')).'</description>
-				'.('' != $event->details ?
-						'<content:encoded><![CDATA['.esc_attr($this->format_date($event->start_date, $event->end_date).' '.
-						('' != $event->time ? $event->time : '').('' != $event->location ? ' - '.$event->location : '')).
-						$event->details.']]></content:encoded>' : '').'
+				<description>
+					'.$this->format_date($event->start_date, $event->end_date). (empty($event->time) ? '' : ' '.$this->sanitize_feed_text($event->time)).(empty($event->location) ? '' : ' - '.$this->sanitize_feed_text($event->location)).'
+				</description>';
+				if(!empty($event->details)) {
+					echo '
+				<content:encoded>
+					'.$this->sanitize_feed_text(do_shortcode($event->details)).'
+				</content:encoded>';
+				}
+				echo '
 			</item>';
 			}
 		}
