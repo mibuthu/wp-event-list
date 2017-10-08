@@ -224,13 +224,17 @@ class EL_Admin_Main {
 	private function update_event() {
 		$eventdata = $_POST;
 		// provide correct sql start- and end-date
-		if(isset($eventdata['sql_start_date']) && '' != $eventdata['sql_start_date']) {
+		if(!empty($eventdata['sql_start_date'])) {
 			$eventdata['start_date'] = $eventdata['sql_start_date'];
 		}
-		if(isset($eventdata['sql_end_date']) && '' != $eventdata['sql_end_date']) {
+		if(!empty($eventdata['sql_end_date'])) {
 			$eventdata['end_date'] = $eventdata['sql_end_date'];
 		}
-		return $this->db->update_event($eventdata, true);
+		// set end_date to start_date if multiday is not selected
+		if(empty($eventdata['multiday'])) {
+			$eventdata['end_date'] = $eventdata['start_date'];
+		}
+		return $this->db->update_event($eventdata);
 	}
 
 	private function redirect($action=false, $error=false, $query_args=array()) {

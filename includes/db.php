@@ -86,55 +86,74 @@ class EL_Db {
 		return $wpdb->get_var($sql);
 	}
 
-	public function update_event($event_data, $check_multiday=false) {
+	/** ************************************************************************************************************
+	 * Create or update an event in the database
+	 *
+	 * @param   array  $event_data  The event data provided in an array where the key is the event field and the
+	 *                              value is the corresponding data. The provided data does not have to be
+	 *                              sanitized from the user imputs because this is done in the function.
+	 * @return  int|bool            event id ... for a successfully created new event
+	 *                              true     ... for a successfully modified existing event
+	 *                              false    ... if an error occured during the creation or modification an event
+	 **************************************************************************************************************/
+	public function update_event($event_data) {
 		global $wpdb;
-		// TODO: Check sanitation and validation of event data is sufficient.
+		// Sanitize event data (event data will be provided without sanitation of user input)
+		$event_data['id'] = empty($event_data['id']) ? 0 : intval($event_data['id']);
+		$event_data['pub_user'] = empty($event_data['pub_user']) ? '' : sanitize_user($event_data['pub_user']);
+		$event_data['pub_date'] = empty($event_data['pub_date']) ? '' : preg_replace('/[^0-9\-: ]/', '', $event_data['pub_date']);
+		$event_data['start_date'] = empty($event_data['start_date']) ? '' : preg_replace('/[^0-9\-]/', '', $event_data['start_date']);
+		$event_data['end_date'] = empty($event_data['end_date']) ? '' : preg_replace('/[^0-9\-]/', '', $event_data['end_date']);
+		$event_data['time'] = empty($event_data['time']) ? '' : sanitize_text_field($event_data['time']);
+		$event_data['title'] = empty($event_data['title']) ? '' : sanitize_text_field($event_data['title']);
+		$event_data['location'] = empty($event_data['location']) ? '' : sanitize_text_field($event_data['location']);
+		$event_data['details'] = empty($event_data['details']) ? '' : sanitize_textarea_field($event_data['details']);
+		$event_data['categories'] = empty($event_data['categories']) ? array() : array_map('sanitize_key', $event_data['categories']);
+
 		// prepare and validate sqldata
 		$sqldata = array();
-		if(!isset($event_data['id'])) {
-			// for new events only:
-			//pub_user
-			$sqldata['pub_user'] = isset($event_data['id']) ? $event_data['pub_user'] : wp_get_current_user()->ID;
-			//pub_date
-			$sqldata['pub_date'] = isset($event_data['pub_date']) ? $event_data['pub_date'] : date("Y-m-d H:i:s", current_time('timestamp'));
-		}
 		//start_date
-		if(!isset( $event_data['start_date'])) { return false; }
 		$sqldata['start_date'] = $this->validate_sql_date($event_data['start_date']);
-		if(false === $sqldata['start_date']) { return false; }
-		//end_date
-		if(!$check_multiday || (isset($event_data['multiday']) && "1" === $event_data['multiday'])) {
-			if(!isset($event_data['end_date'])) { $sqldata['end_date'] = $sqldata['start_date']; }
-			$sqldata['end_date'] = $this->validate_sql_date($event_data['end_date']);
-			if(false === $sqldata['end_date']) { $sqldata['end_date'] = $sqldata['start_date']; }
-			elseif(new DateTime($sqldata['end_date']) < new DateTime($sqldata['start_date'])) { $sqldata['end_date'] = $sqldata['start_date']; }
+		if(empty($sqldata['start_date'])) {
+			return false;
 		}
-		else {
+		//end_date
+		$sqldata['end_date'] = $this->validate_sql_date($event_data['end_date']);
+		if(empty($sqldata['end_date']) || new DateTime($sqldata['end_date']) < new DateTime($sqldata['start_date'])) {
 			$sqldata['end_date'] = $sqldata['start_date'];
 		}
 		//time
-		if( !isset( $event_data['time'] ) ) { $sqldata['time'] = ''; }
-		else { $sqldata['time'] = $this->validate_time($event_data['time']); }
+		$sqldata['time'] = $this->validate_time($event_data['time']);
 		//title
-		if( !isset( $event_data['title'] ) || $event_data['title'] === '' ) { return false; }
-		$sqldata['title'] = stripslashes( $event_data['title'] );
-		//location
-		if( !isset( $event_data['location'] ) ) { $sqldata['location'] = ''; }
-		else { $sqldata['location'] = stripslashes ($event_data['location'] ); }
-		//details
-		if( !isset( $event_data['details'] ) ) { $sqldata['details'] = ''; }
-		else { $sqldata['details'] = stripslashes ($event_data['details'] ); }
-		//categories
-		if( !isset( $event_data['categories'] ) || !is_array( $event_data['categories'] ) || empty( $event_data['categories'] ) ) { $sqldata['categories'] = ''; }
-		else { $sqldata['categories'] = '|'.implode( '|', $event_data['categories'] ).'|'; }
-		//types for sql data
-		$sqltypes = array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );
-		if(isset( $event_data['id'] ) ) { // update event
-			return $wpdb->update($this->table, $sqldata, array('id' => $event_data['id']), $sqltypes);
+		$sqldata['title'] = stripslashes($event_data['title']);
+		if(empty($sqldata['title'])) {
+			return false;
 		}
-		else { // new event
+		//location
+		$sqldata['location'] = stripslashes($event_data['location']);
+		//details
+		$sqldata['details'] = stripslashes($event_data['details']);
+		//categories
+		$sqldata['categories'] = empty($event_data['categories']) ? '' : '|'.implode('|', $event_data['categories']).'|';
+		// additional values for new events
+		if(empty($event_data['id'])) {
+			//pub_user
+			$sqldata['pub_user'] = wp_get_current_user()->ID;
+			//pub_date
+			$sqldata['pub_date'] = date("Y-m-d H:i:s", current_time('timestamp'));
+		}
+		//types for sql data
+		$sqltypes = array_fill(0, count($sqldata), '%s');
+
+		// write to database
+		if(empty($event_data['id'])) {
+			// insert new event
 			$wpdb->insert($this->table, $sqldata, $sqltypes);
 			return $wpdb->insert_id;
+		}
+		else {
+			// update existing event
+			return !empty($wpdb->update($this->table, $sqldata, array('id' => $event_data['id']), $sqltypes));
 		}
 	}
 
