@@ -39,39 +39,37 @@ $sc_eventlist_helptexts = array(
 	                                        sprintf(__('Choose %1$s to always hide and %2$s to always show the filterbar.','event-list'), '"false"', '"true"').'<br />'.
 	                                        sprintf(__('With %1$s the filterbar is only visible in the event list and with %2$s only in the single event view.','event-list'), '"event_list_only"', '"single_event_only"')),
 
-	'filterbar_items'  => array('val'    => 'years_hlist<br />years_dropdown<br />months_hlist<br />months_dropdown<br />daterange_hlist<br />daterange_dropdown<br />cats_hlist<br />cats_dropdown<br />reset_link',
-	                            'desc'   => 'This attribute specifies the available items in the filterbar. This options are only valid if the filterbar is displayed (see show_filterbar attribute).<br /><br />
-	                                         Find below an overview of the available filterbar items and their options:<br />
-	                                         <small><table class="el-filterbar-table">
-	                                             <tr><th class="el-filterbar-item">filterbar item</th><th class="el-filterbar-desc">description</th><th class="el-filterbar-options">item options</th><th class="el-filterbar-values">option values</th><th class="el-filterbar-default">default value</th><th class="el-filterbar-desc2">option description</th></tr>
-	                                             <tr><td rowspan="4">years</td><td rowspan="4">Show a list of all available years. Additional there are some special entries available (see item options).</td>
-	                                                     <td>show_all</td><td>true | false</td><td>true</td><td>Add an entry to show all events.</td></tr>
-	                                                 <tr><td>show_upcoming</td><td>true | false</td><td>true</td><td>Add an entry to show all upcoming events.</td></tr>
-	                                                 <tr><td>show_past</td><td>true | false</td><td>false</td><td>Add an entry to show events in the past.</td></tr>
-	                                                 <tr><td>years_order</td><td>desc | asc</td><td>desc</td><td>Set descending or ascending order of year entries.</td></tr>
-	                                             <tr><td rowspan="5">months</td><td rowspan="5">Show a list of all available months.</td>
-	                                                     <td>show_all</td><td>true | false</td><td>false</td><td>Add an entry to show all events.</td></tr>
-	                                                 <tr><td>show_upcoming</td><td>true | false</td><td>false</td><td>Add an entry to show all upcoming events.</td></tr>
-	                                                 <tr><td>show_past</td><td>true | false</td><td>false</td><td>Add an entry to show events in the past.</td></tr>
-	                                                 <tr><td>months_order</td><td>desc | asc</td><td>desc</td><td>Set descending or ascending order of month entries.</td></tr>
-	                                                 <tr><td>date_format</td><td><a href="http://php.net/manual/en/function.date.php">php date-formats</a></td><td>Y-m</td><td>Set the displayed date format of the month entries.</td></tr>
-	                                             <tr><td>daterange</td><td>With this item you can display the special entries "all", "upcoming" and "past". You can use all or only some of the available values and you can specify their order.</td><td>item_order</td><td>all | upcoming | past</td><td>all&amp;upcoming&amp;past</td><td>Specifies the displayed values and their order. The items must be seperated by "&amp;".</td></tr>
-	                                             <tr><td>cats</td><td>Show a list of all available categories.</td><td>show_all</td><td>true | false</td><td>true</td><td>Add an entry to show events from all categories.</td></tr>
-	                                             <tr><td>reset</td><td>Only a link to reset the eventlist filter to standard.</td><td>caption</td><td>any text</td><td>Reset</td><td>Set the caption of the link.</td></tr>
-	                                         </table></small>
-	                                         Find below an overview of the available filterbar display options:<br />
-	                                         <small><table class="el-filterbar-table">
-	                                            <tr><th class="el-filterbar-doption">display option</th><th class="el-filterbar-desc3">description</th><th class="el-filterbar-for">available for</th></tr>
-	                                            <tr><td>hlist</td><td>"hlist" shows a horizonal list seperated by "|" with a link to each item</td><td>years, months, daterange, cats</td></tr>
-	                                            <tr><td>dropdown</td><td>"dropdown" shows a select box where an item can be choosen. After the selection of an item the page is reloaded via javascript to show the filtered events.</td><td>years, months, daterange, cats</td></tr>
-	                                            <tr><td>link</td><td>"link" shows a simple link which can be clicked.</td><td>reset</td></tr>
-	                                         </table></small>
-	                                         <p>Find below some declaration examples with descriptions:</p>
+	'filterbar_items'  => array('val'    => array('years_hlist', 'years_dropdown', 'months_hlist', 'months_dropdown', 'daterange_hlist', 'daterange_dropdown', 'cats_hlist', 'cats_dropdown', 'reset_link'),
+	                            'desc'   => sprintf(__('This attribute specifies the available items in the filterbar. This options are only valid if the filterbar is displayed (see %1$s attribute).','event-list'), '"show_filterbar"').'<br /><br />'.
+	                                        __('Find below an overview of the available filterbar items and their options:','event-list').'<br />'.
+	                                        sc_eventlist_helptexts_filterbar_table(array(
+	                                          array('<th class="el-filterbar-item">'.__('filterbar item','event-list'), '<th class="el-filterbar-desc">'.__('description','event-list'), '<th class="el-filterbar-options">'.__('item options','event-list'), '<th class="el-filterbar-values">'.__('option values','event-list'), '<th class="el-filterbar-default">'.__('default value','event-list'), '<th class="el-filterbar-desc2">'.__('option description','event-list')),
+	                                          array('<td rowspan="4">years', '<td rowspan="4">'. __('Show a list of all available years. Additional there are some special entries available (see item options).','event-list'),
+	                                                  'show_all',      'true | false', 'true',   __('Add an entry to show all events.','event-list')),
+	                                            array('show_upcoming', 'true | false', 'true',   __('Add an entry to show all upcoming events.','event-list')),
+	                                            array('show_past',     'true | false', 'false',  __('Add an entry to show events in the past.','event-list')),
+	                                            array('years_order',   'desc | asc',   'desc',   __('Set descending or ascending order of year entries.','event-list')),
+	                                          array('<td rowspan="5">months', '<td rowspan="5">'.__('Show a list of all available months.','event-list'),
+	                                                  'show_all',      'true | false', 'false',  __('Add an entry to show all events.','event-list')),
+	                                            array('show_upcoming', 'true | false', 'false',  __('Add an entry to show all upcoming events.','event-list')),
+	                                            array('show_past',     'true | false', 'false',  __('Add an entry to show events in the past.','event-list')),
+	                                            array('months_order',  'desc | asc',   'desc',   __('Set descending or ascending order of month entries.','event-list')),
+	                                            array('date_format',   '<a href="http://php.net/manual/en/function.date.php">'.__('php date-formats','event-list').'</a>', 'Y-m', __('Set the displayed date format of the month entries.','event-list')),
+	                                          array('daterange', sprintf(__('With this item you can display the special entries %1$s, %2$s and %3$s. You can use all or only some of the available values and you can specify their order.','event-list'), '"all"', '"upcoming"', "past"), 'item_order', 'all | upcoming | past', 'all&amp;upcoming&amp;past', sprintf(__('Specifies the displayed values and their order. The items must be seperated by %1$s.','event-list'), '"&amp;"')),
+	                                          array('cats', __('Show a list of all available categories.','event-list'), 'show_all', 'true | false', 'true', __('Add an entry to show events from all categories.','event-list')),
+	                                          array('reset', __('A link to reset the eventlist filter to standard.','event-list'), 'caption', __('any text','event-list'), __('Reset','event-list'), __('Set the caption of the link.','event-list')))).
+	                                         __('Find below an overview of the available filterbar display options:','event-list').'<br />'.
+	                                         sc_eventlist_helptexts_filterbar_table(array(
+	                                           array('<th class="el-filterbar-doption">'.__('display option','event-list'), '<th class="el-filterbar-desc3">'.__('description','event-list'), '<th class="el-filterbar-for">'.__('available for','event-list')),
+	                                           array('hlist', sprintf(__('Shows a horizonal list seperated by %1$s with a link to each item.','event-list'), '"|"'), 'years, months, daterange, cats'),
+	                                           array('dropdown', __('Shows a select box where an item can be choosen. After the selection of an item the page is reloaded via javascript to show the filtered events.','event-list'), 'years, months, daterange, cats'),
+	                                           array('link', __('Shows a simple link which can be clicked.','event-list'), 'reset'))).
+	                                         '<p>'.__('Find below some declaration examples with descriptions:','event-list').'</p>
 	                                         <code>years_hlist,cats_dropdown</code><br />
-	                                         In this example you can see that the filterbar item and the used display option is seperated by "_". You can define several filterbar items seperated by comma (","). The items will be aligned on the left side.
+	                                         '.sprintf(__('In this example you can see that the filterbar item and the used display option is joined by an underscore %1$s. You can define several filterbar items seperated by a comma %2$s. These items will be displayed left-aligned.','event-list'), '"_"', '(",")').'
 	                                         <p><code>years_dropdown(show_all=false|show_past=true),cats_dropdown;;reset_link</code><br />
-	                                         In this example you can see that filterbar options can be added in brackets in format "option_name=value". You can also add multiple options seperated by a pipe ("|").<br />
-	                                         The 2 semicolon (";") devides the bar in 3 section. The first section will be displayed left-justified, the second section will be centered and the third section will be right-aligned. So in this example the 2 dropdown will be left-aligned and the reset link will be on the right side.</p>'),
+	                                         '.sprintf(__('In this example you can see that filterbar options can be added in brackets in format %1$s. You can also add multiple options seperated by a pipe %2$s.','event-list'), '"'.__('option_name','event-list').'='.__('value','event-list').'"', '("|")').'<br />
+	                                         '.sprintf(__('The 2 semicolon %1$s devides the bar in 3 section. The first section will be displayed left-justified, the second section will be centered and the third section will be right-aligned. So in this example the 2 dropdown will be left-aligned and the reset link will be on the right side.','event-list'), '(";")').'</p>'),
 
 	'title_length'     => array('val'    => array(__('number','event-list'), 'auto'),
 	                            'desc'   => __('This attribute specifies if the title should be truncated to the given number of characters in the event list.','event-list').'<br />'.
@@ -137,4 +135,32 @@ $sc_eventlist_helptexts = array(
 	                            'desc'   => __('This attribute the specifies shortcode id of the used shortcode on the page specified with "url_to_page" attribute.<br />
 	                                            The empty standard value is o.k. for the normal use. This attribute is normally only required for the event-list widget.','event-list')),
 );
+
+function sc_eventlist_helptexts_filterbar_table($tabledata_array) {
+	// table opening tag
+	$out = '
+		<small><table class="el-filterbar-table">';
+	// Start with th items (table head for first row)
+	$tableitem_tag = 'th';
+	foreach($tabledata_array as $row) {
+		// row opening tag
+		$out .= '
+			<tr>';
+		foreach($row as $column_val) {
+			// opening tag (if required)
+			$out .= ('<'.$tableitem_tag === substr($column_val, 0, 3)) ? '' : '<'.$tableitem_tag.'>';
+			// column value and closing tag
+			$out .= $column_val.'</'.$tableitem_tag.'>';
+		}
+		// row closing tag
+		$out .= '</tr>';
+		// Change to td items (after table head)
+		$tableitem_tag = 'td';
+	}
+	// table closing tag
+	$out .= '
+		</table></small>
+		';
+	return $out;
+}
 ?>
