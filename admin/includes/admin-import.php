@@ -103,8 +103,6 @@ class EL_Admin_Import {
 			return;
 		}
 
-		$serialized = serialize($this->import_data);
-
 		// Check categories
 		$not_available_cats = array();
 		foreach($this->import_data as $event) {
@@ -152,7 +150,7 @@ class EL_Admin_Import {
 					</div>
 				</div>
 			</div>
-			<input type="hidden" name="reviewed_events" id="reviewed_events" value="'.esc_html($serialized).'" />
+			<input type="hidden" name="reviewed_events" id="reviewed_events" value="'.esc_html(json_encode($this->import_data)).'" />
 			</form>';
 	}
 
@@ -302,8 +300,12 @@ class EL_Admin_Import {
 
 	private function import_events() {
 		// check used post parameters
-		$reviewed_events = unserialize(stripslashes($_POST['reviewed_events']));
+		$reviewed_events = json_decode(stripslashes($_POST['reviewed_events']), true);
+		if(empty($reviewed_events)) {
+			return false;
+		}
 		$additional_cat_array = isset($_POST['categories']) && is_array($_POST['categories']) ? array_map('sanitize_key', $_POST['categories']) : array();
+
 		// Category handling
 		foreach($reviewed_events as &$event) {
 			// Remove not available categories of import file
