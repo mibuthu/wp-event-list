@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, filter, admin, attribute, widget, sidebar, feed, rss
 Requires at least: 3.8
 Tested up to: 4.9
-Stable tag: 0.7.10
+Stable tag: 0.7.11
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -81,6 +81,11 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 
 
 == Changelog ==
+
+= 0.7.11 (2017-10-08) =
+* more security improvments due to better sanitation of user inputs
+* prepare additional strings for translations
+* some code improvements
 
 = 0.7.10 (2017-10-05) =
 * fixed security vulnerability in admin category management

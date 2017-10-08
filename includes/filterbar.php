@@ -230,7 +230,7 @@ class EL_Filterbar {
 		                        'date'.$args['sc_id_for_url'],
 		                        'cat'.$args['sc_id_for_url']);
 		if(!isset($options['caption'])) {
-			$options['caption'] = 'Reset';
+			$options['caption'] = __('Reset','event-list');
 		}
 		return $this->show_link(remove_query_arg($args_to_remove, $url), $options['caption'], 'link');
 	}

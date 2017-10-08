@@ -129,7 +129,7 @@ class EL_Admin_About {
 			$out .= '
 				<tr>
 					<td>'.$aname.'</td>
-					<td>'.$a['val'].'</td>
+					<td>'.implode('<br />', $a['val']).'</td>
 					<td>'.$a['std_val'].'</td>
 					<td>'.$a['desc'].'</td>
 				</tr>';
