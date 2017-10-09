@@ -100,14 +100,14 @@ class EL_Db {
 		global $wpdb;
 		// Sanitize event data (event data will be provided without sanitation of user input)
 		$event_data['id'] = empty($event_data['id']) ? 0 : intval($event_data['id']);
+		$event_data['title'] = empty($event_data['title']) ? '' : sanitize_text_field($event_data['title']);
 		$event_data['pub_user'] = empty($event_data['pub_user']) ? '' : sanitize_user($event_data['pub_user']);
 		$event_data['pub_date'] = empty($event_data['pub_date']) ? '' : preg_replace('/[^0-9\-: ]/', '', $event_data['pub_date']);
 		$event_data['start_date'] = empty($event_data['start_date']) ? '' : preg_replace('/[^0-9\-]/', '', $event_data['start_date']);
 		$event_data['end_date'] = empty($event_data['end_date']) ? '' : preg_replace('/[^0-9\-]/', '', $event_data['end_date']);
-		$event_data['time'] = empty($event_data['time']) ? '' : sanitize_text_field($event_data['time']);
-		$event_data['title'] = empty($event_data['title']) ? '' : sanitize_text_field($event_data['title']);
-		$event_data['location'] = empty($event_data['location']) ? '' : sanitize_text_field($event_data['location']);
-		$event_data['details'] = empty($event_data['details']) ? '' : sanitize_textarea_field($event_data['details']);
+		$event_data['time'] = empty($event_data['time']) ? '' : wp_kses_post($event_data['time']);
+		$event_data['location'] = empty($event_data['location']) ? '' : wp_kses_post($event_data['location']);
+		$event_data['details'] = empty($event_data['details']) ? '' : wp_kses_post($event_data['details']);
 		$event_data['categories'] = empty($event_data['categories']) ? array() : array_map('sanitize_key', $event_data['categories']);
 
 		// prepare and validate sqldata
