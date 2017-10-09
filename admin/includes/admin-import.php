@@ -309,9 +309,11 @@ class EL_Admin_Import {
 		// Category handling
 		foreach($reviewed_events as &$event) {
 			// Remove not available categories of import file
-			$event['categories'] = array_filter($event['categories'], function($e) {
-				return $this->categories->is_set($e);
-			});
+			foreach($event['categories'] as $cat) {
+				if(!$this->categories->is_set($cat)) {
+					unset($event['categories'][$cat]);
+				}
+			}
 			// Add the additionally specified categories to the event
 			if(!empty($additional_cat_array)) {
 				$event['categories'] = array_unique(array_merge($event['categories'], $additional_cat_array));
