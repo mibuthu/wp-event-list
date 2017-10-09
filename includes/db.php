@@ -153,7 +153,7 @@ class EL_Db {
 		}
 		else {
 			// update existing event
-			return !empty($wpdb->update($this->table, $sqldata, array('id' => $event_data['id']), $sqltypes));
+			return (bool)$wpdb->update($this->table, $sqldata, array('id' => $event_data['id']), $sqltypes);
 		}
 	}
 
