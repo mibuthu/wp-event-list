@@ -105,7 +105,7 @@ class SC_Event_List {
 		$a['event_id'] = $this->get_event_id($a);
 
 		// set sc_id_for_url if empty
-		if(empty(intval($a['sc_id_for_url']))) {
+		if(0 === intval($a['sc_id_for_url'])) {
 			$a['sc_id_for_url'] = $a['sc_id'];
 		}
 

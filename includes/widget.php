@@ -67,7 +67,7 @@ class EL_Widget extends WP_Widget {
 			echo $args['before_title'].$title.$args['after_title'];
 		}
 		$this->upgrade_widget($instance, true);
-		$linked_page_is_set = empty($instance['url_to_page']);
+		$linked_page_is_set = !empty($instance['url_to_page']);
 		$linked_page_id_is_set = 0 < intval($instance['sc_id_for_url']);
 		$shortcode = '[event-list show_filterbar=false';
 		$shortcode .= ' cat_filter='.$instance['cat_filter'];
