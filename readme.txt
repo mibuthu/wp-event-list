@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, filter, admin, attribute, widget, sidebar, feed, rss
 Requires at least: 3.8
 Tested up to: 4.9
-Stable tag: 0.7.11
+Stable tag: 0.7.12
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -81,6 +81,12 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 
 
 == Changelog ==
+
+= 0.7.12 (2017-10-09) =
+* fixed some mature issues with older wordpress versions
+* fixed event import for php version < 5.4
+* fixed usage of html tags in event time, location and details
+* fixed link to events in event-list widget
 
 = 0.7.11 (2017-10-08) =
 * more security improvments due to better sanitation of user inputs
