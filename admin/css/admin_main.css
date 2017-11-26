@@ -1,22 +1,7 @@
-.wp-list-table .column-date {
+.wp-list-table .column-eventdate {
 	width: 105px;
-}
-.wp-list-table .column-title {
-	width: 35%;
-}
-.wp-list-table .column-location {
-	width: 25%
-}
-.wp-list-table .column-details {
-	width: 40%;
-}
-.wp-list-table .column-pub_user {
-	width: 105px;
-}
-.wp-list-table .column-pub_date {
-	width: 115px;
 }
 
-span.time {
+span.starttime {
 	font-style: italic;
 }

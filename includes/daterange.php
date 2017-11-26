@@ -20,7 +20,6 @@ class EL_Daterange {
 
 	private function __construct() {
 		$this->init_formats();
-		add_action('admin_init', array(&$this, 'load_formats_helptexts'), 2);
 	}
 
 	public function init_formats() {

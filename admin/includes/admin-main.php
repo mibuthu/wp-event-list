@@ -1,19 +1,17 @@
 <?php
-if(!defined('WPINC')) {
+if(!defined('WP_ADMIN')) {
 	exit;
 }
 
-require_once(EL_PATH.'includes/db.php');
-require_once(EL_PATH.'admin/includes/event_table.php');
 require_once(EL_PATH.'includes/filterbar.php');
+require_once(EL_PATH.'includes/event.php');
 
-// This class handles all data for the admin main page
+/**
+ * This class handles all data for the admin main page
+ */
 class EL_Admin_Main {
 	private static $instance;
-	private $db;
 	private $filterbar;
-	private $event_table;
-	private $action;
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -25,229 +23,187 @@ class EL_Admin_Main {
 	}
 
 	private function __construct() {
-		$this->db = &EL_Db::get_instance();
 		$this->filterbar = &EL_Filterbar::get_instance();
-		$this->event_table = new EL_Event_Table();
-		$this->action = $this->event_table->current_action();
+		add_action('manage_posts_custom_column', array(&$this, 'events_custom_columns'), 10, 2);
+		add_filter('manage_edit-el_events_columns', array(&$this, 'events_edit_columns'));
+		add_filter('manage_edit-el_events_sortable_columns', array(&$this, 'events_sortable_columns'));
+		add_filter('request', array(&$this, 'sort_events'));
+		add_filter('post_row_actions',array(&$this, 'add_action_row_elements'), 10, 2);
+		add_action('restrict_manage_posts', array(&$this, 'add_table_filters'));
+		add_filter('parse_query', array(&$this, 'filter_request'));
+		add_action('load-edit.php', array(&$this, 'set_default_posts_list_mode'));
+		add_action('admin_print_scripts', array(&$this, 'embed_scripts'));
+		add_action('admin_head', array(&$this, 'add_import_button'));
+	}
 
-		// check for real actions
-		if($this->action) {
-			// check used post parameters
-			$title = isset($_POST['title']) ? sanitize_text_field($_POST['title']) : '';
+	/** ************************************************************************
+	* This method dictates the table's columns and titles. This should returns
+	* an array where the key is the column slug (and class) and the value is
+	* the column's title text.
+	*
+	* @see WP_List_Table::::single_row_columns()
+	* @return array An associative array containing column information: 'slugs'=>'Visible Titles'
+	***************************************************************************/
+	public function events_edit_columns($columns) {
+		return array(
+			'cb'                        => '<input type="checkbox" />', //Render a checkbox instead of text
+			'eventdate'                 => __('Event Date','event-list'),
+			'title'                     => __('Title','event-list'),
+			'location'                  => __('Location','event-list'),
+			'taxonomy-el_eventcategory' => __('Categories'),
+			'author'                    => __('Author','event-list'),
+			'date'                      => __('Date')
+		);
+	}
 
-			switch($this->action) {
-				// real actions (redirect when finished)
-				case 'new':
-					if(!empty($_POST)) {
-						$id = $this->update_event();
-						$error = !$id;
-						$this->redirect('added', $error, array('title' => urlencode($title), 'id' => $id));
-					}
+	public function events_custom_columns($column_name, $pid) {
+		switch($column_name) {
+			case 'eventdate':
+				$event = new EL_Event($pid);
+				echo $this->format_event_date($event->startdate, $event->enddate, $event->display_time($event->starttime));
+				break;
+			case 'location':
+				$event = new EL_Event($pid);
+				echo $event->location;
+				break;
+		}
+	}
+
+	public function events_sortable_columns($columns) {
+		// TODO: actual sorting not implemented yet
+		$columns['eventdate'] = 'eventdate';
+		$columns['location'] = 'location';
+		$columns['author'] = 'author';
+		return $columns;
+	}
+
+	public function sort_events($args) {
+		// Set default order to 'eventdate' of no other sorting is set
+		if(!isset($args['orderby'])) {
+			$args['orderby'] = 'eventdate';
+			$args['order'] = 'asc';
+		}
+		// Check 'orderby' value
+		if(isset($args['orderby'])) {
+			$add_args=array();
+			switch($args['orderby']) {
+				case 'eventdate':
+					$add_args = array(
+						'meta_key' => 'startdate',
+						'meta_query' => array(
+							'relation' => 'AND',
+							'startdate' => array('key' => 'startdate'),
+							'starttime' => array('key' => 'starttime'),
+							'enddate'   => array('key' => 'enddate')
+						),
+						'orderby' => array(
+							'startdate' => $args['order'],
+							'starttime' => $args['order'],
+							'enddate'   => $args['order']
+						)
+					);
 					break;
-				case 'edited':
-					if(!empty($_POST)) {
-						$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
-						$error = !$this->update_event();
-						$this->redirect('modified', $error, array('title' => urlencode($title), 'id' => $id));
-					}
-					break;
-				case 'delete':
-					$ids_string = isset($_GET['id']) ? preg_replace('/[^0-9,]/', '', $_GET['id']) : '';
-					$id_array = explode(',', $ids_string);
-					$error = !$this->db->delete_events($id_array);
-					$this->redirect('deleted', $error, array('id' => implode(',', $id_array)));
-					break;
-				// proceed with header if a bulk action was triggered (required due to "noheader" attribute for all action above)
-				case 'delete_bulk':
-					require_once(ABSPATH.'wp-admin/admin-header.php');
+				case 'location':
+					$add_args = array(
+						'meta_key' => 'location'
+					);
 					break;
 			}
+			if(!empty($add_args)) {
+				$args = array_merge($args, $add_args);
+			}
 		}
+		return $args;
+	}
+
+	public function add_action_row_elements($actions, $post) {
+		$actions['copy'] = '<a href="'.admin_url(add_query_arg('copy', $post->ID, 'post-new.php?post_type=el_events')).'" aria-label="'.sprintf(__('Add copy of %1$s','event-list'), '&#8222;'.$post->post_title.'&#8220;').'">'.__('Copy','event-list').'</a>';
+		return $actions;
+	}
+
+	public function add_table_filters() {
 		// check used get parameters
-		$action1 = isset($_REQUEST['action']) ? intval($_REQUEST['action']) : 0;
-		$action2 = isset($_REQUEST['action2']) ? intval($_REQUEST['action2']) : 0;
+		$args['actual_date'] = isset($_GET['date']) ? sanitize_key($_GET['date']) : 'upcoming';
 
-		// cleanup query args if the button for bulk action was clicked, but no bulk action was selected
-		if(-1 == $action1 && -1 == $action2) {
-			$this->redirect();
-		}
-	}
 
-	// show the main admin page
-	public function show_main() {
-		// check permissions
-		if(!current_user_can('edit_posts')) {
-			wp_die(__('You do not have sufficient permissions to access this page.'));
-		}
-		// TODO: add check_admin_referer to improve security (see /wp-admin/edit.php)
-		// is there POST data an event was edited must be updated
-
-		// check for actions
-		if($this->action) {
-			switch($this->action) {
-				// actions showing edit view
-				case 'edit':
-				case 'added':
-				case 'modified':
-					$this->show_edit_view($this->action);
-					return;
-				// actions showing import view
-				case 'import':
-					EL_Admin_Import::get_instance()->show_import();
-					return;
-				// actions showing event list
-				case 'deleted':
-					// nothing to do
-					break;
-			}
-		}
-
-		$this->show_page_header($this->action);
-		echo $this->show_event_table();
-		echo '</div>';
-	}
-
-	private function show_page_header($action, $editview=false) {
-		if($editview) {
+		// taxonomy filters (categories)
+		$filters = get_object_taxonomies('el_events');
+		foreach($filters as $tax_slug) {
 			// check used get parameters
-			$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-
-			$duplicate_link = add_query_arg(array('id'=>$id, 'action'=>'copy'), '?page=el_admin_new');
-			$header = __('Edit Event','event-list').' <a href="'.$duplicate_link.'" class="add-new-h2">'.__('Duplicate','event-list').'</a>';
-		}
-		else {
-			$header = __('Events','event-list');
-		}
-		$new_link = '<a href="?page=el_admin_new" class="add-new-h2">'.__('Add New','event-list').'</a>';
-		$import_link = $editview ? '' : '<a href="?page=el_admin_main&action=import" class="add-new-h2">'.__('Import','event-list').'</a>';
-		echo '
-			<div class="wrap">
-				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.$header.' '.$new_link.' '.$import_link.'</h2>';
-		$this->show_message($action);
-	}
-
-	private function show_edit_view($action) {
-		$this->show_page_header($action, true);
-		require_once(EL_PATH.'admin/includes/admin-new.php');
-		echo EL_Admin_New::get_instance()->edit_event();
-		echo '</div>';
-	}
-
-	public function embed_main_scripts() {
-		// If edit event is selected switch to embed admin_new
-		switch($this->action) {
-			case 'edit':
-			case 'added':
-			case 'modified':
-				// embed admin new script
-				require_once(EL_PATH.'admin/includes/admin-new.php');
-				EL_Admin_New::get_instance()->embed_new_scripts();
-				break;
-			case 'import':
-				require_once(EL_PATH.'admin/includes/admin-import.php');
-				EL_Admin_Import::get_instance()->embed_import_scripts();
-				break;
-			default:
-				// embed admin_main script
-				wp_enqueue_script('eventlist_admin_main_js', EL_URL.'admin/js/admin_main.js');
-				wp_enqueue_style('eventlist_admin_main', EL_URL.'admin/css/admin_main.css');
+			$selected = isset($_GET[$tax_slug]) ? intval($_GET[$tax_slug]) : 0;
+			$tax_obj = get_taxonomy($tax_slug);
+			wp_dropdown_categories(array(
+				'show_option_all' => sprintf(__('All %1$s','event-list'), $tax_obj->label),
+				'taxonomy'        => $tax_slug,
+				'name'            => $tax_obj->name,
+				'orderby'         => 'name',
+				'selected'        => $selected,
+				'hierarchical'    => $tax_obj->hierarchical,
+				'show_count'      => false,
+				'hide_empty'      => true
+			));
 		}
 	}
 
-	private function show_event_table() {
-		// check used parameters
-		$page = isset($_REQUEST['page']) ? sanitize_key($_REQUEST['page']) : '';
+	public function filter_request($query) {
+		// date filter
 
-		// show event table
-		// the form is required for bulk actions, the page field is required for plugins to ensure that the form posts back to the current page
-		$out = '<form id="event-filter" method="get">
-				<input type="hidden" name="page" value="'.$page.'" />';
-		// show table
-		$this->event_table->prepare_items();
-		ob_start();
-			$this->event_table->display();
-			$out .= ob_get_contents();
-		ob_end_clean();
-		$out .= '</form>';
-		return $out;
+
+		// taxonomy filter (categories)
+		$filters = get_object_taxonomies('el_events');
+		foreach($filters as $tax_slug) {
+			$var = &$query->query_vars[$tax_slug];
+			if(isset($var)) {
+				$term = get_term_by('id', $var, $tax_slug);
+				if(!empty($term)) {
+					$var = $term->slug;
+				}
+			}
+		}
 	}
 
-	private function show_message($action) {
-		if(empty($action)) {
-			return;
-		}
-
+	public function set_default_posts_list_mode() {
 		// check used get parameters
-		$error = isset($_GET['error']) ? 0 < intval($_GET['error']) : false;
-		$title = isset($_GET['title']) ? sanitize_text_field($_GET['title']) : 'No title available!';
+		$post_type = isset($_GET['post_type']) ? sanitize_key($_GET['post_type']) : '';
+		$mode = isset($_REQUEST['mode']) ? sanitize_title($_REQUEST['mode']) : '';
 
-		switch($action) {
-			case 'added':
-				if(!$error)
-					$this->show_update_message('New Event "'.esc_html(stripslashes($title)).'" was added.');
-				else
-					$this->show_error_message('Error: New Event "'.esc_html(stripslashes($title)).'" could not be added.');
-				break;
-			case 'modified':
-				// check used get parameters
-				$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-
-				if(!$error)
-					$this->show_update_message('Event "'.esc_html(stripslashes($title)).'" (id: '.$id.') was modified.');
-				else
-					$this->show_error_message('Error: Event "'.esc_html(stripslashes($title)).'" (id: '.$id.') could not be modified.');
-				break;
-			case 'deleted':
-				// check used get parameters
-				$ids_string = isset($_GET['id']) ? preg_replace('/[^0-9,]/', '', $_GET['id']) : '';
-
-				$num_deleted = count(explode(',', $ids_string));
-				$plural = ($num_deleted > 1) ? 's' : '';
-				if(!$error)
-					$this->show_update_message($num_deleted.' Event'.$plural.' deleted (id'.$plural.': '.htmlentities($ids_string).').');
-				else
-					$this->show_error_message('Error: Deleting failed (Event id'.$plural.': '.htmlentities($ids_string).')!');
-				break;
+		if('el_events' === $post_type && empty($_REQUEST['mode'])) {
+        $_REQUEST['mode'] = 'excerpt';
 		}
 	}
 
-	private function show_update_message($text) {
+	public function embed_scripts() {
+		wp_enqueue_style('eventlist_admin_main', EL_URL.'admin/css/admin_main.css');
+	}
+
+	public function add_import_button() {
 		echo '
-			<div id="message" class="updated below-h2"><p><strong>'.$text.'</strong></p></div>';
+			<script>jQuery(document).ready(function($) { $("a.page-title-action").first().after(\'<a href="'.admin_url('edit.php?post_type=el_events&page=el_admin_import').'" class="add-new-h2">'.__('Import','event-list').'</a>\'); });</script>';
 	}
 
-	private function show_error_message($text) {
-		echo '
-			<div id="message" class="error below-h2"><p><strong>'.$text.'</strong></p></div>';
-	}
-
-	private function update_event() {
-		$eventdata = $_POST;
-		// provide correct sql start- and end-date
-		if(!empty($eventdata['sql_start_date'])) {
-			$eventdata['start_date'] = $eventdata['sql_start_date'];
+		/** ************************************************************************
+	* In this function the start date, the end date and time is formated for
+	* the output.
+	*
+	* @param string $startdate The start date of the event
+	* @param string $enddate The end date of the event
+	* @param string $starttime The start time of the event
+	***************************************************************************/
+	private function format_event_date($startdate, $enddate, $starttime) {
+		$out = '<span style="white-space:nowrap;">';
+		// start date
+		$out .= mysql2date(__('Y/m/d'), $startdate);
+		// end date for multiday event
+		if($startdate !== $enddate) {
+			$out .= ' -<br />'.mysql2date(__('Y/m/d'), $enddate);
 		}
-		if(!empty($eventdata['sql_end_date'])) {
-			$eventdata['end_date'] = $eventdata['sql_end_date'];
+		// event starttime
+		if('' !== $starttime) {
+			$out .= '<br />
+				<span class="starttime">'.esc_html($starttime).'</span>';
 		}
-		// set end_date to start_date if multiday is not selected
-		if(empty($eventdata['multiday'])) {
-			$eventdata['end_date'] = $eventdata['start_date'];
-		}
-		return $this->db->update_event($eventdata);
-	}
-
-	private function redirect($action=false, $error=false, $query_args=array()) {
-		$url = remove_query_arg(array('noheader', 'action', 'action2', 'filter', '_wpnonce', '_wp_http_referer'), $_SERVER['REQUEST_URI']);
-		if($action) {
-			$url = add_query_arg('action', $action, $url);
-		}
-		if($error) {
-			$url = add_query_arg('error', '1', $url);
-		}
-		$url = add_query_arg($query_args, $url);
-		wp_redirect($url);
-		exit;
+		$out .= '</span>';
+		return $out;
 	}
 }
 ?>

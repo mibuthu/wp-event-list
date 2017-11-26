@@ -6,9 +6,14 @@ jQuery(document).ready(function($) {
 	var json = $("#json_for_js").val();
 	var conf = JSON.parse(json);
 
+	// Add copy button if required
+	if(conf.el_copy_url.length > 0) {
+		$("h1.wp-heading-inline").first().after('<a href="' + conf.el_copy_url + '" class="add-new-h2">' + conf.el_copy_text + '</a>');
+	}
+
 	// Show or hide end_date
-	if ($("#start_date").val() == $("#end_date").val()) {
-		$("#end_date_area").hide();
+	if ($("#startdate").val() == $("#enddate").val()) {
+		$("#enddate-area").hide();
 	}
 	else {
 		$("#multiday").attr('checked', true);
@@ -27,37 +32,37 @@ jQuery(document).ready(function($) {
 	});
 
 	// Datepickers
-	$("#start_date").datepicker( {
+	$("#startdate").datepicker( {
 		dateFormat: conf.el_date_format, // don't work when only set with setDefaults
-		altField: "#sql_start_date",
+		altField: "#startdate-iso",
 		onClose: function(selectedDate) {
 			// set minDate for end_date picker
-			minDate = $.datepicker.parseDate( conf.el_date_format, selectedDate );
-			minDate.setDate(minDate.getDate()+1);
-			$("#end_date").datepicker("option", "minDate", minDate);
+			minDate = $.datepicker.parseDate(conf.el_date_format, selectedDate);
+			minDate.setDate(minDate.getDate() + 1);
+			console.log(minDate);
+			$("#enddate").datepicker("option", "minDate", minDate);
 		}
 	});
-	$("#end_date").datepicker( {
+	$("#enddate").datepicker( {
 		dateFormat: conf.el_date_format, // don't work when only set with setDefaults
-		altField: "#sql_end_date",
+		altField: "#enddate-iso",
 	});
 
 	// Toogle end_date visibility and insert the correct date
 	$("#multiday").click(function() {
-		var enddate = $("#start_date").datepicker("getDate");
+		var enddate = $("#startdate").datepicker("getDate");
 		if (this.checked) {
-			timestamp = enddate.getTime() + 1*24*60*60*1000;
-			enddate.setTime(timestamp);
-			$("#end_date").datepicker("option", "minDate", enddate);
-			$("#end_date_area").fadeIn();
+			enddate.setDate(enddate.getDate() + 1);
+			$("#enddate").datepicker("option", "minDate", enddate);
+			$("#enddate-area").fadeIn();
 		}
 		else {
-			$("#end_date_area").fadeOut();
+			$("#enddate-area").fadeOut();
 		}
-		$("#end_date").datepicker("setDate", enddate);
+		$("#enddate").datepicker("setDate", enddate);
 	});
 
 	// Initialize Dates
-	$("#start_date").datepicker("setDate", $.datepicker.parseDate('yy-mm-dd', $("#start_date").val()));
-	$("#end_date").datepicker("setDate", $.datepicker.parseDate('yy-mm-dd', $("#end_date").val()));
+	$("#startdate").datepicker("setDate", $.datepicker.parseDate('yy-mm-dd', $("#startdate").val()));
+	$("#enddate").datepicker("setDate", $.datepicker.parseDate('yy-mm-dd', $("#enddate").val()));
 });

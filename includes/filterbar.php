@@ -1,16 +1,16 @@
 <?php
-if(!defined('ABSPATH')) {
+if(!defined('WPINC')) {
 	exit;
 }
 
-require_once( EL_PATH.'includes/db.php' );
-require_once( EL_PATH.'includes/categories.php' );
+require_once( EL_PATH.'includes/events.php' );
+//require_once( EL_PATH.'includes/categories.php' );
 
 // This class handles the navigation and filter bar
 class EL_Filterbar {
 	private static $instance;
-	private $db;
-	private $categories;
+	private $events;
+//	private $categories;
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -22,8 +22,8 @@ class EL_Filterbar {
 	}
 
 	private function __construct() {
-		$this->db = &EL_Db::get_instance();
-		$this->categories = &EL_Categories::get_instance();
+		$this->events = &EL_Events::get_instance();
+//		$this->categories = &EL_Categories::get_instance();
 	}
 
 	// main function to show the rendered HTML output
@@ -87,11 +87,18 @@ class EL_Filterbar {
 	}
 
 	public function show_years($url, &$args, $type='hlist', $subtype='std', $options=array()) {
-		$default_options = array (
-				'show_all' => 'true',
-				'show_upcoming' => 'true',
-				'show_past' => 'false',
-				'years_order' => 'asc',
+		$default_args = array(
+			'date_filter' => array(),
+			'cat_filter' => array(),
+			'sc_id_for_url' => false,
+			'actual_date' => false
+		);
+		$args = wp_parse_args($args, $default_args);
+		$default_options = array(
+			'show_all' => 'true',
+			'show_upcoming' => 'true',
+			'show_past' => 'false',
+			'years_order' => 'asc',
 		);
 		$options = wp_parse_args($options, $default_options);
 		// prepare displayed elements
@@ -105,9 +112,9 @@ class EL_Filterbar {
 		if('true' == $options['show_past']) {
 			$elements[] = $this->past_element();
 		}
-		$event_years = $this->db->get_distinct_event_data('substr(`start_date`,1,4)', $args['date_filter'],$args['cat_filter'], $options['years_order']);
+		$event_years = $this->events->get_filter_list('years', $args['date_filter'],$args['cat_filter'], $options['years_order']);
 		foreach($event_years as $entry) {
-			$elements[] = array('slug'=>$entry->data, 'name'=>$entry->data);
+			$elements[] = array('slug'=>$entry, 'name'=>$entry);
 		}
 		// display elements
 		if('dropdown' === $type) {
@@ -138,10 +145,10 @@ class EL_Filterbar {
 		if('true' == $options['show_past']) {
 			$elements[] = $this->past_element();
 		}
-		$event_months = $this->db->get_distinct_event_data('substr(`start_date`,1,7)', $args['date_filter'],$args['cat_filter'], $options['months_order']);
+		$event_months = $this->events->get_filter_list('months', $args['date_filter'],$args['cat_filter'], $options['months_order']);
 		foreach($event_months as $entry) {
-			list($year, $month) = explode('-', $entry->data);
-			$elements[] = array('slug' => $entry->data, 'name' => date($options['date_format'], mktime(0,0,0,$month,1,$year)));
+			list($year, $month) = explode('-', $entry);
+			$elements[] = array('slug' => $entry, 'name' => date($options['date_format'], mktime(0,0,0,$month,1,$year)));
 		}
 		// display elements
 		if('hlist' === $type) {
@@ -194,11 +201,11 @@ class EL_Filterbar {
 			$elements[] = $this->all_element('cat', $type);
 		}
 		//prepare required arrays
-		$cat_array = $this->categories->get_cat_array();
-		$events_cat_strings = $this->db->get_distinct_event_data('`categories`', $args['date_filter'],$args['cat_filter']);
+		$cat_array = array(); //$this->categories->get_cat_array();
+		$events_cat_strings = $this->events->get_filter_list('categories', $args['date_filter'],$args['cat_filter']);
 		$events_cat_array = array();
 		foreach($events_cat_strings as $cat_string) {
-			$events_cat_array = array_merge($events_cat_array, $this->categories->convert_db_string($cat_string->data, 'slug_array'));
+			$events_cat_array = array_merge($events_cat_array, array($cat_string));
 		}
 		$events_cat_array = array_unique($events_cat_array);
 		//create filtered cat_array

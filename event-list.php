@@ -3,7 +3,7 @@
 Plugin Name: Event List
 Plugin URI: http://wordpress.org/extend/plugins/event-list/
 Description: Manage your events and show them in a list view on your site.
-Version: 0.7.12
+Version: 0.8.0
 Author: mibuthu
 Author URI: http://wordpress.org/extend/plugins/event-list/
 Text Domain: event-list
@@ -35,12 +35,13 @@ define('EL_URL', plugin_dir_url(__FILE__));
 define('EL_PATH', plugin_dir_path(__FILE__));
 
 require_once(EL_PATH.'includes/options.php');
+require_once(EL_PATH.'includes/events_post_type.php');
 
 // MAIN PLUGIN CLASS
 class Event_List {
 	private $options;
-	private $shortcode;
-	private $styles_loaded;
+	private $shortcode = null;
+	private $styles_loaded = false;
 
 	/**
 	 * Constructor:
@@ -48,12 +49,14 @@ class Event_List {
 	 */
 	public function __construct() {
 		$this->options = EL_Options::get_instance();
-		$this->shortcode = null;
-		$this->styles_loaded = false;
 
 		// ALWAYS:
+		// Activation hook (upgrade check)
+		register_activation_hook(__FILE__, array('Event_List', 'plugin_activation'));
 		// Register translation
 		add_action('plugins_loaded', array(&$this, 'load_textdomain'));
+		// Register Events post type
+		EL_Events_Post_Type::get_instance();
 		// Register shortcodes
 		add_shortcode('event-list', array(&$this, 'shortcode_event_list'));
 		// Register widgets
@@ -74,6 +77,12 @@ class Event_List {
 			add_action('wp_print_styles', array(&$this, 'print_styles'));
 		}
 	} // end constructor
+
+	public static function plugin_activation() {
+		// load upgrade file and start upgrade check
+		require_once(EL_PATH.'admin/includes/upgrade.php');
+		el_upgrade_check();
+	}
 
 	public function load_textdomain() {
 		$el_lang_path = basename(EL_PATH).'/languages';

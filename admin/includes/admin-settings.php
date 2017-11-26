@@ -73,7 +73,7 @@ class EL_Admin_Settings {
 		$out = '<h3 class="nav-tab-wrapper">';
 		foreach($tabs as $tab => $name){
 			$class = ($tab == $current) ? ' nav-tab-active' : '';
-			$out .= '<a class="nav-tab'.$class.'" href="?page=el_admin_settings&amp;tab='.$tab.'">'.$name.'</a>';
+			$out .= '<a class="nav-tab'.$class.'" href="'.add_query_arg('tab', $tab, add_query_arg([])).'">'.$name.'</a>';
 		}
 		$out .= '</h3>';
 		return $out;

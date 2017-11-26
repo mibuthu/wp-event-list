@@ -25,7 +25,7 @@ class EL_Options {
 
 	public function init_options() {
 		$this->options = array(
-			'el_db_version'           => array('section' => 'system',     'std_val' => ''),
+			'el_last_upgrade_version' => array('section' => 'system',     'std_val' => ''),
 
 			'el_categories'           => array('section' => 'categories', 'std_val' => null),
 			'el_sync_cats'            => array('section' => 'categories', 'std_val' => ''),

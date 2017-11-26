@@ -1,19 +1,19 @@
 <?php
-if(!defined('ABSPATH')) {
+if(!defined('WPINC')) {
 	exit;
 }
 
-require_once(EL_PATH.'includes/db.php');
 require_once(EL_PATH.'includes/options.php');
-require_once(EL_PATH.'includes/categories.php');
+require_once(EL_PATH.'includes/events.php');
+//require_once(EL_PATH.'includes/categories.php');
 
 // This class handles rss feeds
 class EL_Feed {
 
 	private static $instance;
-	private $db;
 	private $options;
-	private $categories;
+	private $events;
+//	private $categories;
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -25,9 +25,9 @@ class EL_Feed {
 	}
 
 	private function __construct() {
-		$this->db = EL_Db::get_instance();
+		$this->events = EL_Events::get_instance();
 		$this->options = EL_Options::get_instance();
-		$this->categories = EL_Categories::get_instance();
+//		$this->categories = EL_Categories::get_instance();
 		$this->init();
 	}
 
@@ -44,7 +44,7 @@ class EL_Feed {
 
 	public function print_eventlist_feed() {
 		header('Content-Type: '.feed_content_type('rss-http').'; charset='.get_option('blog_charset'), true);
-		$events = $this->db->get_events(($this->options->get('el_feed_upcoming_only') ? 'upcoming' : null), null, 0, array('start_date DESC', 'time DESC', 'end_date DESC'));
+		$events = $this->events->get_events(($this->options->get('el_feed_upcoming_only') ? 'upcoming' : null), null, 0, array('start_date DESC', 'time DESC', 'end_date DESC'));
 
 		// Print feeds
 		echo
