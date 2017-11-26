@@ -1,5 +1,5 @@
 <?php
-if(!defined('ABSPATH')) {
+if(!defined('WPINC')) {
 	exit;
 }
 
@@ -62,8 +62,7 @@ class EL_Widget extends WP_Widget {
 		// TODO: sanitize $instance items
 		$title = apply_filters('widget_title', $instance['title']);
 		echo $args['before_widget'];
-		if(!empty($title))
-		{
+		if(!empty($title)) {
 			echo $args['before_title'].$title.$args['after_title'];
 		}
 		$this->upgrade_widget($instance, true);
@@ -87,7 +86,7 @@ class EL_Widget extends WP_Widget {
 			$shortcode .= ' link_to_event=false';
 		}
 		$shortcode .= ']';
-		echo apply_filters( 'widget_text', do_shortcode($shortcode));
+		echo apply_filters('widget_text', do_shortcode($shortcode));
 		if('true' === $instance['link_to_page'] && $linked_page_is_set) {
 			echo '<div style="clear:both"><a title="'.$instance['link_to_page_caption'].'" href="'.$instance[ 'url_to_page'].'">'.$instance['link_to_page_caption'].'</a></div>';
 		}
