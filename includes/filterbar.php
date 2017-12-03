@@ -63,16 +63,16 @@ class EL_Filterbar {
 					$item_array = explode("_", $item_array[0]);
 					switch($item_array[0]) {
 						case 'years':
-							$out .= $this->show_years($url, $args, $item_array[1], 'std', $options);
+							$out .= $this->show_years($url, $args, $item_array[1], $options);
 							break;
 						case 'daterange':
-							$out .= $this->show_daterange($url, $args, $item_array[1], 'std', $options);
+							$out .= $this->show_daterange($url, $args, $item_array[1], $options);
 							break;
 						case 'cats':
-							$out .= $this->show_cats($url, $args, $item_array[1], 'std', $options);
+							$out .= $this->show_cats($url, $args, $item_array[1], $options);
 							break;
 						case 'months':
-							$out .= $this->show_months($url, $args, $item_array[1], 'std', $options);
+							$out .= $this->show_months($url, $args, $item_array[1], $options);
 							break;
 						case 'reset':
 							$out .= $this->show_reset($url, $args, $options);
@@ -86,12 +86,12 @@ class EL_Filterbar {
 		return $out;
 	}
 
-	public function show_years($url, &$args, $type='hlist', $subtype='std', $options=array()) {
+	public function show_years($url, &$args, $type='hlist', $options=array()) {
 		$default_args = array(
 			'date_filter' => array(),
 			'cat_filter' => array(),
 			'sc_id_for_url' => false,
-			'actual_date' => false
+			'selected_date' => false
 		);
 		$args = wp_parse_args($args, $default_args);
 		$default_options = array(
@@ -118,14 +118,14 @@ class EL_Filterbar {
 		}
 		// display elements
 		if('dropdown' === $type) {
-			return $this->show_dropdown($elements, 'date'.$args['sc_id_for_url'], $subtype, $args['actual_date'], $args['sc_id_for_url']);
+			return $this->show_dropdown($elements, 'date'.$args['sc_id_for_url'], $args['selected_date'], $args['sc_id_for_url']);
 		}
 		else {
-			return $this->show_hlist($elements, $url, 'date'.$args['sc_id_for_url'], $args['actual_date']);
+			return $this->show_hlist($elements, $url, 'date'.$args['sc_id_for_url'], $args['selected_date']);
 		}
 	}
 
-	public function show_months($url, &$args, $type='dropdown', $subtype='std', $options=array()) {
+	public function show_months($url, &$args, $type='dropdown', $options=array()) {
 		$default_options = array (
 				'show_all' => 'false',
 				'show_upcoming' => 'false',
@@ -152,14 +152,14 @@ class EL_Filterbar {
 		}
 		// display elements
 		if('hlist' === $type) {
-			return $this->show_hlist($elements, $url, 'date'.$args['sc_id_for_url'], $args['actual_date']);
+			return $this->show_hlist($elements, $url, 'date'.$args['sc_id_for_url'], $args['selected_date']);
 		}
 		else {
-			return $this->show_dropdown($elements, 'date'.$args['sc_id_for_url'], $subtype, $args["actual_date"], $args['sc_id_for_url']);
+			return $this->show_dropdown($elements, 'date'.$args['sc_id_for_url'], $args["selected_date"], $args['sc_id_for_url']);
 		}
 	}
 
-	public function show_daterange($url, &$args, $type='hlist', $subtype='std', $options) {
+	public function show_daterange($url, &$args, $type='hlist', $options) {
 		// prepare displayed elements
 		if(isset($options['item_order'])) {
 			$items = explode('&', $options['item_order']);
@@ -183,14 +183,14 @@ class EL_Filterbar {
 		}
 		// display elements
 		if('dropdown' === $type) {
-			return $this->show_dropdown($elements, 'date'.$args['sc_id_for_url'], $subtype, $args['actual_date'], $args['sc_id_for_url']);
+			return $this->show_dropdown($elements, 'date'.$args['sc_id_for_url'], $args['selected_date'], $args['sc_id_for_url']);
 		}
 		else {
-			return $this->show_hlist($elements, $url, 'date'.$args['sc_id_for_url'], $args['actual_date']);
+			return $this->show_hlist($elements, $url, 'date'.$args['sc_id_for_url'], $args['selected_date']);
 		}
 	}
 
-	public function show_cats($url, &$args, $type='dropdown', $subtype='std', $options=array()) {
+	public function show_cats($url, &$args, $type='dropdown', $options=array()) {
 		$default_options = array (
 				'show_all' => 'true',
 		);
@@ -225,10 +225,10 @@ class EL_Filterbar {
 		}
 		// display elements
 		if('hlist' === $type) {
-			return $this->show_hlist($elements, $url, 'cat'.$args['sc_id_for_url'], $args['actual_cat']);
+			return $this->show_hlist($elements, $url, 'cat'.$args['sc_id_for_url'], $args['selected_cat']);
 		}
 		else {
-			return $this->show_dropdown($elements, 'cat'.$args['sc_id_for_url'], $subtype, $args['actual_cat'], $args['sc_id_for_url']);
+			return $this->show_dropdown($elements, 'cat'.$args['sc_id_for_url'], $args['selected_cat'], $args['sc_id_for_url']);
 		}
 	}
 
@@ -242,11 +242,11 @@ class EL_Filterbar {
 		return $this->show_link(remove_query_arg($args_to_remove, $url), $options['caption'], 'link');
 	}
 
-	private function show_hlist($elements, $url, $name, $actual=null) {
+	private function show_hlist($elements, $url, $name, $selected=null) {
 		$out = '<ul class="hlist">';
 		foreach($elements as $element) {
 			$out .= '<li>';
-			if($actual == $element['slug']) {
+			if($selected == $element['slug']) {
 				$out .= '<strong>'.$element['name'].'</strong>';
 			}
 			else {
@@ -258,9 +258,9 @@ class EL_Filterbar {
 		return $out;
 	}
 
-	private function show_dropdown($elements, $name, $subtype='std', $actual=null, $sc_id='') {
+	private function show_dropdown($elements, $name, $selected=null, $sc_id='') {
 		$onchange = '';
-		if('admin' != $subtype) {
+		if(!is_admin()) {
 			wp_register_script('el_filterbar', EL_URL.'includes/js/filterbar.js', null, true);
 			add_action('wp_footer', array(&$this, 'footer_script'));
 			$onchange = ' onchange="eventlist_redirect(this.name,this.value,'.$sc_id.')"';
@@ -269,7 +269,7 @@ class EL_Filterbar {
 		foreach($elements as $element) {
 			$out .= '
 					<option';
-			if($element['slug'] == $actual) {
+			if($element['slug'] == $selected) {
 				$out .= ' selected="selected"';
 			}
 			$out .= ' value="'.$element['slug'].'">'.esc_html($element['name']).'</option>';
@@ -304,15 +304,15 @@ class EL_Filterbar {
 
 	private function parse_args(&$args) {
 		$defaults = array('date' => null,
-		                  'actual_date' => null,
-		                  'actual_cat' => null,
+		                  'selected_date' => null,
+		                  'selected_cat' => null,
 		                  'event_id' => null,
 		                  'sc_id_for_url' => '',
 		);
 		$args = wp_parse_args($args, $defaults);
 		if(!empty($args['event_id'])) {
-			$args['actual_date'] = null;
-			$args['actual_cat'] = null;
+			$args['selected_date'] = null;
+			$args['selected_cat'] = null;
 		};
 	}
 

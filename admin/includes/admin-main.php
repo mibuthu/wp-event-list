@@ -123,7 +123,7 @@ class EL_Admin_Main {
 
 	public function add_table_filters() {
 		// check used get parameters
-		$args['actual_date'] = isset($_GET['date']) ? sanitize_key($_GET['date']) : 'upcoming';
+		$args['selected_date'] = isset($_GET['date']) ? sanitize_key($_GET['date']) : 'upcoming';
 
 
 		// taxonomy filters (categories)
