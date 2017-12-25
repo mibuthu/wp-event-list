@@ -71,7 +71,6 @@ class EL_Admin_Main {
 	}
 
 	public function events_sortable_columns($columns) {
-		// TODO: actual sorting not implemented yet
 		$columns['eventdate'] = 'eventdate';
 		$columns['location'] = 'location';
 		$columns['author'] = 'author';
