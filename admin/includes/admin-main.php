@@ -3,7 +3,9 @@ if(!defined('WP_ADMIN')) {
 	exit;
 }
 
+require_once(EL_PATH.'includes/options.php');
 require_once(EL_PATH.'includes/filterbar.php');
+require_once(EL_PATH.'includes/daterange.php');
 require_once(EL_PATH.'includes/event.php');
 
 /**
@@ -11,6 +13,7 @@ require_once(EL_PATH.'includes/event.php');
  */
 class EL_Admin_Main {
 	private static $instance;
+	private $options;
 	private $filterbar;
 
 	public static function &get_instance() {
@@ -23,6 +26,7 @@ class EL_Admin_Main {
 	}
 
 	private function __construct() {
+		$this->options = &EL_Options::get_instance();
 		$this->filterbar = &EL_Filterbar::get_instance();
 		add_action('manage_posts_custom_column', array(&$this, 'events_custom_columns'), 10, 2);
 		add_filter('manage_edit-el_events_columns', array(&$this, 'events_edit_columns'));
@@ -122,19 +126,42 @@ class EL_Admin_Main {
 		// check used get parameters
 		$args['selected_date'] = isset($_GET['date']) ? sanitize_key($_GET['date']) : 'upcoming';
 		$args['selected_cat'] = isset($_GET['cat']) ? sanitize_key($_GET['cat']) : 'all';
+		// date filter
+		echo($this->filterbar->show_years(admin_url('edit.php?post_type=el_events'), $args, 'dropdown', array('show_past' => true)));
 		// cat filter
 		echo($this->filterbar->show_cats(admin_url('edit.php?post_type=el_events'), $args, 'dropdown'));
 	}
 
 	public function filter_request($query) {
 		// check used get parameters
+		$selected_date = isset($_GET['date']) ? sanitize_key($_GET['date']) : 'upcoming';
 		$selected_cat = isset($_GET['cat']) ? sanitize_key($_GET['cat']) : 'all';
+		$meta_query = array('relation' => 'AND');
 		// date filter
-
+		$date_for_startrange = ('' == $this->options->get('el_multiday_filterrange')) ? 'startdate' : 'enddate';
+		$date_range = EL_Daterange::get_instance()->check_daterange_format($selected_date);
+		if(empty($date_range)) {
+			$date_range = EL_Daterange::get_instance()->check_date_format($selected_date);
+		}
+		$meta_query[] = array(
+			'relation' => 'AND',
+			array(
+				'key'     => $date_for_startrange,
+				'value'   => $date_range[0],
+				'compare' => '>=',
+			),
+			array(
+				'key'     => 'startdate',
+				'value'   => $date_range[1],
+				'compare' => '<',
+			)
+		);
 		// category filter
 		if('all' !== $selected_cat) {
 			$query->query_vars['el_eventcategory'] = $selected_cat;
 		}
+		$query->query_vars['meta_query'] = $meta_query;
+	}
 	}
 
 	public function set_default_posts_list_mode() {
