@@ -57,8 +57,8 @@ class SC_Event_List {
 			'sc_id_for_url'    => array('std_val' => ''),
 			// Internal attributes: This parameters will be added by the script and are not available in the shortcode
 			//  'sc_id'
-			//  'actual_date'
-			//  'actual_cat'
+			//  'selected_date'
+			//  'selected_cat'
 			//  'event_id'
 		);
 		$this->num_sc_loaded = 0;
@@ -101,8 +101,8 @@ class SC_Event_List {
 		$a = shortcode_atts($std_values, $atts);
 		// add internal attributes
 		$a['sc_id'] = $this->num_sc_loaded;
-		$a['actual_date'] = $this->get_actual_date($a);
-		$a['actual_cat'] = $this->get_actual_cat($a);
+		$a['selected_date'] = $this->get_selected_date($a);
+		$a['selected_cat'] = $this->get_selected_cat($a);
 		$a['event_id'] = $this->get_event_id($a);
 
 		// set sc_id_for_url if empty
@@ -142,11 +142,11 @@ class SC_Event_List {
 
 	private function html_events(&$a) {
 		// specify to show all events if not upcoming is selected
-		if('upcoming' != $a['actual_date']) {
+		if('upcoming' != $a['selected_date']) {
 			$a['num_events'] = 0;
 		}
-		$date_filter = $this->get_date_filter($a['date_filter'], $a['actual_date']);
-		$cat_filter = $this->get_cat_filter($a['cat_filter'], $a['actual_cat']);
+		$date_filter = $this->get_date_filter($a['date_filter'], $a['selected_date']);
+		$cat_filter = $this->get_cat_filter($a['cat_filter'], $a['selected_cat']);
 		$order = 'date_desc' == $a['initial_order'] ? 'DESC' : 'ASC';
 		if('1' !== $this->options->get('el_date_once_per_day')) {
 			// normal sort
@@ -313,7 +313,7 @@ class SC_Event_List {
 		return $out;
 	}
 
-	private function get_actual_date(&$a) {
+	private function get_selected_date(&$a) {
 		// check used get parameters
 		$date = isset($_GET['date'.$a['sc_id']]) ? sanitize_key($_GET['date'.$a['sc_id']]) : null;
 
@@ -326,7 +326,7 @@ class SC_Event_List {
 		return $a['initial_date'];
 	}
 
-	private function get_actual_cat(&$a) {
+	private function get_selected_cat(&$a) {
 		// check used get parameters
 		$cat = isset($_GET['cat'.$a['sc_id']]) ? sanitize_key($_GET['cat'.$a['sc_id']]) : '';
 
@@ -343,7 +343,7 @@ class SC_Event_List {
 		if(0 < $event_id) {
 			return $event_id;
 		}
-		elseif('all' !== $a['initial_event_id'] && $a['actual_date'] === $a['initial_date'] && $a['actual_cat'] === $a['initial_cat']) {
+		elseif('all' !== $a['initial_event_id'] && $a['selected_date'] === $a['initial_date'] && $a['selected_cat'] === $a['initial_cat']) {
 			return intval($a['initial_event_id']);
 		}
 		else {
@@ -351,44 +351,44 @@ class SC_Event_List {
 		}
 	}
 
-	private function get_date_filter($date_filter, $actual_date) {
+	private function get_date_filter($date_filter, $selected_date) {
 		if('all' == $date_filter || '' == $date_filter) {
-			if('all' == $actual_date || '' == $actual_date) {
+			if('all' == $selected_date || '' == $selected_date) {
 				return null;
 			}
 			else {
-				return $actual_date;
+				return $selected_date;
 			}
 		}
 		else {
 			// Convert html entities to correct characters, e.g. &amp; to &
 			$date_filter = html_entity_decode($date_filter);
-			if('all' == $actual_date || '' == $actual_date) {
+			if('all' == $selected_date || '' == $selected_date) {
 				return $date_filter;
 			}
 			else {
-				return '('.$date_filter.')&('.$actual_date.')';
+				return '('.$date_filter.')&('.$selected_date.')';
 			}
 		}
 	}
 
-	private function get_cat_filter($cat_filter, $actual_cat) {
+	private function get_cat_filter($cat_filter, $selected_cat) {
 		if('all' == $cat_filter || '' == $cat_filter) {
-			if('all' == $actual_cat || '' == $actual_cat) {
+			if('all' == $selected_cat || '' == $selected_cat) {
 				return null;
 			}
 			else {
-				return $actual_cat;
+				return $selected_cat;
 			}
 		}
 		else {
 			// Convert html entities to correct characters, e.g. &amp; to &
 			$cat_filter = html_entity_decode($cat_filter);
-			if('all' == $actual_cat || '' == $actual_cat) {
+			if('all' == $selected_cat || '' == $selected_cat) {
 				return $cat_filter;
 			}
 			else {
-				return '('.$cat_filter.')&('.$actual_cat.')';
+				return '('.$cat_filter.')&('.$selected_cat.')';
 			}
 		}
 	}
