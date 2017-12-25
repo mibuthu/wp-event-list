@@ -46,8 +46,9 @@ class EL_Events {
 		return $events;
 	}
 
-	public function get_filter_list($type, $date_filter=null, $cat_filter=null, $order='asc') {
+	public function get_filter_list($type, $options) {
 		global $wpdb;
+		$options = wp_parse_args($options, array('date_filter'=>null, 'cat_filter'=>null, 'order'=>'asc', 'hierarchical'=>false));
 		switch($type) {
 			case 'years':
 				$distinct = 'SUBSTR(`startdate`,1,4)';
@@ -61,20 +62,75 @@ class EL_Events {
 			default:
 				die('ERROR: Unknown filterlist type!');
 		}
-		$where = $this->get_sql_filter_string($date_filter, $cat_filter);
-		if('desc' != $order) {
-			$order = 'asc';   // standard order is ASC
+		$where = $this->get_sql_filter_string($options['date_filter'], $options['cat_filter']);
+		if('desc' != $options['order']) {
+			$options['order'] = 'asc';   // standard order is ASC
 		}
-		$sql = 'SELECT DISTINCT '.$distinct.' AS listitems FROM ('.$this->get_events_sql('ID').' WHERE '.$where.') AS filterlist ORDER BY listitems '.$order;
-		error_log('type: '.$type);
-		error_log($sql);
+		$sql = 'SELECT DISTINCT '.$distinct.' AS listitems FROM ('.$this->get_events_sql('ID').' WHERE '.$where.') AS filterlist ORDER BY listitems '.$options['order'];
 		$result = wp_list_pluck($wpdb->get_results($sql), 'listitems');
-		error_log('result: '.print_r($result, true));
+		if('categories' === $type && count($result)) {
+			// split result at | chars
+			$cats = array();
+			foreach($result as $concat_cat) {
+				if(!empty($concat_cat)) {
+					$cats = array_merge($cats, explode('|', $concat_cat));
+				}
+			}
+			$result = array_unique($cats);
+			sort($result);
+		}
+		// handling of the hierarchical category structure
+		if('categories' === $type && $options['hierarchical']) {
+			// create terms object array
+			$terms = array();
+			foreach($result as $cat) {
+				$terms[] = $this->get_cat_by_slug($cat);
+			}
+			/*
+			* Separate elements into two buckets: top level and children elements.
+			* Children_elements is two dimensional array, eg.
+			* Children_elements[10][] contains all sub-elements whose parent is 10.
+			*/
+			$toplevel_elements = array();
+			$children_elements  = array();
+			foreach($terms as $t) {
+				if(empty($t->parent)) {
+					$toplevel_elements[] = $t;
+				}
+				else {
+					$children_elements[$t->parent][] = $t;
+				}
+			}
+			// create return array
+			$result = array();
+			foreach($toplevel_elements as $e) {
+				$this->add_term_to_list($e, 0, $children_elements, $result);
+			}
+			// handle the children_elements of which the corresponding toplevel element is not included
+			foreach($children_elements as $eid => &$e) {
+				// continue if parent is available in children_elements -> the elements will be handled there
+				if(isset($children_elements[$this->get_cat_by_id($eid)->parent])) {
+					continue;
+				}
+				foreach($e as &$op) {
+					$this->add_term_to_list($op, 0, $children_elements, $result);
+				}
+			}
+		}
 		return $result;
+	}
 
-
-		$categories = (array)get_terms(array('taxonomy' => $this->el_category_taxonomy));
-		return wp_list_pluck($categories, 'name');
+	private function add_term_to_list(&$element, $level, &$children, &$list) {
+		// Add level to object and add object to list
+		$element->level = $level;
+		$list[] = $element;
+		// Handle children of element
+		if(isset($children[$element->term_id])) {
+			foreach($children[$element->term_id] as &$c) {
+				$this->add_term_to_list($c, $level+1, $children, $list);
+			}
+			unset($children[$element->term_id]);
+		}
 	}
 
 	private function get_events_sql($posts_fields='*', $postmeta_fields=array('startdate', 'enddate', 'starttime', 'location'), $incl_categories=true) {

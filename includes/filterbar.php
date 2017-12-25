@@ -101,6 +101,8 @@ class EL_Filterbar {
 			'years_order' => 'asc',
 		);
 		$options = wp_parse_args($options, $default_options);
+		// add args['order'] (required in $this->events->get_filter_list options)
+		$args['order'] = $options['years_order'];
 		// prepare displayed elements
 		$elements = array();
 		if('true' == $options['show_all']) {
@@ -112,7 +114,7 @@ class EL_Filterbar {
 		if('true' == $options['show_past']) {
 			$elements[] = $this->past_element();
 		}
-		$event_years = $this->events->get_filter_list('years', $args['date_filter'],$args['cat_filter'], $options['years_order']);
+		$event_years = $this->events->get_filter_list('years', $args);
 		foreach($event_years as $entry) {
 			$elements[] = array('slug'=>$entry, 'name'=>$entry);
 		}
@@ -134,6 +136,8 @@ class EL_Filterbar {
 				'date_format' => 'Y-m',
 		);
 		$options = wp_parse_args($options, $default_options);
+		// add args['order'] (required in $this->events->get_filter_list options)
+		$args['order'] = $options['months_order'];
 		// prepare displayed elements
 		$elements = array();
 		if('true' == $options['show_all']) {
@@ -145,7 +149,7 @@ class EL_Filterbar {
 		if('true' == $options['show_past']) {
 			$elements[] = $this->past_element();
 		}
-		$event_months = $this->events->get_filter_list('months', $args['date_filter'],$args['cat_filter'], $options['months_order']);
+		$event_months = $this->events->get_filter_list('months', $args);
 		foreach($event_months as $entry) {
 			list($year, $month) = explode('-', $entry);
 			$elements[] = array('slug' => $entry, 'name' => date($options['date_format'], mktime(0,0,0,$month,1,$year)));
@@ -195,33 +199,18 @@ class EL_Filterbar {
 				'show_all' => 'true',
 		);
 		$options = wp_parse_args($options, $default_options);
+		// add arg 'cat_data' to receive all required data
+		$args['cat_data'] = 'all';
+		$args['hierarchical'] = true;
 		// prepare displayed elements
 		$elements = array();
 		if('true' == $options['show_all']) {
 			$elements[] = $this->all_element('cat', $type);
 		}
-		//prepare required arrays
-		$cat_array = array(); //$this->categories->get_cat_array();
-		$events_cat_strings = $this->events->get_filter_list('categories', $args['date_filter'],$args['cat_filter']);
-		$events_cat_array = array();
-		foreach($events_cat_strings as $cat_string) {
-			$events_cat_array = array_merge($events_cat_array, array($cat_string));
-		}
-		$events_cat_array = array_unique($events_cat_array);
-		//create filtered cat_array
-		$filtered_cat_array = array();
-		$required_cats = array();
-		for($i=count($cat_array)-1; 0<=$i; $i--) {   // start from the end to have the childs first and be able to add the parent to the required_cats
-			if(in_array($cat_array[$i]['slug'], $events_cat_array) || in_array($cat_array[$i]['slug'], $required_cats)) {
-				array_unshift($filtered_cat_array, $cat_array[$i]);   // add the new cat at the beginning (unshift) due to starting at the end in the loop
-				if('' != $cat_array[$i]['parent']) {   // the parent is required to show the categories correctly
-					$required_cats[] = $cat_array[$i]['parent'];
-				}
-			}
-		}
 		//create elements array
-		foreach($filtered_cat_array as $cat) {
-			$elements[] = array('slug' => $cat['slug'], 'name' => str_pad('', 12*$cat['level'], '&nbsp;', STR_PAD_LEFT).$cat['name']);
+		$cat_array = $this->events->get_filter_list('categories', $args);
+		foreach($cat_array as $cat) {
+			$elements[] = array('slug' => $cat->slug, 'name' => str_pad('', 12*$cat->level, '&nbsp;', STR_PAD_LEFT).$cat->name);
 		}
 		// display elements
 		if('hlist' === $type) {
