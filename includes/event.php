@@ -38,7 +38,10 @@ class EL_Event {
 		foreach(array('startdate', 'enddate', 'starttime', 'location') as $meta) {
 			$this->$meta = isset($postmeta[$meta][0]) ? $postmeta[$meta][0] : '';
 		}
-		$this->categories = (array)get_the_terms($this->post, 'el_eventcategory');
+		$this->categories = get_the_terms($this->post, 'el_eventcategory');
+		if(!is_array($this->categories)) {
+			$this->categories = array();
+		}
 		return true;
 	}
 
