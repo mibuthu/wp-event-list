@@ -145,18 +145,19 @@ class SC_Event_List {
 		if('upcoming' != $a['selected_date']) {
 			$a['num_events'] = 0;
 		}
-		$date_filter = $this->get_date_filter($a['date_filter'], $a['selected_date']);
-		$cat_filter = $this->get_cat_filter($a['cat_filter'], $a['selected_cat']);
+		$options['date_filter'] = $this->get_date_filter($a['date_filter'], $a['selected_date']);
+		$options['cat_filter'] = $this->get_cat_filter($a['cat_filter'], $a['selected_cat']);
+		$options['num_events'] = $a['num_events'];
 		$order = 'date_desc' == $a['initial_order'] ? 'DESC' : 'ASC';
 		if('1' !== $this->options->get('el_date_once_per_day')) {
 			// normal sort
-			$sort_array = array('startdate '.$order, 'starttime ASC', 'enddate '.$order);
+			$options['order'] = array('startdate '.$order, 'starttime ASC', 'enddate '.$order);
 		}
 		else {
 			// sort according end_date before start time (required for option el_date_once_per_day)
-			$sort_array = array('startdate '.$order, 'enddate '.$order, 'starttime ASC');
+			$options['order'] = array('startdate '.$order, 'enddate '.$order, 'starttime ASC');
 		}
-		$events = $this->events->get($date_filter, $cat_filter, $a['num_events'], $sort_array);
+		$events = $this->events->get($options);
 
 		// generate output
 		$out  = $this->html_feed_link($a, 'top');

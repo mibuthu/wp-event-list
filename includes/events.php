@@ -30,13 +30,14 @@ class EL_Events {
 		$this->daterange = &EL_Daterange::get_instance();
 	}
 
-	public function get($date_filter=null, $cat_filter=null, $num_events=0, $sort_array=array('startdate ASC', 'time ASC', 'enddate ASC')) {
+	public function get($options) {
 		// TODO: use WP_Query to get events
 		global $wpdb;
-		$where_string = $this->get_sql_filter_string($date_filter, $cat_filter);
-		$sql = 'SELECT ID FROM ('.$this->get_events_sql('ID').') as events WHERE '.$this->get_sql_filter_string($date_filter, $cat_filter).' ORDER BY '.implode(', ', $sort_array);
-		if('upcoming' === $date_filter && is_numeric($num_events) && 0 < $num_events) {
-			$sql .= ' LIMIT '.$num_events;
+		$options = wp_parse_args($options, array('date_filter'=>null, 'cat_filter'=>null, 'num_events'=>0, 'order'=>array('startdate ASC', 'time ASC', 'enddate ASC')));
+		$where_string = $this->get_sql_filter_string($options['date_filter'], $options['cat_filter']);
+		$sql = 'SELECT ID FROM ('.$this->get_events_sql('ID').') as events WHERE '.$this->get_sql_filter_string($options['date_filter'], $options['cat_filter']).' ORDER BY '.implode(', ', $options['order']);
+		if('upcoming' === $options['date_filter'] && is_numeric($options['num_events']) && 0 < $options['num_events']) {
+			$sql .= ' LIMIT '.$options['num_events'];
 		}
 		$result = $wpdb->get_results($sql, 'ARRAY_N');
 		$events = array();
