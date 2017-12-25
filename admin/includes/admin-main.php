@@ -83,35 +83,32 @@ class EL_Admin_Main {
 			$args['orderby'] = 'eventdate';
 			$args['order'] = 'asc';
 		}
-		// Check 'orderby' value
-		if(isset($args['orderby'])) {
-			$add_args=array();
-			switch($args['orderby']) {
-				case 'eventdate':
-					$add_args = array(
-						'meta_key' => 'startdate',
-						'meta_query' => array(
-							'relation' => 'AND',
-							'startdate' => array('key' => 'startdate'),
-							'starttime' => array('key' => 'starttime'),
-							'enddate'   => array('key' => 'enddate')
-						),
-						'orderby' => array(
-							'startdate' => $args['order'],
-							'starttime' => $args['order'],
-							'enddate'   => $args['order']
-						)
-					);
-					break;
-				case 'location':
-					$add_args = array(
-						'meta_key' => 'location'
-					);
-					break;
-			}
-			if(!empty($add_args)) {
-				$args = array_merge($args, $add_args);
-			}
+		$add_args=array();
+		switch($args['orderby']) {
+			case 'eventdate':
+				$add_args = array(
+					'meta_key' => 'startdate',
+					'meta_query' => array(
+						'relation' => 'AND',
+						'startdate' => array('key' => 'startdate'),
+						'starttime' => array('key' => 'starttime'),
+						'enddate'   => array('key' => 'enddate')
+					),
+					'orderby' => array(
+						'startdate' => $args['order'],
+						'starttime' => $args['order'],
+						'enddate'   => $args['order']
+					)
+				);
+				break;
+			case 'location':
+				$add_args = array(
+					'meta_key' => 'location'
+				);
+				break;
+		}
+		if(!empty($add_args)) {
+			$args = array_merge($args, $add_args);
 		}
 		return $args;
 	}
