@@ -124,41 +124,19 @@ class EL_Admin_Main {
 	public function add_table_filters() {
 		// check used get parameters
 		$args['selected_date'] = isset($_GET['date']) ? sanitize_key($_GET['date']) : 'upcoming';
-
-
-		// taxonomy filters (categories)
-		$filters = get_object_taxonomies('el_events');
-		foreach($filters as $tax_slug) {
-			// check used get parameters
-			$selected = isset($_GET[$tax_slug]) ? intval($_GET[$tax_slug]) : 0;
-			$tax_obj = get_taxonomy($tax_slug);
-			wp_dropdown_categories(array(
-				'show_option_all' => sprintf(__('All %1$s','event-list'), $tax_obj->label),
-				'taxonomy'        => $tax_slug,
-				'name'            => $tax_obj->name,
-				'orderby'         => 'name',
-				'selected'        => $selected,
-				'hierarchical'    => $tax_obj->hierarchical,
-				'show_count'      => false,
-				'hide_empty'      => true
-			));
-		}
+		$args['selected_cat'] = isset($_GET['cat']) ? sanitize_key($_GET['cat']) : 'all';
+		// cat filter
+		echo($this->filterbar->show_cats(admin_url('edit.php?post_type=el_events'), $args, 'dropdown'));
 	}
 
 	public function filter_request($query) {
+		// check used get parameters
+		$selected_cat = isset($_GET['cat']) ? sanitize_key($_GET['cat']) : 'all';
 		// date filter
 
-
-		// taxonomy filter (categories)
-		$filters = get_object_taxonomies('el_events');
-		foreach($filters as $tax_slug) {
-			$var = &$query->query_vars[$tax_slug];
-			if(isset($var)) {
-				$term = get_term_by('id', $var, $tax_slug);
-				if(!empty($term)) {
-					$var = $term->slug;
-				}
-			}
+		// category filter
+		if('all' !== $selected_cat) {
+			$query->query_vars['el_eventcategory'] = $selected_cat;
 		}
 	}
 
