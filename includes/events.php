@@ -31,11 +31,10 @@ class EL_Events {
 	}
 
 	public function get($options) {
-		// TODO: use WP_Query to get events
 		global $wpdb;
 		$options = wp_parse_args($options, array('date_filter'=>null, 'cat_filter'=>null, 'num_events'=>0, 'order'=>array('startdate ASC', 'time ASC', 'enddate ASC')));
 		$where_string = $this->get_sql_filter_string($options['date_filter'], $options['cat_filter']);
-		$sql = 'SELECT ID FROM ('.$this->get_events_sql('ID').') as events WHERE '.$this->get_sql_filter_string($options['date_filter'], $options['cat_filter']).' ORDER BY '.implode(', ', $options['order']);
+		$sql = 'SELECT ID FROM ('.$this->get_events_sql('ID').') AS events WHERE '.$this->get_sql_filter_string($options['date_filter'], $options['cat_filter']).' ORDER BY '.implode(', ', $options['order']);
 		if('upcoming' === $options['date_filter'] && is_numeric($options['num_events']) && 0 < $options['num_events']) {
 			$sql .= ' LIMIT '.$options['num_events'];
 		}
@@ -67,14 +66,14 @@ class EL_Events {
 		if('desc' != $options['order']) {
 			$options['order'] = 'asc';   // standard order is ASC
 		}
-		$sql = 'SELECT DISTINCT '.$distinct.' AS listitems FROM ('.$this->get_events_sql('ID').' WHERE '.$where.') AS filterlist ORDER BY listitems '.$options['order'];
+		$sql = 'SELECT DISTINCT '.$distinct.' AS listitems FROM ('.$this->get_events_sql('ID').' WHERE '.$where.') AS filterlist ORDER BY listitems '.strtoupper($options['order']);
 		$result = wp_list_pluck($wpdb->get_results($sql), 'listitems');
 		if('categories' === $type && count($result)) {
 			// split result at | chars
 			$cats = array();
 			foreach($result as $concat_cat) {
 				if(!empty($concat_cat)) {
-					$cats = array_merge($cats, explode('|', $concat_cat));
+					$cats = array_merge($cats, explode('|', substr($concat_cat, 1, -1)));
 				}
 			}
 			$result = array_unique($cats);
@@ -146,11 +145,11 @@ class EL_Events {
 			$tterms = $wpdb->prefix.'terms';
 			$ttax = $wpdb->prefix.'term_taxonomy';
 			$ttermrel = $wpdb->prefix.'term_relationships';
-			$sql .= ', (SELECT GROUP_CONCAT('.$tterms.'.slug SEPARATOR "|") FROM '.$tterms.'
-			            INNER JOIN '.$ttax.' on '.$tterms.'.term_id = '.$ttax.'.term_id
-			            INNER JOIN '.$ttermrel.' wpr on wpr.term_taxonomy_id = '.$ttax.'.term_taxonomy_id
-			            WHERE taxonomy= "'.$this->el_category_taxonomy.'" and '.$tposts.'.ID = wpr.object_id
-			           ) AS categories';
+			$sql .= ', (CONCAT("|", (SELECT GROUP_CONCAT('.$tterms.'.slug SEPARATOR "|") FROM '.$tterms
+			       .' INNER JOIN '.$ttax.' ON '.$tterms.'.term_id = '.$ttax.'.term_id'
+			       .' INNER JOIN '.$ttermrel.' wpr ON wpr.term_taxonomy_id = '.$ttax.'.term_taxonomy_id'
+			       .' WHERE taxonomy= "'.$this->el_category_taxonomy.'" AND '.$tposts.'.ID = wpr.object_id'
+			       .'), "|")) AS categories';
 		}
 		$sql .= ' FROM '.$tposts.' WHERE post_type = "el_events" AND post_status = "publish") AS events';
 		return $sql;
