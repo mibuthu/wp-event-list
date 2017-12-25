@@ -29,6 +29,7 @@ class EL_Admin_Main {
 		add_filter('manage_edit-el_events_sortable_columns', array(&$this, 'events_sortable_columns'));
 		add_filter('request', array(&$this, 'sort_events'));
 		add_filter('post_row_actions',array(&$this, 'add_action_row_elements'), 10, 2);
+		add_filter('disable_months_dropdown', '__return_true');
 		add_action('restrict_manage_posts', array(&$this, 'add_table_filters'));
 		add_filter('parse_query', array(&$this, 'filter_request'));
 		add_action('load-edit.php', array(&$this, 'set_default_posts_list_mode'));
