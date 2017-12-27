@@ -29,8 +29,8 @@ class EL_Widget extends WP_Widget {
 			'show_starttime'       => array('std_value' => 'true'),
 			'show_location'        => array('std_value' => 'false'),
 			'location_length'      => array('std_value' => '0'),
-			'show_details'         => array('std_value' => 'false'),
-			'details_length'       => array('std_value' => '0'),
+			'show_content'         => array('std_value' => 'false'),
+			'content_length'       => array('std_value' => '0'),
 			'url_to_page'          => array('std_value' => ''),
 			'sc_id_for_url'        => array('std_value' => '1'),
 			'link_to_event'        => array('std_value' => 'false'),
@@ -75,8 +75,8 @@ class EL_Widget extends WP_Widget {
 		$shortcode .= ' show_starttime='.$instance['show_starttime'];
 		$shortcode .= ' show_location='.$instance['show_location'];
 		$shortcode .= ' location_length='.$instance['location_length'];
-		$shortcode .= ' show_details='.$instance['show_details'];
-		$shortcode .= ' details_length='.$instance['details_length'];
+		$shortcode .= ' show_content='.$instance['show_content'];
+		$shortcode .= ' content_length='.$instance['content_length'];
 		if($linked_page_is_set && $linked_page_id_is_set) {
 			$shortcode .= ' link_to_event='.$instance['link_to_event'];
 			$shortcode .= ' url_to_page="'.$instance['url_to_page'].'"';

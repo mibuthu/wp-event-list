@@ -32,6 +32,8 @@ function el_upgrade_check() {
 	 *   * import existing categories from "categories" option
 	 *   * import existing events from "event_list" table
 	 *   * delete option "el_db_version"
+	 *   * rename option "el_show_details_text" to "el_content_show_text"
+	 *   * rename option "el_hide_details_text" to "el_content_hide_text"
 	 *   * obsolete db table "event_list" and option "el_categories" will be kept for backup and deleted in a later version
 	 **/
 	if(el_upgrade_required('0.8.0')) {
@@ -72,7 +74,7 @@ function el_upgrade_check() {
 				$eventdata['enddate'] = $event['end_date'];
 				$eventdata['starttime'] = $event['time'];
 				$eventdata['location'] = $event['location'];
-				$eventdata['description'] = $event['details'];
+				$eventdata['content'] = $event['details'];
 				$eventdata['post_date'] = $event['pub_date'];
 				$eventdata['post_user'] = $event['pub_user'];
 				$eventdata['categories'] = explode('|', substr($event['categories'], 1, -1));
@@ -86,6 +88,12 @@ function el_upgrade_check() {
 		// delete option "el_db_version"
 		error_log('EL_UPGRADE: Delete obsolete option "el_db_version"!');
 		el_delete_option_in_db('el_db_version');
+		// rename option "el_show_details_text" to "el_content_show_text"
+		error_log('EL_UPGRADE: Rename option "el_show_details_text" to "el_content_show_text"');
+		el_rename_option_in_db('el_show_details_text', 'el_content_show_text');
+		// rename option "el_hide_details_text" to "el_content_hide_text"
+		error_log('EL_UPGRADE: Rename option "el_hide_details_text" to "el_content_hide_text"');
+		el_rename_option_in_db('el_hide_details_text', 'el_content_hide_text');
 		// update last_upgr_version option
 		el_update_last_upgr_version();
 	}
@@ -134,11 +142,14 @@ function el_update_option_in_db($option, $value) {
 
 function el_insert_option_in_db($option, $value) {
 	global $wpdb;
-	return $wpdb->insert(
-		$wpdb->prefix.'options',
-		array('option_name' => $option, 'option_value' => $value),
-		'%s'
-	);
+	if(!empty(el_get_option_from_db($option))) {
+		return $wpdb->insert(
+			$wpdb->prefix.'options',
+			array('option_name' => $option, 'option_value' => $value),
+			'%s'
+		);
+	}
+	return false;
 }
 
 
@@ -149,6 +160,14 @@ function el_delete_option_in_db($option) {
 		array('option_name' => $option),
 		'%s'
 	);
+}
+
+function el_rename_option_in_db($oldname, $newname) {
+	$val = el_get_option_from_db($oldname);
+	if(!empty($val)) {
+		el_insert_option_in_db($newname, $val);
+		el_delete_option_in_db($oldname);
+	}
 }
 
 

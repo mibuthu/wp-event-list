@@ -15,7 +15,7 @@ class EL_Event {
 	public $enddate = '0000-00-00';
 	public $starttime = '';
 	public $location = '';
-	public $description = '';
+	public $content = '';
 
 	public function __construct($post) {
 		$this->options = &EL_Options::get_instance();
@@ -33,7 +33,7 @@ class EL_Event {
 
 	private function load_eventdata() {
 		$this->title = $this->post->post_title;
-		$this->description = $this->post->post_content;
+		$this->content = $this->post->post_content;
 		$postmeta = get_post_meta($this->post->ID);
 		foreach(array('startdate', 'enddate', 'starttime', 'location') as $meta) {
 			$this->$meta = isset($postmeta[$meta][0]) ? $postmeta[$meta][0] : '';
@@ -50,7 +50,7 @@ class EL_Event {
 		$postdata['post_type'] = 'el_events';
 		$postdata['post_status'] = 'publish';
 		$postdata['post_title'] = $eventdata['title'];
-		$postdata['post_content'] = $eventdata['description'];
+		$postdata['post_content'] = $eventdata['content'];
 		if(isset($eventdata['slug'])) {
 			$postdata['post_name'] = $eventdata['slug'];
 		}
@@ -77,7 +77,7 @@ class EL_Event {
 	}
 
 	/** ************************************************************************************************************
-	 * Create or update the event data (all event data except title and description)
+	 * Create or update the event data (all event data except title and content)
 	 *
 	 * @param   int    $pid        The post id of the event to update.
 	 * @param   array  $eventdata  The event data provided in an array where the key is the event field and the

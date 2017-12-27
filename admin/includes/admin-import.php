@@ -168,7 +168,7 @@ class EL_Admin_Import {
 				<span class="el-event-header">'.__('End Date','event-list').':</span> <span class="el-event-data">'.$event['enddate'].'</span><br />
 				<span class="el-event-header">'.__('Time','event-list').':</span> <span class="el-event-data">'.$event['starttime'].'</span><br />
 				<span class="el-event-header">'.__('Location','event-list').':</span> <span class="el-event-data">'.$event['location'].'</span><br />
-				<span class="el-event-header">'.__('Description','event-list').':</span> <span class="el-event-data">'.$event['description'].'</span><br />
+				<span class="el-event-header">'.__('Content','event-list').':</span> <span class="el-event-data">'.$event['content'].'</span><br />
 				<span class="el-event-header">'.__('Category slugs','event-list').':</span> <span class="el-event-data">'.implode(', ', $event['categories']).'</span>
 				</p>';
 	}
@@ -178,7 +178,7 @@ class EL_Admin_Import {
 	 */
 	private function parseImportFile($file) {
 		$delimiter = ',';
-		$header = array('title', 'startdate', 'enddate', 'starttime', 'location', 'description', 'category_slugs');
+		$header = array('title', 'startdate', 'enddate', 'starttime', 'location', 'content', 'category_slugs');
 		$separator = array('sep=,');
 
 		// list of events to import
@@ -213,13 +213,13 @@ class EL_Admin_Import {
 			}
 			// handle lines with events
 			$events[] = array(
-				'title'       => $line[0],
-				'startdate'   => $line[1],
-				'enddate'     => !empty($line[2]) ? $line[2] : $line[1],
-				'starttime'   => $line[3],
-				'location'    => $line[4],
-				'description' => $line[5],
-				'categories'  => isset($line[6]) ? explode('|', $line[6]) : array(),
+				'title'      => $line[0],
+				'startdate'  => $line[1],
+				'enddate'    => !empty($line[2]) ? $line[2] : $line[1],
+				'starttime'  => $line[3],
+				'location'   => $line[4],
+				'content'    => $line[5],
+				'categories' => isset($line[6]) ? explode('|', $line[6]) : array(),
 			);
 			$lineNum += 1;
 		}

@@ -14,13 +14,13 @@ Manage your events and show them on your site.
 
 == Description ==
 
-The purpose of this plugin is to to show a list of events with date, time, description, place, etc. on your site by using a shortcode or a widget.
+The purpose of this plugin is to to show a list of events with date, time, content, location, etc. on your site by using a shortcode or a widget.
 
 = Current Features =
 * Admin pages to view/create/manage/modify events
-* Available event data fields: event title, event date, event start time, event location, event details
+* Available event data fields: event title, event startdate, event enddate, event starttime, event location, event content
 * Beginning and end dates for multi-day events
-* Wordpress's WYSIWYG editor for the event details. So you can include styled text, links, images and other media in your events.
+* Wordpress's WYSIWYG editor for the event content. So you can include styled text, links, images and other media in your events.
 * A duplicate function for events to easier create similar event copies
 * Import multiple events via csv files
 * Event categories
@@ -58,7 +58,7 @@ If you want to install the plugin manually download the zip-file and extract the
 = How do I get an event list to show up in a Page or Post on my site? =
 Insert the shortcode [event-list] in your page or post. You can modify the output by many available shortcode attributes (see Event List -> About page for more infos).
 
-= How do I use styled text and images in the event descriptions? =
+= How do I use styled text and images in the event content? =
 Event List uses the built-in Wordpress WYSIWYG editor. It's exactly the same process like in creating Posts or Pages.
 
 = Can I call the shortcode directly via php e.g. for my own template, theme or plugin? =

@@ -117,9 +117,9 @@ class EL_Admin_New {
 		unset($wp_meta_boxes[get_post_type('post')]['primary']);
 		echo '
 			</div>';
-		// show label for event description
+		// show label for event content
 		echo '
-			<label class="event-option">'.__('Event Description','event-list').':</label>';
+			<label class="event-option">'.__('Event Content','event-list').':</label>';
 	}
 
 	public function embed_scripts() {

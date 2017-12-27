@@ -83,11 +83,10 @@ class EL_Feed {
 				<description>
 					'.$this->feed_description($event).'
 				</description>';
-				if(!empty($event->description)) {
+				if(!empty($event->content)) {
 					echo '
 				<content:encoded>
-					'.$this->feed_description($event).':
-					'.$this->sanitize_feed_text(do_shortcode($event->description)).'
+					'.$this->event_encoded_data($event).':
 				</content:encoded>';
 				}
 				echo '
@@ -122,8 +121,10 @@ class EL_Feed {
 		}
 	}
 
-	private function feed_description(&$event) {
-		return $this->format_date($event->startdate, $event->enddate). (empty($event->starttime) ? '' : ' '.$this->sanitize_feed_text($event->starttime)).(empty($event->location) ? '' : ' - '.$this->sanitize_feed_text($event->location));
+	private function event_data(&$event) {
+		$timetext = empty($event->starttime) ? '' : ' '.$this->sanitize_feed_text($event->starttime);
+		$locationtext = empty($event->location) ? '' : ' - '.$this->sanitize_feed_text($event->location);
+		return $this->format_date($event->startdate, $event->enddate).$timetext.$locationtext.$this->sanitize_feed_text(do_shortcode($event->content));
 	}
 
 	private function sanitize_feed_text($text) {

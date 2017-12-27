@@ -60,13 +60,13 @@ $options_helptexts = array(
 	                                                '.sprintf(__('If you want to load your own language file from the general language directory %1$s for a language which is already included in the plugin language directory, you have to enable this option.','event-list'), '<code>wp-content/languages/plugins/</code>')),
 
 	// Section: "frontend"
-	'el_show_details_text'    => array('type'    => 'text',
-	                                   'label'   => __('Text for "Show details"','event-list'),
-	                                   'desc'    => __('With this option the displayed text for the link to show the event details can be changed, when collapsing is enabled.','event-list')),
+	'el_content_show_text'    => array('type'    => 'text',
+	                                   'label'   => __('Text for "Show content"','event-list'),
+	                                   'desc'    => __('With this option the displayed text for the link to show the event content can be changed, when collapsing is enabled.','event-list')),
 
-	'el_hide_details_text'    => array('type'    => 'text',
-	                                   'label'   => __('Text for "Hide details"','event-list'),
-	                                   'desc'    => __('With this option the displayed text for the link to hide the event details can be changed, when collapsing is enabled.','event-list')),
+	'el_content_hide_text'    => array('type'    => 'text',
+	                                   'label'   => __('Text for "Hide content"','event-list'),
+	                                   'desc'    => __('With this option the displayed text for the link to hide the event content can be changed, when collapsing is enabled.','event-list')),
 
 	'el_disable_css_file'     => array('type'    => 'checkbox',
 	                                   'label'   => __('Disable CSS file','event-list'),
