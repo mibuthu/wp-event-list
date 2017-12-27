@@ -154,7 +154,7 @@ class EL_Widget extends WP_Widget {
 	/**
 	 * Prepare the instance array and add not available items with std_value
 	 *
-	 * This is required for a plugin upgrades: In existing widgets probably added widget options are not available.
+	 * This is required for a plugin upgrades: In existing widgets laster added widget options are not available.
 	 *
 	 * @param array &$instance Previously saved values from database.
 	 */
@@ -166,19 +166,32 @@ class EL_Widget extends WP_Widget {
 		}
 	}
 
+	/**
+	 * Upgrades which are required due to modifications in the widget args
+	 *
+	 * @param array $instance     Values from the database
+	 * @param bool  $on_frontpage true if the frontpage is displayed, false if the admin page is displayed
+	 */
 	private function upgrade_widget(&$instance, $on_frontpage=false) {
-		// required change of cat_filter in version 0.6.0 (can be removed in 0.7.0)
+		$upgrade_required = false;
+		// default cat_filter value in version 0.6.0 (can be removed in 1.0.0)
 		if(isset($instance['cat_filter']) && 'none' === $instance['cat_filter']) {
-			if($on_frontpage) {
-				if(current_user_can('edit_theme_options')) {
-					echo '<p style="color:red"><strong>Please visit widget admin page (Appearance -> Widgets) and press "Save" to perform the required widget updates (required due to changes in new plugin version) !</strong></p>';
-				}
-			}
-			else {
-				echo '<p style="color:red"><strong>Press "Save" to perform the required widget updates (required due to changes in new plugin version) !</strong></p>';
-				$instance['cat_filter'] = 'all';
-				$this->update($instance, null);
-			}
+			$instance['cat_filter'] = 'all';
+			$upgrade_required = true;
+		}
+		// renamed items "show_details" -> "show_content"
+		if(isset($instance['show_details']) && !isset($instance['show_content'])) {
+			$instance['show_content'] = $instance['show_details'];
+			$upgrade_required = true;
+		}
+		// renamed items "details_length" -> "content_length"
+		if(isset($instance['details_length']) && !isset($instance['content_length'])) {
+			$instance['content_length'] = $instance['details_length'];
+			$upgrade_required = true;
+		}
+		// Show info for the required update on admin page
+		if($upgrade_required && !$on_frontpage && current_user_can('edit_theme_options')) {
+			echo '<p style="color:red"><strong>This widget is old and requires an update! Please press "Save" to execute the required modifications!</strong></p>';
 		}
 	}
 }
