@@ -434,7 +434,7 @@ class SC_Event_List {
 			wp_register_script('el_collapse_description', EL_URL.'includes/js/collapse_description.js', null, true);
 			add_action('wp_footer', array(&$this, 'print_collapse_description_script'));
 			return '<div class="event-description"><div id="event-description-'.$event->post->ID.'" class="el-hidden">'.$desc.
-			       '</div><a class="event-description-link" id="event-descriptions-a'.$event->post->ID.'" onclick="toggle_event_description('.$event->post->ID.')" href="javascript:void(0)">'.$this->options->get('el_show_details_text').'</a></div>';
+			       '</div><a class="event-description-link" id="event-descriptions-a'.$event->post->ID.'" onclick="el_toggle_description('.$event->post->ID.')" href="javascript:void(0)">'.$this->options->get('el_show_details_text').'</a></div>';
 		}
 		// return without collapsing
 		return '<div class="event-description">'.$desc.'</div>';

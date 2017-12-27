@@ -1,4 +1,4 @@
-function toggle_event_description(event_id) {
+function el_toggle_description(event_id) {
 	var desc_div = document.getElementById('event-description-'.concat(event_id));
 	var desc_button = document.getElementById('event-description-a'.concat(event_id));
 	if (desc_div.style.display == 'block') {
