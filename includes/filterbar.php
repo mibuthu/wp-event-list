@@ -252,7 +252,7 @@ class EL_Filterbar {
 		if(!is_admin()) {
 			wp_register_script('el_filterbar', EL_URL.'includes/js/filterbar.js', null, true);
 			add_action('wp_footer', array(&$this, 'footer_script'));
-			$onchange = ' onchange="eventlist_redirect(this.name,this.value,'.$sc_id.')"';
+			$onchange = ' onchange="el_redirect(this.name,this.value,'.$sc_id.')"';
 		}
 		$out = '<select class="dropdown" name="'.$name.'"'.$onchange.'>';
 		foreach($elements as $element) {
