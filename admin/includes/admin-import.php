@@ -124,7 +124,7 @@ class EL_Admin_Import {
 					'.__('If you want to keep these categories, please create these Categories first and do the import afterwards.','event-list').'</div>';
 		}
 		echo '
-			<form method="POST" action="'.admin_url('edit.php?post_type=el_events&page=el_admin_import').'">)';
+			<form method="POST" action="'.admin_url('edit.php?post_type=el_events&page=el_admin_import').'">';
 		wp_nonce_field('autosavenonce', 'autosavenonce', false, false);
 		wp_nonce_field('closedpostboxesnonce', 'closedpostboxesnonce', false, false);
 		wp_nonce_field('meta-box-order-nonce', 'meta-box-order-nonce', false, false);
