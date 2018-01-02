@@ -40,7 +40,12 @@ class EL_Admin {
 				// New/edit event page
 				case 'el_events':
 					require_once(EL_PATH.'admin/includes/admin-new.php');
-					EL_Admin_new::get_instance();
+					EL_Admin_New::get_instance();
+					break;
+				// Event category page
+				case 'edit-el_eventcategory':
+					require_once(EL_PATH.'admin/includes/admin-categories.php');
+					EL_Admin_Categories::get_instance();
 					break;
 			}
 		}
@@ -65,6 +70,10 @@ class EL_Admin {
 		// Import page (invisible in menu, but callable by import button on admin main page)
 		$page = add_submenu_page(null, null, null, 'edit_posts', 'el_admin_import', array(&$this, 'show_import_page'));
 		add_action('admin_print_scripts-'.$page, array(&$this, 'embed_import_scripts'));
+
+		// Sync Post Categories page (invisible in menu, but callable by sync button on admin categories page)
+		$page = add_submenu_page(null, null, null, 'manage_categories', 'el_admin_cat_sync', array(&$this, 'show_cat_sync_page'));
+		add_action('load-'.$page, array(&$this, 'handle_cat_sync_actions'));
 	}
 
 	public function add_dashboard_styles() {
@@ -118,6 +127,14 @@ class EL_Admin {
 		EL_Admin_Import::get_instance()->embed_import_scripts();
 	}
 
+	public function show_cat_sync_page() {
+		require_once(EL_PATH.'admin/includes/admin-category-sync.php');
+		EL_Admin_Category_Sync::get_instance()->show_cat_sync();
+	}
+
+	public function handle_cat_sync_actions() {
+		require_once(EL_PATH.'admin/includes/admin-category-sync.php');
+		EL_Admin_Category_Sync::get_instance()->handle_actions();
 	}
 }
 ?>

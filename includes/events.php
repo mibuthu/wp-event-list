@@ -268,6 +268,14 @@ class EL_Events {
 		return wp_insert_term($name, $this->el_category_taxonomy, $args);
 	}
 
+	public function update_category($slug, $args) {
+		return wp_update_term($this->get_cat_by_slug($slug)->term_id, $this->el_category_taxonomy, $args);
+	}
+
+	public function delete_category($slug) {
+		return wp_delete_term($this->get_cat_by_slug($slug)->term_id, $this->el_category_taxonomy);
+	}
+
 	public function get_cat_by_id($cat) {
 		return get_term_by('id', $cat, $this->el_category_taxonomy);
 	}

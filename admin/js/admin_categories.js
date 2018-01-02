@@ -1,30 +1,12 @@
-// Javascript functions for event-list admin_settings page
-
-// Confirmation for event deletion
-function eventlist_deleteCategory(del_slugs) {
-	if(del_slugs == "") {
-		window.alert("No categories selected for deletion! Deletion aborted!");
-	}
-	else if(window.confirm("Are you sure you want to delete this event category?")) {
-		document.location.href = "?page=el_admin_categories&slug=" + del_slugs + "&action=delete";
-	}
-}
+// Javascript functions for event-list admin_categories page
 
 jQuery(document).ready(function($) {
-	// Confirmation for manual syncing with post categories
-	$("#manualcatsync").submit(function() {
-		if(!confirm("Are you sure you want to manually sync the event categories with the post categories?\n\nWarning: Please not that this will delete all categories which are not available in post categories!")) {
-			return false;
-		}
-		return true;
-	});
-	// Confirmation for automatic syncing with post categories
-	$("#catsync").submit(function() {
-		if($("#el_sync_cats").prop('checked')) {
-			if(!confirm("Are you sure you want to automatically sync the event categories with the post categories?\n\nWarning: Please not that this will delete all categories which are not available in post categories!")) {
-				return false;
-			}
-		}
-		return true;
-	});
+	// Move sync button next to table action button
+	$("#sync-cats").first().insertAfter($("div.bulkactions").first());
 });
+
+function el_show_syncform(syncform_url) {
+	// Redirect to execute action
+	window.location.assign(syncform_url);
+	return false;
+}
