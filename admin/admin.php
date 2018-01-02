@@ -22,21 +22,10 @@ class EL_Admin {
 	private function __construct() {
 		$this->options = &EL_Options::get_instance();
 		// Register actions
-		add_action('admin_init', array(&$this, 'sync_post_categories'), 11);
 		add_action('current_screen', array(&$this, 'register_events_post_type_mods'));
 		add_action('admin_head', array(&$this, 'add_dashboard_styles'));
 		add_action('admin_menu', array(&$this, 'register_pages'));
 		add_filter('dashboard_glance_items', array($this, 'add_events_to_glance'));
-	}
-
-	public function sync_post_categories() {
-		// Register syncing actions if enabled.
-		// Has to be done after Options::register_options, so that $this->options->get returns the correct value.
-		if(1 == $this->options->get('el_sync_cats')) {
-			add_action('create_category', array(&$this, 'action_add_category'));
-			add_action('edit_category', array(&$this, 'action_edit_category'));
-			add_action('delete_category', array(&$this, 'action_delete_category'));
-		}
 	}
 
 	public function register_events_post_type_mods($current_screen) {
@@ -99,16 +88,6 @@ class EL_Admin {
 		}
 	}
 
-	public function show_categories_page() {
-		require_once(EL_PATH.'admin/includes/admin-categories.php');
-		EL_Admin_Categories::get_instance()->show_categories();
-	}
-
-	public function embed_categories_scripts() {
-		require_once(EL_PATH.'admin/includes/admin-categories.php');
-		EL_Admin_Categories::get_instance()->embed_categories_scripts();
-	}
-
 	public function show_settings_page() {
 		require_once(EL_PATH.'admin/includes/admin-settings.php');
 		EL_Admin_Settings::get_instance()->show_settings();
@@ -139,19 +118,6 @@ class EL_Admin {
 		EL_Admin_Import::get_instance()->embed_import_scripts();
 	}
 
-	public function action_add_category($cat_id) {
-		require_once(EL_PATH.'includes/categories.php');
-		EL_Categories::get_instance()->add_post_category($cat_id);
-	}
-
-	public function action_edit_category($cat_id) {
-		require_once(EL_PATH.'includes/categories.php');
-		EL_Categories::get_instance()->edit_post_category($cat_id);
-	}
-
-	public function action_delete_category($cat_id) {
-		require_once(EL_PATH.'includes/categories.php');
-		EL_Categories::get_instance()->delete_post_category($cat_id);
 	}
 }
 ?>
