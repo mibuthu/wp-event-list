@@ -3,12 +3,14 @@ if(!defined('WP_ADMIN')) {
 	exit;
 }
 
-require_once( EL_PATH.'includes/options.php' );
+require_once(EL_PATH.'includes/options.php');
+require_once(EL_PATH.'includes/events_post_type.php');
 
 // This class handles all available admin pages
 class EL_Admin {
 	private static $instance;
 	private $options;
+	private $events_post_type;
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -21,6 +23,7 @@ class EL_Admin {
 
 	private function __construct() {
 		$this->options = &EL_Options::get_instance();
+		$this->events_post_type = &EL_Events_Post_Type::get_instance();
 		// Register actions
 		add_action('current_screen', array(&$this, 'register_events_post_type_mods'));
 		add_action('admin_head', array(&$this, 'add_dashboard_styles'));
@@ -43,7 +46,7 @@ class EL_Admin {
 					EL_Admin_New::get_instance();
 					break;
 				// Event category page
-				case 'edit-el_eventcategory':
+				case 'edit-'.$this->events_post_type->taxonomy:
 					require_once(EL_PATH.'admin/includes/admin-categories.php');
 					EL_Admin_Categories::get_instance();
 					break;

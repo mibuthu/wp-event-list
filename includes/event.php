@@ -4,10 +4,12 @@ if(!defined('WPINC')) {
 }
 
 require_once(EL_PATH.'includes/options.php');
+require_once(EL_PATH.'includes/events_post_type.php');
 
 // Class to manage categories
 class EL_Event {
 	private $options;
+	private $events_post_type;
 	public $post;
 	public $categories;
 	public $title = '';
@@ -19,6 +21,7 @@ class EL_Event {
 
 	public function __construct($post) {
 		$this->options = &EL_Options::get_instance();
+		$this->events_post_type = &EL_Events_Post_Type::get_instance();
 		if($post instanceof WP_Post) {
 			$this->post = $post;
 		}
@@ -38,7 +41,7 @@ class EL_Event {
 		foreach(array('startdate', 'enddate', 'starttime', 'location') as $meta) {
 			$this->$meta = isset($postmeta[$meta][0]) ? $postmeta[$meta][0] : '';
 		}
-		$this->categories = get_the_terms($this->post, 'el_eventcategory');
+		$this->categories = get_the_terms($this->post, $this->events_post_type->taxonomy);
 		if(!is_array($this->categories)) {
 			$this->categories = array();
 		}
@@ -129,7 +132,7 @@ class EL_Event {
 	}
 
 	private static function set_categories($pid, $cats) {
-		return wp_set_object_terms($pid, $cats, 'el_eventcategory');
+		return wp_set_object_terms($pid, $cats, $this->events_post_type->taxonomy);
 	}
 
 	public function display_time($timestring) {

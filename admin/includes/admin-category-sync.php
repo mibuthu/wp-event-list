@@ -4,12 +4,14 @@ if(!defined('ABSPATH')) {
 }
 
 require_once(EL_PATH.'includes/options.php');
+require_once(EL_PATH.'includes/events_post_type.php');
 require_once(EL_PATH.'includes/events.php');
 
 // This class handles all data for the admin categories page
 class EL_Admin_Category_Sync {
 	private static $instance;
 	private $options;
+	private $events_post_type;
 	private $events;
 
 	public static function &get_instance() {
@@ -23,6 +25,7 @@ class EL_Admin_Category_Sync {
 
 	private function __construct() {
 		$this->options = &EL_Options::get_instance();
+		$this->events_post_type = &EL_Events_Post_Type::get_instance();
 		$this->events = EL_Events::get_instance();
 
 		// permission checks
@@ -37,7 +40,7 @@ class EL_Admin_Category_Sync {
 	public function show_cat_sync() {
 		// determine categories to add and to delete
 		$post_cats = get_categories(array('type'=>'post', 'orderby'=>'parent', 'hide_empty'=>0));
-		$event_cats = get_terms(array('taxonomy'=>'el_eventcategory', 'orderby'=>'parent', 'hide_empty'=>false));
+		$event_cats = get_terms(array('taxonomy'=>$this->events_post_type->taxonomy, 'orderby'=>'parent', 'hide_empty'=>false));
 		$post_cat_slugs = wp_list_pluck($post_cats, 'slug');
 		$event_cat_slugs = wp_list_pluck($event_cats, 'slug');
 		$cats_to_add = array_diff($post_cat_slugs, $event_cat_slugs);

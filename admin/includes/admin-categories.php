@@ -4,10 +4,12 @@ if(!defined('ABSPATH')) {
 }
 
 require_once(EL_PATH.'includes/options.php');
+require_once(EL_PATH.'includes/events_post_type.php');
 
 // This class handles all data for the admin categories page
 class EL_Admin_Categories {
 	private static $instance;
+	private $events_post_type;
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -19,8 +21,9 @@ class EL_Admin_Categories {
 	}
 
 	private function __construct() {
+		$this->events_post_type = &EL_Events_Post_Type::get_instance();
 		add_action('admin_print_scripts', array(&$this, 'embed_categories_scripts'));
-		add_action('after-el_eventcategory-table', array(&$this, 'sync_cats_button'));
+		add_action('after-'.$this->events_post_type->taxonomy.'-table', array(&$this, 'sync_cats_button'));
 		add_filter('term_updated_messages', array(&$this, 'prepare_syncdone_message'));
 		add_filter('removable_query_args', array(&$this, 'remove_message_args'));
 	}

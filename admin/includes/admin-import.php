@@ -4,6 +4,7 @@ if(!defined('WP_ADMIN')) {
 }
 
 require_once(EL_PATH.'includes/options.php');
+require_once(EL_PATH.'includes/events_post_type.php');
 require_once(EL_PATH.'admin/includes/admin-functions.php');
 require_once(EL_PATH.'includes/events.php');
 
@@ -11,6 +12,7 @@ require_once(EL_PATH.'includes/events.php');
 class EL_Admin_Import {
 	private static $instance;
 	private $options;
+	private $events_post_type;
 	private $functions;
 	private $events;
 	private $import_data;
@@ -27,6 +29,7 @@ class EL_Admin_Import {
 
 	private function __construct() {
 		$this->options = &EL_Options::get_instance();
+		$this->events_post_type = &EL_Events_Post_Type::get_instance();
 		$this->functions = &EL_Admin_Functions::get_instance();
 		$this->events = &EL_Events::get_instance();
 		$this->add_metaboxes();
@@ -256,7 +259,7 @@ class EL_Admin_Import {
 	public function render_category_metabox($post, $metabox) {
 		require_once(ABSPATH.'wp-admin/includes/meta-boxes.php');
 		$dpost = get_default_post_to_edit('el-events');
-		$box = array('args' => array('taxonomy' => 'el_eventcategory'));
+		$box = array('args' => array('taxonomy' => $this->events_post_type->taxonomy));
 		post_categories_meta_box($dpost, $box);
 	}
 
@@ -266,7 +269,7 @@ class EL_Admin_Import {
 		if(empty($reviewed_events)) {
 			return false;
 		}
-		$additional_cat_ids = isset($_POST['tax_input']['el_eventcategory']) && is_array($_POST['tax_input']['el_eventcategory']) ? array_map('sanitize_key', $_POST['tax_input']['el_eventcategory']) : array();
+		$additional_cat_ids = isset($_POST['tax_input'][$this->events_post_type->taxonomy]) && is_array($_POST['tax_input'][$this->events_post_type->taxonomy]) ? array_map('sanitize_key', $_POST['tax_input'][$this->events_post_type->taxonomy]) : array();
 		$additional_cat_slugs = array();
 		foreach($additional_cat_ids as $cat_id) {
 			$cat = $this->events->get_cat_by_id($cat_id);

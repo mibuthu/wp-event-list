@@ -4,6 +4,7 @@ if(!defined('WPINC')) {
 }
 
 require_once(EL_PATH.'includes/options.php');
+require_once(EL_PATH.'includes/events_post_type.php');
 require_once(EL_PATH.'includes/daterange.php');
 require_once(EL_PATH.'includes/event.php');
 
@@ -13,8 +14,8 @@ require_once(EL_PATH.'includes/event.php');
 class EL_Events {
 	private static $instance;
 	private $options;
+	private $events_post_type;
 	private $daterange;
-	private $el_category_taxonomy = 'el_eventcategory';
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -27,6 +28,7 @@ class EL_Events {
 
 	private function __construct() {
 		$this->options = &EL_Options::get_instance();
+		$this->events_post_type = &EL_Events_Post_Type::get_instance();
 		$this->daterange = &EL_Daterange::get_instance();
 	}
 
@@ -148,7 +150,7 @@ class EL_Events {
 			$sql .= ', (CONCAT("|", (SELECT GROUP_CONCAT('.$tterms.'.slug SEPARATOR "|") FROM '.$tterms
 			       .' INNER JOIN '.$ttax.' ON '.$tterms.'.term_id = '.$ttax.'.term_id'
 			       .' INNER JOIN '.$ttermrel.' wpr ON wpr.term_taxonomy_id = '.$ttax.'.term_taxonomy_id'
-			       .' WHERE taxonomy= "'.$this->el_category_taxonomy.'" AND '.$tposts.'.ID = wpr.object_id'
+			       .' WHERE taxonomy= "'.$this->events_post_type->taxonomy.'" AND '.$tposts.'.ID = wpr.object_id'
 			       .'), "|")) AS categories';
 		}
 		$sql .= ' FROM '.$tposts.' WHERE post_type = "el_events" AND post_status = "publish") AS events';
@@ -261,27 +263,27 @@ class EL_Events {
 	}
 
 	public function cat_exists($cat_slug) {
-		return (get_term_by('slug', $cat_slug, $this->el_category_taxonomy) instanceof WP_Term);
+		return (get_term_by('slug', $cat_slug, $this->events_post_type->taxonomy) instanceof WP_Term);
 	}
 
 	public function add_category($name, $args) {
-		return wp_insert_term($name, $this->el_category_taxonomy, $args);
+		return wp_insert_term($name, $this->events_post_type->taxonomy, $args);
 	}
 
 	public function update_category($slug, $args) {
-		return wp_update_term($this->get_cat_by_slug($slug)->term_id, $this->el_category_taxonomy, $args);
+		return wp_update_term($this->get_cat_by_slug($slug)->term_id, $this->events_post_type->taxonomy, $args);
 	}
 
 	public function delete_category($slug) {
-		return wp_delete_term($this->get_cat_by_slug($slug)->term_id, $this->el_category_taxonomy);
+		return wp_delete_term($this->get_cat_by_slug($slug)->term_id, $this->events_post_type->taxonomy);
 	}
 
 	public function get_cat_by_id($cat) {
-		return get_term_by('id', $cat, $this->el_category_taxonomy);
+		return get_term_by('id', $cat, $this->events_post_type->taxonomy);
 	}
 
 	public function get_cat_by_slug($cat) {
-		return get_term_by('slug', $cat, $this->el_category_taxonomy);
+		return get_term_by('slug', $cat, $this->events_post_type->taxonomy);
 	}
 }
 ?>

@@ -4,6 +4,7 @@ if(!defined('WP_ADMIN')) {
 }
 
 require_once(EL_PATH.'includes/options.php');
+require_once(EL_PATH.'includes/events_post_type.php');
 require_once(EL_PATH.'includes/filterbar.php');
 require_once(EL_PATH.'includes/daterange.php');
 require_once(EL_PATH.'includes/event.php');
@@ -14,6 +15,7 @@ require_once(EL_PATH.'includes/event.php');
 class EL_Admin_Main {
 	private static $instance;
 	private $options;
+	private $events_post_type;
 	private $filterbar;
 
 	public static function &get_instance() {
@@ -27,6 +29,7 @@ class EL_Admin_Main {
 
 	private function __construct() {
 		$this->options = &EL_Options::get_instance();
+		$this->events_post_type = &EL_Events_Post_Type::get_instance();
 		$this->filterbar = &EL_Filterbar::get_instance();
 		add_action('manage_posts_custom_column', array(&$this, 'events_custom_columns'), 10, 2);
 		add_filter('manage_edit-el_events_columns', array(&$this, 'events_edit_columns'));
@@ -51,13 +54,13 @@ class EL_Admin_Main {
 	***************************************************************************/
 	public function events_edit_columns($columns) {
 		return array(
-			'cb'                        => '<input type="checkbox" />', //Render a checkbox instead of text
-			'eventdate'                 => __('Event Date','event-list'),
-			'title'                     => __('Title','event-list'),
-			'location'                  => __('Location','event-list'),
-			'taxonomy-el_eventcategory' => __('Categories'),
-			'author'                    => __('Author','event-list'),
-			'date'                      => __('Date')
+			'cb'                                          => '<input type="checkbox" />', //Render a checkbox instead of text
+			'eventdate'                                   => __('Event Date','event-list'),
+			'title'                                       => __('Title','event-list'),
+			'location'                                    => __('Location','event-list'),
+			'taxonomy-'.$this->events_post_type->taxonomy => __('Categories'),
+			'author'                                      => __('Author','event-list'),
+			'date'                                        => __('Date')
 		);
 	}
 
@@ -158,7 +161,7 @@ class EL_Admin_Main {
 		);
 		// category filter
 		if('all' !== $selected_cat) {
-			$query->query_vars['el_eventcategory'] = $selected_cat;
+			$query->query_vars[$this->events_post_type->taxonomy] = $selected_cat;
 		}
 		$query->query_vars['meta_query'] = $meta_query;
 	}
