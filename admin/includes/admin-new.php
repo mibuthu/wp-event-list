@@ -42,6 +42,7 @@ class EL_Admin_New {
 		add_action('admin_print_scripts', array(&$this, 'embed_scripts'));
 		add_action('save_post_el_events', array(&$this, 'save_eventdata'), 10, 3);
 		add_filter('enter_title_here', array(&$this, 'change_default_title'));
+		add_filter('post_updated_messages', array(&$this, 'updated_messages'));
 	}
 
 	public function add_eventdata_metabox($post_type) {
@@ -138,11 +139,6 @@ class EL_Admin_New {
 	}
 
 	public function save_eventdata($pid, $post, $update) {
-//		error_log('PID: '.$pid);
-//		error_log('$post: '.print_r($post, true));
-//		error_log('POST: '.print_r($_POST, true));
-//		error_log('DOING_AUTOSAVE: '.(defined('DOING_AUTOSAVE') ? DOING_AUTOSAVE : 'not defined'));
-//		error_log('post status: '.$post->post_status);
 		// don't do on autosave or when new posts are first created
 		if((defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) || 'auto-draft' === $post->post_status) {
 			return $pid;
@@ -175,6 +171,29 @@ class EL_Admin_New {
 	public function change_default_title($title) {
 		// Delete default title in text field (not required due to additional lable above the title field)
 		return '';
+	}
+
+	public function updated_messages($messages) {
+ 		// check used get parameters
+		$revision = isset($_GET['revision']) ? intval($_GET['revision']) : null;
+
+		global $post, $post_ID;
+		error_log('updated_messages');
+		$messages['el_events'] = array(
+			0  => '', // Unused. Messages start at index 1.
+			1  => __('Event updated.','event-list').' <a href="'.esc_url(get_permalink($post_ID)).'">'.__('View event','event-list').'</a>',
+			2  => '', // Custom field updated is not required (no custom fields)
+			3  => '', // Custom field deleted is not required (no custom fields)
+			4  => __('Event updated.','event-list'),
+			5  => is_null($revision) ? false : sprintf(__('Event restored to revision from %1$s','event-list'), wp_post_revision_title($revision, false)),
+			6  => __('Event published.','event-list').' <a href="'.esc_url(get_permalink($post_ID)).'">'.__('View event','event-list').'</a>',
+			7  => __('Event saved.'),
+			8  => __('Event submitted.','event-list').' <a target="_blank" href="'.esc_url(add_query_arg('preview', 'true', get_permalink($post_ID))).'">'.__('Preview event','event-list').'</a>',
+			9  => sprintf(__('Event scheduled for: %1$s>','event-list'), '<strong>'.date_i18n(__('M j, Y @ G:i'), strtotime($post->post_date)).'</strong>').
+			      ' <a target="_blank" href="'.esc_url(get_permalink($post_ID)).'">'.__('Preview event','event-list').'</a>',
+			10 => __('Event draft updated.','event-list').' <a target="_blank" href="'.esc_url(add_query_arg('preview', 'true', get_permalink($post_ID))).'">'.__('Preview event','event-list').'</a>',
+		);
+		return $messages;
 	}
 
 	public function set_copied_categories($categories) {
