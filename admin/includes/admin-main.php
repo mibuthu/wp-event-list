@@ -165,7 +165,6 @@ class EL_Admin_Main {
 		}
 		$query->query_vars['meta_query'] = $meta_query;
 	}
-	}
 
 	public function set_default_posts_list_mode() {
 		// check used get parameters
