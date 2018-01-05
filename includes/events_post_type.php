@@ -95,7 +95,7 @@ class EL_Events_Post_Type {
 			'delete_with_user' => false,
 			'_builtin' => false,
 		);
-		register_post_type( 'el_events', $args);
+		register_post_type('el_events', $args);
 	}
 
 	/**
@@ -104,7 +104,7 @@ class EL_Events_Post_Type {
 	 * @return
 	 */
 	public function register_event_category_taxonomy() {
- 		$labels = array(
+		$labels = array(
 			'name' => _x('Categories', 'taxonomy general name'),
 			'singular_name' => _x('Category', 'taxonomy singular name'),
 			'search_items' =>  __('Search Categories'),

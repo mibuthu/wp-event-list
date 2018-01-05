@@ -1,5 +1,5 @@
 <?php
-if(!defined('WPINC')) {
+if(!defined('WP_ADMIN')) {
 	exit;
 }
 
@@ -13,7 +13,7 @@ class EL_Admin_Functions {
 	public static function &get_instance() {
 		// Create class instance if required
 		if(!isset(self::$instance)) {
-			self::$instance = new EL_Admin_Functions();
+			self::$instance = new self();
 		}
 		// Return class instance
 		return self::$instance;

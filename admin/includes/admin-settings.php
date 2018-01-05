@@ -60,18 +60,14 @@ class EL_Admin_Settings {
 			</div>';
 		echo $out;
 	}
-/*
-	public function embed_settings_scripts() {
-		wp_enqueue_script('eventlist_admin_settings_js', EL_URL.'admin/js/admin_settings.js');
-	}
-*/
+
 	private function show_tabs($current = 'category') {
 		$tabs = array('general'  => __('General','event-list'),
 		              'frontend' => __('Frontend Settings','event-list'),
 		              'admin'    => __('Admin Page Settings','event-list'),
 		              'feed'     => __('Feed Settings','event-list'));
 		$out = '<h3 class="nav-tab-wrapper">';
-		foreach($tabs as $tab => $name){
+		foreach($tabs as $tab => $name) {
 			$class = ($tab == $current) ? ' nav-tab-active' : '';
 			$out .= '<a class="nav-tab'.$class.'" href="'.add_query_arg('tab', $tab, add_query_arg([])).'">'.$name.'</a>';
 		}

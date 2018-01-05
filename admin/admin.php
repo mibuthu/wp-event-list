@@ -58,10 +58,6 @@ class EL_Admin {
 	 * Add and register all admin pages in the admin menu
 	 */
 	public function register_pages() {
-		// Categories subpage
-//		$page = add_submenu_page('el_admin_main', __('Event List Categories','event-list'), __('Categories','event-list'), 'manage_categories', 'el_admin_categories', array(&$this, 'show_categories_page'));
-//		add_action('admin_print_scripts-'.$page, array(&$this, 'embed_categories_scripts'));
-
 		// Settings subpage
 		$page = add_submenu_page('edit.php?post_type=el_events', __('Event List Settings','event-list'), __('Settings','event-list'), 'manage_options', 'el_admin_settings', array(&$this, 'show_settings_page'));
 		add_action('admin_print_scripts-'.$page, array(&$this, 'embed_settings_scripts'));

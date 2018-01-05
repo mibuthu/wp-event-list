@@ -56,7 +56,7 @@ class EL_Admin_Categories {
 			$msgnum = 22;
 		}
 		else {
-			$msgtext = __('Category sync finished:','event-list').':<br />';
+			$msgtext = __('Category sync finished','event-list').':<br />';
 			$msgnum = 21;
 		}
 		$msgtext .= '<ul style="list-style:inside">';

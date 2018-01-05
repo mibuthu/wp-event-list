@@ -32,9 +32,9 @@ class EL_Events {
 		$this->daterange = &EL_Daterange::get_instance();
 	}
 
-	public function get($options) {
+	public function get($options=array()) {
 		global $wpdb;
-		$options = wp_parse_args($options, array('date_filter'=>null, 'cat_filter'=>null, 'num_events'=>0, 'order'=>array('startdate ASC', 'time ASC', 'enddate ASC')));
+		$options = wp_parse_args($options, array('date_filter'=>null, 'cat_filter'=>null, 'num_events'=>0, 'order'=>array('startdate ASC', 'starttime ASC', 'enddate ASC')));
 		$where_string = $this->get_sql_filter_string($options['date_filter'], $options['cat_filter']);
 		$sql = 'SELECT ID FROM ('.$this->get_events_sql('ID').') AS events WHERE '.$this->get_sql_filter_string($options['date_filter'], $options['cat_filter']).' ORDER BY '.implode(', ', $options['order']);
 		if('upcoming' === $options['date_filter'] && is_numeric($options['num_events']) && 0 < $options['num_events']) {
@@ -266,7 +266,7 @@ class EL_Events {
 		return (get_term_by('slug', $cat_slug, $this->events_post_type->taxonomy) instanceof WP_Term);
 	}
 
-	public function add_category($name, $args) {
+	public function insert_category($name, $args) {
 		return wp_insert_term($name, $this->events_post_type->taxonomy, $args);
 	}
 

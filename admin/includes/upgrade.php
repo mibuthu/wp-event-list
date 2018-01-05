@@ -56,7 +56,7 @@ function el_upgrade_check() {
 						}
 					}
 					error_log('EL_UPGRADE: Import event category "'.$cat['name'].'"!');
-					$ret = EL_Events::get_instance()->add_category($cat['name'], $args);
+					$ret = EL_Events::get_instance()->insert_category($cat['name'], $args);
 					if(is_wp_error($ret)) {
 						error_log('ERROR: Import failed: '.$ret->get_error_message().'!');
 					}

@@ -210,10 +210,10 @@ class SC_Event_List {
 			$out .= $title;
 		}
 		$out .= '</h3></div>';
-		// event time
+		// event starttime
 		if('' != $event->starttime && $this->is_visible($a['show_starttime'])) {
 			if('' == $this->options->get('el_html_tags_in_time')) {
-				$event->time = esc_attr($event->time);
+				$event->starttime = esc_attr($event->starttime);
 			}
 			$out .= '<span class="event-time">'.$event->starttime.'</span>';
 		}

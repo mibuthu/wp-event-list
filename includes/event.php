@@ -144,9 +144,9 @@ class EL_Event {
 	}
 
 	private function convert_event_timeformat($event) {
-		$timestamp = strtotime($event->time);
+		$timestamp = strtotime($event->starttime);
 		if($timestamp) {
-			$event->time = date_i18n(get_option('time_format'), $timestamp);
+			$event->starttime = date_i18n(get_option('time_format'), $timestamp);
 		}
 		return $event;
 	}

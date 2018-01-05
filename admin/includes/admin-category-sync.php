@@ -1,5 +1,5 @@
 <?php
-if(!defined('ABSPATH')) {
+if(!defined('WP_ADMIN')) {
 	exit;
 }
 
@@ -26,7 +26,7 @@ class EL_Admin_Category_Sync {
 	private function __construct() {
 		$this->options = &EL_Options::get_instance();
 		$this->events_post_type = &EL_Events_Post_Type::get_instance();
-		$this->events = EL_Events::get_instance();
+		$this->events = &EL_Events::get_instance();
 
 		// permission checks
 		if(empty(wp_get_referer()) || '1' === $this->options->get('el_use_post_cats')) {
