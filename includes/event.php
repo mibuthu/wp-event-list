@@ -3,12 +3,10 @@ if(!defined('WPINC')) {
 	exit;
 }
 
-require_once(EL_PATH.'includes/options.php');
 require_once(EL_PATH.'includes/events_post_type.php');
 
 // Class to manage categories
 class EL_Event {
-	private $options;
 	private $events_post_type;
 	public $post;
 	public $categories;
@@ -20,7 +18,6 @@ class EL_Event {
 	public $content = '';
 
 	public function __construct($post) {
-		$this->options = &EL_Options::get_instance();
 		$this->events_post_type = &EL_Events_Post_Type::get_instance();
 		if($post instanceof WP_Post) {
 			$this->post = $post;
