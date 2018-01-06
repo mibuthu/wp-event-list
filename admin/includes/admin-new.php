@@ -178,7 +178,6 @@ class EL_Admin_New {
 		$revision = isset($_GET['revision']) ? intval($_GET['revision']) : null;
 
 		global $post, $post_ID;
-		error_log('updated_messages');
 		$messages['el_events'] = array(
 			0  => '', // Unused. Messages start at index 1.
 			1  => __('Event updated.','event-list').' <a href="'.esc_url(get_permalink($post_ID)).'">'.__('View event','event-list').'</a>',
