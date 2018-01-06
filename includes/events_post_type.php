@@ -11,7 +11,8 @@ require_once(EL_PATH.'includes/options.php');
 */
 class EL_Events_Post_Type {
 	private static $instance;
-	private $options;
+	public $event_cat_taxonomy = 'el_eventcategory';
+	public $taxonomy;
 
 	/**
 	 * Get the singleton instance of the class.
@@ -33,11 +34,16 @@ class EL_Events_Post_Type {
 	 * @return  null
 	 */
 	private function __construct() {
-		$this->options = &EL_Options::get_instance();
 		// Register actions and filters
-		// Add post_type
-		add_action('init', array(&$this, 'register_event_post_type'), 0);
-		add_action('init', array(&$this, 'register_event_category_taxonomy'), 0);
+		add_action('init', array(&$this, 'init'), 2);
+	}
+
+	public function init() {
+		$this->use_post_categories = ('1' === EL_Options::get_instance()->get('el_use_post_cats'));
+		$this->taxonomy = $this->use_post_categories ? $this->post_cat_taxonomy : $this->event_cat_taxonomy;
+		// Register actions and filters during init phase
+		add_action('init', array(&$this, 'register_event_post_type'), 3);
+		add_action('init', array(&$this, 'register_event_category_taxonomy'), 4);
 	}
 
 	/**
@@ -138,7 +144,7 @@ class EL_Events_Post_Type {
 			'rewrite' => array('slug' => 'event-category'),
 			'query_var' => true,
 		);
-		register_taxonomy('el_eventcategory', 'el_events', $args);
+		register_taxonomy($this->event_cat_taxonomy, 'el_events', $args);
 	}
 }
 ?>

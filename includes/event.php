@@ -132,7 +132,7 @@ class EL_Event {
 	}
 
 	private static function set_categories($pid, $cats) {
-		return wp_set_object_terms($pid, $cats, $this->events_post_type->taxonomy);
+		return wp_set_object_terms($pid, $cats, EL_Events_Post_Type::get_instance()->taxonomy);
 	}
 
 	public function display_time($timestring) {
