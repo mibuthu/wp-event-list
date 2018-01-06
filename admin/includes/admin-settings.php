@@ -54,7 +54,13 @@ class EL_Admin_Settings {
 				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.__('Event List Settings','event-list').'</h2>';
 		$out .= $this->show_tabs($tab);
 		$out .= '<div id="posttype-page" class="posttypediv">';
-		$out .= $this->functions->show_option_form($tab);
+		$options = array();
+		if('taxonomy' === $tab) {
+			$options['page'] = admin_url('edit.php?post_type=el_events&page=el_admin_cat_sync&switch_taxonomy=1');
+			$options['button_text'] = __('Go to Event Category switching page','event-list');
+			$options['button_class'] = __('secondary');
+		}
+		$out .= $this->functions->show_option_form($tab, $options);
 		$out .= '
 				</div>
 			</div>';
@@ -65,7 +71,8 @@ class EL_Admin_Settings {
 		$tabs = array('general'  => __('General','event-list'),
 		              'frontend' => __('Frontend Settings','event-list'),
 		              'admin'    => __('Admin Page Settings','event-list'),
-		              'feed'     => __('Feed Settings','event-list'));
+		              'feed'     => __('Feed Settings','event-list'),
+		              'taxonomy' => __('Category Taxonomy','event-list'));
 		$out = '<h3 class="nav-tab-wrapper">';
 		foreach($tabs as $tab => $name) {
 			$class = ($tab == $current) ? ' nav-tab-active' : '';

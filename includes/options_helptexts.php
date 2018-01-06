@@ -4,14 +4,6 @@ if(!defined('WPINC')) {
 }
 
 $options_helptexts = array(
-	// Section: "categories"
-//	'el_categories'           => This option specifies all event category data (category has seperate site --> no additional helptexts required)
-
-	'el_sync_cats'            => array('type'    => 'checkbox',
-	                                   'label'   => __('Sync Categories','event-list'),
-	                                   'caption' => __('Keep event categories in sync with post categories automatically','event-list'),
-	                                   'desc'    => '<table><tr style="vertical-align:top"><td><strong>'.__('Attention','event-list').':</strong></td>
-	                                                 <td>'.__('Please note that this option will delete all categories which are not available in the post categories! Existing Categories with the same slug will be updated.','event-list').'</td></tr></table>'),
 
 	// Section: "import"
 	'el_import_file'          => array('type'    => 'file-upload',
@@ -136,5 +128,14 @@ $options_helptexts = array(
 	                                   'caption' => __('Show rss image in feed link','event-list'),
 	                                   'desc'    => __('This option specifies if the an image should be dispayed in the feed link in front of the text.','event-list').'<br />
 	                                                '.sprintf(__('You have to set the shortcode attribute %1$s to %2$s if you want to show the feed link.','event-list'), '<code>add_feed_link</code>', '"true"')),
+
+	// Section: taxonomy
+	'el_use_post_cats'        => array('type'    => 'checkbox',
+	                                   'disable' => true,
+	                                   'label'   => __('Event Category handling','event-list'),
+	                                   'caption' => __('Use Post Categories','event-list'),
+	                                   'desc'    => __('Do not maintain seperate categories for the events, and use the existing post categories instead.','event-list').'<br /><br />
+	                                                <strong>'.__('Attention','event-list').':</strong><br />
+	                                                '.__('This option cannot be changed directly, but you can go to the Event Category switching page from here.','event-list')),
 );
 ?>

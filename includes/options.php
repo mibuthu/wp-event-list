@@ -27,9 +27,6 @@ class EL_Options {
 		$this->options = array(
 			'el_last_upgrade_version' => array('section' => 'system',     'std_val' => ''),
 
-			'el_categories'           => array('section' => 'categories', 'std_val' => null),
-			'el_sync_cats'            => array('section' => 'categories', 'std_val' => ''),
-
 			'el_import_file'          => array('section' => 'import',     'std_val' => ''),
 			'el_import_date_format'   => array('section' => 'import',     'std_val' => 'Y-m-d'),
 
@@ -55,6 +52,8 @@ class EL_Options {
 			'el_feed_link_align'      => array('section' => 'feed',       'std_val' => 'left'),
 			'el_feed_link_text'       => array('section' => 'feed',       'std_val' => 'RSS Feed'),
 			'el_feed_link_img'        => array('section' => 'feed',       'std_val' => '1'),
+
+			'el_use_post_cats'        => array('section' => 'taxonomy',   'std_val' => ''),
 		);
 	}
 

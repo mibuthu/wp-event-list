@@ -34,6 +34,7 @@ function el_upgrade_check() {
 	 *   * delete option "el_db_version"
 	 *   * rename option "el_show_details_text" to "el_content_show_text"
 	 *   * rename option "el_hide_details_text" to "el_content_hide_text"
+	 *   * rename option "el_sync_cats" to "el_use_post_cats"
 	 *   * obsolete db table "event_list" and option "el_categories" will be kept for backup and deleted in a later version
 	 **/
 	if(el_upgrade_required('0.8.0')) {
@@ -42,7 +43,8 @@ function el_upgrade_check() {
 		// Manually register event category taxonomy which is not available at this stage by default
 		require_once(EL_PATH.'includes/events_post_type.php');
 		EL_Events_Post_Type::get_instance()->register_event_category_taxonomy();
-		// import categories
+
+		error_log('EL_UPGRADE: Import existing event categories');
 		$cats_array = el_get_option_from_db('el_categories');
 		if(!empty($cats_array)) {
 			foreach($cats_array as $cat) {
@@ -63,7 +65,8 @@ function el_upgrade_check() {
 				}
 			}
 		}
-		// import events
+
+		error_log('EL_UPGRADE: Import existing events');
 		global $wpdb;
 		$sql = 'SELECT * FROM '.$wpdb->prefix.'event_list ORDER BY start_date ASC, time ASC, end_date ASC';
 		$events = $wpdb->get_results($sql, 'ARRAY_A');
@@ -85,16 +88,19 @@ function el_upgrade_check() {
 				}
 			}
 		}
-		// delete option "el_db_version"
+
 		error_log('EL_UPGRADE: Delete obsolete option "el_db_version"!');
 		el_delete_option_in_db('el_db_version');
-		// rename option "el_show_details_text" to "el_content_show_text"
+
 		error_log('EL_UPGRADE: Rename option "el_show_details_text" to "el_content_show_text"');
 		el_rename_option_in_db('el_show_details_text', 'el_content_show_text');
-		// rename option "el_hide_details_text" to "el_content_hide_text"
+
 		error_log('EL_UPGRADE: Rename option "el_hide_details_text" to "el_content_hide_text"');
 		el_rename_option_in_db('el_hide_details_text', 'el_content_hide_text');
-		// update last_upgr_version option
+
+		error_log('EL_UPGRADE: Rename option "el_sync_cats" to "el_use_post_cats"');
+		el_rename_option_in_db('el_sync_cats', 'el_use_post_cats');
+
 		el_update_last_upgr_version();
 	}
 

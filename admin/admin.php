@@ -47,8 +47,10 @@ class EL_Admin {
 					break;
 				// Event category page
 				case 'edit-'.$this->events_post_type->taxonomy:
-					require_once(EL_PATH.'admin/includes/admin-categories.php');
-					EL_Admin_Categories::get_instance();
+					if('1' !== $this->options->get('el_use_post_cats')) {
+						require_once(EL_PATH.'admin/includes/admin-categories.php');
+						EL_Admin_Categories::get_instance();
+					}
 					break;
 			}
 		}

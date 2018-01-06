@@ -11,8 +11,10 @@ require_once(EL_PATH.'includes/options.php');
 */
 class EL_Events_Post_Type {
 	private static $instance;
+	public $post_cat_taxonomy = 'category';
 	public $event_cat_taxonomy = 'el_eventcategory';
 	public $taxonomy;
+	private $use_post_categories;
 
 	/**
 	 * Get the singleton instance of the class.
@@ -43,7 +45,9 @@ class EL_Events_Post_Type {
 		$this->taxonomy = $this->use_post_categories ? $this->post_cat_taxonomy : $this->event_cat_taxonomy;
 		// Register actions and filters during init phase
 		add_action('init', array(&$this, 'register_event_post_type'), 3);
-		add_action('init', array(&$this, 'register_event_category_taxonomy'), 4);
+		if(!$this->use_post_categories) {
+			add_action('init', array(&$this, 'register_event_category_taxonomy'), 4);
+		}
 	}
 
 	/**
@@ -93,7 +97,7 @@ class EL_Events_Post_Type {
 			'capability_type' => 'post',
 			'supports'=> array('title', 'editor', 'revisions', 'autor', 'thumbnail'),
 			'register_meta_box_cb' => null,
-			'taxonomies' => array(),
+			'taxonomies' => $this->use_post_categories ? array($this->post_cat_taxonomy) : array(),
 			'has_archive' => true,
 			'rewrite' => array('slug' => 'events'),
 			'query_var' => true,
