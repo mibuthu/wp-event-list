@@ -12,7 +12,7 @@ class EL_Daterange {
 	public static function &get_instance() {
 		// Create class instance if required
 		if(!isset( self::$instance)) {
-			self::$instance = new  self();
+			self::$instance = new self();
 		}
 		// Return class instance
 		return self::$instance;

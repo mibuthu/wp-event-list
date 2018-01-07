@@ -21,7 +21,7 @@ class EL_Admin_Main {
 	public static function &get_instance() {
 		// Create class instance if required
 		if(!isset(self::$instance)) {
-			self::$instance = new EL_Admin_Main();
+			self::$instance = new self();
 		}
 		// Return class instance
 		return self::$instance;

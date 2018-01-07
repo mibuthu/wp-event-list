@@ -1,5 +1,5 @@
 <?php
-if(!defined('WPINC')) {
+if(!defined('WP_ADMIN')) {
 	exit;
 }
 

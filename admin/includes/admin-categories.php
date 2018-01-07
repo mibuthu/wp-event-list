@@ -1,5 +1,5 @@
 <?php
-if(!defined('ABSPATH')) {
+if(!defined('WP_ADMIN')) {
 	exit;
 }
 
