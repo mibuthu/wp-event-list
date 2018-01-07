@@ -68,7 +68,6 @@ class EL_Admin_Settings {
 	}
 
 	private function show_tabs($current = 'category') {
-		global $current_screen;
 		$tabs = array('general'  => __('General','event-list'),
 		              'frontend' => __('Frontend Settings','event-list'),
 		              'admin'    => __('Admin Page Settings','event-list'),
