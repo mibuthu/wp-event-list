@@ -269,7 +269,13 @@ class EL_Admin_Import {
 		if(empty($reviewed_events)) {
 			return false;
 		}
-		$additional_cat_ids = isset($_POST['tax_input'][$this->events_post_type->taxonomy]) && is_array($_POST['tax_input'][$this->events_post_type->taxonomy]) ? array_map('sanitize_key', $_POST['tax_input'][$this->events_post_type->taxonomy]) : array();
+		if($this->events_post_type->event_cat_taxonomy === $this->events_post_type->taxonomy) {
+			$additional_cat_ids = isset($_POST['tax_input'][$this->events_post_type->taxonomy]) ? $_POST['tax_input'][$this->events_post_type->taxonomy] : array();
+		}
+		else {
+			$additional_cat_ids = isset($_POST['post_'.$this->events_post_type->taxonomy]) ? $_POST['post_'.$this->events_post_type->taxonomy] : array();
+		}
+		$additional_cat_ids = is_array($additional_cat_ids) ? array_map('intval', $additional_cat_ids) : array();
 		$additional_cat_slugs = array();
 		foreach($additional_cat_ids as $cat_id) {
 			$cat = $this->events->get_cat_by_id($cat_id);
