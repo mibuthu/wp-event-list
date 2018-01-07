@@ -121,7 +121,7 @@ class EL_Admin_Main {
 	}
 
 	public function add_action_row_elements($actions, $post) {
-		$actions['copy'] = '<a href="'.admin_url(add_query_arg('copy', $post->ID, 'post-new.php?post_type=el_events')).'" aria-label="'.sprintf(__('Add copy of %1$s','event-list'), '&#8222;'.$post->post_title.'&#8220;').'">'.__('Copy','event-list').'</a>';
+		$actions['copy'] = '<a href="'.admin_url(add_query_arg('copy', $post->ID, 'post-new.php?post_type=el_events')).'" aria-label="'.sprintf(__('Add a copy of %1$s','event-list'), '&#8222;'.$post->post_title.'&#8220;').'">'.__('Copy','event-list').'</a>';
 		return $actions;
 	}
 

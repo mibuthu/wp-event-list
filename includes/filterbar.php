@@ -278,7 +278,7 @@ class EL_Filterbar {
 			$name = __('All','event-list');
 		}
 		else {
-			$name = ('date' == $list_type) ? __('All Dates','event-list') :  __('All Categories','event-list');
+			$name = ('date' == $list_type) ? __('All Dates','event-list') :  __('All Categories');
 		}
 		return array('slug' => 'all', 'name' => $name);
 	}
