@@ -46,6 +46,10 @@ class EL_Admin_Settings {
 				require_once(EL_PATH.'includes/feed.php');
 				EL_Feed::get_instance()->update_feed_rewrite_status();
 			}
+			if('taxonomy' == $tab) {
+				require_once(EL_PATH.'admin/includes/event-category_functions.php');
+				EL_Event_Category_Functions::get_instance()->update_cat_count();
+			}
 		}
 
 		// normal output

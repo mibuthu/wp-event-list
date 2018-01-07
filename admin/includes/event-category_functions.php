@@ -221,6 +221,12 @@ class EL_Event_Category_Functions {
 		}
 	}
 
+	public function update_cat_count() {
+		$event_cats = get_terms(array('taxonomy'=>$this->events_post_type->taxonomy, 'orderby'=>'parent', 'hide_empty'=>false));
+		$event_cat_ids = wp_list_pluck($event_cats, 'term_id');
+		wp_update_term_count_now($event_cat_ids, $this->events_post_type->taxonomy);
+	}
+
 	private function register_event_category_taxonomy() {
 		$this->events_post_type->taxonomy = $this->events_post_type->event_cat_taxonomy;
 		$this->events_post_type->register_event_category_taxonomy();
