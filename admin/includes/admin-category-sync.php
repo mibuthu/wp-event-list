@@ -176,6 +176,7 @@ class EL_Admin_Category_Sync {
 				$affected_cats = $this->event_category_functions->get_sync_affected_cats('to_event_cats', array('to_add'));
 				$args['msgdata'] = $this->event_category_functions->sync_categories('to_event_cats', $affected_cats);
 				$args['msgdata'] = $this->event_category_functions->switch_event_taxonomy('to_event_cats');
+				$args['settings-updated'] = 'true';
 				wp_safe_redirect(add_query_arg($args, wp_get_referer()));
 				exit;
 
@@ -188,6 +189,7 @@ class EL_Admin_Category_Sync {
 				}
 				$args['msgdata'] = $this->event_category_functions->switch_event_taxonomy('to_post_cats');
 				$this->event_category_functions->delete_all_event_cats();
+				$args['settings-updated'] = 'true';
 				wp_safe_redirect(add_query_arg($args, wp_get_referer()));
 				exit;
 		}

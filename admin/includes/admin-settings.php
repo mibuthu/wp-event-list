@@ -39,7 +39,7 @@ class EL_Admin_Settings {
 		if('true' === $settings_updated) {
 			// show "settings saved" message
 			$out .= '<div id="message" class="updated">
-				<p><strong>'.__('Settings saved.','event-list').'</strong></p>
+				<p><strong>'.__('Settings saved.').'</strong></p>
 			</div>';
 			// check feed rewrite status and update it if required
 			if('feed' == $tab) {
@@ -68,6 +68,7 @@ class EL_Admin_Settings {
 	}
 
 	private function show_tabs($current = 'category') {
+		global $current_screen;
 		$tabs = array('general'  => __('General','event-list'),
 		              'frontend' => __('Frontend Settings','event-list'),
 		              'admin'    => __('Admin Page Settings','event-list'),
@@ -76,7 +77,7 @@ class EL_Admin_Settings {
 		$out = '<h3 class="nav-tab-wrapper">';
 		foreach($tabs as $tab => $name) {
 			$class = ($tab == $current) ? ' nav-tab-active' : '';
-			$out .= '<a class="nav-tab'.$class.'" href="'.add_query_arg('tab', $tab, add_query_arg([])).'">'.$name.'</a>';
+			$out .= '<a class="nav-tab'.$class.'" href="'.remove_query_arg('settings-updated', add_query_arg('tab', $tab)).'">'.$name.'</a>';
 		}
 		$out .= '</h3>';
 		return $out;
