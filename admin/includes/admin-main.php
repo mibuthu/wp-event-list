@@ -127,8 +127,12 @@ class EL_Admin_Main {
 
 	public function add_table_filters() {
 		// check used get parameters
-		$args['selected_date'] = isset($_GET['date']) ? sanitize_key($_GET['date']) : 'upcoming';
+		// set default date ("upcoming" for All, Published; "all" for everything else)
+		$selected_status = isset($_GET['post_status']) ? sanitize_key($_GET['post_status']) : 'publish';
+		$default_date = 'publish' === $selected_status ? 'upcoming' : 'all';
+		$args['selected_date'] = isset($_GET['date']) ? sanitize_key($_GET['date']) : $default_date;
 		$args['selected_cat'] = isset($_GET['cat']) ? sanitize_key($_GET['cat']) : 'all';
+
 		// date filter
 		echo($this->filterbar->show_years(admin_url('edit.php?post_type=el_events'), $args, 'dropdown', array('show_past' => true)));
 		// cat filter
@@ -139,6 +143,7 @@ class EL_Admin_Main {
 		// check used get parameters
 		$selected_date = isset($_GET['date']) ? sanitize_key($_GET['date']) : 'upcoming';
 		$selected_cat = isset($_GET['cat']) ? sanitize_key($_GET['cat']) : 'all';
+
 		$meta_query = array('relation' => 'AND');
 		// date filter
 		$date_for_startrange = ('' == $this->options->get('el_multiday_filterrange')) ? 'startdate' : 'enddate';
