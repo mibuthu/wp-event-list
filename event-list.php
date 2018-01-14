@@ -51,8 +51,6 @@ class Event_List {
 		$this->options = EL_Options::get_instance();
 
 		// ALWAYS:
-		// Activation hook (upgrade check)
-		register_activation_hook(__FILE__, array('Event_List', 'plugin_activation'));
 		// Register translation
 		add_action('plugins_loaded', array(&$this, 'load_textdomain'));
 		// Register Events post type
@@ -77,12 +75,6 @@ class Event_List {
 			add_action('wp_print_styles', array(&$this, 'print_styles'));
 		}
 	} // end constructor
-
-	public static function plugin_activation() {
-		// load upgrade file and start upgrade check
-		require_once(EL_PATH.'admin/includes/upgrade.php');
-		el_upgrade_check();
-	}
 
 	public function load_textdomain() {
 		$el_lang_path = basename(EL_PATH).'/languages';

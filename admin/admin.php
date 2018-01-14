@@ -11,6 +11,7 @@ class EL_Admin {
 	private static $instance;
 	private $options;
 	private $events_post_type;
+	private $upgrade_req = false;
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -24,11 +25,36 @@ class EL_Admin {
 	private function __construct() {
 		$this->options = &EL_Options::get_instance();
 		$this->events_post_type = &EL_Events_Post_Type::get_instance();
+
 		// Register actions
+		add_action('init', array(&$this, 'plugin_upgrade_check'));
+		add_action('admin_notices', array(&$this, 'show_plugin_upgrade_message'));
 		add_action('current_screen', array(&$this, 'register_events_post_type_mods'));
 		add_action('admin_head', array(&$this, 'add_dashboard_styles'));
 		add_action('admin_menu', array(&$this, 'register_pages'));
 		add_filter('dashboard_glance_items', array($this, 'add_events_to_glance'));
+	}
+
+	public function plugin_upgrade_check() {
+		// Upgrade check
+		$actual_version = get_file_data(EL_PATH.'event-list.php', array('version'=>'Version'))['version'];
+		$last_upgr_version = get_option('el_last_upgr_version', '');
+		if($actual_version != $last_upgr_version) {
+			// load upgrade class
+			require_once(EL_PATH.'admin/includes/upgrade.php');
+			EL_Upgrade::get_instance();
+			$this->upgrade_req = true;
+		}
+	}
+
+	public function show_plugin_upgrade_message() {
+		if($this->upgrade_req) {
+			$upgr = EL_Upgrade::get_instance();
+			$class = $upgr->error ? 'error' : 'updated fade';
+			$title = sprintf($upgr->error ? __('Errors during upgrade of plugin %1$s','event-list') : __('Upgrade of plugin %1$s successful','event-list'), '"Event List"');
+			$msg = empty($upgr->msg) ? __('no additional information available','event-list') : '<li>'.implode('</li><li>', $upgr->msg).'</li>';
+			echo '<div id="message" class="'.$class.'"><p><strong>'.$title.':</strong></p><ul style="list-style:inside">'.$msg.'</ul></div>';
+		}
 	}
 
 	public function register_events_post_type_mods($current_screen) {
