@@ -115,7 +115,7 @@ class EL_Admin {
 			$num_events = EL_Events::get_instance()->get_num_events();
 			$text = sprintf(_n('%s Event','%s Events',$num_events,'event-list'), number_format_i18n($num_events));
 			if(current_user_can(get_post_type_object('el_events')->cap->edit_posts)) {
-				return array('<a class="el-events-count" href="'.admin_url('admin.php?page=el_admin_main').'">'.$text.'</a>');
+				return array('<a class="el-events-count" href="'.admin_url('edit.php?post_type=el_events').'">'.$text.'</a>');
 			}
 			else {
 				return array($text);
