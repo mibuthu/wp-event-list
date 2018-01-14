@@ -35,7 +35,6 @@ class EL_Events {
 	public function get($options=array()) {
 		global $wpdb;
 		$options = wp_parse_args($options, array('date_filter'=>null, 'cat_filter'=>null, 'num_events'=>0, 'order'=>array('startdate ASC', 'starttime ASC', 'enddate ASC'), 'status'=>'publish'));
-		$where_string = $this->get_sql_filter_string($options['date_filter'], $options['cat_filter'], $options);
 		$event_sql = $this->get_events_sql($options);
 		$filter_sql = $this->get_sql_filter_string($options['date_filter'], $options['cat_filter']);
 		$sql = 'SELECT ID FROM ('.$event_sql.') AS events WHERE '.$filter_sql.' ORDER BY '.implode(', ', $options['order']);
