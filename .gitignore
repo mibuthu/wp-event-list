@@ -2,4 +2,4 @@
 /.buildpath
 /.settings/*
 /*.phprj
-
+/.remote-sync.json
