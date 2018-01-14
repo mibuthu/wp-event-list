@@ -34,9 +34,11 @@ class EL_Events {
 
 	public function get($options=array()) {
 		global $wpdb;
-		$options = wp_parse_args($options, array('date_filter'=>null, 'cat_filter'=>null, 'num_events'=>0, 'order'=>array('startdate ASC', 'starttime ASC', 'enddate ASC')));
-		$where_string = $this->get_sql_filter_string($options['date_filter'], $options['cat_filter']);
-		$sql = 'SELECT ID FROM ('.$this->get_events_sql('ID').') AS events WHERE '.$this->get_sql_filter_string($options['date_filter'], $options['cat_filter']).' ORDER BY '.implode(', ', $options['order']);
+		$options = wp_parse_args($options, array('date_filter'=>null, 'cat_filter'=>null, 'num_events'=>0, 'order'=>array('startdate ASC', 'starttime ASC', 'enddate ASC'), 'status'=>'publish'));
+		$where_string = $this->get_sql_filter_string($options['date_filter'], $options['cat_filter'], $options);
+		$event_sql = $this->get_events_sql($options);
+		$filter_sql = $this->get_sql_filter_string($options['date_filter'], $options['cat_filter']);
+		$sql = 'SELECT ID FROM ('.$event_sql.') AS events WHERE '.$filter_sql.' ORDER BY '.implode(', ', $options['order']);
 		if('upcoming' === $options['date_filter'] && is_numeric($options['num_events']) && 0 < $options['num_events']) {
 			$sql .= ' LIMIT '.$options['num_events'];
 		}
@@ -50,7 +52,7 @@ class EL_Events {
 
 	public function get_filter_list($type, $options) {
 		global $wpdb;
-		$options = wp_parse_args($options, array('date_filter'=>null, 'cat_filter'=>null, 'order'=>'asc', 'hierarchical'=>false));
+		$options = wp_parse_args($options, array('date_filter'=>null, 'cat_filter'=>null, 'order'=>'asc', 'hierarchical'=>false, 'status'=>'publish'));
 		switch($type) {
 			case 'years':
 				$distinct = 'SUBSTR(`startdate`,1,4)';
@@ -64,11 +66,12 @@ class EL_Events {
 			default:
 				die('ERROR: Unknown filterlist type!');
 		}
+		$event_sql = $this->get_events_sql($options);
 		$where = $this->get_sql_filter_string($options['date_filter'], $options['cat_filter']);
 		if('desc' != $options['order']) {
 			$options['order'] = 'asc';   // standard order is ASC
 		}
-		$sql = 'SELECT DISTINCT '.$distinct.' AS listitems FROM ('.$this->get_events_sql('ID').' WHERE '.$where.') AS filterlist ORDER BY listitems '.strtoupper($options['order']);
+		$sql = 'SELECT DISTINCT '.$distinct.' AS listitems FROM ('.$event_sql.' WHERE '.$where.') AS filterlist ORDER BY listitems '.strtoupper($options['order']);
 		$result = wp_list_pluck($wpdb->get_results($sql), 'listitems');
 		if('categories' === $type && count($result)) {
 			// split result at | chars
@@ -135,25 +138,22 @@ class EL_Events {
 		}
 	}
 
-	private function get_events_sql($posts_fields='*', $postmeta_fields=array('startdate', 'enddate', 'starttime', 'location'), $incl_categories=true) {
+	private function get_events_sql($options) {
 		global $wpdb;
-		$tposts = $wpdb->prefix.'posts';
-		$tpostmeta = $wpdb->prefix.'postmeta';
-		$sql = 'SELECT * FROM (SELECT DISTINCT '.implode(', ', (array)$posts_fields);
-		foreach((array)$postmeta_fields as $pm) {
-			$sql .= ', (SELECT meta_value FROM '.$tpostmeta.' WHERE '.$tpostmeta.'.meta_key = "'.$pm.'" AND '.$tpostmeta.'.post_id = '.$tposts.'.ID) AS '.$pm;
+		$options = wp_parse_args($options, array('posts_fields'=>'ID', 'postmeta_fields'=>array('startdate', 'enddate', 'starttime', 'location'), 'incl_categories'=>true, 'status'=>'publish'));
+		$sql = 'SELECT * FROM (SELECT DISTINCT '.implode(', ', (array)$options['posts_fields']);
+		foreach((array)$options['postmeta_fields'] as $pm) {
+			$sql .= ', (SELECT meta_value FROM '.$wpdb->postmeta.' WHERE '.$wpdb->postmeta.'.meta_key = "'.$pm.'" AND '.$wpdb->postmeta.'.post_id = '.$wpdb->posts.'.ID) AS '.$pm;
 		}
-		if($incl_categories) {
-			$tterms = $wpdb->prefix.'terms';
-			$ttax = $wpdb->prefix.'term_taxonomy';
-			$ttermrel = $wpdb->prefix.'term_relationships';
-			$sql .= ', (CONCAT("|", (SELECT GROUP_CONCAT('.$tterms.'.slug SEPARATOR "|") FROM '.$tterms
-			       .' INNER JOIN '.$ttax.' ON '.$tterms.'.term_id = '.$ttax.'.term_id'
-			       .' INNER JOIN '.$ttermrel.' wpr ON wpr.term_taxonomy_id = '.$ttax.'.term_taxonomy_id'
-			       .' WHERE taxonomy= "'.$this->events_post_type->taxonomy.'" AND '.$tposts.'.ID = wpr.object_id'
+		if($options['incl_categories']) {
+			$sql .= ', (CONCAT("|", (SELECT GROUP_CONCAT('.$wpdb->terms.'.slug SEPARATOR "|") FROM '.$wpdb->terms
+			       .' INNER JOIN '.$wpdb->term_taxonomy.' ON '.$wpdb->terms.'.term_id = '.$wpdb->term_taxonomy.'.term_id'
+			       .' INNER JOIN '.$wpdb->term_relationships.' wpr ON wpr.term_taxonomy_id = '.$wpdb->term_taxonomy.'.term_taxonomy_id'
+			       .' WHERE taxonomy= "'.$this->events_post_type->taxonomy.'" AND '.$wpdb->posts.'.ID = wpr.object_id'
 			       .'), "|")) AS categories';
 		}
-		$sql .= ' FROM '.$tposts.' WHERE post_type = "el_events" AND post_status = "publish") AS events';
+		$status_sql = empty($options['status']) ? '' : ' AND post_status = "'.$options['status'].'"';
+		$sql .= ' FROM '.$wpdb->posts.' WHERE post_type = "el_events"'.$status_sql.') AS events';
 		return $sql;
 	}
 
