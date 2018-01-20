@@ -68,8 +68,12 @@ class EL_Admin {
 					break;
 				// New/edit event page
 				case 'el_events':
-					require_once(EL_PATH.'admin/includes/admin-new.php');
-					EL_Admin_New::get_instance();
+					// Additional required checks (only for add or edit action, and not for e.g. move event to trash)
+					$action = isset($_GET['action']) ? sanitize_key($_GET['action']) : '';
+					if('add' === $current_screen->action || 'edit' === $action) {
+						require_once(EL_PATH.'admin/includes/admin-new.php');
+						EL_Admin_New::get_instance();
+					}
 					break;
 				// Event category page
 				case 'edit-'.$this->events_post_type->taxonomy:
