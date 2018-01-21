@@ -81,12 +81,12 @@ class EL_Feed {
 				}
 				echo '
 				<description>
-					'.$this->feed_description($event).'
+					'.$this->event_data($event).'
 				</description>';
 				if(!empty($event->content)) {
 					echo '
 				<content:encoded>
-					'.$this->event_encoded_data($event).':
+					'.$this->event_data($event).':
 				</content:encoded>';
 				}
 				echo '
