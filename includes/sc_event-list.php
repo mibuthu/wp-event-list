@@ -220,7 +220,7 @@ class SC_Event_List {
 		// event location
 		if('' != $event->location && $this->is_visible($a['show_location'])) {
 			if('' == $this->options->get('el_html_tags_in_loc')) {
-				$location =$this->events->truncate(esc_attr($event->location), $a['location_length'], $this->single_event, false);
+				$location =$event->truncate(esc_attr($event->location), $a['location_length'], $this->single_event, false);
 			}
 			else {
 				$location = $event->truncate($event->location, $a['location_length'], $this->single_event);
