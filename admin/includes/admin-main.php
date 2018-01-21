@@ -37,6 +37,7 @@ class EL_Admin_Main {
 		add_filter('request', array(&$this, 'sort_events'));
 		add_filter('post_row_actions',array(&$this, 'add_action_row_elements'), 10, 2);
 		add_filter('disable_months_dropdown', '__return_true');
+		add_filter('disable_categories_dropdown', '__return_true');
 		add_action('restrict_manage_posts', array(&$this, 'add_table_filters'));
 		add_filter('parse_query', array(&$this, 'filter_request'));
 		add_action('load-edit.php', array(&$this, 'set_default_posts_list_mode'));
@@ -126,23 +127,28 @@ class EL_Admin_Main {
 	}
 
 	public function add_table_filters() {
+		global $cat;
 		// check used get parameters
 		// set default date ("upcoming" for All, Published; "all" for everything else)
 		$selected_status = isset($_GET['post_status']) ? sanitize_key($_GET['post_status']) : 'publish';
 		$default_date = 'publish' === $selected_status ? 'upcoming' : 'all';
 		$args['selected_date'] = isset($_GET['date']) ? sanitize_key($_GET['date']) : $default_date;
-		$args['selected_cat'] = isset($_GET['cat']) ? sanitize_key($_GET['cat']) : 'all';
 
 		// date filter
 		echo($this->filterbar->show_years(admin_url('edit.php?post_type=el_events'), $args, 'dropdown', array('show_past' => true)));
 		// cat filter
-		echo($this->filterbar->show_cats(admin_url('edit.php?post_type=el_events'), $args, 'dropdown'));
+		wp_dropdown_categories(array(
+			'show_option_all' => __('All Categories'),
+			'taxonomy' => $this->events_post_type->taxonomy,
+			'orderby' => 'name',
+			'hierarchical' => true,
+			'hide_empty' => true,
+		));
 	}
 
 	public function filter_request($query) {
 		// check used get parameters
 		$selected_date = isset($_GET['date']) ? sanitize_key($_GET['date']) : 'upcoming';
-		$selected_cat = isset($_GET['cat']) ? sanitize_key($_GET['cat']) : 'all';
 
 		$meta_query = array('relation' => 'AND');
 		// date filter
@@ -164,10 +170,6 @@ class EL_Admin_Main {
 				'compare' => '<',
 			)
 		);
-		// category filter
-		if('all' !== $selected_cat) {
-			$query->query_vars[$this->events_post_type->taxonomy] = $selected_cat;
-		}
 		$query->query_vars['meta_query'] = $meta_query;
 	}
 
