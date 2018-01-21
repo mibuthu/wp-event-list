@@ -104,7 +104,7 @@ div.feed img {
 }
 
 div.filterbar, div.filterbar div {
-	clear both;
+	clear: both;
 	margin: 1em 0;
 	vertical-align: middle;
 }
