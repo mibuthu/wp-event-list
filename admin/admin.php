@@ -69,8 +69,9 @@ class EL_Admin {
 				// New/edit event page
 				case 'el_events':
 					// Additional required checks (only for add or edit action, and not for e.g. move event to trash)
-					$action = isset($_GET['action']) ? sanitize_key($_GET['action']) : '';
-					if('add' === $current_screen->action || 'edit' === $action) {
+					$get_action = isset($_GET['action']) ? sanitize_key($_GET['action']) : '';
+					$post_action = isset($_POST['action']) ? sanitize_key($_POST['action']) : '';
+					if('add' === $current_screen->action || 'edit' === $get_action || 'editpost' === $post_action) {
 						require_once(EL_PATH.'admin/includes/admin-new.php');
 						EL_Admin_New::get_instance();
 					}
