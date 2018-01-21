@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: wp-event-list\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/event-list/\n"
 "POT-Creation-Date: 2018-01-21 08:57+0100\n"
-"PO-Revision-Date: 2018-01-21 08:01+0000\n"
+"PO-Revision-Date: 2018-01-21 18:20+0000\n"
 "Last-Translator: mibuthu\n"
 "Language-Team: German (Germany) (http://www.transifex.com/mibuthu/wp-event-list/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -569,7 +569,7 @@ msgstr "Importieren"
 
 #: admin/includes/admin-main.php:58
 msgid "Event Date"
-msgstr "Datum des Termins"
+msgstr "Termin-Datum"
 
 #: admin/includes/admin-main.php:62
 msgid "Author"
