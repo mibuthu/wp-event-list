@@ -142,7 +142,6 @@ class EL_Admin_Main {
 			'taxonomy' => $this->events_post_type->taxonomy,
 			'orderby' => 'name',
 			'hierarchical' => true,
-			'hide_empty' => true,
 		));
 	}
 
