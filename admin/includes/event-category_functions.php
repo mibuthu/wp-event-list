@@ -161,7 +161,7 @@ class EL_Event_Category_Functions {
 	public function switch_event_taxonomy($direction) {
 		global $wpdb;
 		// get events
-		$events = $this->events->get();
+		$events = $this->events->get(array('status'=>null));
 		// preparations
 		if('to_event_cats' === $direction) {
 			$this->register_event_category_taxonomy();
