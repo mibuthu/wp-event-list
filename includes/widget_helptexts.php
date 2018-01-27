@@ -55,17 +55,17 @@ $widget_items_helptexts = array(
 	                                'form_style'    => 'margin:0 0 0.6em 0.9em',
 	                                'form_width'    => 40),
 
-	'show_details' =>         array('type'          => 'checkbox',
-	                                'caption'       => __('Show event details','event-list'),
+	'show_content' =>         array('type'          => 'checkbox',
+	                                'caption'       => __('Show event content','event-list'),
 	                                'caption_after' => null,
-	                                'tooltip'       => __('This option defines if the event details will be displayed.','event-list'),
+	                                'tooltip'       => __('This option defines if the event content will be displayed.','event-list'),
 	                                'form_style'    => 'margin:0 0 0.2em 0',
 	                                'form_width'    => null),
 
-	'details_length' =>       array('type'          => 'text',
-	                                'caption'       => __('Truncate details to','event-list'),
+	'content_length' =>       array('type'          => 'text',
+	                                'caption'       => __('Truncate content to','event-list'),
 	                                'caption_after' => __('characters','event-list'),
-	                                'tooltip'       => __('If the event details are diplayed this option defines the number of diplayed characters.','event-list').' '.
+	                                'tooltip'       => __('If the event content are diplayed this option defines the number of diplayed characters.','event-list').' '.
 	                                                   sprintf(__('Set this value to %1$s to view the full text.','event-list'), '[0]'),
 	                                'form_style'    => 'margin:0 0 0.6em 0.9em',
 	                                'form_width'    => 40),

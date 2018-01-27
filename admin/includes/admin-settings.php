@@ -1,5 +1,5 @@
 <?php
-if(!defined('ABSPATH')) {
+if(!defined('WP_ADMIN')) {
 	exit;
 }
 
@@ -39,12 +39,16 @@ class EL_Admin_Settings {
 		if('true' === $settings_updated) {
 			// show "settings saved" message
 			$out .= '<div id="message" class="updated">
-				<p><strong>'.__('Settings saved.','event-list').'</strong></p>
+				<p><strong>'.__('Settings saved.').'</strong></p>
 			</div>';
 			// check feed rewrite status and update it if required
 			if('feed' == $tab) {
 				require_once(EL_PATH.'includes/feed.php');
 				EL_Feed::get_instance()->update_feed_rewrite_status();
+			}
+			if('taxonomy' == $tab) {
+				require_once(EL_PATH.'admin/includes/event-category_functions.php');
+				EL_Event_Category_Functions::get_instance()->update_cat_count();
 			}
 		}
 
@@ -54,26 +58,29 @@ class EL_Admin_Settings {
 				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.__('Event List Settings','event-list').'</h2>';
 		$out .= $this->show_tabs($tab);
 		$out .= '<div id="posttype-page" class="posttypediv">';
-		$out .= $this->functions->show_option_form($tab);
+		$options = array();
+		if('taxonomy' === $tab) {
+			$options['page'] = admin_url('edit.php?post_type=el_events&page=el_admin_cat_sync&switch_taxonomy=1');
+			$options['button_text'] = __('Go to Event Category switching page','event-list');
+			$options['button_class'] = __('secondary');
+		}
+		$out .= $this->functions->show_option_form($tab, $options);
 		$out .= '
 				</div>
 			</div>';
 		echo $out;
 	}
-/*
-	public function embed_settings_scripts() {
-		wp_enqueue_script('eventlist_admin_settings_js', EL_URL.'admin/js/admin_settings.js');
-	}
-*/
+
 	private function show_tabs($current = 'category') {
 		$tabs = array('general'  => __('General','event-list'),
 		              'frontend' => __('Frontend Settings','event-list'),
 		              'admin'    => __('Admin Page Settings','event-list'),
-		              'feed'     => __('Feed Settings','event-list'));
+		              'feed'     => __('Feed Settings','event-list'),
+		              'taxonomy' => __('Category Taxonomy','event-list'));
 		$out = '<h3 class="nav-tab-wrapper">';
-		foreach($tabs as $tab => $name){
+		foreach($tabs as $tab => $name) {
 			$class = ($tab == $current) ? ' nav-tab-active' : '';
-			$out .= '<a class="nav-tab'.$class.'" href="?page=el_admin_settings&amp;tab='.$tab.'">'.$name.'</a>';
+			$out .= '<a class="nav-tab'.$class.'" href="'.remove_query_arg('settings-updated', add_query_arg('tab', $tab)).'">'.$name.'</a>';
 		}
 		$out .= '</h3>';
 		return $out;

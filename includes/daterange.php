@@ -12,7 +12,7 @@ class EL_Daterange {
 	public static function &get_instance() {
 		// Create class instance if required
 		if(!isset( self::$instance)) {
-			self::$instance = new  self();
+			self::$instance = new self();
 		}
 		// Return class instance
 		return self::$instance;
@@ -20,7 +20,6 @@ class EL_Daterange {
 
 	private function __construct() {
 		$this->init_formats();
-		add_action('admin_init', array(&$this, 'load_formats_helptexts'), 2);
 	}
 
 	public function init_formats() {

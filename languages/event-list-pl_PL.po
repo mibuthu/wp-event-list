@@ -1,0 +1,1878 @@
+# Translation file for the 'Event List' WordPress plugin
+# Copyright (C) 2018 by mibuthu
+# This file is distributed under the same license as the corresponding wordpress plugin.
+# 
+# Translators:
+# Maciej Bator <mbsrz1972@gmail.com>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: wp-event-list\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/event-list/\n"
+"POT-Creation-Date: 2018-01-27 18:32+0100\n"
+"PO-Revision-Date: 2018-01-21 07:57+0000\n"
+"Last-Translator: mibuthu\n"
+"Language-Team: Polish (Poland) (http://www.transifex.com/mibuthu/wp-event-list/language/pl_PL/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pl_PL\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+
+#: admin/admin.php:54
+#, php-format
+msgid "Errors during upgrade of plugin %1$s"
+msgstr ""
+
+#: admin/admin.php:54
+#, php-format
+msgid "Upgrade of plugin %1$s successful"
+msgstr ""
+
+#: admin/admin.php:55
+msgid "no additional information available"
+msgstr ""
+
+#: admin/admin.php:95 admin/includes/admin-settings.php:58
+msgid "Event List Settings"
+msgstr "Ustawienia Listy Wydarzeń"
+
+#: admin/admin.php:95
+msgid "Settings"
+msgstr "Ustawienia"
+
+#: admin/admin.php:99 admin/includes/admin-about.php:37
+msgid "About Event List"
+msgstr "O Liście Wydarzeń"
+
+#: admin/admin.php:99
+msgid "About"
+msgstr "O"
+
+#: admin/admin.php:121
+#, php-format
+msgid "%s Event"
+msgid_plural "%s Events"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: admin/includes/admin-about.php:59 admin/includes/admin-settings.php:75
+msgid "General"
+msgstr "Ogólne"
+
+#: admin/includes/admin-about.php:60 admin/includes/admin-about.php:78
+#: admin/includes/admin-about.php:105
+msgid "Shortcode Attributes"
+msgstr "Atrybuty Skrótów"
+
+#: admin/includes/admin-about.php:72
+msgid "Help and Instructions"
+msgstr "Pomoc i instrukcje"
+
+#: admin/includes/admin-about.php:73
+#, php-format
+msgid "You can manage the events %1$shere%2$s"
+msgstr "%1$sTutaj%2$s możesz zarządzać wydarzeniami"
+
+#: admin/includes/admin-about.php:74
+msgid "To show the events on your site you have 2 possibilities"
+msgstr "Istnieją 2 sposoby na wyświetlanie wydarzeń na Twojej stronie"
+
+#: admin/includes/admin-about.php:75
+#, php-format
+msgid "you can place the <strong>shortcode</strong> %1$s on any page or post"
+msgstr "możesz umieścić następujący <strong>kod skrótowy</strong> %1$s na stronie lub w poście"
+
+#: admin/includes/admin-about.php:76
+#, php-format
+msgid "you can add the <strong>widget</strong> %1$s in your sidebars"
+msgstr "możesz dodać widżet <strong>widget</strong> %1$s na panel boczny"
+
+#: admin/includes/admin-about.php:77
+msgid ""
+"The displayed events and their style can be modified with the available "
+"widget settings and the available attributes for the shortcode."
+msgstr "Wyświetlane wydarzenia i ich styl mogą być modyfikowane przy pomocy dostępnych ustawień widgetu lub dostępnych atrybutów we wstawionym  kodzie skrótowym."
+
+#: admin/includes/admin-about.php:78
+#, php-format
+msgid ""
+"A list of all available shortcode attributes with their descriptions is "
+"available in the %1$s tab."
+msgstr "Lista dostępnych atrybutów jest dostępna w zakładce %1$s."
+
+#: admin/includes/admin-about.php:79
+msgid "The available  widget options are described in their tooltip text."
+msgstr "Dostępne opcje widgetu zostały opisane w dymkach etykiet."
+
+#: admin/includes/admin-about.php:80
+#, php-format
+msgid ""
+"If you enable one of the links options (%1$s or %2$s) in the widget you have"
+" to insert an URL to the linked event-list page."
+msgstr ""
+
+#: admin/includes/admin-about.php:80 includes/widget_helptexts.php:88
+msgid "Add links to the single events"
+msgstr "Dodaj łącza do pojedynczych wydarzeń"
+
+#: admin/includes/admin-about.php:80 includes/widget_helptexts.php:95
+msgid "Add a link to the Event List page"
+msgstr "Dodaj łącze do strony Listy wydarzeń"
+
+#: admin/includes/admin-about.php:81
+msgid ""
+"This is required because the widget does not know in which page or post the "
+"shortcode was included."
+msgstr ""
+
+#: admin/includes/admin-about.php:82
+msgid ""
+"Additionally you have to insert the correct Shortcode id on the linked page."
+" This id describes which shortcode should be used on the given page or post "
+"if you have more than one."
+msgstr ""
+
+#: admin/includes/admin-about.php:83
+#, php-format
+msgid ""
+"The default value %1$s is normally o.k. (for pages with 1 shortcode only), "
+"but if required you can check the id by looking into the URL of an event "
+"link on your linked page or post."
+msgstr ""
+
+#: admin/includes/admin-about.php:84
+#, php-format
+msgid "The id is available at the end of the URL parameters (e.g. %1$s)."
+msgstr "Id jest dostępne na końcu parametrów URL (np. %1$s)."
+
+#: admin/includes/admin-about.php:86
+#, php-format
+msgid ""
+"Be sure to also check the %1$s to get the plugin behaving just the way you "
+"want."
+msgstr ""
+
+#: admin/includes/admin-about.php:86
+msgid "Settings page"
+msgstr "Ustawienia Listy Wydarzeń"
+
+#: admin/includes/admin-about.php:92
+msgid "About the plugin author"
+msgstr "O autorze wtyczki"
+
+#: admin/includes/admin-about.php:94
+#, php-format
+msgid ""
+"This plugin is developed by %1$s, you can find more information about the "
+"plugin on the %2$s."
+msgstr "Ta wtyczka jest rozwijana przez %1$s, więcej informacji na temat wtyczki można znaleźć na %2$s."
+
+#: admin/includes/admin-about.php:94
+msgid "wordpress plugin site"
+msgstr "strona wtyczek wordpress"
+
+#: admin/includes/admin-about.php:95
+#, php-format
+msgid "If you like the plugin please rate it on the %1$s."
+msgstr "Jeśli podoba Ci się wtyczka możesz ocenić ją na %1$s."
+
+#: admin/includes/admin-about.php:95
+msgid "wordpress plugin review site"
+msgstr "strona ocen wtyczek wordpress"
+
+#: admin/includes/admin-about.php:96
+msgid ""
+"If you want to support the plugin I would be happy to get a small donation"
+msgstr "Jeśli chcesz wspomóc rozwój wtyczki byłbym wdzięczny za małą dotację"
+
+#: admin/includes/admin-about.php:97 admin/includes/admin-about.php:98
+#: admin/includes/admin-about.php:99
+#, php-format
+msgid "Donate with %1$s"
+msgstr ""
+
+#: admin/includes/admin-about.php:107
+msgid ""
+"You have the possibility to modify the output if you add some of the "
+"following attributes to the shortcode."
+msgstr "Jest możliwość modyfikacji wyglądu za pomocą następujących atrybutów."
+
+#: admin/includes/admin-about.php:108
+#, php-format
+msgid ""
+"You can combine and add as much attributes as you want. E.g. the shortcode "
+"including the attributes %1$s and %2$s would looks like this:"
+msgstr ""
+
+#: admin/includes/admin-about.php:110
+msgid ""
+"Below you can find a list of all supported attributes with their "
+"descriptions and available options:"
+msgstr "Poniżej znajduje się lista wszystkich wspieranych atrybutów wraz z opisami i dostępnymi wartościami:"
+
+#: admin/includes/admin-about.php:124
+msgid "Attribute name"
+msgstr "Nazwa atrybutu"
+
+#: admin/includes/admin-about.php:125
+msgid "Value options"
+msgstr "Opcje wartości"
+
+#: admin/includes/admin-about.php:126
+msgid "Default value"
+msgstr "Domyślna wartość"
+
+#: admin/includes/admin-about.php:127
+msgid "Description"
+msgstr "Opis"
+
+#: admin/includes/admin-about.php:145 includes/sc_event-list_helptexts.php:26
+#: includes/sc_event-list_helptexts.php:31
+msgid "Filter Syntax"
+msgstr "Składnia filtru"
+
+#: admin/includes/admin-about.php:146
+msgid ""
+"For date and cat filters you can specify complex filters with the following "
+"syntax:"
+msgstr "Zaawansowane filtry daty i kategorii mogą być ustawiane przy pomocy następującej składni:"
+
+#: admin/includes/admin-about.php:147
+#, php-format
+msgid ""
+"You can use %1$s and %2$s connections to define complex filters. "
+"Additionally you can set brackets %3$s for nested queries."
+msgstr ""
+
+#: admin/includes/admin-about.php:147
+msgid "AND"
+msgstr "I"
+
+#: admin/includes/admin-about.php:147
+msgid "OR"
+msgstr "LUB"
+
+#: admin/includes/admin-about.php:147
+msgid "or"
+msgstr "i"
+
+#: admin/includes/admin-about.php:147
+msgid "and"
+msgstr "lub"
+
+#: admin/includes/admin-about.php:148
+msgid "Examples for cat filters:"
+msgstr "Przykłady filtrów kategorii:"
+
+#: admin/includes/admin-about.php:149
+#, php-format
+msgid "Show all events with category %1$s."
+msgstr "Wyświetla wszystkie wydarzenia z kategorii %1$s."
+
+#: admin/includes/admin-about.php:150
+#, php-format
+msgid "Show all events with category %1$s or %2$s."
+msgstr "Wyświetla wszystkie wydarzenia z kategorii %1$s i %2$s."
+
+#: admin/includes/admin-about.php:151
+#, php-format
+msgid ""
+"Show all events with category %1$s and all events where category %2$s as "
+"well as %3$s is selected."
+msgstr ""
+
+#: admin/includes/admin-about.php:156 includes/sc_event-list_helptexts.php:25
+msgid "Available Date Formats"
+msgstr "Dostępne formaty dat"
+
+#: admin/includes/admin-about.php:157
+msgid "For date filters you can use the following date formats:"
+msgstr ""
+
+#: admin/includes/admin-about.php:165 includes/sc_event-list_helptexts.php:25
+msgid "Available Date Range Formats"
+msgstr "Dostępne formaty zakresu dat"
+
+#: admin/includes/admin-about.php:166
+msgid "For date filters you can use the following daterange formats:"
+msgstr ""
+
+#: admin/includes/admin-about.php:178
+msgid "Value"
+msgstr "Wartość"
+
+#: admin/includes/admin-about.php:182
+msgid "Example"
+msgstr "Przykład"
+
+#: admin/includes/admin-categories.php:38
+msgid "Synchronize with post categories"
+msgstr ""
+
+#: admin/includes/admin-categories.php:46
+#, php-format
+msgid "%1$s categories modified (%2$s)"
+msgstr ""
+
+#: admin/includes/admin-categories.php:47
+#, php-format
+msgid "%1$s categories added (%2$s)"
+msgstr ""
+
+#: admin/includes/admin-categories.php:48
+#, php-format
+msgid "%1$s categories deleted (%2$s)"
+msgstr ""
+
+#: admin/includes/admin-categories.php:50
+#, php-format
+msgid "%1$s categories not modified (%2$s)"
+msgstr ""
+
+#: admin/includes/admin-categories.php:51
+#, php-format
+msgid "%1$s categories not added (%2$s)"
+msgstr ""
+
+#: admin/includes/admin-categories.php:52
+#, php-format
+msgid "%1$s categories not deleted (%2$s)"
+msgstr ""
+
+#: admin/includes/admin-categories.php:55
+msgid "An Error occured during the category sync"
+msgstr ""
+
+#: admin/includes/admin-categories.php:59
+msgid "Category sync finished"
+msgstr ""
+
+#: admin/includes/admin-category-sync.php:45
+msgid "Error: You are not allowed to view this page!"
+msgstr ""
+
+#: admin/includes/admin-category-sync.php:62
+msgid "Affected Categories when switching to seperate Event Categories"
+msgstr ""
+
+#: admin/includes/admin-category-sync.php:63
+msgid "Switch option to seperate Event Categories"
+msgstr ""
+
+#: admin/includes/admin-category-sync.php:64
+msgid ""
+"If you proceed, all post categories will be copied and all events will be "
+"re-assigned to this new categories."
+msgstr ""
+
+#: admin/includes/admin-category-sync.php:65
+msgid ""
+"Afterwards the event categories are independent of the post categories."
+msgstr ""
+
+#: admin/includes/admin-category-sync.php:68
+msgid "Affected Categories when switching to use Post Categories for events"
+msgstr ""
+
+#: admin/includes/admin-category-sync.php:69
+msgid "Switch option to use Post Categories for events"
+msgstr ""
+
+#: admin/includes/admin-category-sync.php:70
+msgid ""
+"Take a detailed look at the affected categories above before you proceed! "
+"All seperate event categories will be deleted, this cannot be undone!"
+msgstr ""
+
+#: admin/includes/admin-category-sync.php:73
+msgid "Event Categories: Synchronise with Post Categories"
+msgstr ""
+
+#: admin/includes/admin-category-sync.php:74
+msgid "Start synchronisation"
+msgstr ""
+
+#: admin/includes/admin-category-sync.php:75
+msgid ""
+"If this option is enabled the above listed categories will be deleted and "
+"removed from the existing events!"
+msgstr ""
+
+#: admin/includes/admin-category-sync.php:90
+msgid "Categories to modify"
+msgstr ""
+
+#: admin/includes/admin-category-sync.php:91
+msgid "Categories to add"
+msgstr ""
+
+#: admin/includes/admin-category-sync.php:92
+msgid "Categories to delete (optional)"
+msgstr ""
+
+#: admin/includes/admin-category-sync.php:93
+msgid "Delete not available post categories"
+msgstr ""
+
+#: admin/includes/admin-category-sync.php:97
+msgid "Categories with differences"
+msgstr ""
+
+#: admin/includes/admin-category-sync.php:98
+msgid "Categories to add (optional)"
+msgstr ""
+
+#: admin/includes/admin-category-sync.php:99
+msgid "Add not available post categories"
+msgstr ""
+
+#: admin/includes/admin-category-sync.php:117
+msgid "none"
+msgstr ""
+
+#: admin/includes/admin-import.php:45
+msgid "Import Events"
+msgstr "Importuj wydarzenia"
+
+#: admin/includes/admin-import.php:65 admin/includes/admin-import.php:118
+msgid "Step"
+msgstr "Krok"
+
+#: admin/includes/admin-import.php:65
+msgid "Set import file and options"
+msgstr ""
+
+#: admin/includes/admin-import.php:68
+#, php-format
+msgid "Proceed with Step %1$s"
+msgstr ""
+
+#: admin/includes/admin-import.php:71
+msgid "Example file"
+msgstr "Przykładowy plik"
+
+#: admin/includes/admin-import.php:72
+#, php-format
+msgid ""
+"You can download an example file %1$shere%2$s (CSV delimiter is a comma!)"
+msgstr ""
+
+#: admin/includes/admin-import.php:73
+msgid "Note"
+msgstr "Uwaga"
+
+#: admin/includes/admin-import.php:73
+msgid ""
+"Do not change the column header and separator line (first two lines), "
+"otherwise the import will fail!"
+msgstr ""
+
+#: admin/includes/admin-import.php:80 admin/includes/admin-import.php:88
+#: admin/includes/admin-import.php:101
+msgid "Sorry, there has been an error."
+msgstr ""
+
+#: admin/includes/admin-import.php:81
+msgid "The file does not exist, please try again."
+msgstr "Plik nie został znaleziony, proszę spróbować ponownie."
+
+#: admin/includes/admin-import.php:89
+msgid "The file is not a CSV file."
+msgstr "Plik nie jest w formacie CSV."
+
+#: admin/includes/admin-import.php:118
+msgid "Events review and additonal category selection"
+msgstr ""
+
+#: admin/includes/admin-import.php:121
+msgid ""
+"Warning: The following category slugs are not available and will be removed "
+"from the imported events:"
+msgstr ""
+
+#: admin/includes/admin-import.php:127
+msgid ""
+"If you want to keep these categories, please create these Categories first "
+"and do the import afterwards."
+msgstr ""
+
+#: admin/includes/admin-import.php:156
+msgid "Import with errors!"
+msgstr "Import z błędami!"
+
+#: admin/includes/admin-import.php:157
+msgid "Sorry, an error occurred during import!"
+msgstr ""
+
+#: admin/includes/admin-import.php:161
+msgid "Import successful!"
+msgstr "Import zakończony sukcesem!"
+
+#: admin/includes/admin-import.php:162
+msgid "Go back to All Events"
+msgstr "Wróć do Wszystkie wydarzenia"
+
+#: admin/includes/admin-import.php:169 admin/includes/admin-main.php:60
+#: includes/widget_helptexts.php:8
+msgid "Title"
+msgstr "Tytuł"
+
+#: admin/includes/admin-import.php:170
+msgid "Start Date"
+msgstr "Termin rozpoczęcia"
+
+#: admin/includes/admin-import.php:171
+msgid "End Date"
+msgstr "Termin zakończenia"
+
+#: admin/includes/admin-import.php:172 admin/includes/admin-new.php:92
+#: includes/options_helptexts.php:40 includes/options_helptexts.php:41
+msgid "Time"
+msgstr "Godzina"
+
+#: admin/includes/admin-import.php:173 admin/includes/admin-main.php:61
+#: admin/includes/admin-new.php:94 includes/options_helptexts.php:45
+#: includes/options_helptexts.php:46
+msgid "Location"
+msgstr "Miejsce"
+
+#: admin/includes/admin-import.php:174
+msgid "Content"
+msgstr ""
+
+#: admin/includes/admin-import.php:175
+msgid "Category slugs"
+msgstr "Upr. nazwy kategorii"
+
+#: admin/includes/admin-import.php:214
+#, php-format
+msgid ""
+"There was an error at line %1$s when reading this CSV file: Header line is "
+"missing or not correct!"
+msgstr ""
+
+#: admin/includes/admin-import.php:246
+msgid "Import events"
+msgstr "Importuj wydarzenia"
+
+#: admin/includes/admin-import.php:247
+msgid "Add additional categories"
+msgstr "Dodaj dodatkowe kategorie"
+
+#: admin/includes/admin-import.php:254 admin/includes/admin-main.php:191
+msgid "Import"
+msgstr "Import"
+
+#: admin/includes/admin-main.php:59
+msgid "Event Date"
+msgstr ""
+
+#: admin/includes/admin-main.php:63
+msgid "Author"
+msgstr "Autor"
+
+#: admin/includes/admin-main.php:125
+#, php-format
+msgid "Add a copy of %1$s"
+msgstr ""
+
+#: admin/includes/admin-main.php:125
+msgid "Copy"
+msgstr ""
+
+#: admin/includes/admin-new.php:51
+msgid "Event data"
+msgstr ""
+
+#: admin/includes/admin-new.php:81
+msgid "Add Copy"
+msgstr ""
+
+#: admin/includes/admin-new.php:85
+msgid "Date"
+msgstr "Termin"
+
+#: admin/includes/admin-new.php:85
+msgid "required"
+msgstr "wymagane"
+
+#: admin/includes/admin-new.php:88
+msgid "Multi-Day Event"
+msgstr "Wydarzenie kilkudniowe"
+
+#: admin/includes/admin-new.php:108
+msgid "Event Title"
+msgstr ""
+
+#: admin/includes/admin-new.php:123
+msgid "Event Content"
+msgstr ""
+
+#: admin/includes/admin-new.php:183 admin/includes/admin-new.php:186
+msgid "Event updated."
+msgstr ""
+
+#: admin/includes/admin-new.php:183 admin/includes/admin-new.php:188
+msgid "View event"
+msgstr ""
+
+#: admin/includes/admin-new.php:187
+#, php-format
+msgid "Event restored to revision from %1$s"
+msgstr ""
+
+#: admin/includes/admin-new.php:188
+msgid "Event published."
+msgstr ""
+
+#: admin/includes/admin-new.php:190
+msgid "Event submitted."
+msgstr ""
+
+#: admin/includes/admin-new.php:190 admin/includes/admin-new.php:192
+#: admin/includes/admin-new.php:193
+msgid "Preview event"
+msgstr ""
+
+#: admin/includes/admin-new.php:191
+#, php-format
+msgid "Event scheduled for: %1$s>"
+msgstr ""
+
+#: admin/includes/admin-new.php:193
+msgid "Event draft updated."
+msgstr ""
+
+#: admin/includes/admin-settings.php:64
+msgid "Go to Event Category switching page"
+msgstr ""
+
+#: admin/includes/admin-settings.php:76
+msgid "Frontend Settings"
+msgstr "Strona frontowa"
+
+#: admin/includes/admin-settings.php:77
+msgid "Admin Page Settings"
+msgstr "Panel administratora"
+
+#: admin/includes/admin-settings.php:78
+msgid "Feed Settings"
+msgstr "Ustawienia kanału"
+
+#: admin/includes/admin-settings.php:79
+msgid "Category Taxonomy"
+msgstr ""
+
+#: includes/daterange_helptexts.php:7
+msgid "Year"
+msgstr "Rok"
+
+#: includes/daterange_helptexts.php:8
+msgid "A year can be specified in 4 digit format."
+msgstr "Rok może być określony formatem czterocyfrowym."
+
+#: includes/daterange_helptexts.php:9 includes/daterange_helptexts.php:14
+#: includes/daterange_helptexts.php:36
+#, php-format
+msgid ""
+"For a start date filter the first day of %1$s is used, in an end date the "
+"last day."
+msgstr ""
+
+#: includes/daterange_helptexts.php:9
+msgid "the resulting year"
+msgstr ""
+
+#: includes/daterange_helptexts.php:12
+msgid "Month"
+msgstr "Miesiąc"
+
+#: includes/daterange_helptexts.php:13
+msgid ""
+"A month can be specified with 4 digits for the year and 2 digits for the "
+"month, seperated by a hyphen (-)."
+msgstr ""
+
+#: includes/daterange_helptexts.php:14
+msgid "the resulting month"
+msgstr ""
+
+#: includes/daterange_helptexts.php:17
+msgid "Day"
+msgstr "Dzień"
+
+#: includes/daterange_helptexts.php:18
+msgid ""
+"A day can be specified in the format 4 digits for the year, 2 digits for the"
+" month and 2 digets for the day, seperated by hyphens (-)."
+msgstr ""
+
+#: includes/daterange_helptexts.php:21
+msgid "Relative Year"
+msgstr ""
+
+#: includes/daterange_helptexts.php:22 includes/daterange_helptexts.php:28
+#: includes/daterange_helptexts.php:34 includes/daterange_helptexts.php:42
+#, php-format
+msgid "%1$s from now can be specified in the following notation: %2$s"
+msgstr ""
+
+#: includes/daterange_helptexts.php:22
+msgid "A relative year"
+msgstr ""
+
+#: includes/daterange_helptexts.php:23 includes/daterange_helptexts.php:29
+#: includes/daterange_helptexts.php:35 includes/daterange_helptexts.php:43
+#, php-format
+msgid ""
+"This means you can specify a positive or negative (%1$s) %2$s from now with "
+"%3$s or %4$s attached (see also the example below)."
+msgstr ""
+
+#: includes/daterange_helptexts.php:23
+msgid "number of years"
+msgstr "liczba lat"
+
+#: includes/daterange_helptexts.php:24 includes/daterange_helptexts.php:30
+#: includes/daterange_helptexts.php:38 includes/daterange_helptexts.php:44
+#, php-format
+msgid "Additionally the following values are available: %1$s"
+msgstr ""
+
+#: includes/daterange_helptexts.php:27
+msgid "Relative Month"
+msgstr ""
+
+#: includes/daterange_helptexts.php:28
+msgid "A relative month"
+msgstr ""
+
+#: includes/daterange_helptexts.php:29
+msgid "number of months"
+msgstr "liczba miesięcy"
+
+#: includes/daterange_helptexts.php:33
+msgid "Relative Week"
+msgstr ""
+
+#: includes/daterange_helptexts.php:34
+msgid "A relative week"
+msgstr ""
+
+#: includes/daterange_helptexts.php:35
+msgid "number of weeks"
+msgstr "liczba tygodni"
+
+#: includes/daterange_helptexts.php:36
+msgid "the resulting week"
+msgstr ""
+
+#: includes/daterange_helptexts.php:37
+#, php-format
+msgid ""
+"The first day of the week is depending on the option %1$s which can be found"
+" and changed in %2$s."
+msgstr ""
+
+#: includes/daterange_helptexts.php:41
+msgid "Relative Day"
+msgstr ""
+
+#: includes/daterange_helptexts.php:42
+msgid "A relative day"
+msgstr ""
+
+#: includes/daterange_helptexts.php:43
+msgid "number of days"
+msgstr "liczba dni"
+
+#: includes/daterange_helptexts.php:49
+msgid "Date range"
+msgstr "Zakres dat"
+
+#: includes/daterange_helptexts.php:50
+msgid ""
+"A date rage can be specified via a start date and end date seperated by a tilde (~).<br />\n"
+"\t                                     For the start and end date any available date format can be used."
+msgstr ""
+
+#: includes/daterange_helptexts.php:55
+msgid "This value defines a range without any limits."
+msgstr ""
+
+#: includes/daterange_helptexts.php:56 includes/daterange_helptexts.php:61
+#: includes/daterange_helptexts.php:66
+#, php-format
+msgid "The corresponding date_range format is: %1$s"
+msgstr ""
+
+#: includes/daterange_helptexts.php:59 includes/filterbar.php:287
+msgid "Upcoming"
+msgstr "Nadchodzące"
+
+#: includes/daterange_helptexts.php:60
+msgid "This value defines a range from the actual day to the future."
+msgstr ""
+
+#: includes/daterange_helptexts.php:64 includes/filterbar.php:291
+msgid "Past"
+msgstr "Przeszłe"
+
+#: includes/daterange_helptexts.php:65
+msgid "This value defines a range from the past to the previous day."
+msgstr ""
+
+#: includes/event.php:103
+msgid "No valid start date provided"
+msgstr ""
+
+#: includes/events_post_type.php:60
+msgid "Events"
+msgstr "Wydarzenia"
+
+#: includes/events_post_type.php:61
+msgid "Event"
+msgstr ""
+
+#: includes/events_post_type.php:62
+msgid "Add New"
+msgstr "Dodaj nowe"
+
+#: includes/events_post_type.php:63
+msgid "Add New Event"
+msgstr "Dodaj wydarzenie"
+
+#: includes/events_post_type.php:64
+msgid "Edit Event"
+msgstr "Edytuj wydarzenie"
+
+#: includes/events_post_type.php:65
+msgid "New Event"
+msgstr ""
+
+#: includes/events_post_type.php:66
+msgid "View Event"
+msgstr ""
+
+#: includes/events_post_type.php:67
+msgid "View Events"
+msgstr ""
+
+#: includes/events_post_type.php:68
+msgid "Search Events"
+msgstr ""
+
+#: includes/events_post_type.php:69
+msgid "No events found"
+msgstr ""
+
+#: includes/events_post_type.php:70
+msgid "No events found in Trash"
+msgstr ""
+
+#: includes/events_post_type.php:72
+msgid "All Events"
+msgstr "Wszystkie wydarzenia"
+
+#: includes/events_post_type.php:73
+msgid "Event Archives"
+msgstr ""
+
+#: includes/events_post_type.php:74
+msgid "Event Attributes"
+msgstr ""
+
+#: includes/events_post_type.php:75
+msgid "Insert into event"
+msgstr ""
+
+#: includes/events_post_type.php:76
+msgid "Uploaded to this event"
+msgstr ""
+
+#: includes/events_post_type.php:77
+msgid "Event List"
+msgstr "Lista wydarzeń"
+
+#: includes/events_post_type.php:78
+msgid "Filter events list"
+msgstr ""
+
+#: includes/events_post_type.php:79
+msgid "Events list navigation"
+msgstr ""
+
+#: includes/events_post_type.php:80
+msgid "Events list"
+msgstr ""
+
+#: includes/filterbar.php:229 includes/sc_event-list_helptexts.php:60
+msgid "Reset"
+msgstr ""
+
+#: includes/filterbar.php:278
+msgid "All"
+msgstr "Wszystkie"
+
+#: includes/filterbar.php:281
+msgid "All Dates"
+msgstr ""
+
+#: includes/options_helptexts.php:10
+msgid "CSV File to import"
+msgstr "Plik CSV do zaimportowania"
+
+#: includes/options_helptexts.php:12
+msgid "Please select the file which contains the event data in CSV format."
+msgstr "Wybierz plik, który zawiera dane wydarzeń w formacie CSV."
+
+#: includes/options_helptexts.php:15
+msgid "Used date format"
+msgstr "Użyty format daty"
+
+#: includes/options_helptexts.php:17
+msgid ""
+"With this option the used date format for event start and end date given in "
+"the CSV file can be specified."
+msgstr ""
+
+#: includes/options_helptexts.php:21
+msgid "Text for no events"
+msgstr "Tekst jeśli brak wydarzeń"
+
+#: includes/options_helptexts.php:23
+msgid ""
+"This option defines the displayed text when no events are available for the "
+"selected view."
+msgstr "Ta opcja określa tekst, jaki ma być wyświetlany, gdy nie ma żadnych wydarzeń w danym widoku."
+
+#: includes/options_helptexts.php:26
+msgid "Multiday filter range"
+msgstr "Zakresy filtrów terminów wielodniowych"
+
+#: includes/options_helptexts.php:27
+msgid "Use the complete event range in the date filter"
+msgstr "Użyj całego czasu trwania wydarzenia w filtrach terminów"
+
+#: includes/options_helptexts.php:28
+msgid ""
+"This option defines if the complete range of a multiday event shall be "
+"considered in the date filter."
+msgstr "Ta opcja określa, czy w filtrze daty zostanie uwzględniony pełny zakres czasu trwania wydarzenia wielodniowego."
+
+#: includes/options_helptexts.php:29
+msgid ""
+"If disabled, only the start day of an event is considered in the filter."
+msgstr "Wyłącz, jeśli w filtrze ma być uwzględniany tylko dzień rozpoczęcia wydarzenia."
+
+#: includes/options_helptexts.php:30
+msgid ""
+"For an example multiday event which started yesterday and ends tomorrow this"
+" means, that it is displayed in umcoming dates when this option is enabled, "
+"but it is hidden when the option is disabled."
+msgstr "W przypadku przykładowego wydarzenia trwającego kilka dni, który rozpoczął się wczoraj i kończy się jutro oznacza to, że wydarzenie jest wyświetlany w liście nadchodzących wydarzeń, gdy ta opcja jest włączona, a jest ukryte, gdy opcja jest wyłączona."
+
+#: includes/options_helptexts.php:33
+msgid "Date display"
+msgstr "Wyświetlanie terminu"
+
+#: includes/options_helptexts.php:34
+msgid "Show the date only once per day"
+msgstr "Wyświetlaj jedną datę na dzień"
+
+#: includes/options_helptexts.php:35
+msgid ""
+"With this option enabled the date is only displayed once per day if more "
+"than one event is available on the same day."
+msgstr "Po włączeniu tej opcji ikonka daty jest wyświetlana tylko raz, jeśli więcej niż jedno wydarzenie jest dostępne w tym samym dniu."
+
+#: includes/options_helptexts.php:36
+msgid ""
+"If enabled, the events are ordered in a different way (end date before start"
+" time) to allow using the same date for as much events as possible."
+msgstr "Jeśli opcja jest włączona, wydarzenia są układane w inny sposób (data zakończenia przed godziną rozpoczęcia), aby umożliwić użycie tej samej daty dla wszystkich wydarzeń."
+
+#: includes/options_helptexts.php:39
+msgid "HTML tags"
+msgstr "Znaczniki HTML"
+
+#: includes/options_helptexts.php:40 includes/options_helptexts.php:45
+#, php-format
+msgid "Allow HTML tags in the event field \"%1$s\""
+msgstr "Zezwalaj na znaczniki HTML w polu wydarzenia \"%1$s\""
+
+#: includes/options_helptexts.php:41 includes/options_helptexts.php:46
+#, php-format
+msgid ""
+"This option specifies if HTML tags are allowed in the event field \"%1$s\"."
+msgstr "Ta opcja określa czy jest dozwolone wprowadzanie znaczników HTML w polu \"%1$s\"."
+
+#: includes/options_helptexts.php:49
+msgid "Preferred language file"
+msgstr "Preferowany plik językowy"
+
+#: includes/options_helptexts.php:50
+msgid "Load translations from general language directory first"
+msgstr "Ładuj tłumaczenia najpierw z domyślnego folderu językowego"
+
+#: includes/options_helptexts.php:51
+#, php-format
+msgid ""
+"The default is to load the %1$s translation file from the plugin language "
+"directory first (%2$s)."
+msgstr "Domyślnie wersje językowe są ładowane z pliku tłumaczenia%1$s znajdującego się w folderze języków wtyczki (%2$s)."
+
+#: includes/options_helptexts.php:52
+#, php-format
+msgid ""
+"If you want to load your own language file from the general language "
+"directory %1$s for a language which is already included in the plugin "
+"language directory, you have to enable this option."
+msgstr "Jeśli chcesz załadować własny plik językowy znajdujący się w folderze ogólnym języka %1$s dla języka, który już zawarty jest w folderze języków wtyczki, musisz włączyć tę opcję."
+
+#: includes/options_helptexts.php:56
+msgid "Text for \"Show content\""
+msgstr ""
+
+#: includes/options_helptexts.php:57
+msgid ""
+"With this option the displayed text for the link to show the event content "
+"can be changed, when collapsing is enabled."
+msgstr ""
+
+#: includes/options_helptexts.php:60
+msgid "Text for \"Hide content\""
+msgstr ""
+
+#: includes/options_helptexts.php:61
+msgid ""
+"With this option the displayed text for the link to hide the event content "
+"can be changed, when collapsing is enabled."
+msgstr ""
+
+#: includes/options_helptexts.php:64
+msgid "Disable CSS file"
+msgstr "Wyłącz plik CSS"
+
+#: includes/options_helptexts.php:65
+#, php-format
+msgid "Disable the %1$s file."
+msgstr "Wyłącz plik %1$s."
+
+#: includes/options_helptexts.php:66
+#, php-format
+msgid "With this option you can disable the inclusion of the %1$s file."
+msgstr "Ta opcja pozwala na usunięcie łącza do pliku %1$s z nagłówka strony HTML."
+
+#: includes/options_helptexts.php:67
+msgid ""
+"This normally only make sense if you have css conflicts with your theme and "
+"want to set all required css styles somewhere else (e.g. in the theme css)."
+msgstr "Zwykle ma to sens jeśli występują konflikty z motywami i chcesz ustawić wszystkie wymagane style CSS w innym miejscu (np. w motywie CSS)."
+
+#: includes/options_helptexts.php:71
+msgid "Date format in edit form"
+msgstr "Format daty w formularzu edycji"
+
+#: includes/options_helptexts.php:72
+msgid ""
+"This option sets the displayed date format for the event date fields in the "
+"event new / edit form."
+msgstr ""
+
+#: includes/options_helptexts.php:73
+msgid "The default is an empty string to use the Wordpress standard setting."
+msgstr ""
+
+#: includes/options_helptexts.php:74
+#, php-format
+msgid ""
+"All available options to specify the date format can be found %1$shere%2$s."
+msgstr ""
+
+#: includes/options_helptexts.php:78 includes/options_helptexts.php:106
+msgid "Enable RSS feed"
+msgstr "Włącz kanał RSS"
+
+#: includes/options_helptexts.php:79
+msgid "Enable support for an event RSS feed"
+msgstr ""
+
+#: includes/options_helptexts.php:80
+msgid "This option activates a RSS feed for the events."
+msgstr ""
+
+#: includes/options_helptexts.php:81
+msgid ""
+"You have to enable this option if you want to use one of the RSS feed "
+"features."
+msgstr ""
+
+#: includes/options_helptexts.php:84
+msgid "Feed name"
+msgstr "Nazwa kanału"
+
+#: includes/options_helptexts.php:85
+#, php-format
+msgid "This option sets the feed name. The default value is %1$s."
+msgstr ""
+
+#: includes/options_helptexts.php:86
+#, php-format
+msgid ""
+"This name will be used in the feed url (e.g. %1$s, or %2$s with permalinks "
+"enabled)."
+msgstr ""
+
+#: includes/options_helptexts.php:89
+msgid "Feed Description"
+msgstr "Opis kanału"
+
+#: includes/options_helptexts.php:90
+#, php-format
+msgid "This options set the feed description. The default value is %1$s."
+msgstr ""
+
+#: includes/options_helptexts.php:91
+msgid ""
+"This description will be used in the title for the feed link in the html "
+"head and for the description in the feed itself."
+msgstr ""
+
+#: includes/options_helptexts.php:94
+msgid "Listed events"
+msgstr ""
+
+#: includes/options_helptexts.php:95
+msgid "Only show upcoming events in feed"
+msgstr ""
+
+#: includes/options_helptexts.php:96
+msgid ""
+"If this option is enabled only the upcoming events are listed in the feed."
+msgstr ""
+
+#: includes/options_helptexts.php:97
+msgid "If disabled all events (upcoming and past) will be listed."
+msgstr ""
+
+#: includes/options_helptexts.php:100
+msgid "Add RSS feed link in head"
+msgstr "Dodaj łącze kanału RSS w nagłówku"
+
+#: includes/options_helptexts.php:101
+msgid "Add RSS feed link in the html head"
+msgstr "Dodaje łącze kanału RSS w nagłówku HTML"
+
+#: includes/options_helptexts.php:102
+msgid "This option adds a RSS feed in the html head for the events."
+msgstr ""
+
+#: includes/options_helptexts.php:103
+msgid "There are 2 alternatives to include the RSS feed"
+msgstr ""
+
+#: includes/options_helptexts.php:104
+msgid ""
+"The first way is this option to include a link in the html head. This link "
+"will be recognized by browers or feed readers."
+msgstr ""
+
+#: includes/options_helptexts.php:105
+#, php-format
+msgid ""
+"The second way is to include a visible feed link directly in the event list."
+" This can be done by setting the shortcode attribute %1$s to %2$s."
+msgstr ""
+
+#: includes/options_helptexts.php:106
+#, php-format
+msgid "This option is only valid if the setting %1$s is enabled."
+msgstr ""
+
+#: includes/options_helptexts.php:109
+msgid "Position of the RSS feed link"
+msgstr ""
+
+#: includes/options_helptexts.php:110
+msgid "at the top (above the navigation bar)"
+msgstr "na górze (ponad panelem nawigacyjnym)"
+
+#: includes/options_helptexts.php:110
+msgid "between navigation bar and events"
+msgstr "pomiędzy panelem nawigacyjnym a wydarzeniami"
+
+#: includes/options_helptexts.php:110
+msgid "at the bottom"
+msgstr "na dole"
+
+#: includes/options_helptexts.php:111
+msgid ""
+"This option specifies the position of the RSS feed link in the event list."
+msgstr ""
+
+#: includes/options_helptexts.php:112 includes/options_helptexts.php:118
+#: includes/options_helptexts.php:124 includes/options_helptexts.php:130
+#, php-format
+msgid ""
+"You have to set the shortcode attribute %1$s to %2$s if you want to show the"
+" feed link."
+msgstr ""
+
+#: includes/options_helptexts.php:115
+msgid "Align of the RSS feed link"
+msgstr ""
+
+#: includes/options_helptexts.php:116
+msgid "left"
+msgstr "do lewej"
+
+#: includes/options_helptexts.php:116
+msgid "center"
+msgstr "do środka"
+
+#: includes/options_helptexts.php:116
+msgid "right"
+msgstr "do prawej"
+
+#: includes/options_helptexts.php:117
+msgid ""
+"This option specifies the align of the RSS feed link in the event list."
+msgstr ""
+
+#: includes/options_helptexts.php:121
+msgid "Feed link text"
+msgstr ""
+
+#: includes/options_helptexts.php:122
+msgid ""
+"This option specifies the caption of the RSS feed link in the event list."
+msgstr ""
+
+#: includes/options_helptexts.php:123
+msgid ""
+"Insert an empty text to hide any text if you only want to show the rss "
+"image."
+msgstr ""
+
+#: includes/options_helptexts.php:127
+msgid "Feed link image"
+msgstr "Obraz łącza kanału"
+
+#: includes/options_helptexts.php:128
+msgid "Show rss image in feed link"
+msgstr "Wyświetlaj braz łącza kanału RSS"
+
+#: includes/options_helptexts.php:129
+msgid ""
+"This option specifies if the an image should be dispayed in the feed link in"
+" front of the text."
+msgstr "Ta opcja określa, czy obraz powinien być wyświetlany w łączu kanału RSS przed tekstem."
+
+#: includes/options_helptexts.php:135
+msgid "Event Category handling"
+msgstr ""
+
+#: includes/options_helptexts.php:136
+msgid "Use Post Categories"
+msgstr ""
+
+#: includes/options_helptexts.php:137
+msgid ""
+"Do not maintain seperate categories for the events, and use the existing "
+"post categories instead."
+msgstr ""
+
+#: includes/options_helptexts.php:138
+msgid "Attention"
+msgstr "Uwaga"
+
+#: includes/options_helptexts.php:139
+msgid ""
+"This option cannot be changed directly, but you can go to the Event Category"
+" switching page from here."
+msgstr ""
+
+#: includes/options.php:40
+msgid "Show content"
+msgstr ""
+
+#: includes/options.php:41
+msgid "Hide content"
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:7
+msgid "event-id"
+msgstr "event-id"
+
+#: includes/sc_event-list_helptexts.php:8
+#, php-format
+msgid ""
+"By default the event-list is displayed initially. But if an event-id (e.g. "
+"%1$s) is provided for this attribute, directly the event-content view of "
+"this event is shown."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:10
+#: includes/sc_event-list_helptexts.php:22
+msgid "year"
+msgstr "rok"
+
+#: includes/sc_event-list_helptexts.php:11
+msgid ""
+"This attribute defines which events are initially shown. The default is to "
+"show the upcoming events only."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:12
+#, php-format
+msgid ""
+"Provide a year (e.g. %1$s) to change this behavior. It is still possible to "
+"change the displayed event date range via the filterbar or url parameters."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:14
+msgid "category slug"
+msgstr "uproszczona nazwa kategorii"
+
+#: includes/sc_event-list_helptexts.php:15
+msgid ""
+"This attribute defines the category of which events are initially shown. The"
+" default is to show events of all categories."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:16
+msgid ""
+"Provide a category slug to change this behavior. It is still possible to "
+"change the displayed categories via the filterbar or url parameters."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:19
+msgid "This attribute defines the initial order of the events."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:20
+msgid ""
+"With %1$S (default value) the events are sorted from old to new, with %2$s "
+"in the opposite direction (from new to old)."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:23
+#, php-format
+msgid ""
+"This attribute defines the dates and date ranges of which events are "
+"displayed. The default is %1$s to show all events."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:24
+#, php-format
+msgid ""
+"Filtered events according to %1$s value are not available in the event list."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:25
+#, php-format
+msgid ""
+"You can find all available values with a description and examples in the "
+"sections %1$s and %2$s below."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:26
+#, php-format
+msgid "See %1$s description if you want to define complex filters."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:28
+msgid "category slugs"
+msgstr "uproszczone nazwy kategorii"
+
+#: includes/sc_event-list_helptexts.php:29
+msgid ""
+"This attribute defines the category filter which filters the events to show."
+" The default is $1$s or an empty string to show all events."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:30
+#, php-format
+msgid ""
+"Events with categories that doesn´t match %1$s are not shown in the event "
+"list. They are also not available if a manual url parameter is added."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:31
+#, php-format
+msgid ""
+"The filter is specified via the given category slugs. See %1$s description "
+"if you want to define complex filters."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:33
+#: includes/sc_event-list_helptexts.php:74
+#: includes/sc_event-list_helptexts.php:89
+#: includes/sc_event-list_helptexts.php:104
+msgid "number"
+msgstr "liczba"
+
+#: includes/sc_event-list_helptexts.php:34
+#, php-format
+msgid ""
+"This attribute defines how many events should be displayed if upcoming "
+"events is selected. With the default value %1$s all events will be "
+"displayed."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:35
+msgid ""
+"Please not that in the actual version there is no pagination of the events "
+"available, so the event list can be very long."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:38
+msgid ""
+"This attribute defines if the filterbar should be displayed. The filterbar "
+"allows the users to specify filters for the listed events."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:39
+#, php-format
+msgid "Choose %1$s to always hide and %2$s to always show the filterbar."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:40
+#, php-format
+msgid ""
+"With %1$s the filterbar is only visible in the event list and with %2$s only"
+" in the single event view."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:43
+#, php-format
+msgid ""
+"This attribute specifies the available items in the filterbar. This options "
+"are only valid if the filterbar is displayed (see %1$s attribute)."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:44
+msgid ""
+"Find below an overview of the available filterbar items and their options:"
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:46
+msgid "filterbar item"
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:46
+#: includes/sc_event-list_helptexts.php:63
+msgid "description"
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:46
+msgid "item options"
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:46
+msgid "option values"
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:46
+msgid "default value"
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:46
+msgid "option description"
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:47
+msgid ""
+"Show a list of all available years. Additional there are some special "
+"entries available (see item options)."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:48
+#: includes/sc_event-list_helptexts.php:53
+msgid "Add an entry to show all events."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:49
+#: includes/sc_event-list_helptexts.php:54
+msgid "Add an entry to show all upcoming events."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:50
+#: includes/sc_event-list_helptexts.php:55
+msgid "Add an entry to show events in the past."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:51
+msgid "Set descending or ascending order of year entries."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:52
+msgid "Show a list of all available months."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:56
+msgid "Set descending or ascending order of month entries."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:57
+msgid "php date-formats"
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:57
+msgid "Set the displayed date format of the month entries."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:58
+#, php-format
+msgid ""
+"With this item you can display the special entries %1$s, %2$s and %3$s. You "
+"can use all or only some of the available values and you can specify their "
+"order."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:58
+#, php-format
+msgid ""
+"Specifies the displayed values and their order. The items must be seperated "
+"by %1$s."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:59
+msgid "Show a list of all available categories."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:59
+msgid "Add an entry to show events from all categories."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:60
+msgid "A link to reset the eventlist filter to standard."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:60
+msgid "any text"
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:60
+msgid "Set the caption of the link."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:61
+msgid "Find below an overview of the available filterbar display options:"
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:63
+msgid "display option"
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:63
+msgid "available for"
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:64
+#, php-format
+msgid "Shows a horizonal list seperated by %1$s with a link to each item."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:65
+msgid ""
+"Shows a select box where an item can be choosen. After the selection of an "
+"item the page is reloaded via javascript to show the filtered events."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:66
+msgid "Shows a simple link which can be clicked."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:67
+msgid "Find below some declaration examples with descriptions:"
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:69
+#, php-format
+msgid ""
+"In this example you can see that the filterbar item and the used display "
+"option is joined by an underscore %1$s. You can define several filterbar "
+"items seperated by a comma %2$s. These items will be displayed left-aligned."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:71
+#, php-format
+msgid ""
+"In this example you can see that filterbar options can be added in brackets "
+"in format %1$s. You can also add multiple options seperated by a pipe %2$s."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:71
+msgid "option_name"
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:71
+msgid "value"
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:72
+#, php-format
+msgid ""
+"The 2 semicolon %1$s devides the bar in 3 section. The first section will be"
+" displayed left-justified, the second section will be centered and the third"
+" section will be right-aligned. So in this example the 2 dropdown will be "
+"left-aligned and the reset link will be on the right side."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:75
+#: includes/sc_event-list_helptexts.php:90
+msgid ""
+"This attribute specifies if the title should be truncated to the given "
+"number of characters in the event list."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:76
+#: includes/sc_event-list_helptexts.php:91
+#, php-format
+msgid ""
+"With the standard value %1$s the full text is displayed, with %2$s the text "
+"is automatically truncated via css."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:77
+#: includes/sc_event-list_helptexts.php:92
+#: includes/sc_event-list_helptexts.php:107
+msgid "This attribute has no influence if only a single event is shown."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:80
+msgid ""
+"This attribute specifies if the starttime is displayed in the event list.<br />\n"
+"\t                                            Choose \"false\" to always hide and \"true\" to always show the starttime.<br />\n"
+"\t                                            With \"event_list_only\" the starttime is only visible in the event list and with \"single_event_only\" only for a single event"
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:85
+msgid ""
+"This attribute specifies if the location is displayed in the event list.<br />\n"
+"\t                                            Choose \"false\" to always hide and \"true\" to always show the location.<br />\n"
+"\t                                            With \"event_list_only\" the location is only visible in the event list and with \"single_event_only\" only for a single event"
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:95
+msgid ""
+"This attribute specifies if the categories are displayed in the event list.<br />\n"
+"\t                                            Choose \"false\" to always hide and \"true\" to always show the category.<br />\n"
+"\t                                            With \"event_list_only\" the categories are only visible in the event list and with \"single_event_only\" only for a single event"
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:100
+msgid ""
+"This attribute specifies if the content is displayed in the event list.<br />\n"
+"\t                                            Choose \"false\" to always hide and \"true\" to always show the content.<br />\n"
+"\t                                            With \"event_list_only\" the content is only visible in the event list and with \"single_event_only\" only for a single event"
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:105
+msgid ""
+"This attribute specifies if the content should be truncate to the given "
+"number of characters in the event list."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:106
+#, php-format
+msgid "With the standard value %1$s the full text is displayed."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:110
+msgid ""
+"This attribute specifies if the content should be collapsed initially.<br />\n"
+"\t                                            Then a link will be displayed instead of the content. By clicking this link the content are getting visible.<br />\n"
+"\t                                            Available option are \"false\" to always disable collapsing and \"true\" to always enable collapsing of the content.<br />\n"
+"\t                                            With \"event_list_only\" the content is only collapsed in the event list view and with \"single_event_only\" only in single event view."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:116
+msgid ""
+"This attribute specifies if a link to the single event should be added onto the event name in the event list.<br />\n"
+"\t                                            Choose \"false\" to never add and \"true\" to always add the link.<br />\n"
+"\t                                            With \"event_list_only\" the link is only added in the event list and with \"single_event_only\" only for a single event.<br />\n"
+"\t                                            With \"events_with_content_only\" the link is only added in the event list for events with event content."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:122
+msgid ""
+"This attribute specifies if a rss feed link should be added.<br />\n"
+"\t                                            You have to enable the feed in the eventlist settings to make this attribute workable.<br />\n"
+"\t                                            On that page you can also find some settings to modify the output.<br />\n"
+"\t                                            Choose \"false\" to never add and \"true\" to always add the link.<br />\n"
+"\t                                            With \"event_list_only\" the link is only added in the event list and with \"single_event_only\" only for a single event"
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:128
+msgid ""
+"This attribute specifies the page or post url for event links.<br />\n"
+"\t                                            The standard is an empty string. Then the url will be calculated automatically.<br />\n"
+"\t                                            An url is normally only required for the use of the shortcode in sidebars. It is also used in the event-list widget."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:135
+msgid ""
+"This attribute the specifies shortcode id of the used shortcode on the page specified with \"url_to_page\" attribute.<br />\n"
+"\t                                            The empty standard value is o.k. for the normal use. This attribute is normally only required for the event-list widget."
+msgstr ""
+
+#: includes/sc_event-list.php:135
+msgid "Event Information:"
+msgstr "Informacje o wydarzeniu:"
+
+#: includes/widget_helptexts.php:10
+msgid "This option defines the displayed title for the widget."
+msgstr "Ta opcja definiuje wyświetlany tytuł widgetu."
+
+#: includes/widget_helptexts.php:15
+msgid "Category Filter"
+msgstr "Filtr kategorii"
+
+#: includes/widget_helptexts.php:17
+msgid ""
+"This option defines the categories of which events are shown. The standard "
+"is all or an empty string to show all events. Specify a category slug or a "
+"list of category slugs to only show events of the specified categories. See "
+"description of the shortcode attribute cat_filter for detailed info about "
+"all possibilities."
+msgstr ""
+
+#: includes/widget_helptexts.php:22
+msgid "Number of listed events"
+msgstr ""
+
+#: includes/widget_helptexts.php:24
+msgid "The number of upcoming events to display"
+msgstr "Liczba wyświetlanych wydarzeń"
+
+#: includes/widget_helptexts.php:29
+msgid "Truncate event title to"
+msgstr "Obetnij tytuł wydarzenia do"
+
+#: includes/widget_helptexts.php:30 includes/widget_helptexts.php:52
+#: includes/widget_helptexts.php:67
+msgid "characters"
+msgstr "znaków"
+
+#: includes/widget_helptexts.php:31
+msgid ""
+"This option defines the number of displayed characters for the event title."
+msgstr ""
+
+#: includes/widget_helptexts.php:32 includes/widget_helptexts.php:54
+#, php-format
+msgid ""
+"Set this value to %1$s to view the full text, or set it to %2$s to "
+"automatically truncate the text via css."
+msgstr ""
+
+#: includes/widget_helptexts.php:37
+msgid "Show event starttime"
+msgstr "Wyświetl czas rozpoczęcia wydarzenia"
+
+#: includes/widget_helptexts.php:39
+msgid "This option defines if the event start time will be displayed."
+msgstr ""
+
+#: includes/widget_helptexts.php:44
+msgid "Show event location"
+msgstr "Wyświetlaj miejsce wydarzenia"
+
+#: includes/widget_helptexts.php:46
+msgid "This option defines if the event location will be displayed."
+msgstr ""
+
+#: includes/widget_helptexts.php:51
+msgid "Truncate location to"
+msgstr "Obetnij miejsce do"
+
+#: includes/widget_helptexts.php:53
+msgid ""
+"If the event location is diplayed this option defines the number of "
+"displayed characters."
+msgstr ""
+
+#: includes/widget_helptexts.php:59
+msgid "Show event content"
+msgstr ""
+
+#: includes/widget_helptexts.php:61
+msgid "This option defines if the event content will be displayed."
+msgstr ""
+
+#: includes/widget_helptexts.php:66
+msgid "Truncate content to"
+msgstr ""
+
+#: includes/widget_helptexts.php:68
+msgid ""
+"If the event content are diplayed this option defines the number of diplayed"
+" characters."
+msgstr ""
+
+#: includes/widget_helptexts.php:69
+#, php-format
+msgid "Set this value to %1$s to view the full text."
+msgstr ""
+
+#: includes/widget_helptexts.php:74
+msgid "URL to the linked Event List page"
+msgstr "Łącze do strony Lista wydarzeń"
+
+#: includes/widget_helptexts.php:76
+msgid ""
+"This option defines the url to the linked Event List page. This option is "
+"required if you want to use one of the options below."
+msgstr "Ta opcja definiuje adres url do strony Listy wydarzeń. Ta opcja jest wymagana, jeśli chcesz użyć jednej z poniższych opcji."
+
+#: includes/widget_helptexts.php:81
+msgid "Shortcode ID on linked page"
+msgstr ""
+
+#: includes/widget_helptexts.php:83
+msgid ""
+"This option defines the shortcode-id for the Event List on the linked page. "
+"Normally the standard value 1 is correct, you only have to change it if you "
+"use multiple event-list shortcodes on the linked page."
+msgstr ""
+
+#: includes/widget_helptexts.php:90
+msgid ""
+"With this option you can add a link to the single event page for every "
+"displayed event. You have to specify the url to the page and the shortcode "
+"id option if you want to use it."
+msgstr ""
+
+#: includes/widget_helptexts.php:97
+msgid ""
+"With this option you can add a link to the event-list page below the "
+"diplayed events. You have to specify the url to page option if you want to "
+"use it."
+msgstr ""
+
+#: includes/widget_helptexts.php:102
+msgid "Caption for the link"
+msgstr ""
+
+#: includes/widget_helptexts.php:104
+msgid ""
+"This option defines the text for the link to the Event List page if the "
+"approriate option is selected."
+msgstr ""
+
+#: includes/widget.php:20
+msgid "With this widget a list of upcoming events can be displayed."
+msgstr ""
+
+#: includes/widget.php:25
+msgid "Upcoming events"
+msgstr "Nadchodzące wydarzenia"
+
+#: includes/widget.php:38
+msgid "show events page"
+msgstr ""

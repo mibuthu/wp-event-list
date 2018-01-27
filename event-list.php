@@ -3,14 +3,14 @@
 Plugin Name: Event List
 Plugin URI: http://wordpress.org/extend/plugins/event-list/
 Description: Manage your events and show them in a list view on your site.
-Version: 0.7.12
+Version: 0.8.0
 Author: mibuthu
 Author URI: http://wordpress.org/extend/plugins/event-list/
 Text Domain: event-list
 License: GPLv2
 
 A plugin for the blogging MySQL/PHP-based WordPress.
-Copyright 2012-2017 mibuthu
+Copyright 2012-2018 mibuthu
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNUs General Public License
@@ -35,12 +35,13 @@ define('EL_URL', plugin_dir_url(__FILE__));
 define('EL_PATH', plugin_dir_path(__FILE__));
 
 require_once(EL_PATH.'includes/options.php');
+require_once(EL_PATH.'includes/events_post_type.php');
 
 // MAIN PLUGIN CLASS
 class Event_List {
 	private $options;
-	private $shortcode;
-	private $styles_loaded;
+	private $shortcode = null;
+	private $styles_loaded = false;
 
 	/**
 	 * Constructor:
@@ -48,12 +49,12 @@ class Event_List {
 	 */
 	public function __construct() {
 		$this->options = EL_Options::get_instance();
-		$this->shortcode = null;
-		$this->styles_loaded = false;
 
 		// ALWAYS:
 		// Register translation
 		add_action('plugins_loaded', array(&$this, 'load_textdomain'));
+		// Register Events post type
+		EL_Events_Post_Type::get_instance();
 		// Register shortcodes
 		add_shortcode('event-list', array(&$this, 'shortcode_event_list'));
 		// Register widgets

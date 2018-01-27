@@ -19,18 +19,18 @@ li.event {
 	background: url(../images/date-separator.png) center no-repeat;
 }
 
-.event-list .start-date, .event-list .end-date {
+.event-list .startdate, .event-list .enddate {
 	text-align: center;
 	width: 3.2em;
 	border-radius: 5px;
 	background-color: rgb(230,230,230);
 }
 
-.event-list .start-date {
+.event-list .startdate {
 	float: left;
 }
 
-.event-list .end-date {
+.event-list .enddate {
 	margin-left: 3.8em;
 }
 
@@ -87,7 +87,7 @@ li.event {
 	font-size: 0.95em;
 }
 
-.event-details {
+.event-content {
 	font-size: 0.8em;
 }
 
@@ -104,7 +104,7 @@ div.feed img {
 }
 
 div.filterbar, div.filterbar div {
-	clear both;
+	clear: both;
 	margin: 1em 0;
 	vertical-align: middle;
 }

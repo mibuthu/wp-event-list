@@ -1,11 +1,11 @@
-// Javascript functions for event-list admin_main page
+// Javascript functions for event-list filterbar
 
 // Confirmation for event deletion
-function eventlist_redirect(name, value, sc_id) {
-	window.location.assign(updateUrlParameter(window.location.href, name, value, sc_id));
+function el_redirect(name, value, sc_id) {
+	window.location.assign(el_updateUrlParameter(window.location.href, name, value, sc_id));
 }
 
-function updateUrlParameter(url, paramName, paramVal, sc_id) {
+function el_updateUrlParameter(url, paramName, paramVal, sc_id) {
 	// extrude anchor
 	var urlArray = url.split("#");
 	var anchor = urlArray[1] ? "#" + urlArray[1] : "";

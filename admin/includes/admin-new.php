@@ -1,26 +1,23 @@
 <?php
-if(!defined('ABSPATH')) {
+if(!defined('WP_ADMIN')) {
 	exit;
 }
 
-require_once(EL_PATH.'includes/db.php');
 require_once(EL_PATH.'includes/options.php');
-require_once(EL_PATH.'includes/categories.php');
 
-// This class handles all data for the admin new event page
+/**
+* This class handles all data for the admin new event page
+*/
 class EL_Admin_New {
 	private static $instance;
-	private $db;
 	private $options;
-	private $categories;
-	private $id;
 	private $is_new;
-	private $is_duplicate;
+	private $copy_event = null;
 
 	public static function &get_instance() {
 		// Create class instance if required
 		if(!isset(self::$instance)) {
-			self::$instance = new EL_Admin_New();
+			self::$instance = new self();
 		}
 		// Return class instance
 		return self::$instance;
@@ -29,36 +26,109 @@ class EL_Admin_New {
 	private function __construct() {
 		// check used get parameters
 		$action = isset($_GET['action']) ? sanitize_key($_GET['action']) : '';
-		$this->id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+		$copy = isset($_GET['copy']) ? intval($_GET['copy']) : 0;
+		if(!empty($copy)) {
+			require_once(EL_PATH.'includes/event.php');
+			$this->copy_event = new EL_Event($copy);
+			add_filter('get_object_terms', array(&$this, 'set_copied_categories'));
+		}
 
-		$this->db = &EL_Db::get_instance();
 		$this->options = &EL_Options::get_instance();
-		$this->categories = &EL_Categories::get_instance();
-		$this->is_new = !('edit' == $action || 'added' == $action || 'modified' == $action);
-		$this->is_duplicate = $this->is_new && '' != $action && 0 < $this->id;
+		$this->is_new = 'edit' !== $action;
+
+		add_action('add_meta_boxes', array(&$this, 'add_eventdata_metabox'));
+		add_action('edit_form_top', array(&$this, 'form_top_content'));
+		add_action('edit_form_after_title', array(&$this, 'form_after_title_content'));
+		add_action('admin_print_scripts', array(&$this, 'embed_scripts'));
+		add_action('save_post_el_events', array(&$this, 'save_eventdata'), 10, 3);
+		add_filter('enter_title_here', array(&$this, 'change_default_title'));
+		add_filter('post_updated_messages', array(&$this, 'updated_messages'));
 	}
 
-	public function show_new() {
-		if(!current_user_can('edit_posts')) {
-			wp_die(__('You do not have sufficient permissions to access this page.'));
-		}
-		$out = '<div class="wrap">
-				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.__('Add New Event','event-list').'</h2>';
-		if($this->is_duplicate) {
-			$out .= '<span style="color:silver">('.sprintf(__('Duplicate of event id:%d','event-list'), $this->id).')</span>';
-		}
-		$out .= $this->edit_event();
-		$out .= '</div>';
-		echo $out;
+	public function add_eventdata_metabox($post_type) {
+		add_meta_box(
+			'el_event_edit_meta',
+			__('Event data','event-list'),
+			array(&$this, 'render_eventdata_metabox'),
+			$post_type,
+			'primary',
+			'high'
+		);
 	}
 
-	public function embed_new_scripts() {
+	public function render_eventdata_metabox() {
+		global $post;
+		if($this->is_new && empty($this->copy)) {
+			// set next day as date
+			$startdate = current_time('timestamp')+86400; // next day (86400 seconds = 1*24*60*60 = 1 day);
+			$enddate = $startdate;
+			$starttime = '';
+			$location = '';
+		}
+		else {
+			// set existing eventdata
+			require_once(EL_PATH.'includes/event.php');
+			$event = new EL_Event($this->is_new ? $this->copy : $post);
+			$startdate = strtotime($event->startdate);
+			$enddate = strtotime($event->enddate);
+			$starttime = esc_html($event->starttime);
+			$location = esc_html($event->location);
+		}
+		// Add required data for javascript in a hidden field
+		$json = json_encode(array('el_date_format'    => $this->datepicker_format($this->get_event_dateformat()),
+		                          'el_start_of_week'  => get_option('start_of_week'),
+										  'el_copy_url'       => $this->is_new ? '' : admin_url(add_query_arg(array('copy'=>$post->ID), 'post-new.php?post_type=el_events')),
+										  'el_copy_text'      => $this->is_new ? '' : __('Add Copy','event-list')));
+		// HTML output (single quotes required for json value due to json layout)
+		echo '
+				<input type="hidden" id="json_for_js" value=\''.$json.'\' />
+					<label class="event-option">'.__('Date','event-list').' ('.__('required','event-list').'):</label>
+					<div class="event-data"><span class="date-wrapper"><input type="text" class="text form-required" name="startdate" id="startdate" value="'.date('Y-m-d', $startdate).'" /><i class="dashicons dashicons-calendar-alt"></i></span>
+						<span id="enddate-area"> - <span class="date-wrapper"><input type="text" class="text" name="enddate" id="enddate" value="'.date('Y-m-d', $enddate).'" /><i class="dashicons dashicons-calendar-alt"></i></span></span>
+						<label class="el-inline-checkbox"><input type="checkbox" name="multiday" id="multiday" value="1" /> '.__('Multi-Day Event','event-list').'</label>
+						<input type="hidden" id="startdate-iso" name="startdate-iso" value="" />
+						<input type="hidden" id="enddate-iso" name="enddate-iso" value="" />
+					</div>
+					<label class="event-option">'.__('Time','event-list').':</label>
+					<div class="event-data"><input type="text" class="text" name="starttime" id="starttime" value="'.$starttime.'" /></div>
+					<label class="event-option">'.__('Location','event-list').':</label>
+					<div class="event-data"><input type="text" class="text" name="location" id="location" value="'.$location.'" /></div>';
+	}
+
+	public function form_top_content() {
+		// set post values if an event gets copied
+		if(!empty($this->copy)) {
+			global $post;
+			$event = get_post($this->copy);
+			$post->post_title = $event->post_title;
+			$post->post_content = $event->post_content;
+		}
+		// show label for event title
+		echo '
+			<label class="event-option">'.__('Event Title','event-list').':</label>';
+	}
+
+	public function form_after_title_content() {
+		global $post, $wp_meta_boxes;
+
+		// create "primary" metabox container, show all "primary" metaboxes in that container and unset the "primary" metaboxes afterwards
+		echo '
+			<div id="postbox-container-0" class="postbox-container">';
+		do_meta_boxes(get_current_screen(), 'primary', $post);
+		unset($wp_meta_boxes[get_post_type('post')]['primary']);
+		echo '
+			</div>';
+		// show label for event content
+		echo '
+			<label class="event-option">'.__('Event Content','event-list').':</label>';
+	}
+
+	public function embed_scripts() {
 		wp_enqueue_script('jquery-ui-datepicker');
-		wp_enqueue_script('link');
 		wp_enqueue_script('eventlist_admin_new_js', EL_URL.'admin/js/admin_new.js');
 		// TODO: wp_localize_jquery_ui_datepicker is available since wordpress version 4.6.0.
 		//       For compatibility to older versions the function_exists test was added, this test can be removed again in a later version.
-		if(function_exists("wp_localize_jquery_ui_datepicker")) {
+		if(function_exists('wp_localize_jquery_ui_datepicker')) {
 			wp_localize_jquery_ui_datepicker();
 		}
 		wp_enqueue_style('eventlist_admin_new', EL_URL.'admin/css/admin_new.css');
@@ -68,165 +138,25 @@ class EL_Admin_New {
 		wp_enqueue_style('eventlist_datepicker', EL_URL.'admin/css/jquery-ui-datepicker.css');
 	}
 
-	public function edit_event() {
-		$dateformat = $this->get_event_dateformat();
-		if($this->is_new && !$this->is_duplicate) {
-			// set next day as date
-			$start_date = current_time('timestamp')+86400; // next day (86400 seconds = 1*24*60*60 = 1 day);
-			$end_date = $start_date;
+	public function save_eventdata($pid, $post, $update) {
+		// don't do on autosave or when new posts are first created
+		if((defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) || 'auto-draft' === $post->post_status) {
+			return $pid;
 		}
-		else {
-			// set event data and existing date
-			$event = $this->db->get_event($this->id);
-			$start_date = strtotime($event->start_date);
-			$end_date = strtotime($event->end_date);
+		$eventdata = $_POST;
+		// provide iso start- and end-date
+		if(!empty($eventdata['startdate-iso'])) {
+			$eventdata['startdate'] = $eventdata['startdate-iso'];
 		}
-		// Add required data for javascript in a hidden field
-		$json = json_encode(array('el_date_format'   => $this->datepicker_format($dateformat),
-		                          'el_start_of_week' => get_option('start_of_week')));
-		$out = '
-				<form method="POST" action="'.add_query_arg('noheader', 'true', '?page=el_admin_main').'">';
-		$out .= "
-				<input type='hidden' id='json_for_js' value='".$json."' />"; // single quote required for value due to json layout
-		// TODO: saving changed metabox status and order is not working yet
-		$out .= wp_nonce_field('autosavenonce', 'autosavenonce', false, false);
-		$out .= wp_nonce_field('closedpostboxesnonce', 'closedpostboxesnonce', false, false);
-		$out .= wp_nonce_field('meta-box-order-nonce', 'meta-box-order-nonce', false, false);
-		$out .= '
-				<div id="poststuff">
-				<div id="post-body" class="metabox-holder columns-2">
-				<div id="post-body-content">';
-		if($this->is_new) {
-			$out .= '
-					<input type="hidden" name="action" value="new" />';
+		if(!empty($eventdata['enddate-iso'])) {
+			$eventdata['enddate'] = $eventdata['enddate-iso'];
 		}
-		else {
-			$out .= '
-					<input type="hidden" name="action" value="edited" />
-					<input type="hidden" name="id" value="'.$this->id.'" />';
+		// set end_date to start_date if multiday is not selected
+		if(empty($eventdata['multiday'])) {
+			$eventdata['enddate'] = $eventdata['startdate'];
 		}
-		$out .= '
-					<table class="form-table">
-					<tr>
-						<th><label>'.__('Title','event-list').' ('.__('required','event-list').')</label></th>
-						<td><input type="text" class="text form-required" name="title" id="title" value="'.str_replace('"', '&quot;', isset($event->title) ? $event->title : '').'" /></td>
-					</tr>
-					<tr>
-						<th><label>'.__('Date','event-list').' ('.__('required','event-list').')</label></th>
-						<td><span class="date-wrapper"><input type="text" class="text form-required" name="start_date" id="start_date" value="'.date('Y-m-d', $start_date).'" /><i class="dashicons dashicons-calendar-alt"></i></span>
-							<span id="end_date_area"> - <span class="date-wrapper"><input type="text" class="text" name="end_date" id="end_date" value="'.date('Y-m-d', $end_date).'" /><i class="dashicons dashicons-calendar-alt"></i></span></span>
-							<label><input type="checkbox" name="multiday" id="multiday" value="1" /> '.__('Multi-Day Event','event-list').'</label>
-							<input type="hidden" id="sql_start_date" name="sql_start_date" value="" />
-							<input type="hidden" id="sql_end_date" name="sql_end_date" value="" />
-						</td>
-					</tr>
-					<tr>
-						<th><label>'.__('Time','event-list').'</label></th>
-						<td><input type="text" class="text" name="time" id="time" value="'.str_replace('"', '&quot;', isset($event->time) ? $event->time : '').'" /></td>
-					</tr>
-					<tr>
-						<th><label>'.__('Location','event-list').'</label></th>
-						<td><input type="text" class="text" name="location" id="location" value="'.str_replace('"', '&quot;', isset($event->location) ? $event->location : '').'" /></td>
-					</tr>
-					<tr>
-						<th><label>'.__('Details','event-list').'</label></th>
-						<td>';
-		$editor_settings = array('drag_drop_upload' => true,
-		                         'textarea_rows' => 20);
-		ob_start();
-			wp_editor(isset($event->details) ? $event->details : '', 'details', $editor_settings);
-			$out .= ob_get_contents();
-		ob_end_clean();
-		$out .= '
-						<p class="note">NOTE: In the text editor, use RETURN to start a new paragraph - use SHIFT-RETURN to start a new line.</p></td>
-					</tr>
-					</table>';
-		$out .= '
-				</div>
-				<div id="postbox-container-1" class="postbox-container">
-				<div id="side-sortables" class="meta-box-sortables ui-sortable">';
-		add_meta_box('event-publish', __('Publish','event-list'), array(&$this, 'render_publish_metabox'), 'event-list');
-		$metabox_args = isset($event->categories) ? array('event_cats' => $event->categories) : null;
-		add_meta_box('event-categories', __('Categories','event-list'), array(&$this, 'render_category_metabox'), 'event-list', 'advanced', 'default', $metabox_args);
-		ob_start();
-			do_meta_boxes('event-list', 'advanced', null);
-			$out .= ob_get_contents();
-		ob_end_clean();
-		$out .= '
-				</div>
-				</div>
-				</div>
-				</div>
-				</form>';
-		return $out;
-	}
-
-	public function render_publish_metabox() {
-		$button_text = $this->is_new ? __('Publish','event-list') : __('Update','event-list');
-		$out = '<div class="submitbox">
-				<div id="delete-action"><a href="?page=el_admin_main" class="submitdelete deletion">'.__('Cancel','event-list').'</a></div>
-				<div id="publishing-action"><input type="submit" class="button button-primary button-large" name="publish" value="'.$button_text.'" id="publish"></div>
-				<div class="clear"></div>
-			</div>';
-		echo $out;
-	}
-
-	public function render_category_metabox($post, $metabox) {
-		$out = '
-				<div id="taxonomy-category" class="categorydiv">
-				<div id="category-all" class="tabs-panel">';
-		$cat_array = $this->categories->get_cat_array('name', 'asc');
-		if(empty($cat_array)) {
-			$out .= __('No categories available.','event-list');
-		}
-		else {
-			$out .= '
-					<ul id="categorychecklist" class="categorychecklist form-no-clear">';
-			$level = 0;
-			$event_cats = $this->categories->convert_db_string($metabox['args']['event_cats'], 'slug_array');
-			foreach($cat_array as $cat) {
-				if($cat['level'] > $level) {
-					//new sub level
-					$out .= '
-						<ul class="children">';
-					$level++;
-				}
-				while($cat['level'] < $level) {
-					// finish sub level
-					$out .= '
-						</ul>';
-					$level--;
-				}
-				$level = $cat['level'];
-				$checked = in_array($cat['slug'], $event_cats) ? 'checked="checked" ' : '';
-				$out .= '
-						<li id="'.$cat['slug'].'" class="popular-catergory">
-							<label class="selectit">
-								<input value="'.$cat['slug'].'" type="checkbox" name="categories[]" id="categories" '.$checked.'/> '.$cat['name'].'
-							</label>
-						</li>';
-			}
-			$out .= '
-					</ul>';
-		}
-
-		$out .= '
-				</div>';
-		// TODO: Adding new categories in edit event form
-		/*		<div id="category-adder" class="wp-hidden-children">
-					<h4><a id="category-add-toggle" href="#category-add" class="hide-if-no-js">'.__('+ Add New Category','event-list').'</a></h4>
-					<p id="category-add" class="category-add wp-hidden-child">
-						<label class="screen-reader-text" for="newcategory">'.__('Category Name','event-list').'</label>
-						<input type="text" name="newcategory" id="newcategory" class="form-required form-input-tip" value="" aria-required="true"/>
-						<input type="button" id="category-add-submit" class="button category-add-submit" value="'.__('Add Category','event-list').'" />
-					</p>
-				</div>*/
-		$out .= '
-				<div id="category-manager">
-					<a id="category-manage-link" href="?page=el_admin_categories">'.__('Goto Category Settings','event-list').'</a>
-				</div>
-				</div>';
-		echo $out;
+		require_once(EL_PATH.'includes/event.php');
+		return !empty(EL_Event::safe_postmeta($pid, $eventdata));
 	}
 
 	private function get_event_dateformat() {
@@ -238,6 +168,40 @@ class EL_Admin_New {
 		}
 	}
 
+	public function change_default_title($title) {
+		// Delete default title in text field (not required due to additional lable above the title field)
+		return '';
+	}
+
+	public function updated_messages($messages) {
+ 		// check used get parameters
+		$revision = isset($_GET['revision']) ? intval($_GET['revision']) : null;
+
+		global $post, $post_ID;
+		$messages['el_events'] = array(
+			0  => '', // Unused. Messages start at index 1.
+			1  => __('Event updated.','event-list').' <a href="'.esc_url(get_permalink($post_ID)).'">'.__('View event','event-list').'</a>',
+			2  => '', // Custom field updated is not required (no custom fields)
+			3  => '', // Custom field deleted is not required (no custom fields)
+			4  => __('Event updated.','event-list'),
+			5  => is_null($revision) ? false : sprintf(__('Event restored to revision from %1$s','event-list'), wp_post_revision_title($revision, false)),
+			6  => __('Event published.','event-list').' <a href="'.esc_url(get_permalink($post_ID)).'">'.__('View event','event-list').'</a>',
+			7  => __('Event saved.'),
+			8  => __('Event submitted.','event-list').' <a target="_blank" href="'.esc_url(add_query_arg('preview', 'true', get_permalink($post_ID))).'">'.__('Preview event','event-list').'</a>',
+			9  => sprintf(__('Event scheduled for: %1$s>','event-list'), '<strong>'.date_i18n(__('M j, Y @ G:i'), strtotime($post->post_date)).'</strong>').
+			      ' <a target="_blank" href="'.esc_url(get_permalink($post_ID)).'">'.__('Preview event','event-list').'</a>',
+			10 => __('Event draft updated.','event-list').' <a target="_blank" href="'.esc_url(add_query_arg('preview', 'true', get_permalink($post_ID))).'">'.__('Preview event','event-list').'</a>',
+		);
+		return $messages;
+	}
+
+	public function set_copied_categories($categories) {
+		if(empty($categories)) {
+			$categories = array_merge($categories, $this->copy_event->get_category_ids());
+		}
+		return $categories;
+	}
+
 	/**
 	 * Convert a date format to a jQuery UI DatePicker format
 	 *
@@ -246,17 +210,17 @@ class EL_Admin_New {
 	 */
 	private function datepicker_format($format) {
 		return str_replace(
-        array(
-            'd', 'j', 'l', 'z', // Day.
-            'F', 'M', 'n', 'm', // Month.
-            'Y', 'y'            // Year.
-        ),
-        array(
-            'dd', 'd', 'DD', 'o',
-            'MM', 'M', 'm', 'mm',
-            'yy', 'y'
-        ),
-		  $format);
+			array(
+				'd', 'j', 'l', 'z', // Day.
+				'F', 'M', 'n', 'm', // Month.
+				'Y', 'y'            // Year.
+			),
+			array(
+				'dd', 'd', 'DD', 'o',
+				'MM', 'M', 'm', 'mm',
+				'yy', 'y'
+			),
+			$format);
 	}
 }
 ?>

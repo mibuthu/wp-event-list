@@ -1,5 +1,5 @@
 <?php
-if(!defined('WPINC')) {
+if(!defined('WP_ADMIN')) {
 	exit;
 }
 
@@ -13,7 +13,7 @@ class EL_Admin_Functions {
 	public static function &get_instance() {
 		// Create class instance if required
 		if(!isset(self::$instance)) {
-			self::$instance = new EL_Admin_Functions();
+			self::$instance = new self();
 		}
 		// Return class instance
 		return self::$instance;
@@ -24,19 +24,17 @@ class EL_Admin_Functions {
 		$this->options->load_options_helptexts();
 	}
 
-	public function show_option_form($section) {
+	public function show_option_form($section, $options) {
+		$options = wp_parse_args($options, array('page' => admin_url('options.php'), 'button_text' => null, 'button_class' => 'primary large'));
 		$out = '
-		<form method="post" action="options.php">
+		<form method="post" action="'.$options['page'].'">
 		';
 		ob_start();
 		settings_fields('el_'.$section);
 		$out .= ob_get_contents();
 		ob_end_clean();
 		$out .= $this->show_option_table($section);
-		ob_start();
-		submit_button();
-		$out .= ob_get_contents();
-		ob_end_clean();
+		$out .= get_submit_button($options['button_text'], $options['button_class']);
 		$out .='
 		</form>';
 		return $out;
@@ -58,22 +56,22 @@ class EL_Admin_Functions {
 					<td>';
 				switch($o['type']) {
 					case 'checkbox':
-						$out .= $this->show_checkbox($oname, $this->options->get($oname), $o['caption']);
+						$out .= $this->show_checkbox($oname, $this->options->get($oname), $o['caption'], isset($o['disable']));
 						break;
 					case 'dropdown':
-						$out .= $this->show_dropdown($oname, $this->options->get($oname), $o['caption']);
+						$out .= $this->show_dropdown($oname, $this->options->get($oname), $o['caption'], isset($o['disable']));
 						break;
 					case 'radio':
-						$out .= $this->show_radio($oname, $this->options->get($oname), $o['caption']);
+						$out .= $this->show_radio($oname, $this->options->get($oname), $o['caption'], isset($o['disable']));
 						break;
 					case 'text':
-						$out .= $this->show_text($oname, $this->options->get($oname));
+						$out .= $this->show_text($oname, $this->options->get($oname), isset($o['disable']));
 						break;
 					case 'textarea':
-						$out .= $this->show_textarea($oname, $this->options->get($oname));
+						$out .= $this->show_textarea($oname, $this->options->get($oname), isset($o['disable']));
 						break;
 					case 'file-upload':
-						$out .= $this->show_file_upload($oname, $o['maxsize']);
+						$out .= $this->show_file_upload($oname, $o['maxsize'], isset($o['disable']));
 				}
 				$out .= '
 					</td>

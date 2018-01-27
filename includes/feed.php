@@ -1,19 +1,17 @@
 <?php
-if(!defined('ABSPATH')) {
+if(!defined('WPINC')) {
 	exit;
 }
 
-require_once(EL_PATH.'includes/db.php');
 require_once(EL_PATH.'includes/options.php');
-require_once(EL_PATH.'includes/categories.php');
+require_once(EL_PATH.'includes/events.php');
 
 // This class handles rss feeds
 class EL_Feed {
 
 	private static $instance;
-	private $db;
 	private $options;
-	private $categories;
+	private $events;
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -25,9 +23,8 @@ class EL_Feed {
 	}
 
 	private function __construct() {
-		$this->db = EL_Db::get_instance();
+		$this->events = EL_Events::get_instance();
 		$this->options = EL_Options::get_instance();
-		$this->categories = EL_Categories::get_instance();
 		$this->init();
 	}
 
@@ -44,7 +41,11 @@ class EL_Feed {
 
 	public function print_eventlist_feed() {
 		header('Content-Type: '.feed_content_type('rss-http').'; charset='.get_option('blog_charset'), true);
-		$events = $this->db->get_events(($this->options->get('el_feed_upcoming_only') ? 'upcoming' : null), null, 0, array('start_date DESC', 'time DESC', 'end_date DESC'));
+		$options = array(
+			'date_filter' => $this->options->get('el_feed_upcoming_only') ? 'upcoming' : null,
+			'order' => array('startdate DESC', 'starttime DESC', 'enddate DESC'),
+		);
+		$events = $this->events->get($options);
 
 		// Print feeds
 		echo
@@ -71,23 +72,21 @@ class EL_Feed {
 			foreach ($events as $event) {
 				echo '
 			<item>
-				<title>'.$this->format_date($event->start_date, $event->end_date).' - '.$this->sanitize_feed_text($event->title).'</title>
-				<pubDate>'.mysql2date('D, d M Y H:i:s +0000', $event->start_date, false).'</pubDate>';
+				<title>'.$this->format_date($event->startdate, $event->enddate).' - '.$this->sanitize_feed_text($event->title).'</title>
+				<pubDate>'.mysql2date('D, d M Y H:i:s +0000', $event->startdate, false).'</pubDate>';
 				// Feed categories
-				$cats = $this->categories->convert_db_string($event->categories, 'name_array');
-				foreach ($cats as $cat) {
+				foreach ($event->categories as $cat) {
 					echo '
-				<category>'.$this->sanitize_feed_text($cat).'</category>';
+				<category>'.$this->sanitize_feed_text($cat->name).'</category>';
 				}
 				echo '
 				<description>
-					'.$this->feed_description($event).'
+					'.$this->event_data($event).'
 				</description>';
-				if(!empty($event->details)) {
+				if(!empty($event->content)) {
 					echo '
 				<content:encoded>
-					'.$this->feed_description($event).':
-					'.$this->sanitize_feed_text(do_shortcode($event->details)).'
+					'.$this->event_data($event).':
 				</content:encoded>';
 				}
 				echo '
@@ -122,45 +121,47 @@ class EL_Feed {
 		}
 	}
 
-	private function feed_description(&$event) {
-		return $this->format_date($event->start_date, $event->end_date). (empty($event->time) ? '' : ' '.$this->sanitize_feed_text($event->time)).(empty($event->location) ? '' : ' - '.$this->sanitize_feed_text($event->location));
+	private function event_data(&$event) {
+		$timetext = empty($event->starttime) ? '' : ' '.$this->sanitize_feed_text($event->starttime);
+		$locationtext = empty($event->location) ? '' : ' - '.$this->sanitize_feed_text($event->location);
+		return $this->format_date($event->startdate, $event->enddate).$timetext.$locationtext.$this->sanitize_feed_text(do_shortcode($event->content));
 	}
 
 	private function sanitize_feed_text($text) {
 		return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
 	}
 
-	private function format_date($start_date, $end_date) {
-		$startArray = explode("-", $start_date);
-		$start_date = mktime(0,0,0,$startArray[1],$startArray[2],$startArray[0]);
+	private function format_date($startdate, $enddate) {
+		$start_array = explode("-", $startdate);
+		$startdate = mktime(0,0,0,$start_array[1],$start_array[2],$start_array[0]);
 
-		$endArray = explode("-", $end_date);
-		$end_date = mktime(0,0,0,$endArray[1],$endArray[2],$endArray[0]);
+		$end_array = explode("-", $enddate);
+		$enddate = mktime(0,0,0,$end_array[1],$end_array[2],$end_array[0]);
 
-		$event_date = '';
+		$eventdate = '';
 
-		if ($start_date == $end_date) {
-			if ($startArray[2] == "00") {
-				$start_date = mktime(0,0,0,$startArray[1],15,$startArray[0]);
-				$event_date .= date("F, Y", $start_date);
-				return $event_date;
+		if ($startdate == $enddate) {
+			if ($start_array[2] == "00") {
+				$startdate = mktime(0,0,0,$start_array[1],15,$start_array[0]);
+				$eventdate .= date("F, Y", $startdate);
+				return $eventdate;
 			}
-			$event_date .= date("M j, Y", $start_date);
-			return $event_date;
+			$eventdate .= date("M j, Y", $startdate);
+			return $eventdate;
 		}
 
-		if ($startArray[0] == $endArray[0]) {
-			if ($startArray[1] == $endArray[1]) {
-				$event_date .= date("M j", $start_date) . "-" . date("j, Y", $end_date);
-				return $event_date;
+		if ($start_array[0] == $end_array[0]) {
+			if ($start_array[1] == $end_array[1]) {
+				$eventdate .= date("M j", $startdate) . "-" . date("j, Y", $enddate);
+				return $eventdate;
 			}
-			$event_date .= date("M j", $start_date) . "-" . date("M j, Y", $end_date);
-			return $event_date;
+			$eventdate .= date("M j", $startdate) . "-" . date("M j, Y", $enddate);
+			return $eventdate;
 
 		}
 
-		$event_date .= date("M j, Y", $start_date) . "-" . date("M j, Y", $end_date);
-		return $event_date;
+		$eventdate .= date("M j, Y", $startdate) . "-" . date("M j, Y", $enddate);
+		return $eventdate;
 	}
 }
 ?>

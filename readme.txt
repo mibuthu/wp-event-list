@@ -2,9 +2,9 @@
 Contributors: mibuthu, clhunsen
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W54LNZMWF9KW2
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, filter, admin, attribute, widget, sidebar, feed, rss
-Requires at least: 3.8
+Requires at least: 4.2
 Tested up to: 4.9
-Stable tag: 0.7.12
+Stable tag: 0.8.0
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -14,13 +14,13 @@ Manage your events and show them on your site.
 
 == Description ==
 
-The purpose of this plugin is to to show a list of events with date, time, description, place, etc. on your site by using a shortcode or a widget.
+The purpose of this plugin is to to show a list of events with date, time, content, location, etc. on your site by using a shortcode or a widget.
 
 = Current Features =
 * Admin pages to view/create/manage/modify events
-* Available event data fields: event title, event date, event start time, event location, event details
+* Available event data fields: event title, event startdate, event enddate, event starttime, event location, event content
 * Beginning and end dates for multi-day events
-* Wordpress's WYSIWYG editor for the event details. So you can include styled text, links, images and other media in your events.
+* Wordpress's WYSIWYG editor for the event content. So you can include styled text, links, images and other media in your events.
 * A duplicate function for events to easier create similar event copies
 * Import multiple events via csv files
 * Event categories
@@ -58,7 +58,7 @@ If you want to install the plugin manually download the zip-file and extract the
 = How do I get an event list to show up in a Page or Post on my site? =
 Insert the shortcode [event-list] in your page or post. You can modify the output by many available shortcode attributes (see Event List -> About page for more infos).
 
-= How do I use styled text and images in the event descriptions? =
+= How do I use styled text and images in the event content? =
 Event List uses the built-in Wordpress WYSIWYG editor. It's exactly the same process like in creating Posts or Pages.
 
 = Can I call the shortcode directly via php e.g. for my own template, theme or plugin? =
@@ -68,19 +68,45 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 
 == Screenshots ==
 
-1. Admin page: Event list table
+1. Admin page: Event-List table
 2. Admin page: New/edit event form
-3. Admin page: Categories
-4. Admin page: Settings (general tab)
-5. Admin page: Settings (admin page tab)
-6. Admin page: Settings (feed tab)
-7. Admin page: About page with help and shortcode attributes list
-8. Admin page: Widget with the available options
-9. Example page with [event-list] shortcode
-10. Example widget
+3. Admin page: Event-List Categories
+4. Admin page: Event-List Settings (general tab)
+5. Admin page: Event-List Settings (frontend tab)
+6. Admin page: Event-List Settings (admin page tab)
+7. Admin page: Event-List Settings (feed tab)
+8. Admin page: Event-List Settings (taxonomy tab)
+9. Admin page: Event-List About page (general tab) with help and about page
+10. Admin page: Event-List About page (shortcode tab) with shortcode attributes list and date range formats
+11. Admin page: Event-List Widget with the available options
+12. Example page with [event-list] shortcode
+13. Example Event-List widget on frontpage
 
 
 == Changelog ==
+
+= 0.8.0 (2018-01-27) =
+* switch plugin and data structure to use custom post types with custom metadata and wordpress categories (with all the advantages and new features provided for custom post types)
+* huge rewrite of the plugin required to implement the above modification
+* small css fixes
+
+Attention:
+The modifications in this versions are huge. This modifications will bring some huge improvements and is a good basis for future improvements (e.g. permalinks).
+But inspite of a lot testing it doesn't eliminate any possibility for some regressions or problems during update process to the new data structure.
+
+Due to this there are some steps you should consider before and after this upgrade:
+* have a look at the support forum if there are issues reported with the new version, and wait with the upgrade until these are solved
+* if you have a big productive site probably do not upgrade in the first days
+* have a look at the PHP error file after upgrade, the upgrade function will write some informations regarding the upgrade process to this file
+* check your shortcodes and widget and do the required manual changes provided below
+* check your events, the event categories and the event output on the frontpage after the upgrade
+* please report problems with the upgrade or issues/regressions after the upgrade in the support forum or on github
+
+There are some manual changes required after the upgrade:
+* renaming the shortcode attribute "show_details" to "show_content" in all shortcodes
+* renaming the shortcode attribute "details_length" to "content_length" in all shortcodes
+* renaming the shortcode attribute "collapse_details" to "collapse_content" in all shortcodes
+* update your widget (goto Admin page -> Appearance -> Widget and "Safe" all event-list widgets)
 
 = 0.7.12 (2017-10-09) =
 * fixed some mature issues with older wordpress versions

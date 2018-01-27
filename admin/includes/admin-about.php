@@ -1,5 +1,5 @@
 <?php
-if(!defined('WPINC')) {
+if(!defined('WP_ADMIN')) {
 	exit;
 }
 
@@ -37,6 +37,7 @@ class EL_Admin_About {
 				<div id="icon-edit-pages" class="icon32"><br /></div><h2>'.__('About Event List','event-list').'</h2>';
 		echo $this->show_tabs($tab);
 		if('atts' == $tab) {
+			$this->daterange->load_formats_helptexts();
 			$this->show_atts();
 			$this->show_filter_syntax();
 			$this->show_date_syntax();
@@ -60,7 +61,7 @@ class EL_Admin_About {
 		$out = '<h3 class="nav-tab-wrapper">';
 		foreach($tabs as $tab => $name){
 			$class = ($tab == $current) ? ' nav-tab-active' : '';
-			$out .= '<a class="nav-tab'.$class.'" href="?page=el_admin_about&amp;tab='.$tab.'">'.$name.'</a>';
+			$out .= '<a class="nav-tab'.$class.'" href="'.add_query_arg('tab', $tab, add_query_arg([])).'">'.$name.'</a>';
 		}
 		$out .= '</h3>';
 		return $out;
@@ -69,7 +70,7 @@ class EL_Admin_About {
 	private function show_help() {
 		echo '
 			<h3 class="el-headline">'.__('Help and Instructions','event-list').'</h3>
-			<p>'.sprintf(__('You can manage the events %1$shere%2$s','event-list'), '<a href="'.admin_url('admin.php?page=el_admin_main').'">', '</a>').'.</p>
+			<p>'.sprintf(__('You can manage the events %1$shere%2$s','event-list'), '<a href="'.admin_url('edit.php?post_type=el_events').'">', '</a>').'.</p>
 			<p>'.__('To show the events on your site you have 2 possibilities','event-list').':</p>
 			<ul class="el-show-event-options"><li>'.sprintf(__('you can place the <strong>shortcode</strong> %1$s on any page or post','event-list'), '<code>[event-list]</code>').'</li>
 			<li>'.sprintf(__('you can add the <strong>widget</strong> %1$s in your sidebars','event-list'), '"Event List"').'</li></ul>
