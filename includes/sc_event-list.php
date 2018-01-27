@@ -204,7 +204,7 @@ class SC_Event_List {
 		$out .= '<div class="event-title"><h3>';
 		$title = $event->truncate(esc_attr($event->title), $a['title_length'], $this->single_event);
 		if($this->is_link_available($a, $event)) {
-			$out .= $this->get_event_link($a, $event->post->id, $title);
+			$out .= $this->get_event_link($a, $event->post->ID, $title);
 		}
 		else {
 			$out .= $title;
