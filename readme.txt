@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, filter, admin, attribute, widget, sidebar, feed, rss
 Requires at least: 4.2
 Tested up to: 4.9
-Stable tag: 0.7.12
+Stable tag: 0.8.0
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -84,6 +84,29 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 
 
 == Changelog ==
+
+= 0.8.0 (2018-01-27) =
+* switch plugin and data structure to use custom post types with custom metadata and wordpress categories (with all the advantages and new features provided for custom post types)
+* huge rewrite of the plugin required to implement the above modification
+* small css fixes
+
+Attention:
+The modifications in this versions are huge. This modifications will bring some huge improvements and is a good basis for future improvements (e.g. permalinks).
+But inspite of a lot testing it doesn't eliminate any possibility for some regressions or problems during update process to the new data structure.
+
+Due to this there are some steps you should consider before and after this upgrade:
+* have a look at the support forum if there are issues reported with the new version, and wait with the upgrade until these are solved
+* if you have a big productive site probably do not upgrade in the first days
+* have a look at the PHP error file after upgrade, the upgrade function will write some informations regarding the upgrade process to this file
+* check your shortcodes and widget and do the required manual changes provided below
+* check your events, the event categories and the event output on the frontpage after the upgrade
+* please report problems with the upgrade or issues/regressions after the upgrade in the support forum or on github
+
+There are some manual changes required after the upgrade:
+* renaming the shortcode attribute "show_details" to "show_content" in all shortcodes
+* renaming the shortcode attribute "details_length" to "content_length" in all shortcodes
+* renaming the shortcode attribute "collapse_details" to "collapse_content" in all shortcodes
+* update your widget (goto Admin page -> Appearance -> Widget and "Safe" all event-list widgets)
 
 = 0.7.12 (2017-10-09) =
 * fixed some mature issues with older wordpress versions

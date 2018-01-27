@@ -10,7 +10,7 @@ Text Domain: event-list
 License: GPLv2
 
 A plugin for the blogging MySQL/PHP-based WordPress.
-Copyright 2012-2017 mibuthu
+Copyright 2012-2018 mibuthu
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNUs General Public License
