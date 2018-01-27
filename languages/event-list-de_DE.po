@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-event-list\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/event-list/\n"
-"POT-Creation-Date: 2018-01-21 08:57+0100\n"
+"POT-Creation-Date: 2018-01-27 18:32+0100\n"
 "PO-Revision-Date: 2018-01-21 18:20+0000\n"
 "Last-Translator: mibuthu\n"
 "Language-Team: German (Germany) (http://www.transifex.com/mibuthu/wp-event-list/language/de_DE/)\n"
@@ -36,23 +36,23 @@ msgstr "Upgrade des Plugins %1$s erfolgreich"
 msgid "no additional information available"
 msgstr "keine zusätzlichen Informationen verfügbar"
 
-#: admin/admin.php:94 admin/includes/admin-settings.php:58
+#: admin/admin.php:95 admin/includes/admin-settings.php:58
 msgid "Event List Settings"
 msgstr "Event List Einstellungen"
 
-#: admin/admin.php:94
+#: admin/admin.php:95
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: admin/admin.php:98 admin/includes/admin-about.php:37
+#: admin/admin.php:99 admin/includes/admin-about.php:37
 msgid "About Event List"
 msgstr "Informationen zu Event List"
 
-#: admin/admin.php:98
+#: admin/admin.php:99
 msgid "About"
 msgstr "Informationen"
 
-#: admin/admin.php:120
+#: admin/admin.php:121
 #, php-format
 msgid "%s Event"
 msgid_plural "%s Events"
@@ -516,7 +516,7 @@ msgstr "Importieren erfolgreich abgeschlossen!"
 msgid "Go back to All Events"
 msgstr "Gehe zurück zu Alle Termine"
 
-#: admin/includes/admin-import.php:169 admin/includes/admin-main.php:59
+#: admin/includes/admin-import.php:169 admin/includes/admin-main.php:60
 #: includes/widget_helptexts.php:8
 msgid "Title"
 msgstr "Titel"
@@ -534,7 +534,7 @@ msgstr "End-Datum"
 msgid "Time"
 msgstr "Uhrzeit"
 
-#: admin/includes/admin-import.php:173 admin/includes/admin-main.php:60
+#: admin/includes/admin-import.php:173 admin/includes/admin-main.php:61
 #: admin/includes/admin-new.php:94 includes/options_helptexts.php:45
 #: includes/options_helptexts.php:46
 msgid "Location"
@@ -563,24 +563,24 @@ msgstr "Importiere die Termine"
 msgid "Add additional categories"
 msgstr "Kategorien ergänzen"
 
-#: admin/includes/admin-import.php:254 admin/includes/admin-main.php:190
+#: admin/includes/admin-import.php:254 admin/includes/admin-main.php:191
 msgid "Import"
 msgstr "Importieren"
 
-#: admin/includes/admin-main.php:58
+#: admin/includes/admin-main.php:59
 msgid "Event Date"
 msgstr "Termin-Datum"
 
-#: admin/includes/admin-main.php:62
+#: admin/includes/admin-main.php:63
 msgid "Author"
 msgstr "Autor"
 
-#: admin/includes/admin-main.php:124
+#: admin/includes/admin-main.php:125
 #, php-format
 msgid "Add a copy of %1$s"
 msgstr "Erstelle eine Kopie von %1$s"
 
-#: admin/includes/admin-main.php:124
+#: admin/includes/admin-main.php:125
 msgid "Copy"
 msgstr "Kopieren"
 

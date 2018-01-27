@@ -3,18 +3,19 @@
 # This file is distributed under the same license as the corresponding wordpress plugin.
 # 
 # Translators:
+# Annika Kreitsman <annikamai@inarmonia.ee>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: wp-event-list\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/event-list/\n"
 "POT-Creation-Date: 2018-01-27 18:32+0100\n"
-"PO-Revision-Date: 2018-01-21 07:57+0000\n"
+"PO-Revision-Date: 2018-01-27 17:34+0000\n"
 "Last-Translator: mibuthu\n"
-"Language-Team: Spanish (Spain) (http://www.transifex.com/mibuthu/wp-event-list/language/es_ES/)\n"
+"Language-Team: Estonian (Estonia) (http://www.transifex.com/mibuthu/wp-event-list/language/et_EE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es_ES\n"
+"Language: et_EE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: admin/admin.php:54
@@ -29,23 +30,23 @@ msgstr ""
 
 #: admin/admin.php:55
 msgid "no additional information available"
-msgstr ""
+msgstr "täiendavat teavet ei ole"
 
 #: admin/admin.php:95 admin/includes/admin-settings.php:58
 msgid "Event List Settings"
-msgstr "Ajustes de eventos"
+msgstr "Sündmuste loendi seaded"
 
 #: admin/admin.php:95
 msgid "Settings"
-msgstr "Ajustes"
+msgstr "Seaded"
 
 #: admin/admin.php:99 admin/includes/admin-about.php:37
 msgid "About Event List"
-msgstr "Acerca de la lista de eventos"
+msgstr "Sündmuste loendist"
 
 #: admin/admin.php:99
 msgid "About"
-msgstr "Sobre"
+msgstr ""
 
 #: admin/admin.php:121
 #, php-format
@@ -56,7 +57,7 @@ msgstr[1] ""
 
 #: admin/includes/admin-about.php:59 admin/includes/admin-settings.php:75
 msgid "General"
-msgstr "General"
+msgstr ""
 
 #: admin/includes/admin-about.php:60 admin/includes/admin-about.php:78
 #: admin/includes/admin-about.php:105
@@ -65,7 +66,7 @@ msgstr ""
 
 #: admin/includes/admin-about.php:72
 msgid "Help and Instructions"
-msgstr "Ayuda e instrucciones"
+msgstr "Abi ja juhised"
 
 #: admin/includes/admin-about.php:73
 #, php-format
@@ -74,17 +75,17 @@ msgstr ""
 
 #: admin/includes/admin-about.php:74
 msgid "To show the events on your site you have 2 possibilities"
-msgstr "Para mostrar los eventos en tu sitio web tienes 2 posibilidades"
+msgstr "Saidil olevate sündmuste kuvamiseks on 2 võimalust"
 
 #: admin/includes/admin-about.php:75
 #, php-format
 msgid "you can place the <strong>shortcode</strong> %1$s on any page or post"
-msgstr ""
+msgstr "lisades lühikoodi<strong> shotcode</strong> %1$s mis tahes lehele või postitusele"
 
 #: admin/includes/admin-about.php:76
 #, php-format
 msgid "you can add the <strong>widget</strong> %1$s in your sidebars"
-msgstr ""
+msgstr "lisades vidina <strong>widget</strong> %1$s külgribale"
 
 #: admin/includes/admin-about.php:77
 msgid ""
@@ -112,11 +113,11 @@ msgstr ""
 
 #: admin/includes/admin-about.php:80 includes/widget_helptexts.php:88
 msgid "Add links to the single events"
-msgstr ""
+msgstr "Lisa link sündmuse juurde"
 
 #: admin/includes/admin-about.php:80 includes/widget_helptexts.php:95
 msgid "Add a link to the Event List page"
-msgstr ""
+msgstr "Lisa link lehe sündmuste loendisse"
 
 #: admin/includes/admin-about.php:81
 msgid ""
@@ -153,11 +154,11 @@ msgstr ""
 
 #: admin/includes/admin-about.php:86
 msgid "Settings page"
-msgstr ""
+msgstr "Seadete leht"
 
 #: admin/includes/admin-about.php:92
 msgid "About the plugin author"
-msgstr ""
+msgstr "Plugina autorist"
 
 #: admin/includes/admin-about.php:94
 #, php-format
@@ -211,24 +212,24 @@ msgstr ""
 
 #: admin/includes/admin-about.php:124
 msgid "Attribute name"
-msgstr "Nombre de atributo"
+msgstr "Atribuudi nimi"
 
 #: admin/includes/admin-about.php:125
 msgid "Value options"
-msgstr "Opciones de valor"
+msgstr ""
 
 #: admin/includes/admin-about.php:126
 msgid "Default value"
-msgstr "Valor por defecto"
+msgstr ""
 
 #: admin/includes/admin-about.php:127
 msgid "Description"
-msgstr "Descripción"
+msgstr "Kirjeldus"
 
 #: admin/includes/admin-about.php:145 includes/sc_event-list_helptexts.php:26
 #: includes/sc_event-list_helptexts.php:31
 msgid "Filter Syntax"
-msgstr "Sintaxis de filtro"
+msgstr ""
 
 #: admin/includes/admin-about.php:146
 msgid ""
@@ -245,33 +246,33 @@ msgstr ""
 
 #: admin/includes/admin-about.php:147
 msgid "AND"
-msgstr "Y"
+msgstr "JA"
 
 #: admin/includes/admin-about.php:147
 msgid "OR"
-msgstr "O"
+msgstr "VÕI"
 
 #: admin/includes/admin-about.php:147
 msgid "or"
-msgstr "o"
+msgstr "või"
 
 #: admin/includes/admin-about.php:147
 msgid "and"
-msgstr "y"
+msgstr "ja"
 
 #: admin/includes/admin-about.php:148
 msgid "Examples for cat filters:"
-msgstr "Ejemplos de filtros cat:"
+msgstr ""
 
 #: admin/includes/admin-about.php:149
 #, php-format
 msgid "Show all events with category %1$s."
-msgstr ""
+msgstr "Näita kõiki sündmusi koos kategooriaga %1$s."
 
 #: admin/includes/admin-about.php:150
 #, php-format
 msgid "Show all events with category %1$s or %2$s."
-msgstr ""
+msgstr "Näita kõiki sündmusi koos kategooriaga %1$s või %2$s."
 
 #: admin/includes/admin-about.php:151
 #, php-format
@@ -282,7 +283,7 @@ msgstr ""
 
 #: admin/includes/admin-about.php:156 includes/sc_event-list_helptexts.php:25
 msgid "Available Date Formats"
-msgstr "Formatos de fecha disponibles"
+msgstr "Saadaolevad kuupäeva vormingud"
 
 #: admin/includes/admin-about.php:157
 msgid "For date filters you can use the following date formats:"
@@ -290,7 +291,7 @@ msgstr ""
 
 #: admin/includes/admin-about.php:165 includes/sc_event-list_helptexts.php:25
 msgid "Available Date Range Formats"
-msgstr "Formatos Rango Fecha Disponible"
+msgstr "Saadaolevad kuupäevavahemiku formaadid"
 
 #: admin/includes/admin-about.php:166
 msgid "For date filters you can use the following daterange formats:"
@@ -298,15 +299,15 @@ msgstr ""
 
 #: admin/includes/admin-about.php:178
 msgid "Value"
-msgstr "Valor"
+msgstr "Väärtus"
 
 #: admin/includes/admin-about.php:182
 msgid "Example"
-msgstr "Ejemplo"
+msgstr "Näide"
 
 #: admin/includes/admin-categories.php:38
 msgid "Synchronize with post categories"
-msgstr ""
+msgstr "Sünkrooni postituste kategooriatega"
 
 #: admin/includes/admin-categories.php:46
 #, php-format
@@ -340,15 +341,15 @@ msgstr ""
 
 #: admin/includes/admin-categories.php:55
 msgid "An Error occured during the category sync"
-msgstr ""
+msgstr "Kategooria sünkroonimisel tekkis viga"
 
 #: admin/includes/admin-categories.php:59
 msgid "Category sync finished"
-msgstr ""
+msgstr "Kategooria sünkroonimine on lõpetatud"
 
 #: admin/includes/admin-category-sync.php:45
 msgid "Error: You are not allowed to view this page!"
-msgstr ""
+msgstr "Viga: Sul ei ole luba seda lehekülge näha!"
 
 #: admin/includes/admin-category-sync.php:62
 msgid "Affected Categories when switching to seperate Event Categories"
@@ -385,11 +386,11 @@ msgstr ""
 
 #: admin/includes/admin-category-sync.php:73
 msgid "Event Categories: Synchronise with Post Categories"
-msgstr ""
+msgstr "Sündmuste kategooriate sünkroonimine postituskategooriatega"
 
 #: admin/includes/admin-category-sync.php:74
 msgid "Start synchronisation"
-msgstr ""
+msgstr "Käivitage sünkroonimine"
 
 #: admin/includes/admin-category-sync.php:75
 msgid ""
@@ -427,19 +428,19 @@ msgstr ""
 
 #: admin/includes/admin-category-sync.php:117
 msgid "none"
-msgstr ""
+msgstr "pole ühtegi"
 
 #: admin/includes/admin-import.php:45
 msgid "Import Events"
-msgstr "Importar Eventos"
+msgstr "Impordi sündmused"
 
 #: admin/includes/admin-import.php:65 admin/includes/admin-import.php:118
 msgid "Step"
-msgstr "Paso"
+msgstr "Samm"
 
 #: admin/includes/admin-import.php:65
 msgid "Set import file and options"
-msgstr ""
+msgstr "Määrake impordifail ja valikud"
 
 #: admin/includes/admin-import.php:68
 #, php-format
@@ -448,7 +449,7 @@ msgstr ""
 
 #: admin/includes/admin-import.php:71
 msgid "Example file"
-msgstr "Archivo de ejemplo"
+msgstr "Näidisfail"
 
 #: admin/includes/admin-import.php:72
 #, php-format
@@ -458,7 +459,7 @@ msgstr ""
 
 #: admin/includes/admin-import.php:73
 msgid "Note"
-msgstr "Nota"
+msgstr "Märge"
 
 #: admin/includes/admin-import.php:73
 msgid ""
@@ -469,15 +470,15 @@ msgstr ""
 #: admin/includes/admin-import.php:80 admin/includes/admin-import.php:88
 #: admin/includes/admin-import.php:101
 msgid "Sorry, there has been an error."
-msgstr ""
+msgstr "Vabandage, tekkis viga."
 
 #: admin/includes/admin-import.php:81
 msgid "The file does not exist, please try again."
-msgstr ""
+msgstr "Sellist faili ei eksisteeri, palun proovi uuesti."
 
 #: admin/includes/admin-import.php:89
 msgid "The file is not a CSV file."
-msgstr ""
+msgstr "See ei ole CSV file."
 
 #: admin/includes/admin-import.php:118
 msgid "Events review and additonal category selection"
@@ -497,47 +498,47 @@ msgstr ""
 
 #: admin/includes/admin-import.php:156
 msgid "Import with errors!"
-msgstr ""
+msgstr "Impordi koos vigadega!"
 
 #: admin/includes/admin-import.php:157
 msgid "Sorry, an error occurred during import!"
-msgstr ""
+msgstr "Vabandame, importimise käigus tekkis viga!"
 
 #: admin/includes/admin-import.php:161
 msgid "Import successful!"
-msgstr ""
+msgstr "Importimine oli edukas!"
 
 #: admin/includes/admin-import.php:162
 msgid "Go back to All Events"
-msgstr ""
+msgstr "Mine tagasi \"Kõik sündmused\" juurde"
 
 #: admin/includes/admin-import.php:169 admin/includes/admin-main.php:60
 #: includes/widget_helptexts.php:8
 msgid "Title"
-msgstr "Título"
+msgstr "Pealkiri"
 
 #: admin/includes/admin-import.php:170
 msgid "Start Date"
-msgstr "Fecha Inicio"
+msgstr "Alguskuupäev"
 
 #: admin/includes/admin-import.php:171
 msgid "End Date"
-msgstr "Fecha Final"
+msgstr "Lõppkuupäev"
 
 #: admin/includes/admin-import.php:172 admin/includes/admin-new.php:92
 #: includes/options_helptexts.php:40 includes/options_helptexts.php:41
 msgid "Time"
-msgstr "Hora"
+msgstr "Aeg"
 
 #: admin/includes/admin-import.php:173 admin/includes/admin-main.php:61
 #: admin/includes/admin-new.php:94 includes/options_helptexts.php:45
 #: includes/options_helptexts.php:46
 msgid "Location"
-msgstr "Ubicación"
+msgstr "Koht"
 
 #: admin/includes/admin-import.php:174
 msgid "Content"
-msgstr ""
+msgstr "Sisu"
 
 #: admin/includes/admin-import.php:175
 msgid "Category slugs"
@@ -552,19 +553,19 @@ msgstr ""
 
 #: admin/includes/admin-import.php:246
 msgid "Import events"
-msgstr ""
+msgstr "Impordi sündmused"
 
 #: admin/includes/admin-import.php:247
 msgid "Add additional categories"
-msgstr ""
+msgstr "Lisage täiendavaid kategooriaid"
 
 #: admin/includes/admin-import.php:254 admin/includes/admin-main.php:191
 msgid "Import"
-msgstr "Importar"
+msgstr "Impordi"
 
 #: admin/includes/admin-main.php:59
 msgid "Event Date"
-msgstr ""
+msgstr "Sündmuse kuupäev"
 
 #: admin/includes/admin-main.php:63
 msgid "Author"
@@ -577,43 +578,43 @@ msgstr ""
 
 #: admin/includes/admin-main.php:125
 msgid "Copy"
-msgstr ""
+msgstr "Kopeeri"
 
 #: admin/includes/admin-new.php:51
 msgid "Event data"
-msgstr ""
+msgstr "Sündmuse andmed"
 
 #: admin/includes/admin-new.php:81
 msgid "Add Copy"
-msgstr ""
+msgstr "Lisa koopia"
 
 #: admin/includes/admin-new.php:85
 msgid "Date"
-msgstr "Fecha"
+msgstr "Kuupäev"
 
 #: admin/includes/admin-new.php:85
 msgid "required"
-msgstr "obligatorio"
+msgstr "nõutud"
 
 #: admin/includes/admin-new.php:88
 msgid "Multi-Day Event"
-msgstr "Evento de varios días"
+msgstr "Mitmepäevane sündmus"
 
 #: admin/includes/admin-new.php:108
 msgid "Event Title"
-msgstr ""
+msgstr "Sündmuse pealkiri"
 
 #: admin/includes/admin-new.php:123
 msgid "Event Content"
-msgstr ""
+msgstr "Sündmuse sisu"
 
 #: admin/includes/admin-new.php:183 admin/includes/admin-new.php:186
 msgid "Event updated."
-msgstr ""
+msgstr "Sündmus uuendatud."
 
 #: admin/includes/admin-new.php:183 admin/includes/admin-new.php:188
 msgid "View event"
-msgstr ""
+msgstr "Vaata sündmust"
 
 #: admin/includes/admin-new.php:187
 #, php-format
@@ -622,16 +623,16 @@ msgstr ""
 
 #: admin/includes/admin-new.php:188
 msgid "Event published."
-msgstr ""
+msgstr "Sündmus avaldatud."
 
 #: admin/includes/admin-new.php:190
 msgid "Event submitted."
-msgstr ""
+msgstr "Sündmus on esitatud."
 
 #: admin/includes/admin-new.php:190 admin/includes/admin-new.php:192
 #: admin/includes/admin-new.php:193
 msgid "Preview event"
-msgstr ""
+msgstr "Sündmuse eelvaade"
 
 #: admin/includes/admin-new.php:191
 #, php-format
@@ -640,7 +641,7 @@ msgstr ""
 
 #: admin/includes/admin-new.php:193
 msgid "Event draft updated."
-msgstr ""
+msgstr "Sündmuse visand uuendatud."
 
 #: admin/includes/admin-settings.php:64
 msgid "Go to Event Category switching page"
@@ -648,15 +649,15 @@ msgstr ""
 
 #: admin/includes/admin-settings.php:76
 msgid "Frontend Settings"
-msgstr "Configuración de interfaz"
+msgstr ""
 
 #: admin/includes/admin-settings.php:77
 msgid "Admin Page Settings"
-msgstr "Configuración de página de administrador"
+msgstr ""
 
 #: admin/includes/admin-settings.php:78
 msgid "Feed Settings"
-msgstr "Configuración Conectores"
+msgstr ""
 
 #: admin/includes/admin-settings.php:79
 msgid "Category Taxonomy"
@@ -664,7 +665,7 @@ msgstr ""
 
 #: includes/daterange_helptexts.php:7
 msgid "Year"
-msgstr "Año"
+msgstr "Aasta"
 
 #: includes/daterange_helptexts.php:8
 msgid "A year can be specified in 4 digit format."
@@ -684,7 +685,7 @@ msgstr ""
 
 #: includes/daterange_helptexts.php:12
 msgid "Month"
-msgstr "Mes"
+msgstr "Kuu"
 
 #: includes/daterange_helptexts.php:13
 msgid ""
@@ -698,7 +699,7 @@ msgstr ""
 
 #: includes/daterange_helptexts.php:17
 msgid "Day"
-msgstr "Día"
+msgstr "Päev"
 
 #: includes/daterange_helptexts.php:18
 msgid ""
@@ -708,7 +709,7 @@ msgstr ""
 
 #: includes/daterange_helptexts.php:21
 msgid "Relative Year"
-msgstr "Año relativo"
+msgstr ""
 
 #: includes/daterange_helptexts.php:22 includes/daterange_helptexts.php:28
 #: includes/daterange_helptexts.php:34 includes/daterange_helptexts.php:42
@@ -740,27 +741,27 @@ msgstr ""
 
 #: includes/daterange_helptexts.php:27
 msgid "Relative Month"
-msgstr "Mes relativo"
+msgstr ""
 
 #: includes/daterange_helptexts.php:28
 msgid "A relative month"
-msgstr "Un mes relativo"
+msgstr ""
 
 #: includes/daterange_helptexts.php:29
 msgid "number of months"
-msgstr "número de meses"
+msgstr ""
 
 #: includes/daterange_helptexts.php:33
 msgid "Relative Week"
-msgstr "Semana relativa"
+msgstr ""
 
 #: includes/daterange_helptexts.php:34
 msgid "A relative week"
-msgstr "Una semana relativa"
+msgstr ""
 
 #: includes/daterange_helptexts.php:35
 msgid "number of weeks"
-msgstr "número de semanas"
+msgstr ""
 
 #: includes/daterange_helptexts.php:36
 msgid "the resulting week"
@@ -775,19 +776,19 @@ msgstr ""
 
 #: includes/daterange_helptexts.php:41
 msgid "Relative Day"
-msgstr "Día relativo"
+msgstr ""
 
 #: includes/daterange_helptexts.php:42
 msgid "A relative day"
-msgstr "Un día relativo"
+msgstr ""
 
 #: includes/daterange_helptexts.php:43
 msgid "number of days"
-msgstr "Número de días"
+msgstr ""
 
 #: includes/daterange_helptexts.php:49
 msgid "Date range"
-msgstr "Rango de fechas"
+msgstr "Kuupäevavahemik"
 
 #: includes/daterange_helptexts.php:50
 msgid ""
@@ -807,7 +808,7 @@ msgstr ""
 
 #: includes/daterange_helptexts.php:59 includes/filterbar.php:287
 msgid "Upcoming"
-msgstr "Próximamente"
+msgstr "Tulemas"
 
 #: includes/daterange_helptexts.php:60
 msgid "This value defines a range from the actual day to the future."
@@ -815,7 +816,7 @@ msgstr ""
 
 #: includes/daterange_helptexts.php:64 includes/filterbar.php:291
 msgid "Past"
-msgstr "Pasado"
+msgstr "Toimunud"
 
 #: includes/daterange_helptexts.php:65
 msgid "This value defines a range from the past to the previous day."
@@ -827,59 +828,59 @@ msgstr ""
 
 #: includes/events_post_type.php:60
 msgid "Events"
-msgstr "Eventos"
+msgstr "Sündmused"
 
 #: includes/events_post_type.php:61
 msgid "Event"
-msgstr ""
+msgstr "Sündmus"
 
 #: includes/events_post_type.php:62
 msgid "Add New"
-msgstr "Añadir Nuevo"
+msgstr "Lisa uus"
 
 #: includes/events_post_type.php:63
 msgid "Add New Event"
-msgstr "Añadir Nuevo Evento"
+msgstr "Lisa uus sündmus"
 
 #: includes/events_post_type.php:64
 msgid "Edit Event"
-msgstr "Editar Evento"
+msgstr "Muuda sündmust"
 
 #: includes/events_post_type.php:65
 msgid "New Event"
-msgstr ""
+msgstr "Uus sündmus"
 
 #: includes/events_post_type.php:66
 msgid "View Event"
-msgstr ""
+msgstr "Vaata sündmust"
 
 #: includes/events_post_type.php:67
 msgid "View Events"
-msgstr ""
+msgstr "Vaata sündmusi"
 
 #: includes/events_post_type.php:68
 msgid "Search Events"
-msgstr ""
+msgstr "Otsi sündmusi"
 
 #: includes/events_post_type.php:69
 msgid "No events found"
-msgstr ""
+msgstr "Ühtegi sündmust ei leitud"
 
 #: includes/events_post_type.php:70
 msgid "No events found in Trash"
-msgstr ""
+msgstr "Prügikastist ei leitud ühtegi sündmust"
 
 #: includes/events_post_type.php:72
 msgid "All Events"
-msgstr "Añadir Eventos"
+msgstr "Kõik sündmused"
 
 #: includes/events_post_type.php:73
 msgid "Event Archives"
-msgstr ""
+msgstr "Sündmuste arhiiv"
 
 #: includes/events_post_type.php:74
 msgid "Event Attributes"
-msgstr ""
+msgstr "Sündmuse atribuudid"
 
 #: includes/events_post_type.php:75
 msgid "Insert into event"
@@ -891,35 +892,35 @@ msgstr ""
 
 #: includes/events_post_type.php:77
 msgid "Event List"
-msgstr "Listado Eventos"
+msgstr "Sündmuse loend"
 
 #: includes/events_post_type.php:78
 msgid "Filter events list"
-msgstr ""
+msgstr "Filtreeri sündmuste loendit"
 
 #: includes/events_post_type.php:79
 msgid "Events list navigation"
-msgstr ""
+msgstr "Sündmuste loendi navigeerimine"
 
 #: includes/events_post_type.php:80
 msgid "Events list"
-msgstr ""
+msgstr "Sündmuste loend"
 
 #: includes/filterbar.php:229 includes/sc_event-list_helptexts.php:60
 msgid "Reset"
-msgstr ""
+msgstr "Lähtesta"
 
 #: includes/filterbar.php:278
 msgid "All"
-msgstr "Todos"
+msgstr "Kõik"
 
 #: includes/filterbar.php:281
 msgid "All Dates"
-msgstr ""
+msgstr "Kõik kuupäevad"
 
 #: includes/options_helptexts.php:10
 msgid "CSV File to import"
-msgstr "Importar vía archivo CSV"
+msgstr ""
 
 #: includes/options_helptexts.php:12
 msgid "Please select the file which contains the event data in CSV format."
@@ -927,7 +928,7 @@ msgstr ""
 
 #: includes/options_helptexts.php:15
 msgid "Used date format"
-msgstr "Formato de Fecha utilizado"
+msgstr "Kasutatud kuupäevavorming"
 
 #: includes/options_helptexts.php:17
 msgid ""
@@ -937,7 +938,7 @@ msgstr ""
 
 #: includes/options_helptexts.php:21
 msgid "Text for no events"
-msgstr "Texto para ningún evento"
+msgstr "Tekst sündmuste puudumisel"
 
 #: includes/options_helptexts.php:23
 msgid ""
@@ -947,7 +948,7 @@ msgstr ""
 
 #: includes/options_helptexts.php:26
 msgid "Multiday filter range"
-msgstr ""
+msgstr "Mitmepäevase filtri vahemik"
 
 #: includes/options_helptexts.php:27
 msgid "Use the complete event range in the date filter"
@@ -973,11 +974,11 @@ msgstr ""
 
 #: includes/options_helptexts.php:33
 msgid "Date display"
-msgstr "Indicación de la fecha"
+msgstr "Kuupäeva kuvamine"
 
 #: includes/options_helptexts.php:34
 msgid "Show the date only once per day"
-msgstr ""
+msgstr "Kuva kuupäeva ainult ühe korra päeva kohta"
 
 #: includes/options_helptexts.php:35
 msgid ""
@@ -993,7 +994,7 @@ msgstr ""
 
 #: includes/options_helptexts.php:39
 msgid "HTML tags"
-msgstr "Etiquetas HTML"
+msgstr ""
 
 #: includes/options_helptexts.php:40 includes/options_helptexts.php:45
 #, php-format
@@ -1031,7 +1032,7 @@ msgstr ""
 
 #: includes/options_helptexts.php:56
 msgid "Text for \"Show content\""
-msgstr ""
+msgstr "Tekst \"Näita sisu\" jaoks"
 
 #: includes/options_helptexts.php:57
 msgid ""
@@ -1041,7 +1042,7 @@ msgstr ""
 
 #: includes/options_helptexts.php:60
 msgid "Text for \"Hide content\""
-msgstr ""
+msgstr "Tekst \"Peida sisu\" jaoks"
 
 #: includes/options_helptexts.php:61
 msgid ""
@@ -1051,12 +1052,12 @@ msgstr ""
 
 #: includes/options_helptexts.php:64
 msgid "Disable CSS file"
-msgstr "Deshabitar CSS"
+msgstr "Keela CSS-fail"
 
 #: includes/options_helptexts.php:65
 #, php-format
 msgid "Disable the %1$s file."
-msgstr ""
+msgstr "Keela %1$s fail."
 
 #: includes/options_helptexts.php:66
 #, php-format
@@ -1071,7 +1072,7 @@ msgstr ""
 
 #: includes/options_helptexts.php:71
 msgid "Date format in edit form"
-msgstr ""
+msgstr "Kuupäevavorming muutmisvormis"
 
 #: includes/options_helptexts.php:72
 msgid ""
@@ -1091,7 +1092,7 @@ msgstr ""
 
 #: includes/options_helptexts.php:78 includes/options_helptexts.php:106
 msgid "Enable RSS feed"
-msgstr ""
+msgstr "Luba RSS-voog"
 
 #: includes/options_helptexts.php:79
 msgid "Enable support for an event RSS feed"
@@ -1099,7 +1100,7 @@ msgstr ""
 
 #: includes/options_helptexts.php:80
 msgid "This option activates a RSS feed for the events."
-msgstr ""
+msgstr "See valik aktiveerib ürituste RSS-voo."
 
 #: includes/options_helptexts.php:81
 msgid ""
@@ -1140,20 +1141,20 @@ msgstr ""
 
 #: includes/options_helptexts.php:94
 msgid "Listed events"
-msgstr ""
+msgstr "Loetletud sündmused"
 
 #: includes/options_helptexts.php:95
 msgid "Only show upcoming events in feed"
-msgstr ""
+msgstr "Näita ainult eelseisvaid sündmusi sündmustevoos."
 
 #: includes/options_helptexts.php:96
 msgid ""
 "If this option is enabled only the upcoming events are listed in the feed."
-msgstr ""
+msgstr "Kui see suvand on lubatud, kuvatakse ainult eelolevad sündmused sündmustevoos."
 
 #: includes/options_helptexts.php:97
 msgid "If disabled all events (upcoming and past) will be listed."
-msgstr ""
+msgstr "Kui see suvand ei ole lubatud, kuvatakse kõik (nii möödunud kui ka eelolevad) sündmused sündmustevoos."
 
 #: includes/options_helptexts.php:100
 msgid "Add RSS feed link in head"
@@ -1191,24 +1192,24 @@ msgstr ""
 
 #: includes/options_helptexts.php:109
 msgid "Position of the RSS feed link"
-msgstr ""
+msgstr "Paiguta RSS-voo link"
 
 #: includes/options_helptexts.php:110
 msgid "at the top (above the navigation bar)"
-msgstr ""
+msgstr "üles (navigatsiooniriba kohale)"
 
 #: includes/options_helptexts.php:110
 msgid "between navigation bar and events"
-msgstr ""
+msgstr "navigatsiooniriba ja sündmuste vahele"
 
 #: includes/options_helptexts.php:110
 msgid "at the bottom"
-msgstr ""
+msgstr "alla"
 
 #: includes/options_helptexts.php:111
 msgid ""
 "This option specifies the position of the RSS feed link in the event list."
-msgstr ""
+msgstr "See suvand määrab RSS-voo lingi asukoha sündmuste lehel."
 
 #: includes/options_helptexts.php:112 includes/options_helptexts.php:118
 #: includes/options_helptexts.php:124 includes/options_helptexts.php:130
@@ -1220,24 +1221,24 @@ msgstr ""
 
 #: includes/options_helptexts.php:115
 msgid "Align of the RSS feed link"
-msgstr ""
+msgstr "Joonda RSS-voo link"
 
 #: includes/options_helptexts.php:116
 msgid "left"
-msgstr ""
+msgstr "vasakule"
 
 #: includes/options_helptexts.php:116
 msgid "center"
-msgstr ""
+msgstr "keskele"
 
 #: includes/options_helptexts.php:116
 msgid "right"
-msgstr ""
+msgstr "paremale"
 
 #: includes/options_helptexts.php:117
 msgid ""
 "This option specifies the align of the RSS feed link in the event list."
-msgstr ""
+msgstr "See suvand määrab RSS-voo lingi joonduse sündmuste lehel."
 
 #: includes/options_helptexts.php:121
 msgid "Feed link text"
@@ -1274,17 +1275,17 @@ msgstr ""
 
 #: includes/options_helptexts.php:136
 msgid "Use Post Categories"
-msgstr ""
+msgstr "Kasuta postituste kategooriaid"
 
 #: includes/options_helptexts.php:137
 msgid ""
 "Do not maintain seperate categories for the events, and use the existing "
 "post categories instead."
-msgstr ""
+msgstr "Ära hoia sündmuste jaoks eraldi kategooriaid, vaid kasuta olemasolevaid postituste kategooriaid."
 
 #: includes/options_helptexts.php:138
 msgid "Attention"
-msgstr "Atención"
+msgstr "Tähelepanu"
 
 #: includes/options_helptexts.php:139
 msgid ""
@@ -1294,11 +1295,11 @@ msgstr ""
 
 #: includes/options.php:40
 msgid "Show content"
-msgstr ""
+msgstr "Näita sisu"
 
 #: includes/options.php:41
 msgid "Hide content"
-msgstr ""
+msgstr "Peida sisu"
 
 #: includes/sc_event-list_helptexts.php:7
 msgid "event-id"
@@ -1315,7 +1316,7 @@ msgstr ""
 #: includes/sc_event-list_helptexts.php:10
 #: includes/sc_event-list_helptexts.php:22
 msgid "year"
-msgstr ""
+msgstr "aasta"
 
 #: includes/sc_event-list_helptexts.php:11
 msgid ""
@@ -1410,7 +1411,7 @@ msgstr ""
 #: includes/sc_event-list_helptexts.php:89
 #: includes/sc_event-list_helptexts.php:104
 msgid "number"
-msgstr ""
+msgstr "number"
 
 #: includes/sc_event-list_helptexts.php:34
 #, php-format
@@ -1463,7 +1464,7 @@ msgstr ""
 #: includes/sc_event-list_helptexts.php:46
 #: includes/sc_event-list_helptexts.php:63
 msgid "description"
-msgstr ""
+msgstr "kirjeldus"
 
 #: includes/sc_event-list_helptexts.php:46
 msgid "item options"
@@ -1475,7 +1476,7 @@ msgstr ""
 
 #: includes/sc_event-list_helptexts.php:46
 msgid "default value"
-msgstr ""
+msgstr "vaikeväärtus"
 
 #: includes/sc_event-list_helptexts.php:46
 msgid "option description"
@@ -1720,7 +1721,7 @@ msgstr ""
 
 #: includes/sc_event-list.php:135
 msgid "Event Information:"
-msgstr "Información del evento:"
+msgstr "Sündmuse info:"
 
 #: includes/widget_helptexts.php:10
 msgid "This option defines the displayed title for the widget."
@@ -1728,7 +1729,7 @@ msgstr ""
 
 #: includes/widget_helptexts.php:15
 msgid "Category Filter"
-msgstr "Categoría de filtro"
+msgstr "Kategooria filter"
 
 #: includes/widget_helptexts.php:17
 msgid ""
@@ -1741,20 +1742,20 @@ msgstr ""
 
 #: includes/widget_helptexts.php:22
 msgid "Number of listed events"
-msgstr ""
+msgstr "Määra, mitu sündmust kuvatakse"
 
 #: includes/widget_helptexts.php:24
 msgid "The number of upcoming events to display"
-msgstr ""
+msgstr "Määra, mitu eelseisvat sündmust kuvatakse"
 
 #: includes/widget_helptexts.php:29
 msgid "Truncate event title to"
-msgstr ""
+msgstr "Kärbi sündmuse pealkiri"
 
 #: includes/widget_helptexts.php:30 includes/widget_helptexts.php:52
 #: includes/widget_helptexts.php:67
 msgid "characters"
-msgstr "caracteres"
+msgstr "tähemärgini"
 
 #: includes/widget_helptexts.php:31
 msgid ""
@@ -1770,7 +1771,7 @@ msgstr ""
 
 #: includes/widget_helptexts.php:37
 msgid "Show event starttime"
-msgstr ""
+msgstr "Kuva sündmuse algusaeg"
 
 #: includes/widget_helptexts.php:39
 msgid "This option defines if the event start time will be displayed."
@@ -1778,7 +1779,7 @@ msgstr ""
 
 #: includes/widget_helptexts.php:44
 msgid "Show event location"
-msgstr ""
+msgstr "Kuva sündmuse koht"
 
 #: includes/widget_helptexts.php:46
 msgid "This option defines if the event location will be displayed."
@@ -1786,7 +1787,7 @@ msgstr ""
 
 #: includes/widget_helptexts.php:51
 msgid "Truncate location to"
-msgstr ""
+msgstr "Kärbi sündmuse koht"
 
 #: includes/widget_helptexts.php:53
 msgid ""
@@ -1796,7 +1797,7 @@ msgstr ""
 
 #: includes/widget_helptexts.php:59
 msgid "Show event content"
-msgstr ""
+msgstr "Kuva sündmuse sisu"
 
 #: includes/widget_helptexts.php:61
 msgid "This option defines if the event content will be displayed."
@@ -1804,7 +1805,7 @@ msgstr ""
 
 #: includes/widget_helptexts.php:66
 msgid "Truncate content to"
-msgstr ""
+msgstr "Kärbi sündmuse sisu"
 
 #: includes/widget_helptexts.php:68
 msgid ""
@@ -1854,7 +1855,7 @@ msgstr ""
 
 #: includes/widget_helptexts.php:102
 msgid "Caption for the link"
-msgstr ""
+msgstr "Lingi pealkiri"
 
 #: includes/widget_helptexts.php:104
 msgid ""
@@ -1868,8 +1869,8 @@ msgstr ""
 
 #: includes/widget.php:25
 msgid "Upcoming events"
-msgstr ""
+msgstr "Eesseisvad sündmused"
 
 #: includes/widget.php:38
 msgid "show events page"
-msgstr ""
+msgstr "näita sündmuste lehte"

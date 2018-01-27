@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the corresponding wordpress plugin.
 # 
 # Translators:
+# Thea Straub <theastraub@hotmail.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: wp-event-list\n"
@@ -10,11 +11,11 @@ msgstr ""
 "POT-Creation-Date: 2018-01-27 18:32+0100\n"
 "PO-Revision-Date: 2018-01-21 07:57+0000\n"
 "Last-Translator: mibuthu\n"
-"Language-Team: Spanish (Spain) (http://www.transifex.com/mibuthu/wp-event-list/language/es_ES/)\n"
+"Language-Team: Danish (Denmark) (http://www.transifex.com/mibuthu/wp-event-list/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es_ES\n"
+"Language: da_DK\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: admin/admin.php:54
@@ -33,19 +34,19 @@ msgstr ""
 
 #: admin/admin.php:95 admin/includes/admin-settings.php:58
 msgid "Event List Settings"
-msgstr "Ajustes de eventos"
+msgstr "Event List indstillinger"
 
 #: admin/admin.php:95
 msgid "Settings"
-msgstr "Ajustes"
+msgstr "Indstillinger"
 
 #: admin/admin.php:99 admin/includes/admin-about.php:37
 msgid "About Event List"
-msgstr "Acerca de la lista de eventos"
+msgstr "Om Event List"
 
 #: admin/admin.php:99
 msgid "About"
-msgstr "Sobre"
+msgstr "Om"
 
 #: admin/admin.php:121
 #, php-format
@@ -56,16 +57,16 @@ msgstr[1] ""
 
 #: admin/includes/admin-about.php:59 admin/includes/admin-settings.php:75
 msgid "General"
-msgstr "General"
+msgstr "Generelt"
 
 #: admin/includes/admin-about.php:60 admin/includes/admin-about.php:78
 #: admin/includes/admin-about.php:105
 msgid "Shortcode Attributes"
-msgstr ""
+msgstr "Shortcode attributter"
 
 #: admin/includes/admin-about.php:72
 msgid "Help and Instructions"
-msgstr "Ayuda e instrucciones"
+msgstr "Hjælp og instruktioner"
 
 #: admin/includes/admin-about.php:73
 #, php-format
@@ -74,23 +75,23 @@ msgstr ""
 
 #: admin/includes/admin-about.php:74
 msgid "To show the events on your site you have 2 possibilities"
-msgstr "Para mostrar los eventos en tu sitio web tienes 2 posibilidades"
+msgstr "Du har 2 muligheder for at vise begivenheder på på dit site"
 
 #: admin/includes/admin-about.php:75
 #, php-format
 msgid "you can place the <strong>shortcode</strong> %1$s on any page or post"
-msgstr ""
+msgstr "du kan placere <strong>shortcode</strong> %1$s på en hvilkensomhelst side eller post"
 
 #: admin/includes/admin-about.php:76
 #, php-format
 msgid "you can add the <strong>widget</strong> %1$s in your sidebars"
-msgstr ""
+msgstr "du kan tilføje <strong>widget</strong> %1$s i dine sidebars"
 
 #: admin/includes/admin-about.php:77
 msgid ""
 "The displayed events and their style can be modified with the available "
 "widget settings and the available attributes for the shortcode."
-msgstr ""
+msgstr "De viste events og deres style kan modificeres med de tilgængelige widget-indstillinger og de tilgængelige attributter for shortcode."
 
 #: admin/includes/admin-about.php:78
 #, php-format
@@ -101,7 +102,7 @@ msgstr ""
 
 #: admin/includes/admin-about.php:79
 msgid "The available  widget options are described in their tooltip text."
-msgstr ""
+msgstr "De tilgængelige widget-muligheder er beskrevet i deres tooltip-tekst."
 
 #: admin/includes/admin-about.php:80
 #, php-format
@@ -112,11 +113,11 @@ msgstr ""
 
 #: admin/includes/admin-about.php:80 includes/widget_helptexts.php:88
 msgid "Add links to the single events"
-msgstr ""
+msgstr "Tilføj links til enkeltbegivenhederne"
 
 #: admin/includes/admin-about.php:80 includes/widget_helptexts.php:95
 msgid "Add a link to the Event List page"
-msgstr ""
+msgstr "Tilføj links til Event List-siden"
 
 #: admin/includes/admin-about.php:81
 msgid ""
@@ -194,103 +195,103 @@ msgstr ""
 msgid ""
 "You have the possibility to modify the output if you add some of the "
 "following attributes to the shortcode."
-msgstr ""
+msgstr "Du har mulighed for at modificere den færdige liste, hvis du tilføjer nogle af de følgende attributter til din shortcode."
 
 #: admin/includes/admin-about.php:108
 #, php-format
 msgid ""
 "You can combine and add as much attributes as you want. E.g. the shortcode "
 "including the attributes %1$s and %2$s would looks like this:"
-msgstr ""
+msgstr "Du kan kombinere og tilføje lige så mange attributter, som du vil. Fx vil en shortcode med attributterne %1$s og %2$s se sådan ud:"
 
 #: admin/includes/admin-about.php:110
 msgid ""
 "Below you can find a list of all supported attributes with their "
 "descriptions and available options:"
-msgstr ""
+msgstr "Nedenfor ser du en liste over alle attributter med deres beskrivelse og valgmuligheder:"
 
 #: admin/includes/admin-about.php:124
 msgid "Attribute name"
-msgstr "Nombre de atributo"
+msgstr "Attribut navn"
 
 #: admin/includes/admin-about.php:125
 msgid "Value options"
-msgstr "Opciones de valor"
+msgstr "Værdi-muligheder"
 
 #: admin/includes/admin-about.php:126
 msgid "Default value"
-msgstr "Valor por defecto"
+msgstr "Default værdi"
 
 #: admin/includes/admin-about.php:127
 msgid "Description"
-msgstr "Descripción"
+msgstr "Beskrivelse"
 
 #: admin/includes/admin-about.php:145 includes/sc_event-list_helptexts.php:26
 #: includes/sc_event-list_helptexts.php:31
 msgid "Filter Syntax"
-msgstr "Sintaxis de filtro"
+msgstr "Filter syntax"
 
 #: admin/includes/admin-about.php:146
 msgid ""
 "For date and cat filters you can specify complex filters with the following "
 "syntax:"
-msgstr ""
+msgstr "For dato og kategori-filtre kan du lave komplekse filtre med den følgende syntax:"
 
 #: admin/includes/admin-about.php:147
 #, php-format
 msgid ""
 "You can use %1$s and %2$s connections to define complex filters. "
 "Additionally you can set brackets %3$s for nested queries."
-msgstr ""
+msgstr "Du kan benytte %1$s og %2$s forbindelser til at lave komplekse filtre. Desuden kan du tilføje brackets %3$s for nested queries."
 
 #: admin/includes/admin-about.php:147
 msgid "AND"
-msgstr "Y"
+msgstr "AND"
 
 #: admin/includes/admin-about.php:147
 msgid "OR"
-msgstr "O"
+msgstr "OR"
 
 #: admin/includes/admin-about.php:147
 msgid "or"
-msgstr "o"
+msgstr "eller"
 
 #: admin/includes/admin-about.php:147
 msgid "and"
-msgstr "y"
+msgstr "og"
 
 #: admin/includes/admin-about.php:148
 msgid "Examples for cat filters:"
-msgstr "Ejemplos de filtros cat:"
+msgstr "Eksempler for kategori-filtre:"
 
 #: admin/includes/admin-about.php:149
 #, php-format
 msgid "Show all events with category %1$s."
-msgstr ""
+msgstr "Vis alle begivenheder i kategorien %1$s."
 
 #: admin/includes/admin-about.php:150
 #, php-format
 msgid "Show all events with category %1$s or %2$s."
-msgstr ""
+msgstr "Vis alle begivenheder i kategorien %1$s eller %2$s."
 
 #: admin/includes/admin-about.php:151
 #, php-format
 msgid ""
 "Show all events with category %1$s and all events where category %2$s as "
 "well as %3$s is selected."
-msgstr ""
+msgstr "Vis alle begivenheder i kategorien %1$s og alle begivenheder, hvor kategorien  %2$s og %3$s er valgt."
 
 #: admin/includes/admin-about.php:156 includes/sc_event-list_helptexts.php:25
 msgid "Available Date Formats"
-msgstr "Formatos de fecha disponibles"
+msgstr "Mulige dato-formater"
 
 #: admin/includes/admin-about.php:157
 msgid "For date filters you can use the following date formats:"
-msgstr ""
+msgstr "Til dato-filtre kan du bruge følgende dato-formater:"
 
 #: admin/includes/admin-about.php:165 includes/sc_event-list_helptexts.php:25
 msgid "Available Date Range Formats"
-msgstr "Formatos Rango Fecha Disponible"
+msgstr "Tilgængelige dato-formater"
 
 #: admin/includes/admin-about.php:166
 msgid "For date filters you can use the following daterange formats:"
@@ -298,11 +299,11 @@ msgstr ""
 
 #: admin/includes/admin-about.php:178
 msgid "Value"
-msgstr "Valor"
+msgstr "Værdi"
 
 #: admin/includes/admin-about.php:182
 msgid "Example"
-msgstr "Ejemplo"
+msgstr "Eksempel"
 
 #: admin/includes/admin-categories.php:38
 msgid "Synchronize with post categories"
@@ -431,11 +432,11 @@ msgstr ""
 
 #: admin/includes/admin-import.php:45
 msgid "Import Events"
-msgstr "Importar Eventos"
+msgstr "Importér begivenheder"
 
 #: admin/includes/admin-import.php:65 admin/includes/admin-import.php:118
 msgid "Step"
-msgstr "Paso"
+msgstr "Trin"
 
 #: admin/includes/admin-import.php:65
 msgid "Set import file and options"
@@ -448,7 +449,7 @@ msgstr ""
 
 #: admin/includes/admin-import.php:71
 msgid "Example file"
-msgstr "Archivo de ejemplo"
+msgstr "Eksempelfil"
 
 #: admin/includes/admin-import.php:72
 #, php-format
@@ -458,7 +459,7 @@ msgstr ""
 
 #: admin/includes/admin-import.php:73
 msgid "Note"
-msgstr "Nota"
+msgstr "Note"
 
 #: admin/includes/admin-import.php:73
 msgid ""
@@ -469,15 +470,15 @@ msgstr ""
 #: admin/includes/admin-import.php:80 admin/includes/admin-import.php:88
 #: admin/includes/admin-import.php:101
 msgid "Sorry, there has been an error."
-msgstr ""
+msgstr "Beklager, der er sket en fejl."
 
 #: admin/includes/admin-import.php:81
 msgid "The file does not exist, please try again."
-msgstr ""
+msgstr "Filen eksisterer ikke. Prøv venligst igen."
 
 #: admin/includes/admin-import.php:89
 msgid "The file is not a CSV file."
-msgstr ""
+msgstr "Filen er ikke en CSV-fil."
 
 #: admin/includes/admin-import.php:118
 msgid "Events review and additonal category selection"
@@ -514,26 +515,26 @@ msgstr ""
 #: admin/includes/admin-import.php:169 admin/includes/admin-main.php:60
 #: includes/widget_helptexts.php:8
 msgid "Title"
-msgstr "Título"
+msgstr "Titel"
 
 #: admin/includes/admin-import.php:170
 msgid "Start Date"
-msgstr "Fecha Inicio"
+msgstr "Starter"
 
 #: admin/includes/admin-import.php:171
 msgid "End Date"
-msgstr "Fecha Final"
+msgstr "Slutter"
 
 #: admin/includes/admin-import.php:172 admin/includes/admin-new.php:92
 #: includes/options_helptexts.php:40 includes/options_helptexts.php:41
 msgid "Time"
-msgstr "Hora"
+msgstr "Tidspunkt"
 
 #: admin/includes/admin-import.php:173 admin/includes/admin-main.php:61
 #: admin/includes/admin-new.php:94 includes/options_helptexts.php:45
 #: includes/options_helptexts.php:46
 msgid "Location"
-msgstr "Ubicación"
+msgstr "Lokalitet"
 
 #: admin/includes/admin-import.php:174
 msgid "Content"
@@ -560,7 +561,7 @@ msgstr ""
 
 #: admin/includes/admin-import.php:254 admin/includes/admin-main.php:191
 msgid "Import"
-msgstr "Importar"
+msgstr "Importér"
 
 #: admin/includes/admin-main.php:59
 msgid "Event Date"
@@ -568,7 +569,7 @@ msgstr ""
 
 #: admin/includes/admin-main.php:63
 msgid "Author"
-msgstr "Autor"
+msgstr "Forfatter"
 
 #: admin/includes/admin-main.php:125
 #, php-format
@@ -589,15 +590,15 @@ msgstr ""
 
 #: admin/includes/admin-new.php:85
 msgid "Date"
-msgstr "Fecha"
+msgstr "Dato"
 
 #: admin/includes/admin-new.php:85
 msgid "required"
-msgstr "obligatorio"
+msgstr ""
 
 #: admin/includes/admin-new.php:88
 msgid "Multi-Day Event"
-msgstr "Evento de varios días"
+msgstr ""
 
 #: admin/includes/admin-new.php:108
 msgid "Event Title"
@@ -648,15 +649,15 @@ msgstr ""
 
 #: admin/includes/admin-settings.php:76
 msgid "Frontend Settings"
-msgstr "Configuración de interfaz"
+msgstr "Frontend-indstillinger"
 
 #: admin/includes/admin-settings.php:77
 msgid "Admin Page Settings"
-msgstr "Configuración de página de administrador"
+msgstr "Admin Page-indstillinger"
 
 #: admin/includes/admin-settings.php:78
 msgid "Feed Settings"
-msgstr "Configuración Conectores"
+msgstr "Feed-indstillinger"
 
 #: admin/includes/admin-settings.php:79
 msgid "Category Taxonomy"
@@ -664,7 +665,7 @@ msgstr ""
 
 #: includes/daterange_helptexts.php:7
 msgid "Year"
-msgstr "Año"
+msgstr "År"
 
 #: includes/daterange_helptexts.php:8
 msgid "A year can be specified in 4 digit format."
@@ -684,7 +685,7 @@ msgstr ""
 
 #: includes/daterange_helptexts.php:12
 msgid "Month"
-msgstr "Mes"
+msgstr "Måned"
 
 #: includes/daterange_helptexts.php:13
 msgid ""
@@ -698,7 +699,7 @@ msgstr ""
 
 #: includes/daterange_helptexts.php:17
 msgid "Day"
-msgstr "Día"
+msgstr "Dag"
 
 #: includes/daterange_helptexts.php:18
 msgid ""
@@ -708,7 +709,7 @@ msgstr ""
 
 #: includes/daterange_helptexts.php:21
 msgid "Relative Year"
-msgstr "Año relativo"
+msgstr ""
 
 #: includes/daterange_helptexts.php:22 includes/daterange_helptexts.php:28
 #: includes/daterange_helptexts.php:34 includes/daterange_helptexts.php:42
@@ -730,7 +731,7 @@ msgstr ""
 
 #: includes/daterange_helptexts.php:23
 msgid "number of years"
-msgstr ""
+msgstr "antal år"
 
 #: includes/daterange_helptexts.php:24 includes/daterange_helptexts.php:30
 #: includes/daterange_helptexts.php:38 includes/daterange_helptexts.php:44
@@ -740,27 +741,27 @@ msgstr ""
 
 #: includes/daterange_helptexts.php:27
 msgid "Relative Month"
-msgstr "Mes relativo"
+msgstr ""
 
 #: includes/daterange_helptexts.php:28
 msgid "A relative month"
-msgstr "Un mes relativo"
+msgstr ""
 
 #: includes/daterange_helptexts.php:29
 msgid "number of months"
-msgstr "número de meses"
+msgstr "Antal måneder"
 
 #: includes/daterange_helptexts.php:33
 msgid "Relative Week"
-msgstr "Semana relativa"
+msgstr ""
 
 #: includes/daterange_helptexts.php:34
 msgid "A relative week"
-msgstr "Una semana relativa"
+msgstr ""
 
 #: includes/daterange_helptexts.php:35
 msgid "number of weeks"
-msgstr "número de semanas"
+msgstr "Antal uger"
 
 #: includes/daterange_helptexts.php:36
 msgid "the resulting week"
@@ -775,19 +776,19 @@ msgstr ""
 
 #: includes/daterange_helptexts.php:41
 msgid "Relative Day"
-msgstr "Día relativo"
+msgstr ""
 
 #: includes/daterange_helptexts.php:42
 msgid "A relative day"
-msgstr "Un día relativo"
+msgstr ""
 
 #: includes/daterange_helptexts.php:43
 msgid "number of days"
-msgstr "Número de días"
+msgstr ""
 
 #: includes/daterange_helptexts.php:49
 msgid "Date range"
-msgstr "Rango de fechas"
+msgstr ""
 
 #: includes/daterange_helptexts.php:50
 msgid ""
@@ -807,7 +808,7 @@ msgstr ""
 
 #: includes/daterange_helptexts.php:59 includes/filterbar.php:287
 msgid "Upcoming"
-msgstr "Próximamente"
+msgstr "Kommende"
 
 #: includes/daterange_helptexts.php:60
 msgid "This value defines a range from the actual day to the future."
@@ -815,7 +816,7 @@ msgstr ""
 
 #: includes/daterange_helptexts.php:64 includes/filterbar.php:291
 msgid "Past"
-msgstr "Pasado"
+msgstr "Tidligere"
 
 #: includes/daterange_helptexts.php:65
 msgid "This value defines a range from the past to the previous day."
@@ -827,7 +828,7 @@ msgstr ""
 
 #: includes/events_post_type.php:60
 msgid "Events"
-msgstr "Eventos"
+msgstr "Begivenheder"
 
 #: includes/events_post_type.php:61
 msgid "Event"
@@ -835,15 +836,15 @@ msgstr ""
 
 #: includes/events_post_type.php:62
 msgid "Add New"
-msgstr "Añadir Nuevo"
+msgstr "Tilføj ny"
 
 #: includes/events_post_type.php:63
 msgid "Add New Event"
-msgstr "Añadir Nuevo Evento"
+msgstr "Tilføj ny begivenhed"
 
 #: includes/events_post_type.php:64
 msgid "Edit Event"
-msgstr "Editar Evento"
+msgstr "Redigér begivenhed"
 
 #: includes/events_post_type.php:65
 msgid "New Event"
@@ -871,7 +872,7 @@ msgstr ""
 
 #: includes/events_post_type.php:72
 msgid "All Events"
-msgstr "Añadir Eventos"
+msgstr "Alle begivenheder"
 
 #: includes/events_post_type.php:73
 msgid "Event Archives"
@@ -891,7 +892,7 @@ msgstr ""
 
 #: includes/events_post_type.php:77
 msgid "Event List"
-msgstr "Listado Eventos"
+msgstr "Event List"
 
 #: includes/events_post_type.php:78
 msgid "Filter events list"
@@ -911,7 +912,7 @@ msgstr ""
 
 #: includes/filterbar.php:278
 msgid "All"
-msgstr "Todos"
+msgstr "Alle"
 
 #: includes/filterbar.php:281
 msgid "All Dates"
@@ -919,7 +920,7 @@ msgstr ""
 
 #: includes/options_helptexts.php:10
 msgid "CSV File to import"
-msgstr "Importar vía archivo CSV"
+msgstr ""
 
 #: includes/options_helptexts.php:12
 msgid "Please select the file which contains the event data in CSV format."
@@ -927,7 +928,7 @@ msgstr ""
 
 #: includes/options_helptexts.php:15
 msgid "Used date format"
-msgstr "Formato de Fecha utilizado"
+msgstr ""
 
 #: includes/options_helptexts.php:17
 msgid ""
@@ -937,7 +938,7 @@ msgstr ""
 
 #: includes/options_helptexts.php:21
 msgid "Text for no events"
-msgstr "Texto para ningún evento"
+msgstr "Tekst hvis ingen begivenheder"
 
 #: includes/options_helptexts.php:23
 msgid ""
@@ -973,7 +974,7 @@ msgstr ""
 
 #: includes/options_helptexts.php:33
 msgid "Date display"
-msgstr "Indicación de la fecha"
+msgstr ""
 
 #: includes/options_helptexts.php:34
 msgid "Show the date only once per day"
@@ -993,7 +994,7 @@ msgstr ""
 
 #: includes/options_helptexts.php:39
 msgid "HTML tags"
-msgstr "Etiquetas HTML"
+msgstr "HTML tags"
 
 #: includes/options_helptexts.php:40 includes/options_helptexts.php:45
 #, php-format
@@ -1051,7 +1052,7 @@ msgstr ""
 
 #: includes/options_helptexts.php:64
 msgid "Disable CSS file"
-msgstr "Deshabitar CSS"
+msgstr "Deaktiver CSS-fil"
 
 #: includes/options_helptexts.php:65
 #, php-format
@@ -1284,7 +1285,7 @@ msgstr ""
 
 #: includes/options_helptexts.php:138
 msgid "Attention"
-msgstr "Atención"
+msgstr ""
 
 #: includes/options_helptexts.php:139
 msgid ""
@@ -1720,7 +1721,7 @@ msgstr ""
 
 #: includes/sc_event-list.php:135
 msgid "Event Information:"
-msgstr "Información del evento:"
+msgstr ""
 
 #: includes/widget_helptexts.php:10
 msgid "This option defines the displayed title for the widget."
@@ -1728,7 +1729,7 @@ msgstr ""
 
 #: includes/widget_helptexts.php:15
 msgid "Category Filter"
-msgstr "Categoría de filtro"
+msgstr ""
 
 #: includes/widget_helptexts.php:17
 msgid ""
@@ -1754,7 +1755,7 @@ msgstr ""
 #: includes/widget_helptexts.php:30 includes/widget_helptexts.php:52
 #: includes/widget_helptexts.php:67
 msgid "characters"
-msgstr "caracteres"
+msgstr ""
 
 #: includes/widget_helptexts.php:31
 msgid ""
@@ -1864,12 +1865,12 @@ msgstr ""
 
 #: includes/widget.php:20
 msgid "With this widget a list of upcoming events can be displayed."
-msgstr ""
+msgstr "Med denne widget kan en liste over alle kommende begivenheder vises."
 
 #: includes/widget.php:25
 msgid "Upcoming events"
-msgstr ""
+msgstr "Kommende begivenheder"
 
 #: includes/widget.php:38
 msgid "show events page"
-msgstr ""
+msgstr "Vis begivenheds-side"
