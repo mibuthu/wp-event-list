@@ -68,16 +68,19 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 
 == Screenshots ==
 
-1. Admin page: Event list table
+1. Admin page: Event-List table
 2. Admin page: New/edit event form
-3. Admin page: Categories
-4. Admin page: Settings (general tab)
-5. Admin page: Settings (admin page tab)
-6. Admin page: Settings (feed tab)
-7. Admin page: About page with help and shortcode attributes list
-8. Admin page: Widget with the available options
-9. Example page with [event-list] shortcode
-10. Example widget
+3. Admin page: Event-List Categories
+4. Admin page: Event-List Settings (general tab)
+5. Admin page: Event-List Settings (frontend tab)
+6. Admin page: Event-List Settings (admin page tab)
+7. Admin page: Event-List Settings (feed tab)
+8. Admin page: Event-List Settings (taxonomy tab)
+9. Admin page: Event-List About page (general tab) with help and about page
+10. Admin page: Event-List About page (shortcode tab) with shortcode attributes list and date range formats
+11. Admin page: Event-List Widget with the available options
+12. Example page with [event-list] shortcode
+13. Example Event-List widget on frontpage
 
 
 == Changelog ==
