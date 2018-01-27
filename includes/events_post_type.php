@@ -14,7 +14,7 @@ class EL_Events_Post_Type {
 	public $post_cat_taxonomy = 'category';
 	public $event_cat_taxonomy = 'el_eventcategory';
 	public $taxonomy;
-	private $use_post_categories;
+	public $use_post_categories;
 
 	/**
 	 * Get the singleton instance of the class.

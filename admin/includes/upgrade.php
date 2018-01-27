@@ -80,14 +80,24 @@ class EL_Upgrade {
 	private function upgrade_to_0_8_0() {
 		require_once(EL_PATH.'includes/events.php');
 		require_once(EL_PATH.'includes/event.php');
-		// Manually register event category taxonomy to ensure that the taxonomy is enabled
+
+		// Correct events post type
 		require_once(EL_PATH.'includes/events_post_type.php');
 		$events_post_type = EL_Events_Post_Type::get_instance();
-		$events_post_type->register_event_category_taxonomy();
-		$use_post_cats = !empty($this->get_db_option('el_sync_cats'));
+		// set correct taxonomy
+		$events_post_type->use_post_categories = !empty($this->get_db_option('el_sync_cats'));
+		$events_post_type->taxonomy = $events_post_type->use_post_categories ? $events_post_type->post_cat_taxonomy : $events_post_type->event_cat_taxonomy;
+		// re-register events post type with correct taxonomy
+		unregister_post_type('el_events');
+		$events_post_type->register_event_post_type();
+		// register event_cateogry taxonomy if required
+		if(!$events_post_type->use_post_categories) {
+			$events_post_type->register_event_category_taxonomy();
+		}
+		$this->log('Set event category taxonomy to "'.implode(', ', get_object_taxonomies('el_events')).'" (according existing option "el_sync_cats" = "'.($events_post_type->use_post_categories ? 'true' : 'false').'")');
 
 		// Import existing categories
-		if(!$use_post_cats) {
+		if(!$events_post_type->use_post_categories) {
 			$cats_array = $this->get_db_option('el_categories');
 			if(!empty($cats_array)) {
 				foreach($cats_array as $cat) {
@@ -123,8 +133,6 @@ class EL_Upgrade {
 		$sql = 'SELECT * FROM '.$wpdb->prefix.'event_list ORDER BY start_date ASC, time ASC, end_date ASC';
 		$events = $wpdb->get_results($sql, 'ARRAY_A');
 		if(!empty($events)) {
-			// set correct taxonomy depending on $use_post_cats option
-			$events_post_type->taxonomy = $use_post_cats ? $events_post_type->post_cat_taxonomy : $events_post_type->event_cat_taxonomy;
 			foreach($events as $event) {
 				$eventdata['title'] = $event['title'];
 				$eventdata['startdate'] = $event['start_date'];

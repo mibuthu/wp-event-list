@@ -27,7 +27,7 @@ class EL_Admin {
 		$this->events_post_type = &EL_Events_Post_Type::get_instance();
 
 		// Register actions
-		add_action('init', array(&$this, 'plugin_upgrade_check'));
+		add_action('init', array(&$this, 'plugin_upgrade_check'), 5);
 		add_action('admin_notices', array(&$this, 'show_plugin_upgrade_message'));
 		add_action('current_screen', array(&$this, 'register_events_post_type_mods'));
 		add_action('admin_head', array(&$this, 'add_dashboard_styles'));
