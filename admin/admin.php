@@ -37,9 +37,9 @@ class EL_Admin {
 
 	public function plugin_upgrade_check() {
 		// Upgrade check
-		$actual_version = get_file_data(EL_PATH.'event-list.php', array('version'=>'Version'))['version'];
+		$file_data = get_file_data(EL_PATH.'event-list.php', array('version'=>'Version'));
 		$last_upgr_version = get_option('el_last_upgr_version', '');
-		if($actual_version != $last_upgr_version) {
+		if($file_data['version'] != $last_upgr_version) {
 			// load upgrade class
 			require_once(EL_PATH.'admin/includes/upgrade.php');
 			EL_Upgrade::get_instance();
