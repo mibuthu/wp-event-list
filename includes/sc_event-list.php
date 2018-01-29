@@ -213,9 +213,9 @@ class SC_Event_List {
 		// event starttime
 		if('' != $event->starttime && $this->is_visible($a['show_starttime'])) {
 			if('' == $this->options->get('el_html_tags_in_time')) {
-				$event->starttime = esc_attr($event->starttime);
+				$event->starttime = esc_attr($event->starttime_i18n());
 			}
-			$out .= '<span class="event-time">'.$event->starttime.'</span>';
+			$out .= '<span class="event-time">'.$event->starttime_i18n().'</span>';
 		}
 		// event location
 		if('' != $event->location && $this->is_visible($a['show_location'])) {

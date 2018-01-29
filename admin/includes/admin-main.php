@@ -69,7 +69,7 @@ class EL_Admin_Main {
 		switch($column_name) {
 			case 'eventdate':
 				$event = new EL_Event($pid);
-				echo $this->format_event_date($event->startdate, $event->enddate, $event->display_time($event->starttime));
+				echo $this->format_event_date($event->startdate, $event->enddate, $event->starttime_i18n());
 				break;
 			case 'location':
 				$event = new EL_Event($pid);
