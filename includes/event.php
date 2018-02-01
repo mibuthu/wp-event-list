@@ -24,7 +24,7 @@ class EL_Event {
 		}
 		else {
 			$this->post = get_post($post);
-			if(! $this->post instanceof WP_Post) {
+			if(0 === $this->post->ID) {
 				die('ERROR: Post not found!');
 			}
 		}
