@@ -32,11 +32,12 @@ class EL_Upgrade {
 	 */
 	private function init() {
 		// get actual plugin version
-		$this->actual_version = get_file_data(EL_PATH.'event-list.php', array('version'=>'Version'))['version'];
+		$filedata = get_file_data(EL_PATH.'event-list.php', array('version'=>'Version'));
+		$this->actual_version = $filedata['version'];
 		// check last upgrade version
 		$this->last_upgr_version = $this->get_db_option('el_last_upgr_version');
 		// fix for older version < 0.8.0
-		if(empty($this->last_upgr_version) && !empty($this->get_db_option('el_db_version'))) {
+		if(empty($this->last_upgr_version) && (bool)$this->get_db_option('el_db_version')) {
 			$this->last_upgr_version = '0.7.0';
 			$this->insert_db_option('el_last_upgr_version', $this->last_upgr_version, false);
 			$this->log('Applied fix for versions < 0.8.0');
@@ -85,7 +86,7 @@ class EL_Upgrade {
 		require_once(EL_PATH.'includes/events_post_type.php');
 		$events_post_type = EL_Events_Post_Type::get_instance();
 		// set correct taxonomy
-		$events_post_type->use_post_categories = !empty($this->get_db_option('el_sync_cats'));
+		$events_post_type->use_post_categories = (bool)$this->get_db_option('el_sync_cats');
 		$events_post_type->taxonomy = $events_post_type->use_post_categories ? $events_post_type->post_cat_taxonomy : $events_post_type->event_cat_taxonomy;
 		// re-register events post type with correct taxonomy
 		unregister_post_type('el_events');
