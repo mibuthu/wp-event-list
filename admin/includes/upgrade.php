@@ -45,6 +45,7 @@ class EL_Upgrade {
 		// return if last_upgr_version is empty (new install --> no upgrade required)
 		if(empty($this->last_upgr_version)) {
 			$this->insert_db_option('el_last_upgr_version', $this->actual_version);
+			$this->log('New install -> no upgrade required');
 			return false;
 		}
 		// create the version array
@@ -281,10 +282,10 @@ class EL_Upgrade {
 			'%s'
 		);
 		if(!empty($ret)) {
-			$this->log('Deleted obsolete option "'.$option.'"', $msg);
+			$this->log('Deleted option "'.$option.'"', $msg);
 		}
 		else {
-			$this->log('Deleting obsolete option "'.$option.'" failed!', $msg, true);
+			$this->log('Deleting option "'.$option.'" failed!', $msg, true);
 		}
 		return $ret;
 	}
