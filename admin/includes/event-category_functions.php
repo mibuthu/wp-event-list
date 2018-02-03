@@ -197,7 +197,7 @@ class EL_Event_Category_Functions {
 				else {
 					// target category is not available -> remove category from event
 					wp_remove_object_terms($event->post->ID, $source_cat->term_id, $source_taxonomy);
-					error_log('Category "'.$source_cat->slug.'" removed from event '.$event->slug);
+					error_log('Category "'.$source_cat->slug.'" removed from event "'.$event->post->post_name.'"');
 				}
 			}
 		}
