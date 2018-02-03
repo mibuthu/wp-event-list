@@ -7,6 +7,10 @@ require_once(EL_PATH.'includes/options.php');
 require_once(EL_PATH.'includes/events_post_type.php');
 require_once(EL_PATH.'admin/includes/admin-functions.php');
 require_once(EL_PATH.'includes/events.php');
+// fix for PHP 5.2 (provide function date_create_from_format defined in daterange.php)
+if(version_compare(PHP_VERSION, '5.3') < 0) {
+	require_once(EL_PATH.'includes/daterange.php');
+}
 
 // This class handles all data for the admin new event page
 class EL_Admin_Import {
@@ -300,8 +304,8 @@ class EL_Admin_Import {
 		require_once(EL_PATH.'includes/event.php');
 		foreach($reviewed_events as $eventdata) {
 			// check if dates have correct formats
-			$startdate = DateTime::createFromFormat($this->options->get('el_import_date_format'), $eventdata['startdate']);
-			$enddate = DateTime::createFromFormat($this->options->get('el_import_date_format'), $eventdata['enddate']);
+			$startdate = date_create_from_format($this->options->get('el_import_date_format'), $eventdata['startdate']);
+			$enddate = date_create_from_format($this->options->get('el_import_date_format'), $eventdata['enddate']);
 			if($startdate instanceof DateTime) {
 				$eventdata['startdate'] = $startdate->format('Y-m-d');
 				if($enddate) {

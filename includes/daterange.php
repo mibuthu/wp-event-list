@@ -122,13 +122,24 @@ class EL_Daterange {
 }
 
 /* create date_create_from_format (DateTime::createFromFormat) alternative for PHP 5.2
- *
- * This function is only a small implementation of this function with reduced functionality to handle sql dates (format: 2014-01-31)
  */
-if(!function_exists("date_create_from_format")) {
+if(!function_exists('date_create_from_format')) {
 	function date_create_from_format($dformat, $dvalue) {
-		$d = new DateTime($dvalue);
-		return $d;
+	$schedule = $dvalue;
+	$schedule_format = str_replace(array('Y','m','d', 'H', 'i','a'), array('%Y','%m','%d', '%I', '%M', '%p'), $dformat);
+	$ugly = strptime($schedule, $schedule_format);
+	$ymd = sprintf(
+		// This is a format string that takes six total decimal arguments, then left-pads
+		// them with zeros to either 4 or 2 characters, as needed
+		'%04d-%02d-%02d %02d:%02d:%02d',
+		$ugly['tm_year'] + 1900,  // This will be "111", so we need to add 1900.
+		$ugly['tm_mon'] + 1,      // This will be the month minus one, so we add one.
+		$ugly['tm_mday'],
+		$ugly['tm_hour'],
+		$ugly['tm_min'],
+		$ugly['tm_sec']
+	);
+	return new DateTime($ymd);
 	}
 }
 ?>

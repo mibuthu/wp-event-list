@@ -4,6 +4,10 @@ if(!defined('WPINC')) {
 }
 
 require_once(EL_PATH.'includes/events_post_type.php');
+// fix for PHP 5.2 (provide function date_create_from_format defined in daterange.php)
+if(version_compare(PHP_VERSION, '5.3') < 0) {
+	require_once(EL_PATH.'includes/daterange.php');
+}
 
 // Class to manage categories
 class EL_Event {
