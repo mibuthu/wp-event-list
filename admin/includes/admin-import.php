@@ -20,7 +20,7 @@ class EL_Admin_Import {
 	private $functions;
 	private $events;
 	private $import_data;
-	private $example_file_path = EL_URL.'/files/events-import-example.csv';
+	private $example_file_path;
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -36,6 +36,7 @@ class EL_Admin_Import {
 		$this->events_post_type = &EL_Events_Post_Type::get_instance();
 		$this->functions = &EL_Admin_Functions::get_instance();
 		$this->events = &EL_Events::get_instance();
+		$this->example_file_path = EL_URL.'/files/events-import-example.csv';
 		$this->add_metaboxes();
 	}
 
@@ -53,8 +54,8 @@ class EL_Admin_Import {
 		}
 		// Finish import (add events)
 		elseif(isset($_POST['reviewed_events'])) {
-			$import_error = $this->import_events();
-			$this->show_import_finished($import_error);
+			$import_errors = $this->import_events();
+			$this->show_import_finished($import_errors);
 		}
 		// Import form
 		else {
@@ -154,16 +155,16 @@ class EL_Admin_Import {
 			</form>';
 	}
 
-	private function show_import_finished($with_error) {
-		if(empty($with_error)) {
-			echo '
-				<h3>'.__('Import with errors!','event-list').'</h3>
-				'.__('Sorry, an error occurred during import!','event-list');
-		}
-		else {
+	private function show_import_finished($import_errors) {
+		if(empty($import_errors)) {
 			echo '
 				<h3>'.__('Import successful!','event-list').'</h3>
 				<a href="'.admin_url('edit.php?post_type=el_events').'">'.__('Go back to All Events','event-list').'</a>';
+		}
+		else {
+			echo '
+				<h3>'.__('Import with errors!','event-list').'</h3>
+				'.sprintf(__('Sorry, an error occurred during import! %1$d events could not be imported.','event-list'), $import_errors);
 		}
 	}
 
@@ -300,7 +301,7 @@ class EL_Admin_Import {
 				$event_ref['categories'] = array_unique(array_merge($event_ref['categories'], $additional_cat_slugs));
 			}
 		}
-		$ret = array();
+		$error_counter = 0;
 		require_once(EL_PATH.'includes/event.php');
 		foreach($reviewed_events as $eventdata) {
 			// check if dates have correct formats
@@ -314,14 +315,14 @@ class EL_Admin_Import {
 				else {
 					$eventdata['enddate'] = '';
 				}
-				$ret[] = empty(EL_Event::safe($eventdata));
+				$error_counter += (false === EL_Event::safe($eventdata)) ? 1 : 0;
 			}
 			else {
-				return false;
+				$error_counter += 1;
 			}
 		}
 		// TODO: Improve error messages
-		return $ret;
+		return $error_counter;
 	}
 
 	public function embed_import_scripts() {
