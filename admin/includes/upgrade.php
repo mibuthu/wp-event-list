@@ -23,8 +23,18 @@ class EL_Upgrade {
 	}
 
 	private function __construct() {
+		// check upgrade trigger to avoid duplicate updates
+		if('1' == $this->get_db_option('el_upgrade_in_progress')) {
+			$this->log('Upgrade is already running');
+			return false;
+		}
+		// set upgrade trigger
+		$this->insert_db_option('el_upgrade_in_progress', '1');
+		// do upgrade
 		$this->init();
 		$this->upgrade_check();
+		// delete upgrade trigger
+		$this->delete_db_option('el_upgrade_in_progress');
 	}
 
 	/**
