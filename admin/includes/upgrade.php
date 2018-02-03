@@ -355,4 +355,17 @@ class EL_Upgrade {
 		}
 	}
 }
+
+/** Function to unregister posttype before version 4.5
+ **/
+if(!function_exists('unregister_post_type')) {
+	function unregister_post_type( $post_type ) {
+		 global $wp_post_types;
+		 if(isset($wp_post_types[$post_type])) {
+			unset($wp_post_types[$post_type]);
+			return true;
+		 }
+		 return false;
+	}
+}
 ?>
