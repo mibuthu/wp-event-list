@@ -48,8 +48,6 @@ class EL_Upgrade {
 			$this->log('New install -> no upgrade required');
 			return false;
 		}
-		// create the version array
-		$this->last_upgr_version = explode('.', $this->last_upgr_version);
 	}
 
 	/**
@@ -173,18 +171,7 @@ class EL_Upgrade {
 
 
 	private function upgrade_required($version) {
-		// create version array
-		$vers = explode('.', $version);
-		// compare main version
-		if($this->last_upgr_version[0] < $vers[0]) {
-			return true;
-		}
-		// compare sub version
-		elseif($this->last_upgr_version[0] === $vers[0] && $this->last_upgr_version[1] < $vers[1]) {
-			return true;
-		}
-		// compare revision
-		elseif($this->last_upgr_version[0] === $vers[0] && $this->last_upgr_version[1] === $vers[1] && $this->last_upgr_version[2] < $vers[2]) {
+		if(version_compare($this->last_upgr_version, $version) < 0) {
 			return true;
 		}
 		else {
