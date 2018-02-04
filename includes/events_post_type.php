@@ -80,9 +80,7 @@ class EL_Events_Post_Type {
 			'items_list' => __('Events list','event-list'),
 		);
 		$args = array(
-			'label' => __('Events'),
 			'labels' => $labels,
-			'description' => __('Event handling'),
 			'public' => true,
 			'hierarchical' => false,
 			'exclude_from_search' => false,
@@ -99,7 +97,7 @@ class EL_Events_Post_Type {
 			'register_meta_box_cb' => null,
 			'taxonomies' => $this->use_post_categories ? array($this->post_cat_taxonomy) : array(),
 			'has_archive' => true,
-			'rewrite' => array('slug' => 'events'),
+			'rewrite' => array('slug' => EL_Options::get_instance()->get('el_permalink_slug')),
 			'query_var' => true,
 			'can_export' => true,
 			'delete_with_user' => false,
