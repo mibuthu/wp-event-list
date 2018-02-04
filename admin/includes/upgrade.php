@@ -65,17 +65,13 @@ class EL_Upgrade {
 	 * Do the upgrade check and start the required upgrades
 	 */
 	private function upgrade_check() {
-		error_log('EL_UPGRADE: Start upgrade check!');
-		$upgrade_done = false;
+		$this->log('Start upgrade check');
 		if($this->upgrade_required('0.8.0')) {
 			$this->upgrade_to_0_8_0();
-			$upgrade_done = true;
 		}
 
 		// update last_upgr_version
-		if($upgrade_done) {
-			$this->update_last_upgr_version();
-		}
+		$this->update_last_upgr_version();
 	}
 
 
