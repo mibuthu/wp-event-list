@@ -144,6 +144,21 @@ class EL_Upgrade {
 		$events = $wpdb->get_results($sql, 'ARRAY_A');
 		if(!empty($events)) {
 			foreach($events as $event) {
+				// check if the event is already available (to avoid duplicates)
+				$sql = 'SELECT ID FROM (SELECT * FROM (SELECT DISTINCT ID, post_title, post_date, '.
+					'(SELECT meta_value FROM wp_postmeta WHERE wp_postmeta.meta_key = "startdate" AND wp_postmeta.post_id = wp_posts.ID) AS startdate, '.
+					'(SELECT meta_value FROM wp_postmeta WHERE wp_postmeta.meta_key = "enddate" AND wp_postmeta.post_id = wp_posts.ID) AS enddate, '.
+					'(SELECT meta_value FROM wp_postmeta WHERE wp_postmeta.meta_key = "starttime" AND wp_postmeta.post_id = wp_posts.ID) AS starttime, '.
+					'(SELECT meta_value FROM wp_postmeta WHERE wp_postmeta.meta_key = "location" AND wp_postmeta.post_id = wp_posts.ID) AS location '.
+					'FROM wp_posts WHERE post_type = "el_events") AS events) AS events '.
+					'WHERE (post_title="'.$event['title'].'" AND post_date="'.$event['pub_date'].'"'.
+					'AND startdate="'.$event['start_date'].'" AND enddate="'.$event['end_date'].'" AND starttime = "'.$event['time'].'" AND location = "'.$event['location'].'")';
+				$ret = $wpdb->get_row($sql, ARRAY_N);
+				if(is_array($ret)) {
+					$this->log('Event "'.$event['title'].'" is already available, import skipped!');
+					continue;
+				}
+				// import event
 				$eventdata['title'] = $event['title'];
 				$eventdata['startdate'] = $event['start_date'];
 				$eventdata['enddate'] = $event['end_date'];
