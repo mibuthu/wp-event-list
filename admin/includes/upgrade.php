@@ -55,6 +55,7 @@ class EL_Upgrade {
 		// return if last_upgr_version is empty (new install --> no upgrade required)
 		if(empty($this->last_upgr_version)) {
 			$this->insert_db_option('el_last_upgr_version', $this->actual_version);
+			flush_rewrite_rules();
 			$this->log('New install -> no upgrade required');
 			return false;
 		}
