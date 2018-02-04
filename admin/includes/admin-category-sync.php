@@ -41,7 +41,7 @@ class EL_Admin_Category_Sync {
 		if(!current_user_can('manage_categories') || ($this->switch_taxonomy && !current_user_can('manage_options'))) {
 			wp_die(__('You do not have sufficient permissions to access this page.'));
 		}
-		if(empty(wp_get_referer()) || (!$this->switch_taxonomy && $this->use_post_cats)) {
+		if(!(bool)wp_get_referer() || (!$this->switch_taxonomy && $this->use_post_cats)) {
 			wp_die(__('Error: You are not allowed to view this page!','event-list'));
 		}
 	}

@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-event-list\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/event-list/\n"
-"POT-Creation-Date: 2018-01-27 18:32+0100\n"
-"PO-Revision-Date: 2018-01-21 07:57+0000\n"
+"POT-Creation-Date: 2018-02-04 12:46+0100\n"
+"PO-Revision-Date: 2018-02-04 11:46+0000\n"
 "Last-Translator: mibuthu\n"
 "Language-Team: Slovak (Slovakia) (http://www.transifex.com/mibuthu/wp-event-list/language/sk_SK/)\n"
 "MIME-Version: 1.0\n"
@@ -33,7 +33,7 @@ msgstr ""
 msgid "no additional information available"
 msgstr ""
 
-#: admin/admin.php:95 admin/includes/admin-settings.php:58
+#: admin/admin.php:95 admin/includes/admin-settings.php:65
 msgid "Event List Settings"
 msgstr "Nastavenia zoznamu udalostí"
 
@@ -57,7 +57,7 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: admin/includes/admin-about.php:59 admin/includes/admin-settings.php:75
+#: admin/includes/admin-about.php:59 admin/includes/admin-settings.php:82
 msgid "General"
 msgstr "Všeobecné"
 
@@ -432,78 +432,70 @@ msgstr ""
 msgid "none"
 msgstr ""
 
-#: admin/includes/admin-import.php:45
+#: admin/includes/admin-import.php:50
 msgid "Import Events"
 msgstr ""
 
-#: admin/includes/admin-import.php:65 admin/includes/admin-import.php:118
+#: admin/includes/admin-import.php:70 admin/includes/admin-import.php:123
 msgid "Step"
 msgstr ""
 
-#: admin/includes/admin-import.php:65
+#: admin/includes/admin-import.php:70
 msgid "Set import file and options"
 msgstr ""
 
-#: admin/includes/admin-import.php:68
+#: admin/includes/admin-import.php:73
 #, php-format
 msgid "Proceed with Step %1$s"
 msgstr ""
 
-#: admin/includes/admin-import.php:71
+#: admin/includes/admin-import.php:76
 msgid "Example file"
 msgstr ""
 
-#: admin/includes/admin-import.php:72
+#: admin/includes/admin-import.php:77
 #, php-format
 msgid ""
 "You can download an example file %1$shere%2$s (CSV delimiter is a comma!)"
 msgstr ""
 
-#: admin/includes/admin-import.php:73
+#: admin/includes/admin-import.php:78
 msgid "Note"
 msgstr ""
 
-#: admin/includes/admin-import.php:73
+#: admin/includes/admin-import.php:78
 msgid ""
 "Do not change the column header and separator line (first two lines), "
 "otherwise the import will fail!"
 msgstr ""
 
-#: admin/includes/admin-import.php:80 admin/includes/admin-import.php:88
-#: admin/includes/admin-import.php:101
+#: admin/includes/admin-import.php:85 admin/includes/admin-import.php:93
+#: admin/includes/admin-import.php:106
 msgid "Sorry, there has been an error."
 msgstr ""
 
-#: admin/includes/admin-import.php:81
+#: admin/includes/admin-import.php:86
 msgid "The file does not exist, please try again."
 msgstr ""
 
-#: admin/includes/admin-import.php:89
+#: admin/includes/admin-import.php:94
 msgid "The file is not a CSV file."
 msgstr ""
 
-#: admin/includes/admin-import.php:118
+#: admin/includes/admin-import.php:123
 msgid "Events review and additonal category selection"
 msgstr ""
 
-#: admin/includes/admin-import.php:121
+#: admin/includes/admin-import.php:126
 msgid ""
 "Warning: The following category slugs are not available and will be removed "
 "from the imported events:"
 msgstr ""
 
-#: admin/includes/admin-import.php:127
+#: admin/includes/admin-import.php:132
 msgid ""
 "If you want to keep these categories, please create these Categories first "
 "and do the import afterwards."
-msgstr ""
-
-#: admin/includes/admin-import.php:156
-msgid "Import with errors!"
-msgstr ""
-
-#: admin/includes/admin-import.php:157
-msgid "Sorry, an error occurred during import!"
 msgstr ""
 
 #: admin/includes/admin-import.php:161
@@ -514,54 +506,64 @@ msgstr ""
 msgid "Go back to All Events"
 msgstr ""
 
-#: admin/includes/admin-import.php:169 admin/includes/admin-main.php:60
+#: admin/includes/admin-import.php:166
+msgid "Import with errors!"
+msgstr ""
+
+#: admin/includes/admin-import.php:167
+#, php-format
+msgid ""
+"Sorry, an error occurred during import! %1$d events could not be imported."
+msgstr ""
+
+#: admin/includes/admin-import.php:174 admin/includes/admin-main.php:60
 #: includes/widget_helptexts.php:8
 msgid "Title"
 msgstr ""
 
-#: admin/includes/admin-import.php:170
+#: admin/includes/admin-import.php:175
 msgid "Start Date"
 msgstr ""
 
-#: admin/includes/admin-import.php:171
+#: admin/includes/admin-import.php:176
 msgid "End Date"
 msgstr ""
 
-#: admin/includes/admin-import.php:172 admin/includes/admin-new.php:92
+#: admin/includes/admin-import.php:177 admin/includes/admin-new.php:91
 #: includes/options_helptexts.php:40 includes/options_helptexts.php:41
 msgid "Time"
 msgstr ""
 
-#: admin/includes/admin-import.php:173 admin/includes/admin-main.php:61
-#: admin/includes/admin-new.php:94 includes/options_helptexts.php:45
+#: admin/includes/admin-import.php:178 admin/includes/admin-main.php:61
+#: admin/includes/admin-new.php:93 includes/options_helptexts.php:45
 #: includes/options_helptexts.php:46
 msgid "Location"
 msgstr ""
 
-#: admin/includes/admin-import.php:174
+#: admin/includes/admin-import.php:179
 msgid "Content"
 msgstr ""
 
-#: admin/includes/admin-import.php:175
+#: admin/includes/admin-import.php:180
 msgid "Category slugs"
 msgstr ""
 
-#: admin/includes/admin-import.php:214
+#: admin/includes/admin-import.php:219
 #, php-format
 msgid ""
 "There was an error at line %1$s when reading this CSV file: Header line is "
 "missing or not correct!"
 msgstr ""
 
-#: admin/includes/admin-import.php:246
+#: admin/includes/admin-import.php:251
 msgid "Import events"
 msgstr ""
 
-#: admin/includes/admin-import.php:247
+#: admin/includes/admin-import.php:252
 msgid "Add additional categories"
 msgstr ""
 
-#: admin/includes/admin-import.php:254 admin/includes/admin-main.php:191
+#: admin/includes/admin-import.php:259 admin/includes/admin-main.php:192
 msgid "Import"
 msgstr ""
 
@@ -586,82 +588,82 @@ msgstr ""
 msgid "Event data"
 msgstr ""
 
-#: admin/includes/admin-new.php:81
+#: admin/includes/admin-new.php:80
 msgid "Add Copy"
 msgstr ""
 
-#: admin/includes/admin-new.php:85
+#: admin/includes/admin-new.php:84
 msgid "Date"
 msgstr ""
 
-#: admin/includes/admin-new.php:85
+#: admin/includes/admin-new.php:84
 msgid "required"
 msgstr ""
 
-#: admin/includes/admin-new.php:88
+#: admin/includes/admin-new.php:87
 msgid "Multi-Day Event"
 msgstr ""
 
-#: admin/includes/admin-new.php:108
+#: admin/includes/admin-new.php:106
 msgid "Event Title"
 msgstr ""
 
-#: admin/includes/admin-new.php:123
+#: admin/includes/admin-new.php:121
 msgid "Event Content"
 msgstr ""
 
-#: admin/includes/admin-new.php:183 admin/includes/admin-new.php:186
+#: admin/includes/admin-new.php:180 admin/includes/admin-new.php:183
 msgid "Event updated."
 msgstr ""
 
-#: admin/includes/admin-new.php:183 admin/includes/admin-new.php:188
+#: admin/includes/admin-new.php:180 admin/includes/admin-new.php:185
 msgid "View event"
 msgstr ""
 
-#: admin/includes/admin-new.php:187
+#: admin/includes/admin-new.php:184
 #, php-format
 msgid "Event restored to revision from %1$s"
 msgstr ""
 
-#: admin/includes/admin-new.php:188
+#: admin/includes/admin-new.php:185
 msgid "Event published."
 msgstr ""
 
-#: admin/includes/admin-new.php:190
+#: admin/includes/admin-new.php:187
 msgid "Event submitted."
 msgstr ""
 
-#: admin/includes/admin-new.php:190 admin/includes/admin-new.php:192
-#: admin/includes/admin-new.php:193
+#: admin/includes/admin-new.php:187 admin/includes/admin-new.php:189
+#: admin/includes/admin-new.php:190
 msgid "Preview event"
 msgstr ""
 
-#: admin/includes/admin-new.php:191
+#: admin/includes/admin-new.php:188
 #, php-format
 msgid "Event scheduled for: %1$s>"
 msgstr ""
 
-#: admin/includes/admin-new.php:193
+#: admin/includes/admin-new.php:190
 msgid "Event draft updated."
 msgstr ""
 
-#: admin/includes/admin-settings.php:64
+#: admin/includes/admin-settings.php:71
 msgid "Go to Event Category switching page"
 msgstr ""
 
-#: admin/includes/admin-settings.php:76
+#: admin/includes/admin-settings.php:83
 msgid "Frontend Settings"
 msgstr ""
 
-#: admin/includes/admin-settings.php:77
+#: admin/includes/admin-settings.php:84
 msgid "Admin Page Settings"
 msgstr ""
 
-#: admin/includes/admin-settings.php:78
+#: admin/includes/admin-settings.php:85
 msgid "Feed Settings"
 msgstr ""
 
-#: admin/includes/admin-settings.php:79
+#: admin/includes/admin-settings.php:86
 msgid "Category Taxonomy"
 msgstr ""
 
@@ -824,7 +826,7 @@ msgstr ""
 msgid "This value defines a range from the past to the previous day."
 msgstr ""
 
-#: includes/event.php:103
+#: includes/event.php:107
 msgid "No valid start date provided"
 msgstr ""
 
@@ -1033,273 +1035,286 @@ msgid ""
 msgstr ""
 
 #: includes/options_helptexts.php:56
-msgid "Text for \"Show content\""
+msgid "Events permalink slug"
 msgstr ""
 
 #: includes/options_helptexts.php:57
+msgid ""
+"With this option the slug for the events permalink URLs can be defined."
+msgstr ""
+
+#: includes/options_helptexts.php:60
+msgid "Text for \"Show content\""
+msgstr ""
+
+#: includes/options_helptexts.php:61
 msgid ""
 "With this option the displayed text for the link to show the event content "
 "can be changed, when collapsing is enabled."
 msgstr ""
 
-#: includes/options_helptexts.php:60
+#: includes/options_helptexts.php:64
 msgid "Text for \"Hide content\""
 msgstr ""
 
-#: includes/options_helptexts.php:61
+#: includes/options_helptexts.php:65
 msgid ""
 "With this option the displayed text for the link to hide the event content "
 "can be changed, when collapsing is enabled."
 msgstr ""
 
-#: includes/options_helptexts.php:64
+#: includes/options_helptexts.php:68
 msgid "Disable CSS file"
 msgstr ""
 
-#: includes/options_helptexts.php:65
+#: includes/options_helptexts.php:69
 #, php-format
 msgid "Disable the %1$s file."
 msgstr ""
 
-#: includes/options_helptexts.php:66
+#: includes/options_helptexts.php:70
 #, php-format
 msgid "With this option you can disable the inclusion of the %1$s file."
 msgstr ""
 
-#: includes/options_helptexts.php:67
+#: includes/options_helptexts.php:71
 msgid ""
 "This normally only make sense if you have css conflicts with your theme and "
 "want to set all required css styles somewhere else (e.g. in the theme css)."
 msgstr ""
 
-#: includes/options_helptexts.php:71
+#: includes/options_helptexts.php:75
 msgid "Date format in edit form"
 msgstr ""
 
-#: includes/options_helptexts.php:72
+#: includes/options_helptexts.php:76
 msgid ""
 "This option sets the displayed date format for the event date fields in the "
 "event new / edit form."
 msgstr ""
 
-#: includes/options_helptexts.php:73
+#: includes/options_helptexts.php:77
 msgid "The default is an empty string to use the Wordpress standard setting."
 msgstr ""
 
-#: includes/options_helptexts.php:74
+#: includes/options_helptexts.php:78
 #, php-format
 msgid ""
 "All available options to specify the date format can be found %1$shere%2$s."
 msgstr ""
 
-#: includes/options_helptexts.php:78 includes/options_helptexts.php:106
+#: includes/options_helptexts.php:82 includes/options_helptexts.php:110
 msgid "Enable RSS feed"
 msgstr ""
 
-#: includes/options_helptexts.php:79
+#: includes/options_helptexts.php:83
 msgid "Enable support for an event RSS feed"
 msgstr ""
 
-#: includes/options_helptexts.php:80
+#: includes/options_helptexts.php:84
 msgid "This option activates a RSS feed for the events."
 msgstr ""
 
-#: includes/options_helptexts.php:81
+#: includes/options_helptexts.php:85
 msgid ""
 "You have to enable this option if you want to use one of the RSS feed "
 "features."
 msgstr ""
 
-#: includes/options_helptexts.php:84
+#: includes/options_helptexts.php:88
 msgid "Feed name"
 msgstr ""
 
-#: includes/options_helptexts.php:85
+#: includes/options_helptexts.php:89
 #, php-format
 msgid "This option sets the feed name. The default value is %1$s."
 msgstr ""
 
-#: includes/options_helptexts.php:86
+#: includes/options_helptexts.php:90
 #, php-format
 msgid ""
 "This name will be used in the feed url (e.g. %1$s, or %2$s with permalinks "
 "enabled)."
 msgstr ""
 
-#: includes/options_helptexts.php:89
+#: includes/options_helptexts.php:93
 msgid "Feed Description"
 msgstr ""
 
-#: includes/options_helptexts.php:90
+#: includes/options_helptexts.php:94
 #, php-format
 msgid "This options set the feed description. The default value is %1$s."
 msgstr ""
 
-#: includes/options_helptexts.php:91
+#: includes/options_helptexts.php:95
 msgid ""
 "This description will be used in the title for the feed link in the html "
 "head and for the description in the feed itself."
 msgstr ""
 
-#: includes/options_helptexts.php:94
+#: includes/options_helptexts.php:98
 msgid "Listed events"
 msgstr ""
 
-#: includes/options_helptexts.php:95
+#: includes/options_helptexts.php:99
 msgid "Only show upcoming events in feed"
 msgstr ""
 
-#: includes/options_helptexts.php:96
+#: includes/options_helptexts.php:100
 msgid ""
 "If this option is enabled only the upcoming events are listed in the feed."
 msgstr ""
 
-#: includes/options_helptexts.php:97
+#: includes/options_helptexts.php:101
 msgid "If disabled all events (upcoming and past) will be listed."
 msgstr ""
 
-#: includes/options_helptexts.php:100
+#: includes/options_helptexts.php:104
 msgid "Add RSS feed link in head"
 msgstr ""
 
-#: includes/options_helptexts.php:101
+#: includes/options_helptexts.php:105
 msgid "Add RSS feed link in the html head"
 msgstr ""
 
-#: includes/options_helptexts.php:102
+#: includes/options_helptexts.php:106
 msgid "This option adds a RSS feed in the html head for the events."
 msgstr ""
 
-#: includes/options_helptexts.php:103
+#: includes/options_helptexts.php:107
 msgid "There are 2 alternatives to include the RSS feed"
 msgstr ""
 
-#: includes/options_helptexts.php:104
+#: includes/options_helptexts.php:108
 msgid ""
 "The first way is this option to include a link in the html head. This link "
 "will be recognized by browers or feed readers."
 msgstr ""
 
-#: includes/options_helptexts.php:105
+#: includes/options_helptexts.php:109
 #, php-format
 msgid ""
 "The second way is to include a visible feed link directly in the event list."
 " This can be done by setting the shortcode attribute %1$s to %2$s."
 msgstr ""
 
-#: includes/options_helptexts.php:106
+#: includes/options_helptexts.php:110
 #, php-format
 msgid "This option is only valid if the setting %1$s is enabled."
 msgstr ""
 
-#: includes/options_helptexts.php:109
+#: includes/options_helptexts.php:113
 msgid "Position of the RSS feed link"
 msgstr ""
 
-#: includes/options_helptexts.php:110
+#: includes/options_helptexts.php:114
 msgid "at the top (above the navigation bar)"
 msgstr ""
 
-#: includes/options_helptexts.php:110
+#: includes/options_helptexts.php:114
 msgid "between navigation bar and events"
 msgstr ""
 
-#: includes/options_helptexts.php:110
+#: includes/options_helptexts.php:114
 msgid "at the bottom"
 msgstr ""
 
-#: includes/options_helptexts.php:111
+#: includes/options_helptexts.php:115
 msgid ""
 "This option specifies the position of the RSS feed link in the event list."
 msgstr ""
 
-#: includes/options_helptexts.php:112 includes/options_helptexts.php:118
-#: includes/options_helptexts.php:124 includes/options_helptexts.php:130
+#: includes/options_helptexts.php:116 includes/options_helptexts.php:122
+#: includes/options_helptexts.php:128 includes/options_helptexts.php:134
 #, php-format
 msgid ""
 "You have to set the shortcode attribute %1$s to %2$s if you want to show the"
 " feed link."
 msgstr ""
 
-#: includes/options_helptexts.php:115
+#: includes/options_helptexts.php:119
 msgid "Align of the RSS feed link"
 msgstr ""
 
-#: includes/options_helptexts.php:116
+#: includes/options_helptexts.php:120
 msgid "left"
 msgstr ""
 
-#: includes/options_helptexts.php:116
+#: includes/options_helptexts.php:120
 msgid "center"
 msgstr ""
 
-#: includes/options_helptexts.php:116
+#: includes/options_helptexts.php:120
 msgid "right"
 msgstr ""
 
-#: includes/options_helptexts.php:117
+#: includes/options_helptexts.php:121
 msgid ""
 "This option specifies the align of the RSS feed link in the event list."
 msgstr ""
 
-#: includes/options_helptexts.php:121
+#: includes/options_helptexts.php:125
 msgid "Feed link text"
 msgstr ""
 
-#: includes/options_helptexts.php:122
+#: includes/options_helptexts.php:126
 msgid ""
 "This option specifies the caption of the RSS feed link in the event list."
 msgstr ""
 
-#: includes/options_helptexts.php:123
+#: includes/options_helptexts.php:127
 msgid ""
 "Insert an empty text to hide any text if you only want to show the rss "
 "image."
 msgstr ""
 
-#: includes/options_helptexts.php:127
+#: includes/options_helptexts.php:131
 msgid "Feed link image"
 msgstr ""
 
-#: includes/options_helptexts.php:128
+#: includes/options_helptexts.php:132
 msgid "Show rss image in feed link"
 msgstr ""
 
-#: includes/options_helptexts.php:129
+#: includes/options_helptexts.php:133
 msgid ""
 "This option specifies if the an image should be dispayed in the feed link in"
 " front of the text."
 msgstr ""
 
-#: includes/options_helptexts.php:135
+#: includes/options_helptexts.php:139
 msgid "Event Category handling"
 msgstr ""
 
-#: includes/options_helptexts.php:136
+#: includes/options_helptexts.php:140
 msgid "Use Post Categories"
 msgstr ""
 
-#: includes/options_helptexts.php:137
+#: includes/options_helptexts.php:141
 msgid ""
 "Do not maintain seperate categories for the events, and use the existing "
 "post categories instead."
 msgstr ""
 
-#: includes/options_helptexts.php:138
+#: includes/options_helptexts.php:142
 msgid "Attention"
 msgstr ""
 
-#: includes/options_helptexts.php:139
+#: includes/options_helptexts.php:143
 msgid ""
 "This option cannot be changed directly, but you can go to the Event Category"
 " switching page from here."
 msgstr ""
 
 #: includes/options.php:40
-msgid "Show content"
+msgid "events"
 msgstr ""
 
 #: includes/options.php:41
+msgid "Show content"
+msgstr ""
+
+#: includes/options.php:42
 msgid "Hide content"
 msgstr ""
 

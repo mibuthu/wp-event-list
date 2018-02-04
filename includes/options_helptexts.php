@@ -52,6 +52,10 @@ $options_helptexts = array(
 	                                                '.sprintf(__('If you want to load your own language file from the general language directory %1$s for a language which is already included in the plugin language directory, you have to enable this option.','event-list'), '<code>wp-content/languages/plugins/</code>')),
 
 	// Section: "frontend"
+	'el_permalink_slug'       => array('type'    => 'text',
+	                                   'label'   => __('Events permalink slug','event-list'),
+	                                   'desc'    => __('With this option the slug for the events permalink URLs can be defined.','event-list')),
+
 	'el_content_show_text'    => array('type'    => 'text',
 	                                   'label'   => __('Text for "Show content"','event-list'),
 	                                   'desc'    => __('With this option the displayed text for the link to show the event content can be changed, when collapsing is enabled.','event-list')),

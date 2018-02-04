@@ -4,6 +4,7 @@ if(!defined('WP_ADMIN')) {
 }
 
 require_once(EL_PATH.'includes/options.php');
+require_once(EL_PATH.'includes/event.php');
 
 /**
 * This class handles all data for the admin new event page
@@ -28,7 +29,6 @@ class EL_Admin_New {
 		$action = isset($_GET['action']) ? sanitize_key($_GET['action']) : '';
 		$copy = isset($_GET['copy']) ? intval($_GET['copy']) : 0;
 		if(!empty($copy)) {
-			require_once(EL_PATH.'includes/event.php');
 			$this->copy_event = new EL_Event($copy);
 			add_filter('get_object_terms', array(&$this, 'set_copied_categories'));
 		}
@@ -58,7 +58,7 @@ class EL_Admin_New {
 
 	public function render_eventdata_metabox() {
 		global $post;
-		if($this->is_new && empty($this->copy)) {
+		if($this->is_new && empty($this->copy_event)) {
 			// set next day as date
 			$startdate = current_time('timestamp')+86400; // next day (86400 seconds = 1*24*60*60 = 1 day);
 			$enddate = $startdate;
@@ -67,8 +67,7 @@ class EL_Admin_New {
 		}
 		else {
 			// set existing eventdata
-			require_once(EL_PATH.'includes/event.php');
-			$event = new EL_Event($this->is_new ? $this->copy : $post);
+			$event = $this->is_new ? $this->copy_event : new EL_Event($post);
 			$startdate = strtotime($event->startdate);
 			$enddate = strtotime($event->enddate);
 			$starttime = esc_html($event->starttime);
@@ -97,11 +96,10 @@ class EL_Admin_New {
 
 	public function form_top_content() {
 		// set post values if an event gets copied
-		if(!empty($this->copy)) {
+		if(!empty($this->copy_event)) {
 			global $post;
-			$event = get_post($this->copy);
-			$post->post_title = $event->post_title;
-			$post->post_content = $event->post_content;
+			$post->post_title = $this->copy_event->title;
+			$post->post_content = $this->copy_event->content;
 		}
 		// show label for event title
 		echo '
@@ -155,8 +153,7 @@ class EL_Admin_New {
 		if(empty($eventdata['multiday'])) {
 			$eventdata['enddate'] = $eventdata['startdate'];
 		}
-		require_once(EL_PATH.'includes/event.php');
-		return !empty(EL_Event::safe_postmeta($pid, $eventdata));
+		return (bool)EL_Event::safe_postmeta($pid, $eventdata);
 	}
 
 	private function get_event_dateformat() {

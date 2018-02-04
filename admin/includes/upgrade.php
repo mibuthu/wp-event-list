@@ -23,8 +23,18 @@ class EL_Upgrade {
 	}
 
 	private function __construct() {
+		// check upgrade trigger to avoid duplicate updates
+		if('1' == $this->get_db_option('el_upgrade_in_progress')) {
+			$this->log('Upgrade is already running');
+			return false;
+		}
+		// set upgrade trigger
+		$this->insert_db_option('el_upgrade_in_progress', '1');
+		// do upgrade
 		$this->init();
 		$this->upgrade_check();
+		// delete upgrade trigger
+		$this->delete_db_option('el_upgrade_in_progress');
 	}
 
 	/**
@@ -32,11 +42,12 @@ class EL_Upgrade {
 	 */
 	private function init() {
 		// get actual plugin version
-		$this->actual_version = get_file_data(EL_PATH.'event-list.php', array('version'=>'Version'))['version'];
+		$filedata = get_file_data(EL_PATH.'event-list.php', array('version'=>'Version'));
+		$this->actual_version = $filedata['version'];
 		// check last upgrade version
 		$this->last_upgr_version = $this->get_db_option('el_last_upgr_version');
 		// fix for older version < 0.8.0
-		if(empty($this->last_upgr_version) && !empty($this->get_db_option('el_db_version'))) {
+		if(empty($this->last_upgr_version) && (bool)$this->get_db_option('el_db_version')) {
 			$this->last_upgr_version = '0.7.0';
 			$this->insert_db_option('el_last_upgr_version', $this->last_upgr_version, false);
 			$this->log('Applied fix for versions < 0.8.0');
@@ -44,27 +55,23 @@ class EL_Upgrade {
 		// return if last_upgr_version is empty (new install --> no upgrade required)
 		if(empty($this->last_upgr_version)) {
 			$this->insert_db_option('el_last_upgr_version', $this->actual_version);
+			flush_rewrite_rules();
+			$this->log('New install -> no upgrade required');
 			return false;
 		}
-		// create the version array
-		$this->last_upgr_version = explode('.', $this->last_upgr_version);
 	}
 
 	/**
 	 * Do the upgrade check and start the required upgrades
 	 */
 	private function upgrade_check() {
-		error_log('EL_UPGRADE: Start upgrade check!');
-		$upgrade_done = false;
+		$this->log('Start upgrade check');
 		if($this->upgrade_required('0.8.0')) {
 			$this->upgrade_to_0_8_0();
-			$upgrade_done = true;
 		}
 
 		// update last_upgr_version
-		if($upgrade_done) {
-			$this->update_last_upgr_version();
-		}
+		$this->update_last_upgr_version();
 	}
 
 
@@ -85,7 +92,7 @@ class EL_Upgrade {
 		require_once(EL_PATH.'includes/events_post_type.php');
 		$events_post_type = EL_Events_Post_Type::get_instance();
 		// set correct taxonomy
-		$events_post_type->use_post_categories = !empty($this->get_db_option('el_sync_cats'));
+		$events_post_type->use_post_categories = (bool)$this->get_db_option('el_sync_cats');
 		$events_post_type->taxonomy = $events_post_type->use_post_categories ? $events_post_type->post_cat_taxonomy : $events_post_type->event_cat_taxonomy;
 		// re-register events post type with correct taxonomy
 		unregister_post_type('el_events');
@@ -134,6 +141,21 @@ class EL_Upgrade {
 		$events = $wpdb->get_results($sql, 'ARRAY_A');
 		if(!empty($events)) {
 			foreach($events as $event) {
+				// check if the event is already available (to avoid duplicates)
+				$sql = 'SELECT ID FROM (SELECT * FROM (SELECT DISTINCT ID, post_title, post_date, '.
+					'(SELECT meta_value FROM wp_postmeta WHERE wp_postmeta.meta_key = "startdate" AND wp_postmeta.post_id = wp_posts.ID) AS startdate, '.
+					'(SELECT meta_value FROM wp_postmeta WHERE wp_postmeta.meta_key = "enddate" AND wp_postmeta.post_id = wp_posts.ID) AS enddate, '.
+					'(SELECT meta_value FROM wp_postmeta WHERE wp_postmeta.meta_key = "starttime" AND wp_postmeta.post_id = wp_posts.ID) AS starttime, '.
+					'(SELECT meta_value FROM wp_postmeta WHERE wp_postmeta.meta_key = "location" AND wp_postmeta.post_id = wp_posts.ID) AS location '.
+					'FROM wp_posts WHERE post_type = "el_events") AS events) AS events '.
+					'WHERE (post_title="'.$event['title'].'" AND post_date="'.$event['pub_date'].'"'.
+					'AND startdate="'.$event['start_date'].'" AND enddate="'.$event['end_date'].'" AND starttime = "'.$event['time'].'" AND location = "'.$event['location'].'")';
+				$ret = $wpdb->get_row($sql, ARRAY_N);
+				if(is_array($ret)) {
+					$this->log('Event "'.$event['title'].'" is already available, import skipped!');
+					continue;
+				}
+				// import event
 				$eventdata['title'] = $event['title'];
 				$eventdata['startdate'] = $event['start_date'];
 				$eventdata['enddate'] = $event['end_date'];
@@ -171,18 +193,7 @@ class EL_Upgrade {
 
 
 	private function upgrade_required($version) {
-		// create version array
-		$vers = explode('.', $version);
-		// compare main version
-		if($this->last_upgr_version[0] < $vers[0]) {
-			return true;
-		}
-		// compare sub version
-		elseif($this->last_upgr_version[0] === $vers[0] && $this->last_upgr_version[1] < $vers[1]) {
-			return true;
-		}
-		// compare revision
-		elseif($this->last_upgr_version[0] === $vers[0] && $this->last_upgr_version[1] === $vers[1] && $this->last_upgr_version[2] < $vers[2]) {
+		if(version_compare($this->last_upgr_version, $version) < 0) {
 			return true;
 		}
 		else {
@@ -280,10 +291,10 @@ class EL_Upgrade {
 			'%s'
 		);
 		if(!empty($ret)) {
-			$this->log('Deleted obsolete option "'.$option.'"', $msg);
+			$this->log('Deleted option "'.$option.'"', $msg);
 		}
 		else {
-			$this->log('Deleting obsolete option "'.$option.'" failed!', $msg, true);
+			$this->log('Deleting option "'.$option.'" failed!', $msg, true);
 		}
 		return $ret;
 	}
@@ -352,6 +363,19 @@ class EL_Upgrade {
 		if($error) {
 			$this->error = true;
 		}
+	}
+}
+
+/** Function to unregister posttype before version 4.5
+ **/
+if(!function_exists('unregister_post_type')) {
+	function unregister_post_type( $post_type ) {
+		 global $wp_post_types;
+		 if(isset($wp_post_types[$post_type])) {
+			unset($wp_post_types[$post_type]);
+			return true;
+		 }
+		 return false;
 	}
 }
 ?>

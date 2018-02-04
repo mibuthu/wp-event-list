@@ -32,7 +32,7 @@ class EL_Event_Category_Functions {
 		}
 		// prepare category slugs for comparison
 		$post_cats = get_categories(array('type'=>'post', 'orderby'=>'parent', 'hide_empty'=>0));
-		$event_cats = get_terms(array('taxonomy'=>$this->events_post_type->event_cat_taxonomy, 'orderby'=>'parent', 'hide_empty'=>false));
+		$event_cats = $this->get_event_cats(array('taxonomy'=>$this->events_post_type->event_cat_taxonomy, 'orderby'=>'parent', 'hide_empty'=>false));
 		$post_cat_slugs = wp_list_pluck($post_cats, 'slug');
 		$event_cat_slugs = wp_list_pluck($event_cats, 'slug');
 		if('to_post_cats' === $direction) {
@@ -108,7 +108,7 @@ class EL_Event_Category_Functions {
 					$parent_id = $parent_target_cat instanceof WP_Term ? $parent_target_cat->term_id : 0;
 					$args = array(
 						'name' => $source_cat->name,
-						'alias_of' => $source_cat->alias_of,
+						'alias_of' => isset($source_cat->alias_of) ? $source_cat->alias_of : '',  // availability check required for older WordPress versions
 						'description' => $source_cat->description,
 						'parent' => $parent_id,
 						'slug' => $source_cat->slug
@@ -197,7 +197,7 @@ class EL_Event_Category_Functions {
 				else {
 					// target category is not available -> remove category from event
 					wp_remove_object_terms($event->post->ID, $source_cat->term_id, $source_taxonomy);
-					error_log('Category "'.$source_cat->slug.'" removed from event '.$event->slug);
+					error_log('Category "'.$source_cat->slug.'" removed from event "'.$event->post->post_name.'"');
 				}
 			}
 		}
@@ -222,7 +222,7 @@ class EL_Event_Category_Functions {
 	}
 
 	public function update_cat_count() {
-		$event_cats = get_terms(array('taxonomy'=>$this->events_post_type->taxonomy, 'orderby'=>'parent', 'hide_empty'=>false));
+		$event_cats = $this->get_event_cats(array('taxonomy'=>$this->events_post_type->taxonomy, 'orderby'=>'parent', 'hide_empty'=>false));
 		$event_cat_ids = wp_list_pluck($event_cats, 'term_id');
 		wp_update_term_count_now($event_cat_ids, $this->events_post_type->taxonomy);
 	}
@@ -235,6 +235,16 @@ class EL_Event_Category_Functions {
 	private function unregister_event_category_taxonomy() {
 		$this->events_post_type->taxonomy = $this->events_post_type->post_cat_taxonomy;
 		unregister_taxonomy($this->events_post_type->event_cat_taxonomy);
+	}
+
+	private function get_event_cats($options) {
+		// fix for different get_terms function parameters in older WordPress versions
+		if(version_compare(get_bloginfo('version'), '4.5') < 0) {
+			return get_terms($options['taxonomy'], $options);
+		}
+		else {
+			return get_terms($options);
+		}
 	}
 
 	private function get_event_cats_from_db($cat_slug=null) {
@@ -252,6 +262,25 @@ class EL_Event_Category_Functions {
 		else {
 			return $wpdb->get_row($query);
 		}
+	}
+}
+
+/** Function to unregister taxonomy before WordPress version 4.5
+ **/
+if(!function_exists('unregister_taxonomy')) {
+	function unregister_taxonomy($taxonomy) {
+		 if(!taxonomy_exists($taxonomy)) {
+			return new WP_Error('invalid_taxonomy', __('Invalid taxonomy.'));
+		}
+		$taxonomy_object = get_taxonomy($taxonomy);
+		// Do not allow unregistering internal taxonomies.
+		if($taxonomy_object->_builtin) {
+			return new WP_Error( 'invalid_taxonomy', __( 'Unregistering a built-in taxonomy is not allowed.' ) );
+		}
+		global $wp_taxonomies;
+		// Remove the taxonomy.
+		unset( $wp_taxonomies[$taxonomy]);
+		return true;
 	}
 }
 ?>

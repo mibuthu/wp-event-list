@@ -187,13 +187,6 @@ class EL_Events {
 		return $wpdb->get_var( $sql );
 	}
 
-	private function convert_events_timeformat($events) {
-		foreach($events as $event) {
-			$this->convert_event_timeformat($event);
-		}
-		return $events;
-	}
-
 	private function get_sql_filter_string($date_filter=null, $cat_filter=null) {
 		$sql_filter_string = '';
 		// date filter

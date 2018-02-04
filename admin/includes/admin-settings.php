@@ -41,14 +41,21 @@ class EL_Admin_Settings {
 			$out .= '<div id="message" class="updated">
 				<p><strong>'.__('Settings saved.').'</strong></p>
 			</div>';
-			// check feed rewrite status and update it if required
-			if('feed' == $tab) {
-				require_once(EL_PATH.'includes/feed.php');
-				EL_Feed::get_instance()->update_feed_rewrite_status();
-			}
-			if('taxonomy' == $tab) {
-				require_once(EL_PATH.'admin/includes/event-category_functions.php');
-				EL_Event_Category_Functions::get_instance()->update_cat_count();
+			switch($tab) {
+				case 'frontend':
+					// flush rewrite rules (required if permalink slug was changed)
+					flush_rewrite_rules();
+					break;
+				case 'feed':
+					// update feed rewrite status if required
+					require_once(EL_PATH.'includes/feed.php');
+					EL_Feed::get_instance()->update_feed_rewrite_status();
+					break;
+				case 'taxonomy':
+					// update category count
+					require_once(EL_PATH.'admin/includes/event-category_functions.php');
+					EL_Event_Category_Functions::get_instance()->update_cat_count();
+					break;
 			}
 		}
 

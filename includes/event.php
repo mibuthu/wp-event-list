@@ -4,6 +4,10 @@ if(!defined('WPINC')) {
 }
 
 require_once(EL_PATH.'includes/events_post_type.php');
+// fix for PHP 5.2 (provide function date_create_from_format defined in daterange.php)
+if(version_compare(PHP_VERSION, '5.3') < 0) {
+	require_once(EL_PATH.'includes/daterange.php');
+}
 
 // Class to manage categories
 class EL_Event {
@@ -24,7 +28,7 @@ class EL_Event {
 		}
 		else {
 			$this->post = get_post($post);
-			if(! $this->post instanceof WP_Post) {
+			if(0 === $this->post->ID) {
 				die('ERROR: Post not found!');
 			}
 		}
@@ -132,20 +136,12 @@ class EL_Event {
 		return wp_set_object_terms($pid, $cats, EL_Events_Post_Type::get_instance()->taxonomy);
 	}
 
-	public function display_time($timestring) {
-		$timestamp = strtotime($timestring);
+	public function starttime_i18n() {
+		$timestamp = strtotime($this->starttime);
 		if($timestamp) {
 			return date_i18n(get_option('time_format'), $timestamp);
 		}
-		return $timestring;
-	}
-
-	private function convert_event_timeformat($event) {
-		$timestamp = strtotime($event->starttime);
-		if($timestamp) {
-			$event->starttime = date_i18n(get_option('time_format'), $timestamp);
-		}
-		return $event;
+		return $this->starttime;
 	}
 
 	private function validate_date($datestring) {

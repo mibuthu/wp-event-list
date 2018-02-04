@@ -69,7 +69,7 @@ class EL_Admin_Main {
 		switch($column_name) {
 			case 'eventdate':
 				$event = new EL_Event($pid);
-				echo $this->format_event_date($event->startdate, $event->enddate, $event->display_time($event->starttime));
+				echo $this->format_event_date($event->startdate, $event->enddate, $event->starttime_i18n());
 				break;
 			case 'location':
 				$event = new EL_Event($pid);
@@ -188,7 +188,8 @@ class EL_Admin_Main {
 
 	public function add_import_button() {
 		echo '
-			<script>jQuery(document).ready(function($) { $("a.page-title-action").first().after(\'<a href="'.admin_url('edit.php?post_type=el_events&page=el_admin_import').'" class="add-new-h2">'.__('Import','event-list').'</a>\'); });</script>';
+			<script>jQuery(document).ready(function($) { items = $("a.page-title-action").length ? $("a.page-title-action") : $("a.add-new-h2"); '.
+			'items.first().after(\'<a href="'.admin_url('edit.php?post_type=el_events&page=el_admin_import').'" class="add-new-h2">'.__('Import','event-list').'</a>\'); });</script>';
 	}
 
 		/** ************************************************************************
