@@ -229,7 +229,7 @@ class SC_Event_List {
 		}
 		// event categories
 		if( $this->is_visible( $a['show_cat'] ) ) {
-			$out .= '<div class="event-cat">'.esc_attr($this->categories->convert_db_string($event->categories)).'</div>';
+			$out .= '<div class="event-cat">'.esc_attr(implode(', ', $event->get_category_names())).'</div>';
 		}
 		// event content
 		if( $this->is_visible( $a['show_content'] ) ) {
