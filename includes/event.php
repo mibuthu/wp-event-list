@@ -178,12 +178,10 @@ class EL_Event {
 	}
 
 	private function get_category_fields($field) {
-		//error_log('categories: '.print_r($this->categories, true));
 		$list = wp_list_pluck($this->categories, $field);
 		if(!is_array($list)) {
 			$list = array();
 		}
-		//error_log('cat_fields: '.print_r($list, true));
 		return $list;
 	}
 
