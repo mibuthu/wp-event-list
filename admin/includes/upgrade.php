@@ -29,12 +29,12 @@ class EL_Upgrade {
 			return false;
 		}
 		// set upgrade trigger
-		$this->insert_db_option('el_upgrade_in_progress', '1');
+		$this->insert_db_option('el_upgrade_in_progress', '1', false);
 		// do upgrade
 		$this->init();
 		$this->upgrade_check();
 		// delete upgrade trigger
-		$this->delete_db_option('el_upgrade_in_progress');
+		$this->delete_db_option('el_upgrade_in_progress', false);
 	}
 
 	/**
@@ -50,13 +50,13 @@ class EL_Upgrade {
 		if(empty($this->last_upgr_version) && (bool)$this->get_db_option('el_db_version')) {
 			$this->last_upgr_version = '0.7.0';
 			$this->insert_db_option('el_last_upgr_version', $this->last_upgr_version, false);
-			$this->log('Applied fix for versions < 0.8.0');
+			$this->log('Applied fix for versions < 0.8.0', false);
 		}
 		// return if last_upgr_version is empty (new install --> no upgrade required)
 		if(empty($this->last_upgr_version)) {
-			$this->insert_db_option('el_last_upgr_version', $this->actual_version);
+			$this->insert_db_option('el_last_upgr_version', $this->actual_version, false);
 			flush_rewrite_rules();
-			$this->log('New install -> no upgrade required');
+			$this->log('New install -> no upgrade required', false);
 			return false;
 		}
 	}
@@ -65,7 +65,7 @@ class EL_Upgrade {
 	 * Do the upgrade check and start the required upgrades
 	 */
 	private function upgrade_check() {
-		$this->log('Start upgrade check');
+		$this->log('Start upgrade check', false);
 		if($this->upgrade_required('0.8.0')) {
 			$this->upgrade_to_0_8_0();
 		}
