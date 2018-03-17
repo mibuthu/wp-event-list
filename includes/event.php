@@ -154,7 +154,7 @@ class EL_Event {
 		return false;
 	}
 
-	private function validate_time($timestring) {
+	public static function validate_time($timestring) {
 		// Try to extract a correct time from the provided text
 		$timestamp = strtotime(stripslashes($timestring));
 		// Return a standard time format if the conversion was successful

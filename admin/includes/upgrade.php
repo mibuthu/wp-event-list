@@ -10,8 +10,13 @@ class EL_Upgrade {
 	private static $instance;
 	private $actual_version;
 	private $last_upgr_version;
-	public $error = false;
-	public $msg = array();
+	private $max_exec_time;
+	private $upgrade_starttime;
+	private $resume_version;
+	private $upgr_action_status = array();
+	private $error = false;
+	private $logfile_handle = false;
+	public $logfile = EL_PATH.'upgrade.log';
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -23,24 +28,45 @@ class EL_Upgrade {
 	}
 
 	private function __construct() {
+		// nothing to do
+	}
+
+	public function upgrade() {
+		// check required get parameters
+		$this->resume_version = isset($_GET['resume-el-upgr']) ? str_replace('-', '.', sanitize_title($_GET['resume-el-upgr'])) : false;
+		$this->set_max_exec_time();
+		$this->upgrade_starttime = time();
 		// check upgrade trigger to avoid duplicate updates
-		if('1' == $this->get_db_option('el_upgrade_in_progress')) {
-			$this->log('Upgrade is already running');
+		if(empty($this->resume_version) && $this->upgrade_starttime <= $this->get_db_option('el_upgr_in_progress') + $this->max_exec_time + 5) {
+			$this->log('Upgrade is already running', false);
 			return false;
 		}
 		// set upgrade trigger
-		$this->insert_db_option('el_upgrade_in_progress', '1', false);
+		$this->update_db_option('el_upgr_in_progress', $this->upgrade_starttime, false);
 		// do upgrade
-		$this->init();
+		if(!$this->init()) {
+			return false;
+		}
 		$this->upgrade_check();
+		// delete upgrade action status
+		$this->delete_upgr_action_status();
 		// delete upgrade trigger
-		$this->delete_db_option('el_upgrade_in_progress', false);
+		$this->delete_db_option('el_upgr_in_progress', false);
+		// close logfile
+		$this->logfile_close();
+		// redirect
+		$this->redirect(array('el-upgr-finished'=>($this->error ? 2 : 1)), array('resume-el-upgr'));
 	}
 
 	/**
 	 * Preparations for the upgrade check
 	 */
 	private function init() {
+		// enable wbdb error logging
+		global $wpdb;
+		$wpdb->show_errors();
+		// init logfile
+		$this->logfile_init();
 		// get actual plugin version
 		$filedata = get_file_data(EL_PATH.'event-list.php', array('version'=>'Version'));
 		$this->actual_version = $filedata['version'];
@@ -59,6 +85,10 @@ class EL_Upgrade {
 			$this->log('New install -> no upgrade required', false);
 			return false;
 		}
+		// show upgrade message
+		echo 'Event list plugin upgrade in progress &hellip;<br />Please be patience until this process is finished.<br />'.
+		flush();
+		return true;
 	}
 
 	/**
@@ -88,6 +118,7 @@ class EL_Upgrade {
 		require_once(EL_PATH.'includes/events.php');
 		require_once(EL_PATH.'includes/event.php');
 
+		$version = '0.8.0';
 		// Correct events post type
 		require_once(EL_PATH.'includes/events_post_type.php');
 		$events_post_type = EL_Events_Post_Type::get_instance();
@@ -107,8 +138,19 @@ class EL_Upgrade {
 		if(!$events_post_type->use_post_categories) {
 			$cats_array = $this->get_db_option('el_categories');
 			if(!empty($cats_array)) {
-				foreach($cats_array as $cat) {
-					if(!EL_Events::get_instance()->cat_exists($cat['slug'])) {
+				$action = 'el_category_upgr_0_8_0';
+				if(!$this->is_action_completed($action)) {
+					foreach($cats_array as $cat) {
+						if($this->is_action_item_completed($action, $cat['slug'])) {
+							continue;
+						}
+						// check if the event category is already available
+						if(EL_Events::get_instance()->cat_exists($cat['slug'])) {
+							$this->log('Event category "'.$cat['name'].'" is already available, import skipped!');
+							$this->complete_action_item($version, $action, $cat['slug']);
+							continue;
+						}
+						// import event category
 						$args['slug'] = $cat['slug'];
 						$args['description'] = $cat['desc'];
 						if(isset($cat['parent'])) {
@@ -124,7 +166,9 @@ class EL_Upgrade {
 						else {
 							$this->log('Event category "'.$cat['name'].'" successfully imported');
 						}
+						$this->complete_action_item($version, $action, $cat['slug']);
 					}
+					$this->complete_action($action);
 				}
 			}
 			else {
@@ -140,38 +184,52 @@ class EL_Upgrade {
 		$sql = 'SELECT * FROM '.$wpdb->prefix.'event_list ORDER BY start_date ASC, time ASC, end_date ASC';
 		$events = $wpdb->get_results($sql, 'ARRAY_A');
 		if(!empty($events)) {
-			foreach($events as $event) {
-				// check if the event is already available (to avoid duplicates)
-				$sql = 'SELECT ID FROM (SELECT * FROM (SELECT DISTINCT ID, post_title, post_date, '.
-					'(SELECT meta_value FROM wp_postmeta WHERE wp_postmeta.meta_key = "startdate" AND wp_postmeta.post_id = wp_posts.ID) AS startdate, '.
-					'(SELECT meta_value FROM wp_postmeta WHERE wp_postmeta.meta_key = "enddate" AND wp_postmeta.post_id = wp_posts.ID) AS enddate, '.
-					'(SELECT meta_value FROM wp_postmeta WHERE wp_postmeta.meta_key = "starttime" AND wp_postmeta.post_id = wp_posts.ID) AS starttime, '.
-					'(SELECT meta_value FROM wp_postmeta WHERE wp_postmeta.meta_key = "location" AND wp_postmeta.post_id = wp_posts.ID) AS location '.
-					'FROM wp_posts WHERE post_type = "el_events") AS events) AS events '.
-					'WHERE (post_title="'.$event['title'].'" AND post_date="'.$event['pub_date'].'"'.
-					'AND startdate="'.$event['start_date'].'" AND enddate="'.$event['end_date'].'" AND starttime = "'.$event['time'].'" AND location = "'.$event['location'].'")';
-				$ret = $wpdb->get_row($sql, ARRAY_N);
-				if(is_array($ret)) {
-					$this->log('Event "'.$event['title'].'" is already available, import skipped!');
-					continue;
+			$action = 'el_events_upgr_0_8_0';
+			if(!$this->is_action_completed($action)) {
+				foreach($events as $event) {
+					if($this->is_action_item_completed($action, $event['id'])) {
+						continue;
+					}
+					// check if the event is already available
+					$sql = 'SELECT ID FROM (SELECT * FROM (SELECT DISTINCT ID, post_title, post_date, '.
+						'(SELECT meta_value FROM wp_postmeta WHERE wp_postmeta.meta_key = "startdate" AND wp_postmeta.post_id = wp_posts.ID) AS startdate, '.
+						'(SELECT meta_value FROM wp_postmeta WHERE wp_postmeta.meta_key = "enddate" AND wp_postmeta.post_id = wp_posts.ID) AS enddate, '.
+						'(SELECT meta_value FROM wp_postmeta WHERE wp_postmeta.meta_key = "starttime" AND wp_postmeta.post_id = wp_posts.ID) AS starttime, '.
+						'(SELECT meta_value FROM wp_postmeta WHERE wp_postmeta.meta_key = "location" AND wp_postmeta.post_id = wp_posts.ID) AS location '.
+						'FROM wp_posts WHERE post_type = "el_events") AS events) AS events '.
+						'WHERE ('.
+						'post_title="'.wp_kses_post($event['title']).'" AND '.
+						'post_date="'.$event['pub_date'].'" AND '.
+						'startdate="'.$event['start_date'].'" AND '.
+						'enddate="'.$event['end_date'].'" AND '.
+						'starttime = "'.wp_kses_post(EL_Event::validate_time($event['time'])).'" AND '.
+						'location = "'.wp_kses_post($event['location']).'")';
+					$ret = $wpdb->get_row($sql, ARRAY_N);
+					if(is_array($ret)) {
+						$this->log('Event "'.$event['title'].'" is already available, import skipped!');
+						$this->complete_action_item($version, $action, $event['id']);
+						continue;
+					}
+					// import event
+					$eventdata['title'] = $event['title'];
+					$eventdata['startdate'] = $event['start_date'];
+					$eventdata['enddate'] = $event['end_date'];
+					$eventdata['starttime'] = $event['time'];
+					$eventdata['location'] = $event['location'];
+					$eventdata['content'] = $event['details'];
+					$eventdata['post_date'] = $event['pub_date'];
+					$eventdata['post_user'] = $event['pub_user'];
+					$eventdata['categories'] = explode('|', substr($event['categories'], 1, -1));
+					$ret = EL_Event::safe($eventdata);
+					if(empty($ret)) {
+						$this->log('Import of event "'.$eventdata['title'].'" failed!', true, true);
+					}
+					else {
+						$this->log('Event "'.$eventdata['title'].'" successfully imported');
+					}
+					$this->complete_action_item($version, $action, $event['id']);
 				}
-				// import event
-				$eventdata['title'] = $event['title'];
-				$eventdata['startdate'] = $event['start_date'];
-				$eventdata['enddate'] = $event['end_date'];
-				$eventdata['starttime'] = $event['time'];
-				$eventdata['location'] = $event['location'];
-				$eventdata['content'] = $event['details'];
-				$eventdata['post_date'] = $event['pub_date'];
-				$eventdata['post_user'] = $event['pub_user'];
-				$eventdata['categories'] = explode('|', substr($event['categories'], 1, -1));
-				$ret = EL_Event::safe($eventdata);
-				if(empty($ret)) {
-					$this->log('Import of event "'.$eventdata['title'].'" failed!', true, true);
-				}
-				else {
-					$this->log('Event "'.$eventdata['title'].'" successfully imported');
-				}
+			$this->complete_action($action);
 			}
 		}
 		else {
@@ -191,14 +249,72 @@ class EL_Upgrade {
 		$this->rename_db_option('el_sync_cats', 'el_use_post_cats');
 	}
 
-
 	private function upgrade_required($version) {
-		if(version_compare($this->last_upgr_version, $version) < 0) {
+		if(version_compare($this->last_upgr_version, $version) < 0 || $this->resume_version === $version) {
 			return true;
 		}
 		else {
 			return false;
 		}
+	}
+
+	private function set_max_exec_time() {
+		$this->max_exec_time = ini_get('max_execution_time');
+		if(empty($this->max_exec_time)) {
+			$this->max_exec_time = 25;
+		}
+		$this->log('Maximum script execution time: '.$this->max_exec_time.' seconds', false);
+	}
+
+	private function is_action_completed($action) {
+		$this->upgr_action_status[$action] = array();
+		$status = $this->get_db_option($action);
+		if('completed' === $status) {
+			return true;
+		}
+		if(!empty($status)) {
+			$this->upgr_action_status[$action] = explode(',', $status);
+		}
+		return false;
+	}
+
+	private function is_action_item_completed($action, $id) {
+		return in_array($id, $this->upgr_action_status[$action]);
+	}
+
+	private function complete_action($action) {
+		$this->update_db_option($action, 'completed', false);
+		$this->upgr_action_status[$action] = array();
+	}
+
+	private function complete_action_item($upgr_version, $action, $id) {
+		$this->upgr_action_status[$action][] = $id;
+		// safe status to db from time to time
+		if(0 === count($this->upgr_action_status[$action]) % 25) {
+			$this->update_db_option($action, implode(',', $this->upgr_action_status[$action]), null);
+		}
+		// if max execution time is nearly reached, safe the actual status to db and redirect
+		// the upgrade will be resumed after the reload with a new set of execution time
+		if($this->max_exec_time - 5 <= time() - $this->upgrade_starttime) {
+			$this->update_db_option($action, implode(',', $this->upgr_action_status[$action]), false);
+			$this->log('The maximum execution time is already consumed, script will redirect and continue upgrade afterwards with a new set of time.', false);
+			// close logfile
+			$this->logfile_close();
+			// redirect
+			$this->redirect(array('resume-el-upgr' => $upgr_version));
+		}
+	}
+
+	private function delete_upgr_action_status() {
+		foreach($this->upgr_action_status as $action=>$status) {
+			$this->delete_db_option($action, false);
+		}
+	}
+
+	private function redirect($args_to_add=array(), $args_to_remove=array()) {
+		$url = add_query_arg($args_to_add, remove_query_arg($args_to_remove));
+		echo '<meta http-equiv="refresh" content="0; url='.$url.'">';
+		die();
 	}
 
 	/**
@@ -222,12 +338,18 @@ class EL_Upgrade {
 	 * @param string $option  Option name
 	 * @param mixed  $value   Option value
 	 * @param bool   $msg     Print logging messages?
-	 * @return int|false      1..     if option was updated successfully
+	 * @return int|false      2..     if option was not available and added successfully
+	 *                        1..     if option was updated successfully
 	 *                        0..     if option was available but value was already correct
 	 *                        false.. on error
 	 */
 	private function update_db_option($option, $value, $msg=true) {
 		global $wpdb;
+		// if option is not existing, the option will be added
+		if($this->insert_db_option($option, $value, null)) {
+			$this->log('Option "'.$option.'" added with value "'.$value.'"', $msg);
+			return 2;
+		}
 		$ret = $wpdb->update(
 			$wpdb->options,
 			array('option_value' => $value),
@@ -238,7 +360,7 @@ class EL_Upgrade {
 			$this->log('Updated option "'.$option.'" to value "'.$value.'"', $msg);
 		}
 		elseif(0 === $ret) {
-			$this->log('Update of option "'.$option.'" is not required -> correct value "'.$value.'" is already set', $msg);
+			$this->log('Update of option "'.$option.'" is not required: correct value "'.$value.'" already set', $msg);
 		}
 		else {  // false === $ret
 			$this->log('Updating option "'.$option.'" to value "'.$value.'" failed!', $msg, true);
@@ -280,11 +402,16 @@ class EL_Upgrade {
 	 * Delete a WordPress option directly in the database with $wpdb
 	 * @param string $option  Option name
 	 * @param bool   $msg     Print logging messages?
-	 * @return int|false      1..     if option was deleted successfully
+	 * @return int|null|false 1..     if option was deleted successfully
+	 *                        null..  if option is already not set
 	 *                        false.. on error
 	 */
 	private function delete_db_option($option, $msg=true) {
 		global $wpdb;
+		if(is_null($this->get_db_option($option))) {
+			$this->log('Deleting option "'.$option.'" is not required: option is not set', $msg);
+			return null;
+		}
 		$ret = $wpdb->delete(
 			$wpdb->options,
 			array('option_name' => $option),
@@ -354,14 +481,70 @@ class EL_Upgrade {
 		return $ret;
 	}
 
-	private function log($text, $msg=true, $error=false) {
-		if($msg) {
-			$error_text = $error ? 'ERROR: ' : '';
-			error_log('EL_UPGRADE: '.$error_text.$text);
-			$this->msg[] = $error_text.$text;
+	private function logfile_init() {
+		// rename all existing log files and remove files older than 90 days
+		if(file_exists($this->logfile) && empty($this->resume_version)) {
+			$num_log_files = 0;
+			while(file_exists($this->logfile.'.'.($num_log_files+1))) {
+				$num_log_files += 1;
+			}
+			for($i=$num_log_files; $i>=0; $i--) {
+				$old = 0 < $i ? $this->logfile.'.'.$i : $this->logfile;
+				// delete file if it is too old
+				if(filemtime($old) < time() - 90*24*60*60) {
+					if(!@unlink($old)) {
+						error_log('"'.$old.'" cannot be deleted! No upgrade log file will be written!');
+						return false;
+					}
+				}
+				// else rename file
+				else {
+					$new = $this->logfile.'.'.($i+1);
+					if(!@rename($old, $new)) {
+						error_log('"'.$old.'" cannot be renamed! No upgrade log file will be written!');
+						return false;
+					}
+				}
+			}
 		}
-		if($error) {
-			$this->error = true;
+		// open logfile for writing
+		$this->logfile_handle = @fopen($this->logfile, 'a');
+		if(empty($this->logfile_handle)) {
+			error_log('"'.$this->logfile.'" cannot be opened for writing! No upgrade log file will be written!');
+			return false;
+		}
+		return true;
+	}
+
+	private function logfile_close() {
+		if(!empty($this->logfile_handle)) {
+			fclose($this->logfile_handle);
+		}
+	}
+
+	/** Log function
+	 *  This function prints the error messages to the log file, prepares the text for the admin ui message
+	 *  and sets the error flag (required for the admin ui message)
+	 *
+	 *  @param string    $text   Message text
+	 *  @param bool|null $msg    Print error message:
+	 *                           null:  don't print message to debug log or upgrade log file
+	 *                           false: only print message to debug log
+	 *                           true:  print message to log and upgrade log file
+	 *  @return null
+	 */
+	private function log($text, $msg=true, $error=false) {
+		$error_text = '';
+		if(!is_null($msg)) {
+			if($error) {
+				$this->error = true;
+				$error_text = 'ERROR: ';
+			}
+			error_log('EL_UPGRADE: '.$error_text.$text);
+		}
+		if($this->logfile_handle && $msg) {
+			$time = DateTime::createFromFormat('U.u', microtime(true))->format('Y-m-d H:i:s.v');
+			fwrite($this->logfile_handle, '['.$time.'] '.$error_text.$text.PHP_EOL);
 		}
 	}
 }
