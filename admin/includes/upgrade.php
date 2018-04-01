@@ -16,7 +16,7 @@ class EL_Upgrade {
 	private $upgr_action_status = array();
 	private $error = false;
 	private $logfile_handle = false;
-	public $logfile = EL_PATH.'upgrade.log';
+	public $logfile = '';
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -28,7 +28,7 @@ class EL_Upgrade {
 	}
 
 	private function __construct() {
-		// nothing to do
+		$this->logfile = EL_PATH.'upgrade.log';
 	}
 
 	public function upgrade() {
@@ -543,13 +543,13 @@ class EL_Upgrade {
 			error_log('EL_UPGRADE: '.$error_text.$text);
 		}
 		if($this->logfile_handle && $msg) {
-			$time = DateTime::createFromFormat('U.u', microtime(true))->format('Y-m-d H:i:s.v');
-			fwrite($this->logfile_handle, '['.$time.'] '.$error_text.$text.PHP_EOL);
+			$time = date('[Y-m-d H:i:s] ', time());
+			fwrite($this->logfile_handle, $time.$error_text.$text.PHP_EOL);
 		}
 	}
 }
 
-/** Function to unregister posttype before version 4.5
+/** Function to unregister posttype before WordPress version 4.5
  **/
 if(!function_exists('unregister_post_type')) {
 	function unregister_post_type( $post_type ) {
