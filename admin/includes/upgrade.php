@@ -297,7 +297,7 @@ class EL_Upgrade {
 		// the upgrade will be resumed after the reload with a new set of execution time
 		if($this->max_exec_time - 5 <= time() - $this->upgrade_starttime) {
 			$this->update_db_option($action, implode(',', $this->upgr_action_status[$action]), false);
-			$this->log('The maximum execution time is already consumed, script will redirect and continue upgrade afterwards with a new set of time.', false);
+			$this->log('The maximum execution time is already consumed, script will redirect and continue upgrade afterwards with a new set of time.');
 			// close logfile
 			$this->logfile_close();
 			// redirect
