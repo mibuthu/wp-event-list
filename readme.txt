@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, filter, admin, attribute, widget, sidebar, feed, rss
 Requires at least: 4.2
 Tested up to: 4.9
-Stable tag: 0.8.1
+Stable tag: 0.8.2
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -84,6 +84,13 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 
 
 == Changelog ==
+
+= 0.8.2 (2018-04-22) =
+* fixed category view in front page
+* fixed "past" filter option
+* fixed category filter in admin view, if a seperate taxonomy is used
+* many improvements and fixes in upgrade process
+* add upgrade log file
 
 = 0.8.1 (2018-02-04) =
 * added option to change events permalink slug

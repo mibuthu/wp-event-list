@@ -134,15 +134,26 @@ class EL_Admin_Main {
 		$default_date = 'publish' === $selected_status ? 'upcoming' : 'all';
 		$args['selected_date'] = isset($_GET['date']) ? sanitize_key($_GET['date']) : $default_date;
 
+
 		// date filter
 		echo($this->filterbar->show_years(admin_url('edit.php?post_type=el_events'), $args, 'dropdown', array('show_past' => true)));
 		// cat filter
-		wp_dropdown_categories(array(
+		$cat_args = array(
 			'show_option_all' => __('All Categories'),
 			'taxonomy' => $this->events_post_type->taxonomy,
 			'orderby' => 'name',
 			'hierarchical' => true,
-		));
+		);
+		// additional parameters required if a seperate taxonomy is used
+		if(!$this->events_post_type->use_post_categories) {
+			// check used get parameters
+			$selected_cat = isset($_GET['cat']) ? sanitize_key($_GET['cat']) : '';
+
+			$cat_args['value_field'] = 'slug';
+			$cat_args['selected'] = $selected_cat;
+
+		}
+		wp_dropdown_categories($cat_args);
 	}
 
 	public function filter_request($query) {
@@ -170,6 +181,14 @@ class EL_Admin_Main {
 			)
 		);
 		$query->query_vars['meta_query'] = $meta_query;
+		// adaptions for taxonomy filter if a seperate taxonomy is used (no adaptions required if post categories are used)
+		if(!$this->events_post_type->use_post_categories) {
+			// check used get parameters
+			$selected_cat = isset($_GET['cat']) ? sanitize_key($_GET['cat']) : '';
+
+			$query->query_vars['cat'] = false;
+			$query->query_vars[$this->events_post_type->taxonomy] = $selected_cat;
+		}
 	}
 
 	public function set_default_posts_list_mode() {

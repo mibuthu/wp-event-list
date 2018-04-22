@@ -154,7 +154,7 @@ class EL_Event {
 		return false;
 	}
 
-	private function validate_time($timestring) {
+	public static function validate_time($timestring) {
 		// Try to extract a correct time from the provided text
 		$timestamp = strtotime(stripslashes($timestring));
 		// Return a standard time format if the conversion was successful
@@ -178,12 +178,10 @@ class EL_Event {
 	}
 
 	private function get_category_fields($field) {
-		//error_log('categories: '.print_r($this->categories, true));
 		$list = wp_list_pluck($this->categories, $field);
 		if(!is_array($list)) {
 			$list = array();
 		}
-		//error_log('cat_fields: '.print_r($list, true));
 		return $list;
 	}
 

@@ -6,44 +6,40 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/event-list/\n"
-"POT-Creation-Date: 2018-02-04 12:46+0100\n"
+"POT-Creation-Date: 2018-04-22 08:53+0200\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin/admin.php:54
+#: admin/admin.php:57
 #, php-format
 msgid "Errors during upgrade of plugin %1$s"
 msgstr ""
 
-#: admin/admin.php:54
+#: admin/admin.php:57
 #, php-format
 msgid "Upgrade of plugin %1$s successful"
 msgstr ""
 
-#: admin/admin.php:55
-msgid "no additional information available"
-msgstr ""
-
-#: admin/admin.php:95 admin/includes/admin-settings.php:65
+#: admin/admin.php:106 admin/includes/admin-settings.php:65
 msgid "Event List Settings"
 msgstr ""
 
-#: admin/admin.php:95
+#: admin/admin.php:106
 msgid "Settings"
 msgstr ""
 
-#: admin/admin.php:99 admin/includes/admin-about.php:37
+#: admin/admin.php:110 admin/includes/admin-about.php:37
 msgid "About Event List"
 msgstr ""
 
-#: admin/admin.php:99
+#: admin/admin.php:110
 msgid "About"
 msgstr ""
 
-#: admin/admin.php:121
+#: admin/admin.php:132
 #, php-format
 msgid "%s Event"
 msgid_plural "%s Events"
@@ -508,7 +504,7 @@ msgstr ""
 msgid "Add additional categories"
 msgstr ""
 
-#: admin/includes/admin-import.php:259 admin/includes/admin-main.php:192
+#: admin/includes/admin-import.php:259 admin/includes/admin-main.php:211
 msgid "Import"
 msgstr ""
 

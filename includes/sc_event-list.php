@@ -229,7 +229,7 @@ class SC_Event_List {
 		}
 		// event categories
 		if( $this->is_visible( $a['show_cat'] ) ) {
-			$out .= '<div class="event-cat">'.esc_attr($this->categories->convert_db_string($event->categories)).'</div>';
+			$out .= '<div class="event-cat">'.esc_attr(implode(', ', $event->get_category_names())).'</div>';
 		}
 		// event content
 		if( $this->is_visible( $a['show_content'] ) ) {
@@ -317,8 +317,7 @@ class SC_Event_List {
 	private function get_selected_date(&$a) {
 		// check used get parameters
 		$date = isset($_GET['date'.$a['sc_id']]) ? sanitize_key($_GET['date'.$a['sc_id']]) : null;
-
-		if('all' === $date || 'upcoming' === $date) {
+		if('all' === $date || 'upcoming' === $date || 'past' === $date) {
 			return $date;
 		}
 		else if(preg_match('/^[0-9]{4}(-[0-9]{2})?(-[0-9]{2})?$/', $date)) {

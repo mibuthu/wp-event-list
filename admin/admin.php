@@ -11,7 +11,7 @@ class EL_Admin {
 	private static $instance;
 	private $options;
 	private $events_post_type;
-	private $upgrade_req = false;
+	private $show_upgr_message = false;
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -32,29 +32,40 @@ class EL_Admin {
 		add_action('current_screen', array(&$this, 'register_events_post_type_mods'));
 		add_action('admin_head', array(&$this, 'add_dashboard_styles'));
 		add_action('admin_menu', array(&$this, 'register_pages'));
-		add_filter('dashboard_glance_items', array($this, 'add_events_to_glance'));
+		add_filter('dashboard_glance_items', array(&$this, 'add_events_to_glance'));
+		add_filter('removable_query_args', array(&$this, 'remove_upgrade_args'));
 	}
 
 	public function plugin_upgrade_check() {
 		// Upgrade check
 		$file_data = get_file_data(EL_PATH.'event-list.php', array('version'=>'Version'));
 		$last_upgr_version = get_option('el_last_upgr_version', '');
-		if($file_data['version'] != $last_upgr_version) {
+		if($file_data['version'] != $last_upgr_version || isset($_GET['resume-el-upgr'])) {
 			// load upgrade class
 			require_once(EL_PATH.'admin/includes/upgrade.php');
-			EL_Upgrade::get_instance();
-			$this->upgrade_req = true;
+			EL_Upgrade::get_instance()->upgrade();
 		}
 	}
 
 	public function show_plugin_upgrade_message() {
-		if($this->upgrade_req) {
-			$upgr = EL_Upgrade::get_instance();
-			$class = $upgr->error ? 'error' : 'updated fade';
-			$title = sprintf($upgr->error ? __('Errors during upgrade of plugin %1$s','event-list') : __('Upgrade of plugin %1$s successful','event-list'), '"Event List"');
-			$msg = empty($upgr->msg) ? __('no additional information available','event-list') : '<li>'.implode('</li><li>', $upgr->msg).'</li>';
-			echo '<div id="message" class="'.$class.'"><p><strong>'.$title.':</strong></p><ul style="list-style:inside">'.$msg.'</ul></div>';
+		if($this->show_upgr_message) {
+			// load upgrade class
+			require_once(EL_PATH.'admin/includes/upgrade.php');
+			$logfile = str_replace(EL_PATH, EL_URL, EL_Upgrade::get_instance()->logfile);
+			$error = 2 == $this->show_upgr_message;
+			$class = $error ? 'error' : 'updated fade';
+			$title = sprintf($error ? __('Errors during upgrade of plugin %1$s','event-list') : __('Upgrade of plugin %1$s successful','event-list'), '"Event List"');
+			$logfile = ' (<a href="'.$logfile.'">upgrade log</a>)';
+			echo '<div id="message" class="'.$class.'"><p><strong>'.$title.'</strong>'.$logfile.'</p></div>';
 		}
+	}
+
+	public function remove_upgrade_args($args) {
+		// check required get parameters
+		$this->show_upgr_message = isset($_GET['el-upgr-finished']) ? intval($_GET['el-upgr-finished']) : false;
+
+		array_push($args, 'el-upgr-finished', 'resume-el-upgr');
+		return $args;
 	}
 
 	public function register_events_post_type_mods($current_screen) {
