@@ -127,7 +127,7 @@ There are some manual changes required after the upgrade:
 * renaming the shortcode attribute "show_details" to "show_content" in all shortcodes
 * renaming the shortcode attribute "details_length" to "content_length" in all shortcodes
 * renaming the shortcode attribute "collapse_details" to "collapse_content" in all shortcodes
-* update your widget (goto Admin page -> Appearance -> Widget and "Safe" all event-list widgets)
+* update your widget (goto Admin page -> Appearance -> Widget and "Save" all event-list widgets)
 * the following classes were renamed, adapt them in your custom CSS-styles if required: .start-date -> .startdate, .end-date -> .enddate, .event-details -> .event-content
 
 = 0.7.12 (2017-10-09) =

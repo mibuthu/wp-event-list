@@ -315,7 +315,7 @@ class EL_Admin_Import {
 				else {
 					$eventdata['enddate'] = '';
 				}
-				$error_counter += (false === EL_Event::safe($eventdata)) ? 1 : 0;
+				$error_counter += (false === EL_Event::save($eventdata)) ? 1 : 0;
 			}
 			else {
 				$error_counter += 1;

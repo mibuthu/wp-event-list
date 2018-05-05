@@ -220,7 +220,7 @@ class EL_Upgrade {
 					$eventdata['post_date'] = $event['pub_date'];
 					$eventdata['post_user'] = $event['pub_user'];
 					$eventdata['categories'] = explode('|', substr($event['categories'], 1, -1));
-					$ret = EL_Event::safe($eventdata);
+					$ret = EL_Event::save($eventdata);
 					if(empty($ret)) {
 						$this->log('Import of event "'.$eventdata['title'].'" failed!', true, true);
 					}
@@ -289,11 +289,11 @@ class EL_Upgrade {
 
 	private function complete_action_item($upgr_version, $action, $id) {
 		$this->upgr_action_status[$action][] = $id;
-		// safe status to db from time to time
+		// save status to db from time to time
 		if(0 === count($this->upgr_action_status[$action]) % 25) {
 			$this->update_db_option($action, implode(',', $this->upgr_action_status[$action]), null);
 		}
-		// if max execution time is nearly reached, safe the actual status to db and redirect
+		// if max execution time is nearly reached, save the actual status to db and redirect
 		// the upgrade will be resumed after the reload with a new set of execution time
 		if($this->max_exec_time - 5 <= time() - $this->upgrade_starttime) {
 			$this->update_db_option($action, implode(',', $this->upgr_action_status[$action]), false);
