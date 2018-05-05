@@ -198,7 +198,7 @@ class EL_Admin_Import {
 			<h3>'.__('Step','event-list').' 3: '.__('Import result','event-list').'</h3>';
 		if(empty($import_status['errors'])) {
 			echo '
-				<div class="el-success">'.sprintf(__('Import of %1$s event successful!','event-list'), $import_status['success']).'
+				<div class="el-success">'.sprintf(__('Import of %1$s events successful!','event-list'), $import_status['success']).'
 				<a href="'.admin_url('edit.php?post_type=el_events').'">'.__('Go back to All Events','event-list').'</a>';
 		}
 		else {
@@ -212,7 +212,7 @@ class EL_Admin_Import {
 				echo '
 					<ul class="el-event-errors">';
 				foreach($import_status['errors'] as $error) {
-					echo '<li>'.__('Event from CSV-line','event-list').' '.$error->get_error_data().': '.$event->get_error_message().'</li>';
+					echo '<li>'.__('Event from CSV-line','event-list').' '.$error->get_error_data().': '.$error->get_error_message().'</li>';
 					}
 				}
 			echo '</ul>
@@ -301,7 +301,7 @@ class EL_Admin_Import {
 		return $events;
 	}
 
-	private function prepare_event($event, $date_format='Y-m-d') {
+	private function prepare_event($event, $date_format=false) {
 		// trim all fields
 		array_walk($event, function(&$v) { $v = is_array($v) ? array_map('trim', $v) : trim($v); });
 		// title
@@ -310,28 +310,45 @@ class EL_Admin_Import {
 			return $event;
 		}
 		// startdate
-		$event['startdate'] = date_create_from_format($date_format, $event['startdate']);
-		if(!$event['startdate'] instanceof DateTime) {
-			$event = new WP_Error('wrong_startdate', __('Wrong date format for startdate found','event-list'), $event['csv_line']);
-			return $event;
+		$event['startdate'] = $this->prepare_date($event['startdate'], $date_format);
+		if(false === $event['startdate']) {
+			return new WP_Error('wrong_startdate', __('Wrong date format for startdate','event-list'), $event['csv_line']);
 		}
-		$event['startdate'] = $event['startdate']->format('Y-m-d');
 		// enddate
 		if(empty($event['enddate'])) {
 			$event['enddate'] = $event['startdate'];
 		}
 		else {
-			$event['enddate'] = date_create_from_format($date_format, $event['enddate']);
-			if(!$event['enddate'] instanceof DateTime) {
-				$event = new WP_Error('wrong_enddate', __('Wrong date format for enddate found','event-list'), $event['csv_line']);
-				return $event;
+			$event['enddate'] = $this->prepare_date($event['enddate'], $date_format);
+			if(false === $event['enddate']) {
+				return new WP_Error('wrong_enddate', __('Wrong date format for enddate','event-list'), $event['csv_line']);
 			}
-			$event['enddate'] = $event['enddate']->format('Y-m-d');
 		}
 		// no additional checks for starttime, location, content required
 		// categories
 		$event['categories'] = array_map('trim', $event['categories']);
 		return $event;
+	}
+
+	private function prepare_date($date_string, $date_format) {
+		$auto_detect = true;
+		if(empty($date_format)) {
+			$date_format = 'Y-m-d';
+			$auto_detect = false;
+		}
+		// create date from given format
+		$date = date_create_from_format($date_format, $date_string);
+		if(!$date instanceof DateTime) {
+			// try automatic date detection
+			if($auto_detect) {
+				$date = date_create($date_string);
+			}
+			if(!$date instanceof DateTime) {
+				return false;
+			}
+		}
+		return $date->format('Y-m-d');
+
 	}
 
 	private function save_import_settings() {
@@ -413,7 +430,7 @@ class EL_Admin_Import {
 			//TODO: return WP_Error instead of false in EL_Event when safing fails
 			$event = EL_Event::save($eventdata);
 			if(!$event) {
-				$ret['errors'][] = new WP_Error(__('Saving of event failed!','event-list'), $event['csv_line']);
+				$ret['errors'][] = new WP_Error('failed_saving', __('Saving of event failed!','event-list'), $event['csv_line']);
 				continue;
 			}
 			$ret['success'] += 1;
