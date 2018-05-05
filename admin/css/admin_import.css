@@ -1,11 +1,19 @@
-.el-warning {
+.el-warning, .el-success {
 	background: #fff;
-	border-left: 4px solid #dc3232;
 	margin: 5px 0 15px;
 	padding: 1px 12px;
+	border-left: 4px solid;
 }
 
-ul.el-categories {
+.el-warning {
+	border-left-color: #dc3232;
+}
+
+.el-success {
+	border-left-color: #46b450;
+}
+
+ul.el-categories, ul.el-event-errors {
 	list-style: circle inside;
 	margin: 8px 0;
 }

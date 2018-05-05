@@ -19,7 +19,6 @@ class EL_Admin_Import {
 	private $events_post_type;
 	private $functions;
 	private $events;
-	private $import_data;
 	private $example_file_path;
 
 	public static function &get_instance() {
@@ -54,8 +53,8 @@ class EL_Admin_Import {
 		}
 		// Finish import (add events)
 		elseif(isset($_POST['reviewed_events'])) {
-			$import_errors = $this->import_events();
-			$this->show_import_finished($import_errors);
+			$import_status = $this->import_events();
+			$this->show_import_finished($import_status);
 		}
 		// Import form
 		else {
@@ -91,39 +90,77 @@ class EL_Admin_Import {
 		$file_parts = pathinfo($_FILES['el_import_file']['name']);
 		if($file_parts['extension'] !== "csv") {
 			echo '<h3>'.__('Sorry, there has been an error.','event-list').'</h3>';
-			echo __('The file is not a CSV file.','event-list').'</p>';
+			echo __('The uploaded file does not have the required csv extension.','event-list').'</p>';
 			return;
 		}
 
-		// safe settings
-		$this->safe_import_settings();
+		// save settings
+		$this->save_import_settings();
 
 		// parse file
-		$this->import_data = $this->parseImportFile($file);
+		$import_data = $this->parse_import_file($file);
 
-		// parsing failed?
-		if(is_wp_error($this->import_data)) {
-			echo '<h3>'.__('Sorry, there has been an error.','event-list').'</h3>';
-			echo '<p>' . esc_html($this->import_data->get_error_message()).'</p>';
+		// show heading
+		echo '
+			<h3>'.__('Step','event-list').' 2: '.__('Events review and additonal category selection','event-list').'</h3>';
+
+		// show messages
+		// failed parsing
+		if(is_wp_error($import_data)) {
+			echo '
+				<div class="el-warning">'.__('Error','event-list').': '.__('This CSV file cannot be imported','event-list').':
+					<p>'.$import_data->get_error_message().'</p>
+				</div>';
 			return;
 		}
 
-		// Check categories
+		// failed events
+		$num_event_errors = count(array_filter($import_data, 'is_wp_error'));
+		if(!empty($num_event_errors)) {
+			if($num_event_errors == count($import_data)) {
+				echo '
+				<div class="el-warning">'.__('Error','event-list').': '.__('None of the events in this CSV file can be imported','event-list').':';
+			}
+			else {
+				echo '
+				<div class="el-warning">'.__('Warning','event-list').': '.sprintf(_n('There is %1$s event which cannot be imported',
+				                                                                     'There are %1$s events which cannot be imported',
+				                                                                     $num_event_errors,'event-list'), $num_event_errors).':';
+			}
+			echo '
+					<ul class="el-event-errors">';
+			foreach($import_data as $event) {
+				if(is_wp_error($event)) {
+					echo '<li>'.sprintf(__('CSV line %1$s','event-list'), $event->get_error_data()).': '.$event->get_error_message().'</li>';
+				}
+			}
+			echo '</ul>';
+			if($num_event_errors == count($import_data)) {
+				echo '
+				</div>';
+				return;
+			}
+			echo '
+					'.__('You can still import all other events listed below.','event-list').'
+				</div>';
+			$import_data = array_filter($import_data, function($v) { return !is_wp_error($v); });
+		}
+
+		// missing categories
 		$not_available_cats = array();
-		foreach($this->import_data as $event) {
+		foreach($import_data as $event) {
+			if(is_wp_error($event)) {
+				continue;
+			}
 			foreach($event['categories'] as $cat) {
 				if(!$this->events->cat_exists($cat) && !in_array($cat, $not_available_cats)) {
 					$not_available_cats[] = $cat;
 				}
 			}
 		}
-
-		// show review page
-		echo '
-			<h3>'.__('Step','event-list').' 2: '.__('Events review and additonal category selection','event-list').'</h3>';
 		if(!empty($not_available_cats)) {
 			echo '
-				<div class="el-warning">'.__('Warning: The following category slugs are not available and will be removed from the imported events:','event-list').'
+				<div class="el-warning">'.__('Warning','event-list').': '.__('The following category slugs are not available and will be removed from the imported events','event-list').':
 					<ul class="el-categories">';
 			foreach($not_available_cats as $cat) {
 				echo '<li><code>'.$cat.'</code></li>';
@@ -131,6 +168,7 @@ class EL_Admin_Import {
 			echo '</ul>
 					'.__('If you want to keep these categories, please create these Categories first and do the import afterwards.','event-list').'</div>';
 		}
+		// event form
 		echo '
 			<form method="POST" action="'.admin_url('edit.php?post_type=el_events&page=el_admin_import').'">';
 		wp_nonce_field('autosavenonce', 'autosavenonce', false, false);
@@ -140,7 +178,7 @@ class EL_Admin_Import {
 			<div id="poststuff">
 				<div id="post-body" class="metabox-holder columns-2">
 					<div id="post-body-content">';
-		foreach($this->import_data as $event) {
+		foreach($import_data as $event) {
 			$this->show_event($event);
 		}
 		echo '
@@ -151,20 +189,34 @@ class EL_Admin_Import {
 					</div>
 				</div>
 			</div>
-			<input type="hidden" name="reviewed_events" id="reviewed_events" value="'.esc_html(json_encode($this->import_data)).'" />
+			<input type="hidden" name="reviewed_events" id="reviewed_events" value="'.esc_html(json_encode($import_data)).'" />
 			</form>';
 	}
 
-	private function show_import_finished($import_errors) {
-		if(empty($import_errors)) {
+	private function show_import_finished($import_status) {
+		echo '
+			<h3>'.__('Step','event-list').' 3: '.__('Import result','event-list').'</h3>';
+		if(empty($import_status['errors'])) {
 			echo '
-				<h3>'.__('Import successful!','event-list').'</h3>
+				<div class="el-success">'.sprintf(__('Import of %1$s event successful!','event-list'), $import_status['success']).'
 				<a href="'.admin_url('edit.php?post_type=el_events').'">'.__('Go back to All Events','event-list').'</a>';
 		}
 		else {
 			echo '
-				<h3>'.__('Import with errors!','event-list').'</h3>
-				'.sprintf(__('Sorry, an error occurred during import! %1$d events could not be imported.','event-list'), $import_errors);
+					<div class="el-warning">'.__('Errors during Import','event-list').':';
+			if(is_wp_error($import_status['errors'])) {
+				echo '
+					<p>'.$import_errors->get_error_message().'</p>';
+			}
+			else {
+				echo '
+					<ul class="el-event-errors">';
+				foreach($import_status['errors'] as $error) {
+					echo '<li>'.__('Event from CSV-line','event-list').' '.$error->get_error_data().': '.$event->get_error_message().'</li>';
+					}
+				}
+			echo '</ul>
+				</div>';
 		}
 	}
 
@@ -184,59 +236,105 @@ class EL_Admin_Import {
 	/**
 	 * @return WP_Error
 	 */
-	private function parseImportFile($file) {
+	private function parse_import_file($file) {
 		$delimiter = ',';
 		$header = array('title', 'startdate', 'enddate', 'starttime', 'location', 'content', 'category_slugs');
-		$separator = array('sep=,');
+		$separator_line = 'sep=,';
 
 		// list of events to import
 		$events = array();
 
 		$file_handle = fopen($file, 'r');
-		$lineNum = 0;
-		$emptyLines = 0;
+		$event_lines = -1;
+		$empty_lines = 0;
 		while(!feof($file_handle)) {
-			$line = fgetcsv($file_handle, 0);
+			// get line
+			$line = fgetcsv($file_handle, 0, $delimiter);
+			// prepare line: trim elements and force an array
+			$line = is_array($line) ? array_map('trim', $line) : array(trim($line));
 
 			// skip empty lines
-			if(empty($line)) {
-				$emptyLines += 1;
+			if(!array_filter($line)) {
+				$empty_lines += 1;
 				continue;
 			}
 			// check header
-			if(empty($lineNum)) {
+			if(0 > $event_lines) {
 				// check optional separator line
-				if($line === $separator) {
-					$emptyLines += 1;
+				if($line[0] === $separator_line) {
+					$empty_lines += 1;
 					continue;
 				}
 				// check header line
 				elseif($line === $header || $line === array_slice($header,0,-1)) {
-					$lineNum += 1;
+					$event_lines += 1;
 					continue;
 				}
 				else {
-					return new WP_Error('CSV_parse_error', sprintf(__('There was an error at line %1$s when reading this CSV file: Header line is missing or not correct!','event-list'), $lineNum+$emptyLines));
+					return new WP_Error('missing_header', __('Header line is missing or not correct!','event-list').'<br />'
+						.sprintf(__('Have a look at the %1$sexample file%2$s to see the correct header line format.','event-list'), '<a href="'.$this->example_file_path.'">', '</a>'));
 				}
 			}
-			// handle lines with events
-			$events[] = array(
+			$event_lines += 1;
+			// check correct number of items in line
+			if(6 > count($line) || 7 < count($line)) {
+				$events[] = new WP_Error('wrong_number_line_items', sprintf(__('Wrong number of items in line (%1$s items found, 6-7 required)','event-list'), count($line)), $event_lines+$empty_Lines+1);
+				continue;
+			}
+			// check and prepare event data
+			$eventdata = array(
+				'csv_line'   => $event_lines+$empty_lines+1,
 				'title'      => $line[0],
 				'startdate'  => $line[1],
-				'enddate'    => !empty($line[2]) ? $line[2] : $line[1],
+				'enddate'    => $line[2],
 				'starttime'  => $line[3],
 				'location'   => $line[4],
 				'content'    => $line[5],
 				'categories' => isset($line[6]) ? explode('|', $line[6]) : array(),
 			);
-			$lineNum += 1;
+			$event = $this->prepare_event($eventdata, $this->options->get('el_import_date_format'));
+			// add event
+			$events[] = $event;
 		}
 		//close file
 		fclose($file_handle);
 		return $events;
 	}
 
-	private function safe_import_settings() {
+	private function prepare_event($event, $date_format='Y-m-d') {
+		// trim all fields
+		array_walk($event, function(&$v) { $v = is_array($v) ? array_map('trim', $v) : trim($v); });
+		// title
+		if(empty($event['title'])) {
+			$event = new WP_Error('empty_title', __('Empty event title found','event-list'), $event['csv_line']);
+			return $event;
+		}
+		// startdate
+		$event['startdate'] = date_create_from_format($date_format, $event['startdate']);
+		if(!$event['startdate'] instanceof DateTime) {
+			$event = new WP_Error('wrong_startdate', __('Wrong date format for startdate found','event-list'), $event['csv_line']);
+			return $event;
+		}
+		$event['startdate'] = $event['startdate']->format('Y-m-d');
+		// enddate
+		if(empty($event['enddate'])) {
+			$event['enddate'] = $event['startdate'];
+		}
+		else {
+			$event['enddate'] = date_create_from_format($date_format, $event['enddate']);
+			if(!$event['enddate'] instanceof DateTime) {
+				$event = new WP_Error('wrong_enddate', __('Wrong date format for enddate found','event-list'), $event['csv_line']);
+				return $event;
+			}
+			$event['enddate'] = $event['enddate']->format('Y-m-d');
+		}
+		// no additional checks for starttime, location, content required
+		// categories
+		$event['categories'] = array_map('trim', $event['categories']);
+		return $event;
+	}
+
+	private function save_import_settings() {
 		foreach($this->options->options as $oname => $o) {
 			// check used post parameters
 			$ovalue = isset($_POST[$oname]) ? sanitize_text_field($_POST[$oname]) : '';
@@ -272,8 +370,9 @@ class EL_Admin_Import {
 		// check used post parameters
 		$reviewed_events = json_decode(stripslashes($_POST['reviewed_events']), true);
 		if(empty($reviewed_events)) {
-			return false;
+			return new WP_Error('no_events', __('No events found','event-list'));
 		}
+		// prepare additional categories
 		if($this->events_post_type->event_cat_taxonomy === $this->events_post_type->taxonomy) {
 			$additional_cat_ids = isset($_POST['tax_input'][$this->events_post_type->taxonomy]) ? $_POST['tax_input'][$this->events_post_type->taxonomy] : array();
 		}
@@ -288,41 +387,38 @@ class EL_Admin_Import {
 				$additional_cat_slugs[] = $cat->slug;
 			}
 		}
-		// Category handling
+		// prepare events and events categories
 		foreach($reviewed_events as &$event_ref) {
-			// Remove not available categories of import file
+			// check event data
+			// remove not available categories of import file
 			foreach($event_ref['categories'] as $ckey => $cat_slug) {
 				if(!$this->events->cat_exists($cat_slug)) {
 					unset($event_ref['categories'][$ckey]);
 				}
 			}
-			// Add the additionally specified categories to the event
+			// add the additionally specified categories to the event
 			if(!empty($additional_cat_slugs)) {
 				$event_ref['categories'] = array_unique(array_merge($event_ref['categories'], $additional_cat_slugs));
 			}
 		}
-		$error_counter = 0;
+		// save events
+		$ret = array('success' => 0, 'errors' => array());
 		require_once(EL_PATH.'includes/event.php');
 		foreach($reviewed_events as $eventdata) {
-			// check if dates have correct formats
-			$startdate = date_create_from_format($this->options->get('el_import_date_format'), $eventdata['startdate']);
-			$enddate = date_create_from_format($this->options->get('el_import_date_format'), $eventdata['enddate']);
-			if($startdate instanceof DateTime) {
-				$eventdata['startdate'] = $startdate->format('Y-m-d');
-				if($enddate) {
-					$eventdata['enddate'] = $enddate->format('Y-m-d');
-				}
-				else {
-					$eventdata['enddate'] = '';
-				}
-				$error_counter += (false === EL_Event::save($eventdata)) ? 1 : 0;
+			$ed = $this->prepare_event($eventdata);
+			if(is_wp_error($ed)) {
+				$ret['errors'][] = $ed;
+				continue;
 			}
-			else {
-				$error_counter += 1;
+			//TODO: return WP_Error instead of false in EL_Event when safing fails
+			$event = EL_Event::save($eventdata);
+			if(!$event) {
+				$ret['errors'][] = new WP_Error(__('Saving of event failed!','event-list'), $event['csv_line']);
+				continue;
 			}
+			$ret['success'] += 1;
 		}
-		// TODO: Improve error messages
-		return $error_counter;
+		return $ret;
 	}
 
 	public function embed_import_scripts() {
