@@ -36,7 +36,7 @@ class EL_Admin_Import {
 		$this->events_post_type = &EL_Events_Post_Type::get_instance();
 		$this->functions = &EL_Admin_Functions::get_instance();
 		$this->events = &EL_Events::get_instance();
-		$this->example_file_path = EL_URL.'/files/events-import-example.csv';
+		$this->example_file_path = EL_URL.'files/events-import-example.csv';
 		$this->add_metaboxes();
 	}
 
