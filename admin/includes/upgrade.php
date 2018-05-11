@@ -484,26 +484,11 @@ class EL_Upgrade {
 	private function logfile_init() {
 		// rename all existing log files and remove files older than 90 days
 		if(file_exists($this->logfile) && empty($this->resume_version)) {
-			$num_log_files = 0;
-			while(file_exists($this->logfile.'.'.($num_log_files+1))) {
-				$num_log_files += 1;
-			}
-			for($i=$num_log_files; $i>=0; $i--) {
-				$old = 0 < $i ? $this->logfile.'.'.$i : $this->logfile;
-				// delete file if it is too old
-				if(filemtime($old) < time() - 90*24*60*60) {
-					if(!@unlink($old)) {
-						error_log('"'.$old.'" cannot be deleted! No upgrade log file will be written!');
-						return false;
-					}
-				}
-				// else rename file
-				else {
-					$new = $this->logfile.'.'.($i+1);
-					if(!@rename($old, $new)) {
-						error_log('"'.$old.'" cannot be renamed! No upgrade log file will be written!');
-						return false;
-					}
+			// delete file if it is too old
+			if(filemtime($this->logfile) < time() - 30*24*60*60) {
+				if(!@unlink($this->logfile)) {
+					error_log('"'.$this->logfile.'" cannot be deleted! No upgrade log file will be written!');
+					return false;
 				}
 			}
 		}
