@@ -37,12 +37,12 @@ class EL_Upgrade {
 		$this->set_max_exec_time();
 		$this->upgrade_starttime = time();
 		// check upgrade trigger to avoid duplicate updates
-		if(empty($this->resume_version) && $this->upgrade_starttime <= $this->get_db_option('el_upgr_in_progress') + $this->max_exec_time + 5) {
+		if(empty($this->resume_version) && $this->upgrade_starttime <= get_option('el_upgr_in_progress') + $this->max_exec_time + 5) {
 			$this->log('Upgrade is already running', false);
 			return false;
 		}
 		// set upgrade trigger
-		$this->update_db_option('el_upgr_in_progress', $this->upgrade_starttime, false);
+		$this->update_option('el_upgr_in_progress', $this->upgrade_starttime, false);
 		// do upgrade
 		if(!$this->init()) {
 			return false;
@@ -51,7 +51,7 @@ class EL_Upgrade {
 		// delete upgrade action status
 		$this->delete_upgr_action_status();
 		// delete upgrade trigger
-		$this->delete_db_option('el_upgr_in_progress', false);
+		$this->delete_option('el_upgr_in_progress', false);
 		// close logfile
 		$this->logfile_close();
 		// redirect
@@ -71,16 +71,16 @@ class EL_Upgrade {
 		$filedata = get_file_data(EL_PATH.'event-list.php', array('version'=>'Version'));
 		$this->actual_version = $filedata['version'];
 		// check last upgrade version
-		$this->last_upgr_version = $this->get_db_option('el_last_upgr_version');
+		$this->last_upgr_version = get_option('el_last_upgr_version');
 		// fix for older version < 0.8.0
-		if(empty($this->last_upgr_version) && (bool)$this->get_db_option('el_db_version')) {
+		if(empty($this->last_upgr_version) && false !== get_option('el_db_version')) {
 			$this->last_upgr_version = '0.7.0';
-			$this->insert_db_option('el_last_upgr_version', $this->last_upgr_version, false);
+			$this->add_option('el_last_upgr_version', $this->last_upgr_version, false);
 			$this->log('Applied fix for versions < 0.8.0', false);
 		}
 		// return if last_upgr_version is empty (new install --> no upgrade required)
 		if(empty($this->last_upgr_version)) {
-			$this->insert_db_option('el_last_upgr_version', $this->actual_version, false);
+			$this->add_option('el_last_upgr_version', $this->actual_version, false);
 			flush_rewrite_rules();
 			$this->log('New install -> no upgrade required', false);
 			return false;
@@ -123,7 +123,7 @@ class EL_Upgrade {
 		require_once(EL_PATH.'includes/events_post_type.php');
 		$events_post_type = EL_Events_Post_Type::get_instance();
 		// set correct taxonomy
-		$events_post_type->use_post_categories = (bool)$this->get_db_option('el_sync_cats');
+		$events_post_type->use_post_categories = false !== get_option('el_sync_cats');
 		$events_post_type->taxonomy = $events_post_type->use_post_categories ? $events_post_type->post_cat_taxonomy : $events_post_type->event_cat_taxonomy;
 		// re-register events post type with correct taxonomy
 		unregister_post_type('el_events');
@@ -136,7 +136,7 @@ class EL_Upgrade {
 
 		// Import existing categories
 		if(!$events_post_type->use_post_categories) {
-			$cats_array = $this->get_db_option('el_categories');
+			$cats_array = get_option('el_categories');
 			if(!empty($cats_array)) {
 				$action = 'el_category_upgr_0_8_0';
 				if(!$this->is_action_completed($action)) {
@@ -237,16 +237,16 @@ class EL_Upgrade {
 		}
 
 		// Delete obsolete option "el_db_version"
-		$this->delete_db_option('el_db_version');
+		$this->delete_option('el_db_version');
 
 		// Rename option "el_show_details_text" to "el_content_show_text"
-		$this->rename_db_option('el_show_details_text', 'el_content_show_text');
+		$this->rename_option('el_show_details_text', 'el_content_show_text');
 
 		// Rename option "el_hide_details_text" to "el_content_hide_text"
-		$this->rename_db_option('el_hide_details_text', 'el_content_hide_text');
+		$this->rename_option('el_hide_details_text', 'el_content_hide_text');
 
 		// Rename option "el_sync_cats" to "el_use_post_cats"
-		$this->rename_db_option('el_sync_cats', 'el_use_post_cats');
+		$this->rename_option('el_sync_cats', 'el_use_post_cats');
 	}
 
 	private function upgrade_required($version) {
@@ -268,7 +268,7 @@ class EL_Upgrade {
 
 	private function is_action_completed($action) {
 		$this->upgr_action_status[$action] = array();
-		$status = $this->get_db_option($action);
+		$status = get_option($action);
 		if('completed' === $status) {
 			return true;
 		}
@@ -283,7 +283,7 @@ class EL_Upgrade {
 	}
 
 	private function complete_action($action) {
-		$this->update_db_option($action, 'completed', false);
+		$this->update_option($action, 'completed', false);
 		$this->upgr_action_status[$action] = array();
 	}
 
@@ -291,12 +291,12 @@ class EL_Upgrade {
 		$this->upgr_action_status[$action][] = $id;
 		// save status to db from time to time
 		if(0 === count($this->upgr_action_status[$action]) % 25) {
-			$this->update_db_option($action, implode(',', $this->upgr_action_status[$action]), null);
+			$this->update_option($action, implode(',', $this->upgr_action_status[$action]), null);
 		}
 		// if max execution time is nearly reached, save the actual status to db and redirect
 		// the upgrade will be resumed after the reload with a new set of execution time
 		if($this->max_exec_time - 5 <= time() - $this->upgrade_starttime) {
-			$this->update_db_option($action, implode(',', $this->upgr_action_status[$action]), false);
+			$this->update_option($action, implode(',', $this->upgr_action_status[$action]), false);
 			$this->log('The maximum execution time is already consumed, script will redirect and continue upgrade afterwards with a new set of time.');
 			// close logfile
 			$this->logfile_close();
@@ -307,7 +307,7 @@ class EL_Upgrade {
 
 	private function delete_upgr_action_status() {
 		foreach($this->upgr_action_status as $action=>$status) {
-			$this->delete_db_option($action, false);
+			$this->delete_option($action, false);
 		}
 	}
 
@@ -318,23 +318,7 @@ class EL_Upgrade {
 	}
 
 	/**
-	 * Get a WordPress option directly from database with $wpdb
-	 * @param string $option  Option name
-	 * @return mixed|null     Value of given option name or null if option is not available
-	 */
-	private function get_db_option($option) {
-		global $wpdb;
-		$sql = 'SELECT `option_value` FROM `'.$wpdb->prefix.'options` WHERE `option_name` = "'.$option.'";';
-		// use get_row instead of get_var to differenciate between not available and empty value
-		$ret = $wpdb->get_row($sql, ARRAY_N);
-		if(is_array($ret)) {
-			return maybe_unserialize($ret[0]);
-		}
-		return null;
-	}
-
-	/**
-	 * Update a WordPress option directly in the database with $wpdb
+	 * Wrapper for update_option function with additional error checking and log handling
 	 * @param string $option  Option name
 	 * @param mixed  $value   Option value
 	 * @param bool   $msg     Print logging messages?
@@ -343,53 +327,44 @@ class EL_Upgrade {
 	 *                        0..     if option was available but value was already correct
 	 *                        false.. on error
 	 */
-	private function update_db_option($option, $value, $msg=true) {
-		global $wpdb;
-		// if option is not existing, the option will be added
-		if($this->insert_db_option($option, $value, null)) {
-			$this->log('Option "'.$option.'" added with value "'.$value.'"', $msg);
-			return 2;
+	private function update_option($option, $value, $msg=true) {
+		$oldvalue = get_option($option, null);
+		// add option, if option does not exist
+		if(is_null($oldvalue)) {
+			$ret = $this->add_option($option, $value, $msg);
+			return $ret ? 2 : false;
 		}
-		$ret = $wpdb->update(
-			$wpdb->options,
-			array('option_value' => $value),
-			array('option_name' => $option),
-			'%s'
-		);
-		if(0 < $ret) {
+		// do nothing, if correct value is already set
+		if($value === $oldvalue) {
+			$this->log('Update of option "'.$option.'" is not required: correct value "'.$value.'" already set', $msg);
+			return 0;
+		}
+		// update option
+		$ret = update_option($option, $value);
+		if($ret) {
 			$this->log('Updated option "'.$option.'" to value "'.$value.'"', $msg);
 		}
-		elseif(0 === $ret) {
-			$this->log('Update of option "'.$option.'" is not required: correct value "'.$value.'" already set', $msg);
-		}
-		else {  // false === $ret
+		else {
 			$this->log('Updating option "'.$option.'" to value "'.$value.'" failed!', $msg, true);
 		}
 		return $ret;
 	}
 
 	/**
-	 * Insert a WordPress option directly in the database with $wpdb
+	 * Wrapper for add_option function with additional error checking and log handling
 	 * @param string $option  Option name
 	 * @param mixed  $value   Option value
 	 * @param bool   $msg     Print logging messages?
-	 * @return int|false      1..     if option was added successfully
+	 * @return int|false      true .. if option was added successfully
 	 *                        false.. on error
 	 */
-	private function insert_db_option($option, $value, $msg=true) {
-		global $wpdb;
-		if(is_null($this->get_db_option($option))) {
-			$ret = $wpdb->insert(
-				$wpdb->options,
-				array('option_name' => $option, 'option_value' => $value),
-				'%s'
-			);
-		}
-		else {
-			$this->log('Adding option "'.$option.'" with value "'.$value.'" failed! Option is already set.', $msg, true);
+	private function add_option($option, $value, $msg=true) {
+		if(!is_null(get_option($option, null))) {
+			$this->log('Adding option "'.$option.'" with value "'.$value.'" failed: Option already exists!', $msg, true);
 			return false;
 		}
-		if(false !== $ret) {
+		$ret = add_option($option, $value);
+		if($ret) {
 			$this->log('Added option "'.$option.'" with value "'.$value.'"', $msg);
 		}
 		else {
@@ -399,25 +374,21 @@ class EL_Upgrade {
 	}
 
 	/**
-	 * Delete a WordPress option directly in the database with $wpdb
+	 * Wrapper for delete_option function with additional error checking and log handling
 	 * @param string $option  Option name
 	 * @param bool   $msg     Print logging messages?
 	 * @return int|null|false 1..     if option was deleted successfully
 	 *                        null..  if option is already not set
 	 *                        false.. on error
 	 */
-	private function delete_db_option($option, $msg=true) {
+	private function delete_option($option, $msg=true) {
 		global $wpdb;
-		if(is_null($this->get_db_option($option))) {
+		if(is_null(get_option($option, null))) {
 			$this->log('Deleting option "'.$option.'" is not required: option is not set', $msg);
 			return null;
 		}
-		$ret = $wpdb->delete(
-			$wpdb->options,
-			array('option_name' => $option),
-			'%s'
-		);
-		if(!empty($ret)) {
+		$ret = delete_option($option);
+		if($ret) {
 			$this->log('Deleted option "'.$option.'"', $msg);
 		}
 		else {
@@ -427,7 +398,7 @@ class EL_Upgrade {
 	}
 
 	/**
-	 * Rename a WordPress option directly in the database with $wpdb
+	 * Rename an option (create new option name with old option name value, then delete old option name)
 	 *
 	 * @param string $oldname  Old option name
 	 * @param string $newname  New option name
@@ -435,18 +406,18 @@ class EL_Upgrade {
 	 * @return bool            true..  if option renaming was successfully
 	 *                         false.. on error
 	 */
-	private function rename_db_option($oldname, $newname, $msg=true) {
-		$value = $this->get_db_option($oldname);
+	private function rename_option($oldname, $newname, $msg=true) {
+		$value = get_option($oldname, null);
 		if(is_null($value)) {
-			$this->log('Renaming of option "'.$oldname.'" to "'.$newname.'" is not required: old option name "'.$oldname.'" is not set -> use the default value', $msg);
+			$this->log('Renaming of option "'.$oldname.'" to "'.$newname.'" is not required: old option name "'.$oldname.'" is not set (default value is used)', $msg);
 			return true;
 		}
-		$newvalue = $this->get_db_option($newname);
+		$newvalue = get_option($newname, null);
 		if(!is_null($newvalue)) {
 			// update existing option
-			$this->log('New option name "'.$newname.'" is already available');
+			$this->log('New option name "'.$newname.'" is already available', $msg);
 			if($value !== $newvalue) {
-				$ret = $this->update_db_option($newname, $value, $msg);
+				$ret = $this->update_option($newname, $value, $msg);
 				if(false !== $ret) {
 					$this->log('Updated value for existing new option name "'.$newname.'"', $msg);
 				}
@@ -454,27 +425,30 @@ class EL_Upgrade {
 					$this->log('Updating value for existing new option name "'.$newname.'" failed!', $msg, true);
 				}
 			}
+			else {
+				$this->log('Correct value "'.$value.'"is already set', $msg);
+			}
 		}
 		else {
 			// insert new option
-			$ret = $this->insert_db_option($newname, $value, false);
+			$ret = $this->add_option($newname, $value, false);
 			if(false === $ret) {
 				$this->log('Renaming of option "'.$oldname.'" failed during adding new option name "'.$newname.'" with the value "'.$value.'"!', $msg, true);
 				return false;
 			}
 		}
-		$ret = $this->delete_db_option($oldname, false);
+		$ret = $this->delete_option($oldname, false);
 		if(!empty($ret)) {
-			$this->log('Renamed option "'.$oldname.'" to "'.$newname.'"', $msg);
+			$this->log('Deleted old option name "'.$oldname.'"', $msg);
 		}
 		else {
-			$this->log('Renaming to "'.$newname.'" failed during deleting old option name "'.$oldname.'"!', $msg, true);
+			$this->log('Deleting of old option name "'.$oldname.'" failed!', $msg, true);
 		}
 		return (bool)$ret;
 	}
 
 	private function update_last_upgr_version() {
-		$ret = $this->update_db_option('el_last_upgr_version', $this->actual_version);
+		$ret = $this->update_option('el_last_upgr_version', $this->actual_version);
 		if(false === $ret) {
 			$this->log('Could not update the "el_last_upgr_version"!', true, true);
 		}
