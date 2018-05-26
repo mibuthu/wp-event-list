@@ -40,6 +40,7 @@ class EL_Admin_Main {
 		add_filter('disable_categories_dropdown', '__return_true');
 		add_action('restrict_manage_posts', array(&$this, 'add_table_filters'));
 		add_filter('parse_query', array(&$this, 'filter_request'));
+		add_filter('posts_results', array(&$this, 'check_events_results'));
 		add_action('load-edit.php', array(&$this, 'set_default_posts_list_mode'));
 		add_action('admin_print_scripts', array(&$this, 'embed_scripts'));
 		add_action('admin_head', array(&$this, 'add_import_button'));
@@ -189,6 +190,21 @@ class EL_Admin_Main {
 			$query->query_vars['cat'] = false;
 			$query->query_vars[$this->events_post_type->taxonomy] = $selected_cat;
 		}
+	}
+
+	/* Reload the page to show all events when:
+	 * - published events are selected
+	 * - no specific date is selected
+	 * - no upcoming events are available
+	*/
+	public function check_events_results($events) {
+		$selected_status = isset($_GET['post_status']) ? sanitize_key($_GET['post_status']) : 'publish';
+		$date_selected = isset($_GET['date']);
+		if('publish' === $selected_status && !$date_selected && !count($events)) {
+			wp_safe_redirect(add_query_arg('date', 'all'));
+			exit;
+		}
+		return $events;
 	}
 
 	public function set_default_posts_list_mode() {
