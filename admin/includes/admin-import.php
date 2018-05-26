@@ -143,7 +143,7 @@ class EL_Admin_Import {
 			echo '
 					'.__('You can still import all other events listed below.','event-list').'
 				</div>';
-			$import_data = array_filter($import_data, function($v) { return !is_wp_error($v); });
+			$import_data = array_filter($import_data, create_function('$v', 'return !is_wp_error($v)'));
 		}
 
 		// missing categories
@@ -303,7 +303,7 @@ class EL_Admin_Import {
 
 	private function prepare_event($event, $date_format=false) {
 		// trim all fields
-		array_walk($event, function(&$v) { $v = is_array($v) ? array_map('trim', $v) : trim($v); });
+		array_walk($event, create_function('&$v', '$v = is_array($v) ? array_map("trim", $v) : trim($v);'));
 		// title
 		if(empty($event['title'])) {
 			$event = new WP_Error('empty_title', __('Empty event title found','event-list'), $event['csv_line']);
