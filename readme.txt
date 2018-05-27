@@ -4,6 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, filter, admin, attribute, widget, sidebar, feed, rss
 Requires at least: 4.2
 Tested up to: 4.9
+Requires PHP: 5.2
 Stable tag: 0.8.2
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
