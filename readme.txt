@@ -5,7 +5,7 @@ Tags: event, events, list, listview, calendar, schedule, shortcode, page, catego
 Requires at least: 4.2
 Tested up to: 4.9
 Requires PHP: 5.2
-Stable tag: 0.8.2
+Stable tag: 0.8.3
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -85,6 +85,13 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 
 
 == Changelog ==
+
+= 0.8.3 (2018-05-27) =
+* improved import handling and error messages when there is still an import error
+* improved help text for import date format
+* improved upgrade process once more
+* only create 1 single continuing upgrade log file
+* show all events in admin main page when no upcoming events are available
 
 = 0.8.2 (2018-04-22) =
 * fixed category view in front page
