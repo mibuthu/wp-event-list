@@ -348,7 +348,6 @@ class EL_Admin_Import {
 			}
 		}
 		return $date->format('Y-m-d');
-
 	}
 
 	private function save_import_settings() {
