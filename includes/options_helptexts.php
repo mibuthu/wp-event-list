@@ -14,7 +14,19 @@ $options_helptexts = array(
 	'el_import_date_format'   => array('type'    => 'text',
 	                                   'label'   => __('Used date format','event-list'),
 	                                   'caption' => '',
-	                                   'desc'    => __('With this option the used date format for event start and end date given in the CSV file can be specified.','event-list')),
+	                                   'desc'    => __('With this option the given date format for event start and end date in the CSV file can be specified.','event-list').'<br />'.
+	                                                sprintf(__('You can use the php date format options given in %1$s, the most important ones are:','event-list'),
+	                                                	'<a href="https://secure.php.net/manual/en/function.date.php" target="_blank" rel="noopener">PHP function date</a>').'
+	                                                <ul><li><code>Y</code> &hellip; '.__('full year representation, with 4 digits','event-list').'</li>
+	                                                    <li><code>m</code> &hellip; '.__('numeric representation of a month, with leading zeros','event-list').'</li>
+	                                                    <li><code>d</code> &hellip; '.__('day of the month, 2 digits with leading zeros','event-list').'</li>
+	                                                </ul>'.
+	                                                __('If the date format in the CSV file does not correspond to the given format, the import script tries to recognize the date format by itself.','event-list').'<br />'.
+	                                                __('But this can cause problems or result in wrong dates, so it is recommended to specify the correct date format here.','event-list').'<br />'.
+	                                                __('Examples','event-list').':
+	                                                <ul><li><code>Y-m-d</code> &hellip; <code>2019-03-25</code></li>
+	                                                    <li><code>d.m.Y</code> &hellip; <code>25.03.2019</code></li>
+	                                                </ul>'),
 
 	// Section: "general"
 	'el_no_event_text'        => array('type'    => 'text',

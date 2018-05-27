@@ -49,7 +49,7 @@ class EL_Event {
 		return true;
 	}
 
-	public static function safe($eventdata) {
+	public static function save($eventdata) {
 		// create new post
 		$postdata['post_type'] = 'el_events';
 		$postdata['post_status'] = 'publish';
@@ -70,7 +70,7 @@ class EL_Event {
 		$cats = self::set_categories($pid, $eventdata['categories']);
 		// save postmeta (created event instance)
 		if(!empty($pid)) {
-			$post = self::safe_postmeta($pid, $eventdata);
+			$post = self::save_postmeta($pid, $eventdata);
 			return $post;
 		}
 		else {
@@ -91,7 +91,7 @@ class EL_Event {
 	 *                             true     ... for a successfully modified existing event
 	 *                             false    ... if an error occured during the creation or modification an event
 	 **************************************************************************************************************/
-	public static function safe_postmeta($pid, $eventdata) {
+	public static function save_postmeta($pid, $eventdata) {
 		$instance = new self($pid);
 		$errors = array();
 

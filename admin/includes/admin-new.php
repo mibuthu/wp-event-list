@@ -153,7 +153,7 @@ class EL_Admin_New {
 		if(empty($eventdata['multiday'])) {
 			$eventdata['enddate'] = $eventdata['startdate'];
 		}
-		return (bool)EL_Event::safe_postmeta($pid, $eventdata);
+		return (bool)EL_Event::save_postmeta($pid, $eventdata);
 	}
 
 	private function get_event_dateformat() {

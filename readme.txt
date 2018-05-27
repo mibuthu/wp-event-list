@@ -4,7 +4,8 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, filter, admin, attribute, widget, sidebar, feed, rss
 Requires at least: 4.2
 Tested up to: 4.9
-Stable tag: 0.8.2
+Requires PHP: 5.2
+Stable tag: 0.8.3
 Plugin URI: http://wordpress.org/extend/plugins/event-list
 Licence: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -85,6 +86,13 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 
 == Changelog ==
 
+= 0.8.3 (2018-05-27) =
+* improved import handling and error messages when there is still an import error
+* improved help text for import date format
+* improved upgrade process once more
+* only create 1 single continuing upgrade log file
+* show all events in admin main page when no upcoming events are available
+
 = 0.8.2 (2018-04-22) =
 * fixed category view in front page
 * fixed "past" filter option
@@ -127,7 +135,7 @@ There are some manual changes required after the upgrade:
 * renaming the shortcode attribute "show_details" to "show_content" in all shortcodes
 * renaming the shortcode attribute "details_length" to "content_length" in all shortcodes
 * renaming the shortcode attribute "collapse_details" to "collapse_content" in all shortcodes
-* update your widget (goto Admin page -> Appearance -> Widget and "Safe" all event-list widgets)
+* update your widget (goto Admin page -> Appearance -> Widget and "Save" all event-list widgets)
 * the following classes were renamed, adapt them in your custom CSS-styles if required: .start-date -> .startdate, .end-date -> .enddate, .event-details -> .event-content
 
 = 0.7.12 (2017-10-09) =
