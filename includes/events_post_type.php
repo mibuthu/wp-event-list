@@ -93,7 +93,7 @@ class EL_Events_Post_Type {
 			'menu_position' => 23,
 			'menu_icon' => 'dashicons-calendar-alt',
 			'capability_type' => 'post',
-			'supports'=> array('title', 'editor', 'revisions', 'autor', 'thumbnail'),
+			'supports'=> array('title', 'editor', 'revisions', 'author', 'thumbnail', 'excerpt',),
 			'register_meta_box_cb' => null,
 			'taxonomies' => $this->use_post_categories ? array($this->post_cat_taxonomy) : array(),
 			'has_archive' => true,

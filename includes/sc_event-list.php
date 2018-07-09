@@ -48,6 +48,7 @@ class SC_Event_List {
 			'show_location'    => array('std_val' => 'true'),
 			'location_length'  => array('std_val' => '0'),
 			'show_cat'         => array('std_val' => 'false'),
+			'show_excerpt'     => array('std_val' => 'false'),
 			'show_content'     => array('std_val' => 'true'),
 			'content_length'   => array('std_val' => '0'),
 			'collapse_content' => array('std_val' => 'false'),
@@ -231,6 +232,10 @@ class SC_Event_List {
 		if( $this->is_visible( $a['show_cat'] ) ) {
 			$out .= '<div class="event-cat">'.esc_attr(implode(', ', $event->get_category_names())).'</div>';
 		}
+		// event excerpt
+		if( $this->is_visible( $a['show_excerpt'] ) ) {
+			$out .= $this->get_excerpt($event, $a);
+		}
 		// event content
 		if( $this->is_visible( $a['show_content'] ) ) {
 			$out .= $this->get_content($event, $a);
@@ -393,6 +398,49 @@ class SC_Event_List {
 		}
 	}
 
+	private function get_excerpt(&$event, &$a) {
+		// check if excerpt is available
+		$truncate_url = false;
+		if('' == $event->excerpt) {
+			// check and handle the read more tag if available
+			//search fore more-tag (no more tag handling if truncate of content is set)
+			if(preg_match('/<!--more(.*?)?-->/', $event->content, $matches)) {
+				$part = explode($matches[0], $event->content, 2);
+				//set more-link text
+				if(!empty($matches[1])) {
+					$more_link_text = strip_tags(wp_kses_no_null(trim($matches[1])));
+				}
+				else {
+					$more_link_text = __(' [read more&hellip;]');
+				}
+				//content with more-link
+				$excerpt = apply_filters('the_content_more_link', $part[0].$this->get_event_link($a, $event->post->ID, $more_link_text));
+				// return more-link content
+				return '<div class="event-excerpt"><p>'.$excerpt.'</p></div>';
+			}
+			else {
+				//normal content - make excerpt
+				$content = $event->content;
+				if($this->is_link_available($a, $event)) {
+					$truncate_url = $this->get_event_url($a, $event->post->ID);
+				}
+				$excerpt = $event->truncate(do_shortcode(wpautop($content)), $a['content_length'], $this->single_event, true, $truncate_url);
+				// return truncated content
+				return '<div class="event-excerpt">'.$excerpt.'</div>';
+			}
+		}
+		else {
+			//custom excerpt
+				$excerpt = $event->excerpt;
+				if($this->is_link_available($a, $event)) {
+					$truncate_url = $this->get_event_url($a, $event->post->ID);
+				}
+				// return custom excerpt
+				return '<div class="event-excerpt"><p>'.$excerpt.'</p></div>';
+		}
+	}
+
+
 	private function get_content(&$event, &$a) {
 		// check if content is available
 		if('' == $event->content) {
@@ -413,7 +461,7 @@ class SC_Event_List {
 					$more_link_text = strip_tags(wp_kses_no_null(trim($matches[1])));
 				}
 				else {
-					$more_link_text = __('(more&hellip;)');
+					$more_link_text = __('[ read more&hellip;]');
 				}
 				//content with more-link
 				$content = apply_filters('the_content_more_link', $part[0].$this->get_event_link($a, $event->post->ID, $more_link_text));
