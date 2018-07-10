@@ -174,6 +174,7 @@ class SC_Event_List {
 				<ul class="event-list-view">';
 			$single_day_only = $this->is_single_day_only($events);
 			foreach ($events as $event) {
+				$single_day_only = $this->is_single_day_only($event);
 				$out .= $this->html_event($event, $a, $single_day_only);
 			}
 			$out .= '</ul>';
@@ -252,7 +253,7 @@ class SC_Event_List {
 					';
 		if($startdate === $enddate) {
 			// one day event
-			$out .= '<div class="event-date">';
+			$out .= '<div class="event-date single-date">';
 			if($single_day_only ) {
 				$out .= '<div class="startdate">';
 			}
