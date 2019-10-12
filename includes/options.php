@@ -54,6 +54,13 @@ class EL_Options {
 			'el_feed_link_text'       => array('section' => 'feed',     'std_val' => 'RSS Feed'),
 			'el_feed_link_img'        => array('section' => 'feed',     'std_val' => '1'),
 
+			'el_enable_ical'          => array('section' => 'ical',     'std_val' => ''),
+			'el_ical_name'            => array('section' => 'ical',     'std_val' => 'event-list.ics'),
+			'el_ical_upcoming_only'   => array('section' => 'ical',     'std_val' => ''),
+			'el_enable_ical_link'     => array('section' => 'ical',     'std_val' => ''),
+			'el_ical_link_description'=> array('section' => 'ical',     'std_val' => 'Events as iCal'),
+			'el_ical_link_text'       => array('section' => 'ical',     'std_val' => 'event-list.ics'),
+
 			'el_use_post_cats'        => array('section' => 'taxonomy', 'std_val' => ''),
 		);
 	}
