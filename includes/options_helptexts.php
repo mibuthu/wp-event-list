@@ -163,12 +163,6 @@ $options_helptexts = array(
 										'desc'    => __('If this option is enabled only the upcoming events are listed in the iCal file.<br />
 														If disabled all events (upcoming and past) will be listed.')),
 
-	'el_enable_ical_link'      => array('type'    => 'checkbox',
-										'label'   => __('Enable iCal link','event-list'),
-										'caption' => __('Display iCal link below event list','event-list'),
-										'desc'    => __('This option activates a iCal link to the feed.','event-list').'<br />
-													'.__('You have to enable this option if you want to print a link below the event list.','event-list')),
-
 	'el_ical_link_description' => array('type'    => 'text',
 										'label'   => __('Link description','event-list'),
 										'desc'    => sprintf(__('This option sets the iCal link description. The default value is %1$s.','Events as iCal'), '"event-list"')),

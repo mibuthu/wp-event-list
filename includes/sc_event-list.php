@@ -55,6 +55,7 @@ class SC_Event_List {
 			'add_feed_link'    => array('std_val' => 'false'),
 			'url_to_page'      => array('std_val' => ''),
 			'sc_id_for_url'    => array('std_val' => ''),
+			'add_ical_link'    => array('std_val' => 'false'),
 			// Internal attributes: This parameters will be added by the script and are not available in the shortcode
 			//  'sc_id'
 			//  'selected_date'
@@ -178,7 +179,7 @@ class SC_Event_List {
 			$out .= '</ul>';
 		}
 		$out .= $this->html_feed_link($a, 'bottom');
-		$out .= $this->html_ical_link();
+		$out .= $this->html_ical_link($a);
 		return $out;
 	}
 
@@ -315,9 +316,9 @@ class SC_Event_List {
 		return $out;
 	}
 
-	private function html_ical_link() {
+	private function html_ical_link(&$a) {
 		$out = '';
-		if($this->options->get('el_enable_ical') && $this->options->get('el_enable_ical_link')) {
+		if($this->options->get('el_enable_ical') && $this->is_visible($a['add_ical_link'])) {
 			//prepare url
 			require_once( EL_PATH.'includes/ical.php' );
 			$ical_link = EL_iCal::get_instance()->ical_feed_url();
