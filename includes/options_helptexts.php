@@ -149,7 +149,7 @@ $options_helptexts = array(
 	'el_enable_ical'           => array('type'    => 'checkbox',
 										'label'   => __('Enable iCal feed','event-list'),
 										'caption' => __('Enable support for an event iCal feed','event-list'),
-										'desc'    => __('This option activates a iCal feed for the events.','event-list').'<br />
+										'desc'    => __('This option activates an iCal feed for the events.','event-list').'<br />
 													'.__('You have to enable this option if you want to use one of the iCal features.','event-list')),
 
 	'el_ical_name'            => array('type'    => 'text',
