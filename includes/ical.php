@@ -54,7 +54,7 @@ class EL_iCal {
                     'DTSTART;TZID=Europe/Amsterdam:'.mysql2date('Ymd\T', $event->startdate, false).mysql2date('His0000\Z', $event->starttime, false).$eol.
                     'DTEND;TZID=Europe/Amsterdam:'.mysql2date('Ymd\THis0000\Z', $event->enddate, false).mysql2date('His0000\Z', $event->endtime, false).$eol.
                     'LOCATION:'.$event->location.$eol.
-                    'SUMMARY:Bergmariechen - '.$this->sanitize_feed_text($event->title).$eol;
+                    'SUMMARY:'.$this->sanitize_feed_text($event->title).$eol;
                     if(!empty($event->content)) {
                         echo
                         'DESCRIPTION:'.$this->sanitize_feed_text(str_replace(array("\r", "\n"), ' ', $event->content)).$eol;
