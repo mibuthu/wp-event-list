@@ -154,7 +154,7 @@ $options_helptexts = array(
 
 	'el_ical_name'            => array('type'    => 'text',
 										'label'   => __('iCal name','event-list'),
-										'desc'    => sprintf(__('This option sets the iCal feed name. The default value is %1$s.','event-list.ics'), '"event-list"').'<br />
+										'desc'    => sprintf(__('This option sets the iCal feed name. The default value is %1$s.'), '"event-list.ics"').'<br />
 													'.sprintf(__('This name will be used in the iCal feed url (e.g. %1$s, or %2$s with permalinks enabled).','event-list'), '<code>domain.com/?feed=event-list.ics</code>', '<code>domain.com/feed/eventlist.ics</code>')),
 
 	'el_ical_upcoming_only'    => array('type'    => 'checkbox',
@@ -165,11 +165,11 @@ $options_helptexts = array(
 
 	'el_ical_link_description' => array('type'    => 'text',
 										'label'   => __('Link description','event-list'),
-										'desc'    => sprintf(__('This option sets the iCal link description. The default value is %1$s.','Events as iCal'), '"event-list"')),
+										'desc'    => sprintf(__('This option sets the iCal link description. The default value is %1$s.'), '"Events as iCal"')),
 
 	'el_ical_link_text'             => array('type'    => 'text',
 										'label'   => __('Link text','event-list'),
-										'desc'    => sprintf(__('This option sets the iCal link. The default value is %1$s.','event-list.ics'), '"event-list"')),
+										'desc'    => sprintf(__('This option sets the iCal link. The default value is %1$s.'), '"event-list.ics"')),
 
 	// Section: taxonomy
 	'el_use_post_cats'        => array('type'    => 'checkbox',

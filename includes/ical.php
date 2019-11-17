@@ -45,14 +45,17 @@ class EL_iCal {
         'BEGIN:VCALENDAR'.$eol.
         'VERSION:2.0'.$eol.
         'PRODID:-//'.get_bloginfo('name').'//NONSGML v1.0//EN'.$eol.
-        'CALSCALE:GREGORIAN'.$eol;
+		'CALSCALE:GREGORIAN'.$eol.
+		'UID:'.md5(uniqid(mt_rand(), true)).'@'.get_bloginfo('name').$eol;
 
         if(!empty($events)) {
             foreach ($events as $event) {
                 echo 
                     'BEGIN:VEVENT'.$eol.
-                    'DTSTART;TZID=Europe/Amsterdam:'.mysql2date('Ymd\T', $event->startdate, false).mysql2date('His0000\Z', $event->starttime, false).$eol.
-                    'DTEND;TZID=Europe/Amsterdam:'.mysql2date('Ymd\THis0000\Z', $event->enddate, false).mysql2date('His0000\Z', $event->endtime, false).$eol.
+					'UID:'.md5(uniqid(mt_rand(), true)).'@'.get_bloginfo('name').$eol.
+                    'DTSTART;TZID=Europe/Berlin:'.mysql2date('Ymd\T', $event->startdate, false).mysql2date('His', $event->starttime, false).$eol.
+					'DTEND;TZID=Europe/Berlin:'.mysql2date('Ymd\T', $event->enddate, false).mysql2date('His', $event->endtime, false).$eol.
+					'DTSTAMP:'.date("Ymd\THis\Z").$eol.
                     'LOCATION:'.$event->location.$eol.
                     'SUMMARY:'.$this->sanitize_feed_text($event->title).$eol;
                     if(!empty($event->content)) {
