@@ -321,7 +321,7 @@ class SC_Event_List {
 		if($this->options->get('el_enable_ical') && $this->is_visible($a['add_ical_link'])) {
 			//prepare url
 			require_once( EL_PATH.'includes/ical.php' );
-			$ical_link = EL_iCal::get_instance()->ical_feed_url();
+			$ical_link = EL_iCal::get_instance($a['cat_filter'])->ical_feed_url();
 			$link_text = $this->options->get('el_ical_link_text');
 			$link_description = $this->options->get('el_ical_link_description');
 			// prepare align

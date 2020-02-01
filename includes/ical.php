@@ -8,35 +8,48 @@ require_once(EL_PATH.'includes/events.php');
 
 // This class handles iCal feed
 class EL_iCal {
-	private static $instance;
-	private $db;
+	private static $instances = array();
 	private $options;
-	public static function &get_instance() {
+	private $events;
+	private $cat_filter;
+
+	public static function &get_instance( $cat_filter = 'all') {
 		// Create class instance if required
-		if(!isset(self::$instance)) {
-			self::$instance = new self();
+		if ( ! isset( self::$instances[ $cat_filter ] ) ) {
+			self::$instances[ $cat_filter ] = new self( $cat_filter );
 		}
+
 		// Return class instance
-		return self::$instance;
+		return self::$instances[ $cat_filter ];
 	}
-	private function __construct() {
-		$this->events = EL_Events::get_instance();
+
+	private function __construct( $cat_filter ) {
 		$this->options = EL_Options::get_instance();
+		$this->events = EL_Events::get_instance();
+
+		// set current category filter
+		$this->set_cat_filter($cat_filter);
+
+		// register feed properly with WordPress
 		$this->init();
+	}
+
+	private function set_cat_filter($cat_filter) {
+		$this->cat_filter = $cat_filter;
     }
-    
+
 	public function init() {
-        add_feed($this->options->get('el_ical_name'), array(&$this, 'print_eventlist_ical'));
+        add_feed($this->get_feed_name(), array(&$this, 'print_eventlist_ical'));
     }
-    
+
 	public function print_eventlist_ical() {
-		header('Content-Type: text/calendar; charset='.get_option('blog_charset'), true);   
+		header('Content-Type: text/calendar; charset='.get_option('blog_charset'), true);
         $options = array(
 			'date_filter' => $this->options->get('el_ical_upcoming_only') ? 'upcoming' : null,
             'order' => array('startdate DESC', 'starttime DESC', 'enddate DESC'),
-            //'cat_filter' => $this->get_cat_filter($a['cat_filter'], $a['selected_cat']);
+            'cat_filter' => $this->cat_filter
         );
-        
+
 		$events = $this->events->get($options);
 
         // Print feeds
@@ -50,7 +63,7 @@ class EL_iCal {
 
         if(!empty($events)) {
             foreach ($events as $event) {
-                echo 
+                echo
                     'BEGIN:VEVENT'.$eol.
 					'UID:'.md5(uniqid(mt_rand(), true)).'@'.get_bloginfo('name').$eol.
                     'DTSTART;TZID=Europe/Berlin:'.mysql2date('Ymd\T', $event->startdate, false).mysql2date('His', $event->starttime, false).$eol.
@@ -64,7 +77,7 @@ class EL_iCal {
                     }
                     echo
                     'END:VEVENT';
-                    if ($event == end(array_keys($events))) {	
+                    if ($event == end(array_keys($events))) {
                     } else {
                         echo $eol;
                     }
@@ -73,16 +86,18 @@ class EL_iCal {
 		echo 'END:VCALENDAR';
 
     }
-    
+
 	public function update_ical_rewrite_status() {
 		$feeds = array_keys((array)get_option('rewrite_rules'), 'index.php?&feed=$matches[1]');
-		$feed_rewrite_status = (0 < count(preg_grep('@[(\|]'.$this->options->get('el_ical_name').'[\|)]@', $feeds))) ? true : false;
+		$feed_rewrite_status = 0 < count(preg_grep('@[(\|]'.$this->get_feed_name().'[\|)]@', $feeds));
+		// if iCal is enabled but rewrite rules do not exist already, flush rewrite rules
 		if('1' == $this->options->get('el_enable_ical') && !$feed_rewrite_status) {
-			// add eventlist ical to rewrite rules
+			// result: add eventlist ical to rewrite rules
 			flush_rewrite_rules(false);
 		}
+		// if iCal is disabled but rewrite rules do exist already, flush rewrite rules also
 		elseif('1' != $this->options->get('el_enable_ical') && $feed_rewrite_status) {
-			// remove eventlist ical from rewrite rules
+			// result: remove eventlist ical from rewrite rules
 			flush_rewrite_rules(false);
 		}
     }
@@ -90,7 +105,12 @@ class EL_iCal {
     private function sanitize_feed_text($text) {
 		return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
 	}
-    
+
+	private function get_feed_name() {
+		$cat = isset($this->cat_filter) && $this->cat_filter !== "" ? $this->cat_filter . "-" : "";
+		return $cat . $this->options->get('el_ical_name');
+	}
+
     public function ical_feed_url() {
 		if(get_option('permalink_structure')) {
 			$feed_link = get_bloginfo('url').'/feed/';
@@ -98,7 +118,7 @@ class EL_iCal {
 		else {
 			$feed_link = get_bloginfo('url').'/?feed=';
 		}
-		return $feed_link.$this->options->get('el_ical_name');
+		return $feed_link . $this->get_feed_name();
 	}
 }
 ?>
