@@ -91,16 +91,22 @@ li.event {
 	font-size: 0.8em;
 }
 
-div.feed {
+div.feed,
+div.ical {
 	display: block;
+	/* show link on own line */
+	clear: both;
 }
 
-div.feed a * {
+div.feed a *,
+div.ical a * {
 	vertical-align: middle;
 }
 
 div.feed img {
 	margin: 0 5px 0 2px;
+	/* modern WP themes have 'display: block' on 'a > img', so remove that behavior */
+	display: inline;
 }
 
 div.filterbar, div.filterbar div {
