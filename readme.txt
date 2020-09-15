@@ -6,9 +6,9 @@ Requires at least: 4.2
 Tested up to: 4.9
 Requires PHP: 5.2
 Stable tag: 0.8.3
-Plugin URI: http://wordpress.org/extend/plugins/event-list
+Plugin URI: https://wordpress.org/plugins/event-list
 Licence: GPLv2
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Manage your events and show them on your site.
 
