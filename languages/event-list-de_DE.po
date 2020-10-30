@@ -1,5 +1,5 @@
 # Translation file for the 'Event List' WordPress plugin
-# Copyright (C) 2018 by mibuthu
+# Copyright (C) 2020 by mibuthu
 # This file is distributed under the same license as the corresponding wordpress plugin.
 # 
 # Translators:
@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-event-list\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/event-list/\n"
-"POT-Creation-Date: 2018-05-27 12:20+0200\n"
-"PO-Revision-Date: 2018-05-27 10:20+0000\n"
+"POT-Creation-Date: 2020-10-30 20:31+0100\n"
+"PO-Revision-Date: 2020-10-30 19:32+0000\n"
 "Last-Translator: mibuthu\n"
 "Language-Team: German (Germany) (http://www.transifex.com/mibuthu/wp-event-list/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -22,33 +22,33 @@ msgstr ""
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin/admin.php:57
+#: admin/admin.php:56
 #, php-format
 msgid "Errors during upgrade of plugin %1$s"
 msgstr "Fehler während des %1$s Plugin Upgrades"
 
-#: admin/admin.php:57
+#: admin/admin.php:56
 #, php-format
 msgid "Upgrade of plugin %1$s successful"
 msgstr "Upgrade des Plugins %1$s erfolgreich"
 
-#: admin/admin.php:106 admin/includes/admin-settings.php:65
+#: admin/admin.php:105 admin/includes/admin-settings.php:65
 msgid "Event List Settings"
 msgstr "Event List Einstellungen"
 
-#: admin/admin.php:106
+#: admin/admin.php:105
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: admin/admin.php:110 admin/includes/admin-about.php:37
+#: admin/admin.php:109 admin/includes/admin-about.php:37
 msgid "About Event List"
 msgstr "Informationen zu Event List"
 
-#: admin/admin.php:110
+#: admin/admin.php:109
 msgid "About"
 msgstr "Informationen"
 
-#: admin/admin.php:132
+#: admin/admin.php:131
 #, php-format
 msgid "%s Event"
 msgid_plural "%s Events"
@@ -111,11 +111,11 @@ msgid ""
 " to insert an URL to the linked event-list page."
 msgstr "Wenn eine der Link Optionen (%1$s oder %2$s) im Widget verwendet werden, dann muss die URL zur verlinkten Event-List Seite angegeben werden."
 
-#: admin/includes/admin-about.php:80 includes/widget_helptexts.php:88
+#: admin/includes/admin-about.php:80 includes/widget_helptexts.php:95
 msgid "Add links to the single events"
 msgstr "Füge Links zu den einzelnen Terminen ein"
 
-#: admin/includes/admin-about.php:80 includes/widget_helptexts.php:95
+#: admin/includes/admin-about.php:80 includes/widget_helptexts.php:102
 msgid "Add a link to the Event List page"
 msgstr "Füge einen Link zur Event List Seite hinzu"
 
@@ -888,7 +888,7 @@ msgstr "Beendet"
 msgid "This value defines a range from the past to the previous day."
 msgstr "Dieser Wert definiert einen Datumsbereich von der Vergangenheit bis zum gestrigen Tag."
 
-#: includes/event.php:107
+#: includes/event.php:110
 msgid "No valid start date provided"
 msgstr "Kein gültiges Start-Datum angegeben"
 
@@ -1519,7 +1519,7 @@ msgstr "Der Filter wird durch die Angabe der Kagegorie-Slugs definiert. Unter %1
 #: includes/sc_event-list_helptexts.php:33
 #: includes/sc_event-list_helptexts.php:74
 #: includes/sc_event-list_helptexts.php:89
-#: includes/sc_event-list_helptexts.php:104
+#: includes/sc_event-list_helptexts.php:109
 msgid "number"
 msgstr "Nummer"
 
@@ -1748,7 +1748,7 @@ msgstr "Mit der Grundeinstellung %1$s wird der gesamte Text angezeigt, mit %2$s 
 
 #: includes/sc_event-list_helptexts.php:77
 #: includes/sc_event-list_helptexts.php:92
-#: includes/sc_event-list_helptexts.php:107
+#: includes/sc_event-list_helptexts.php:112
 msgid "This attribute has no influence if only a single event is shown."
 msgstr "Dieses Attribut hat keinen Einfluss wenn nur die Details eines einzelnen Termins angezeigt werden."
 
@@ -1775,23 +1775,30 @@ msgstr ""
 
 #: includes/sc_event-list_helptexts.php:100
 msgid ""
+"This attribute specifies if the excerpt is displayed in the event list.<br />\n"
+"\t                                            Choose \"false\" to always hide and \"true\" to always show the excerpt.<br />\n"
+"\t                                            With \"event_list_only\" the excerpt is only visible in the event list and with \"single_event_only\" only for a single event"
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:105
+msgid ""
 "This attribute specifies if the content is displayed in the event list.<br />\n"
 "\t                                            Choose \"false\" to always hide and \"true\" to always show the content.<br />\n"
 "\t                                            With \"event_list_only\" the content is only visible in the event list and with \"single_event_only\" only for a single event"
 msgstr ""
 
-#: includes/sc_event-list_helptexts.php:105
+#: includes/sc_event-list_helptexts.php:110
 msgid ""
 "This attribute specifies if the content should be truncate to the given "
 "number of characters in the event list."
 msgstr ""
 
-#: includes/sc_event-list_helptexts.php:106
+#: includes/sc_event-list_helptexts.php:111
 #, php-format
 msgid "With the standard value %1$s the full text is displayed."
 msgstr "Mit der Grundeinstellung %1$s wird der gesamte Text angezeigt."
 
-#: includes/sc_event-list_helptexts.php:110
+#: includes/sc_event-list_helptexts.php:115
 msgid ""
 "This attribute specifies if the content should be collapsed initially.<br />\n"
 "\t                                            Then a link will be displayed instead of the content. By clicking this link the content are getting visible.<br />\n"
@@ -1799,7 +1806,7 @@ msgid ""
 "\t                                            With \"event_list_only\" the content is only collapsed in the event list view and with \"single_event_only\" only in single event view."
 msgstr ""
 
-#: includes/sc_event-list_helptexts.php:116
+#: includes/sc_event-list_helptexts.php:121
 msgid ""
 "This attribute specifies if a link to the single event should be added onto the event name in the event list.<br />\n"
 "\t                                            Choose \"false\" to never add and \"true\" to always add the link.<br />\n"
@@ -1807,7 +1814,7 @@ msgid ""
 "\t                                            With \"events_with_content_only\" the link is only added in the event list for events with event content."
 msgstr ""
 
-#: includes/sc_event-list_helptexts.php:122
+#: includes/sc_event-list_helptexts.php:127
 msgid ""
 "This attribute specifies if a rss feed link should be added.<br />\n"
 "\t                                            You have to enable the feed in the eventlist settings to make this attribute workable.<br />\n"
@@ -1816,20 +1823,20 @@ msgid ""
 "\t                                            With \"event_list_only\" the link is only added in the event list and with \"single_event_only\" only for a single event"
 msgstr ""
 
-#: includes/sc_event-list_helptexts.php:128
+#: includes/sc_event-list_helptexts.php:133
 msgid ""
 "This attribute specifies the page or post url for event links.<br />\n"
 "\t                                            The standard is an empty string. Then the url will be calculated automatically.<br />\n"
 "\t                                            An url is normally only required for the use of the shortcode in sidebars. It is also used in the event-list widget."
 msgstr ""
 
-#: includes/sc_event-list_helptexts.php:135
+#: includes/sc_event-list_helptexts.php:140
 msgid ""
 "This attribute the specifies shortcode id of the used shortcode on the page specified with \"url_to_page\" attribute.<br />\n"
 "\t                                            The empty standard value is o.k. for the normal use. This attribute is normally only required for the event-list widget."
 msgstr ""
 
-#: includes/sc_event-list.php:135
+#: includes/sc_event-list.php:136
 msgid "Event Information:"
 msgstr "Termin Informationen:"
 
@@ -1863,7 +1870,7 @@ msgid "Truncate event title to"
 msgstr "Kürze den Termin-Titel auf"
 
 #: includes/widget_helptexts.php:30 includes/widget_helptexts.php:52
-#: includes/widget_helptexts.php:67
+#: includes/widget_helptexts.php:74
 msgid "characters"
 msgstr "Buchstaben"
 
@@ -1906,68 +1913,76 @@ msgid ""
 msgstr "Wenn die Termin-Ort angezeigt wird, dann legt diese Option die Anzahl der angezeigten Buchstaben fest."
 
 #: includes/widget_helptexts.php:59
-msgid "Show event content"
+msgid "Show event excerpt"
 msgstr ""
 
 #: includes/widget_helptexts.php:61
-msgid "This option defines if the event content will be displayed."
+msgid "This option defines if the event excerpt will be displayed."
 msgstr ""
 
 #: includes/widget_helptexts.php:66
-msgid "Truncate content to"
+msgid "Show event content"
 msgstr ""
 
 #: includes/widget_helptexts.php:68
+msgid "This option defines if the event content will be displayed."
+msgstr ""
+
+#: includes/widget_helptexts.php:73
+msgid "Truncate content to"
+msgstr ""
+
+#: includes/widget_helptexts.php:75
 msgid ""
 "If the event content are diplayed this option defines the number of diplayed"
 " characters."
 msgstr ""
 
-#: includes/widget_helptexts.php:69
+#: includes/widget_helptexts.php:76
 #, php-format
 msgid "Set this value to %1$s to view the full text."
 msgstr "Wird der Wert auf %1$s gesetzt, wird der gesamte Text angezeigt."
 
-#: includes/widget_helptexts.php:74
+#: includes/widget_helptexts.php:81
 msgid "URL to the linked Event List page"
 msgstr "URL zur verlinkten Event List Seite"
 
-#: includes/widget_helptexts.php:76
+#: includes/widget_helptexts.php:83
 msgid ""
 "This option defines the url to the linked Event List page. This option is "
 "required if you want to use one of the options below."
 msgstr "Diese Option legt die URL zur verlinkten Event List Seite fest. Diese Option muss zwingend gesetzt werden, wenn eine der unten stehenden Optionen verwendet werden soll."
 
-#: includes/widget_helptexts.php:81
+#: includes/widget_helptexts.php:88
 msgid "Shortcode ID on linked page"
 msgstr "Shortcode ID auf der verlinkten Seite"
 
-#: includes/widget_helptexts.php:83
+#: includes/widget_helptexts.php:90
 msgid ""
 "This option defines the shortcode-id for the Event List on the linked page. "
 "Normally the standard value 1 is correct, you only have to change it if you "
 "use multiple event-list shortcodes on the linked page."
 msgstr "Diese Option legt die Shortcode-ID für die verlinkte Event List Seite fest. Normalerweise ist der Standardwert 1 korrekt. Dieser Wert muss aber eventuell geändert werden, wenn sich mehrere even-list Shortcodes auf der verlinkten Seite befinden."
 
-#: includes/widget_helptexts.php:90
+#: includes/widget_helptexts.php:97
 msgid ""
 "With this option you can add a link to the single event page for every "
 "displayed event. You have to specify the url to the page and the shortcode "
 "id option if you want to use it."
 msgstr "Wird diese Option aktiviert, dann werden Verknüpfungen zu den einzelnen Terminen für alle Termine eingefügt. Soll diese Funktion genutzt werden, dann muss die Option URL zur verlinkten Event List Seite und Shortcode ID auf der verlinkten Seite korrekt gesetzt werden."
 
-#: includes/widget_helptexts.php:97
+#: includes/widget_helptexts.php:104
 msgid ""
 "With this option you can add a link to the event-list page below the "
 "diplayed events. You have to specify the url to page option if you want to "
 "use it."
 msgstr "Mit dieser Option kann eine zusätzliche Verknüpfung zur Event List Seite unterhalb der angezeigten Termine ergänzt werden. Soll diese Funktion genutzt werden, so muss die Option URL zur Event List Seite korrekt eingetragen werden."
 
-#: includes/widget_helptexts.php:102
+#: includes/widget_helptexts.php:109
 msgid "Caption for the link"
 msgstr "Anzuzeigender Text für den Link"
 
-#: includes/widget_helptexts.php:104
+#: includes/widget_helptexts.php:111
 msgid ""
 "This option defines the text for the link to the Event List page if the "
 "approriate option is selected."
@@ -1981,6 +1996,6 @@ msgstr "Mit diesem Widget kann eine Liste mit den anstehenden Terminen angezeigt
 msgid "Upcoming events"
 msgstr "Anstehende Termine"
 
-#: includes/widget.php:38
+#: includes/widget.php:39
 msgid "show events page"
 msgstr "öffne den Kalender"

@@ -1,17 +1,18 @@
 # Translation file for the 'Event List' WordPress plugin
-# Copyright (C) 2018 by mibuthu
+# Copyright (C) 2020 by mibuthu
 # This file is distributed under the same license as the corresponding wordpress plugin.
 # 
 # Translators:
 # Dominik Molčanyi <frinkjeee@gmail.com>, 2017
 # Lubo Caca <lulucaca2.86@gmail.com>, 2018
 # Pavol Kubosko <palisanderb1@gmail.com>, 2017
+# Viliam Dzupin <viliam.dzupin@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: wp-event-list\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/event-list/\n"
-"POT-Creation-Date: 2018-05-27 12:20+0200\n"
-"PO-Revision-Date: 2018-05-27 10:20+0000\n"
+"POT-Creation-Date: 2020-10-30 20:31+0100\n"
+"PO-Revision-Date: 2020-10-30 19:32+0000\n"
 "Last-Translator: mibuthu\n"
 "Language-Team: Slovak (Slovakia) (http://www.transifex.com/mibuthu/wp-event-list/language/sk_SK/)\n"
 "MIME-Version: 1.0\n"
@@ -20,33 +21,33 @@ msgstr ""
 "Language: sk_SK\n"
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
 
-#: admin/admin.php:57
+#: admin/admin.php:56
 #, php-format
 msgid "Errors during upgrade of plugin %1$s"
-msgstr ""
+msgstr "Chyba pri upgrade pluginu %1$s."
 
-#: admin/admin.php:57
+#: admin/admin.php:56
 #, php-format
 msgid "Upgrade of plugin %1$s successful"
-msgstr ""
+msgstr "Upgrade pluginu %1$s bolo úspešné"
 
-#: admin/admin.php:106 admin/includes/admin-settings.php:65
+#: admin/admin.php:105 admin/includes/admin-settings.php:65
 msgid "Event List Settings"
 msgstr "Nastavenia zoznamu udalostí"
 
-#: admin/admin.php:106
+#: admin/admin.php:105
 msgid "Settings"
 msgstr "Nastavenia"
 
-#: admin/admin.php:110 admin/includes/admin-about.php:37
+#: admin/admin.php:109 admin/includes/admin-about.php:37
 msgid "About Event List"
 msgstr "O plugine Zoznam udalostí"
 
-#: admin/admin.php:110
+#: admin/admin.php:109
 msgid "About"
 msgstr "O plugine"
 
-#: admin/admin.php:132
+#: admin/admin.php:131
 #, php-format
 msgid "%s Event"
 msgid_plural "%s Events"
@@ -91,31 +92,31 @@ msgstr "Môžete pridať <strong>aplikáciu</strong>%1$s do Vašej bočnej lišt
 msgid ""
 "The displayed events and their style can be modified with the available "
 "widget settings and the available attributes for the shortcode."
-msgstr ""
+msgstr "Zobrazenie udalostí a ich štýl može byť zmenené pomocou Nastevení widgetu a atribútov skráteného kodu = shortcode."
 
 #: admin/includes/admin-about.php:78
 #, php-format
 msgid ""
 "A list of all available shortcode attributes with their descriptions is "
 "available in the %1$s tab."
-msgstr ""
+msgstr "Zoznam dostupných atribútov pre shortcode a ich popis je dostupný v záložke 1 %1$s."
 
 #: admin/includes/admin-about.php:79
 msgid "The available  widget options are described in their tooltip text."
-msgstr ""
+msgstr "Možnosti widgetu sú popísané v ich tooltipe."
 
 #: admin/includes/admin-about.php:80
 #, php-format
 msgid ""
 "If you enable one of the links options (%1$s or %2$s) in the widget you have"
 " to insert an URL to the linked event-list page."
-msgstr ""
+msgstr "V prípade, že povolíte nastavenie hyperlinkov (%1$s alebo 2 %2$s) vo widgete musíte vložiť URL ns dtránku so zoznamom eventov."
 
-#: admin/includes/admin-about.php:80 includes/widget_helptexts.php:88
+#: admin/includes/admin-about.php:80 includes/widget_helptexts.php:95
 msgid "Add links to the single events"
 msgstr "Pridaj odkaz na na akciu"
 
-#: admin/includes/admin-about.php:80 includes/widget_helptexts.php:95
+#: admin/includes/admin-about.php:80 includes/widget_helptexts.php:102
 msgid "Add a link to the Event List page"
 msgstr "Pridaj odkaz na stránku akcií"
 
@@ -123,7 +124,7 @@ msgstr "Pridaj odkaz na stránku akcií"
 msgid ""
 "This is required because the widget does not know in which page or post the "
 "shortcode was included."
-msgstr ""
+msgstr "Pole je povinné keďže widget nevie na ktorej stránke, prípadne príspevku je shorcode vložený."
 
 #: admin/includes/admin-about.php:82
 msgid ""
@@ -890,7 +891,7 @@ msgstr "Munulé"
 msgid "This value defines a range from the past to the previous day."
 msgstr "Táto hodnota definuje rozsah od minulosti do predchádzajúceho dňa."
 
-#: includes/event.php:107
+#: includes/event.php:110
 msgid "No valid start date provided"
 msgstr "Nie je k dispozícii platný dátum začiatku"
 
@@ -1521,7 +1522,7 @@ msgstr ""
 #: includes/sc_event-list_helptexts.php:33
 #: includes/sc_event-list_helptexts.php:74
 #: includes/sc_event-list_helptexts.php:89
-#: includes/sc_event-list_helptexts.php:104
+#: includes/sc_event-list_helptexts.php:109
 msgid "number"
 msgstr "číslo"
 
@@ -1750,7 +1751,7 @@ msgstr ""
 
 #: includes/sc_event-list_helptexts.php:77
 #: includes/sc_event-list_helptexts.php:92
-#: includes/sc_event-list_helptexts.php:107
+#: includes/sc_event-list_helptexts.php:112
 msgid "This attribute has no influence if only a single event is shown."
 msgstr "Tento atribút nemá žiadny vplyv, ak je zobrazená iba jedna udalosť."
 
@@ -1777,23 +1778,30 @@ msgstr ""
 
 #: includes/sc_event-list_helptexts.php:100
 msgid ""
+"This attribute specifies if the excerpt is displayed in the event list.<br />\n"
+"\t                                            Choose \"false\" to always hide and \"true\" to always show the excerpt.<br />\n"
+"\t                                            With \"event_list_only\" the excerpt is only visible in the event list and with \"single_event_only\" only for a single event"
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:105
+msgid ""
 "This attribute specifies if the content is displayed in the event list.<br />\n"
 "\t                                            Choose \"false\" to always hide and \"true\" to always show the content.<br />\n"
 "\t                                            With \"event_list_only\" the content is only visible in the event list and with \"single_event_only\" only for a single event"
 msgstr ""
 
-#: includes/sc_event-list_helptexts.php:105
+#: includes/sc_event-list_helptexts.php:110
 msgid ""
 "This attribute specifies if the content should be truncate to the given "
 "number of characters in the event list."
 msgstr "Tento atribút určuje, či by sa obsah mal skrátiť na daný počet znakov v zozname udalostí."
 
-#: includes/sc_event-list_helptexts.php:106
+#: includes/sc_event-list_helptexts.php:111
 #, php-format
 msgid "With the standard value %1$s the full text is displayed."
 msgstr "Pri štandardnej hodnote %1$s sa zobrazí celý text."
 
-#: includes/sc_event-list_helptexts.php:110
+#: includes/sc_event-list_helptexts.php:115
 msgid ""
 "This attribute specifies if the content should be collapsed initially.<br />\n"
 "\t                                            Then a link will be displayed instead of the content. By clicking this link the content are getting visible.<br />\n"
@@ -1801,7 +1809,7 @@ msgid ""
 "\t                                            With \"event_list_only\" the content is only collapsed in the event list view and with \"single_event_only\" only in single event view."
 msgstr ""
 
-#: includes/sc_event-list_helptexts.php:116
+#: includes/sc_event-list_helptexts.php:121
 msgid ""
 "This attribute specifies if a link to the single event should be added onto the event name in the event list.<br />\n"
 "\t                                            Choose \"false\" to never add and \"true\" to always add the link.<br />\n"
@@ -1809,7 +1817,7 @@ msgid ""
 "\t                                            With \"events_with_content_only\" the link is only added in the event list for events with event content."
 msgstr ""
 
-#: includes/sc_event-list_helptexts.php:122
+#: includes/sc_event-list_helptexts.php:127
 msgid ""
 "This attribute specifies if a rss feed link should be added.<br />\n"
 "\t                                            You have to enable the feed in the eventlist settings to make this attribute workable.<br />\n"
@@ -1818,20 +1826,20 @@ msgid ""
 "\t                                            With \"event_list_only\" the link is only added in the event list and with \"single_event_only\" only for a single event"
 msgstr ""
 
-#: includes/sc_event-list_helptexts.php:128
+#: includes/sc_event-list_helptexts.php:133
 msgid ""
 "This attribute specifies the page or post url for event links.<br />\n"
 "\t                                            The standard is an empty string. Then the url will be calculated automatically.<br />\n"
 "\t                                            An url is normally only required for the use of the shortcode in sidebars. It is also used in the event-list widget."
 msgstr ""
 
-#: includes/sc_event-list_helptexts.php:135
+#: includes/sc_event-list_helptexts.php:140
 msgid ""
 "This attribute the specifies shortcode id of the used shortcode on the page specified with \"url_to_page\" attribute.<br />\n"
 "\t                                            The empty standard value is o.k. for the normal use. This attribute is normally only required for the event-list widget."
 msgstr ""
 
-#: includes/sc_event-list.php:135
+#: includes/sc_event-list.php:136
 msgid "Event Information:"
 msgstr "Informácie o udalosti"
 
@@ -1865,7 +1873,7 @@ msgid "Truncate event title to"
 msgstr "Skrátiť názov udalosti na"
 
 #: includes/widget_helptexts.php:30 includes/widget_helptexts.php:52
-#: includes/widget_helptexts.php:67
+#: includes/widget_helptexts.php:74
 msgid "characters"
 msgstr "znaky"
 
@@ -1908,68 +1916,76 @@ msgid ""
 msgstr "Ak sa zobrazuje miesto udalosti, táto možnosť definuje počet zobrazených znakov."
 
 #: includes/widget_helptexts.php:59
+msgid "Show event excerpt"
+msgstr ""
+
+#: includes/widget_helptexts.php:61
+msgid "This option defines if the event excerpt will be displayed."
+msgstr ""
+
+#: includes/widget_helptexts.php:66
 msgid "Show event content"
 msgstr "Zobraziť obsah udalosti"
 
-#: includes/widget_helptexts.php:61
+#: includes/widget_helptexts.php:68
 msgid "This option defines if the event content will be displayed."
 msgstr "Táto možnosť určuje, či sa bude zobrazovať obsah udalosti."
 
-#: includes/widget_helptexts.php:66
+#: includes/widget_helptexts.php:73
 msgid "Truncate content to"
 msgstr "Skrátiť obsah na"
 
-#: includes/widget_helptexts.php:68
+#: includes/widget_helptexts.php:75
 msgid ""
 "If the event content are diplayed this option defines the number of diplayed"
 " characters."
 msgstr "Ak sa zobrazí obsah udalosti, táto možnosť definuje počet zobrazených znakov."
 
-#: includes/widget_helptexts.php:69
+#: includes/widget_helptexts.php:76
 #, php-format
 msgid "Set this value to %1$s to view the full text."
 msgstr "Nastav túto hodnotu na %1$s na zobrazenie celého textu."
 
-#: includes/widget_helptexts.php:74
+#: includes/widget_helptexts.php:81
 msgid "URL to the linked Event List page"
 msgstr "URL ku stránke Zoznamu udalostí"
 
-#: includes/widget_helptexts.php:76
+#: includes/widget_helptexts.php:83
 msgid ""
 "This option defines the url to the linked Event List page. This option is "
 "required if you want to use one of the options below."
 msgstr ""
 
-#: includes/widget_helptexts.php:81
+#: includes/widget_helptexts.php:88
 msgid "Shortcode ID on linked page"
 msgstr ""
 
-#: includes/widget_helptexts.php:83
+#: includes/widget_helptexts.php:90
 msgid ""
 "This option defines the shortcode-id for the Event List on the linked page. "
 "Normally the standard value 1 is correct, you only have to change it if you "
 "use multiple event-list shortcodes on the linked page."
 msgstr ""
 
-#: includes/widget_helptexts.php:90
+#: includes/widget_helptexts.php:97
 msgid ""
 "With this option you can add a link to the single event page for every "
 "displayed event. You have to specify the url to the page and the shortcode "
 "id option if you want to use it."
 msgstr ""
 
-#: includes/widget_helptexts.php:97
+#: includes/widget_helptexts.php:104
 msgid ""
 "With this option you can add a link to the event-list page below the "
 "diplayed events. You have to specify the url to page option if you want to "
 "use it."
 msgstr ""
 
-#: includes/widget_helptexts.php:102
+#: includes/widget_helptexts.php:109
 msgid "Caption for the link"
 msgstr "Titulok pre odkaz"
 
-#: includes/widget_helptexts.php:104
+#: includes/widget_helptexts.php:111
 msgid ""
 "This option defines the text for the link to the Event List page if the "
 "approriate option is selected."
@@ -1983,6 +1999,6 @@ msgstr "Pomocou tejto miniaplikácie sa môže zobraziť zoznam nadchádzajúcic
 msgid "Upcoming events"
 msgstr "Nadchádzajúce udalosti"
 
-#: includes/widget.php:38
+#: includes/widget.php:39
 msgid "show events page"
 msgstr "zobraziť stránku udalostí"
