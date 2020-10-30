@@ -28,7 +28,7 @@ class EL_Upgrade {
 	}
 
 	private function __construct() {
-		$this->logfile = EL_PATH.'upgrade.log';
+		$this->logfile = 'event-list_upgrade.log';
 	}
 
 	public function upgrade() {
@@ -456,20 +456,21 @@ class EL_Upgrade {
 	}
 
 	private function logfile_init() {
+		$logfile_path = WP_CONTENT_DIR . $this->logfile;
 		// rename all existing log files and remove files older than 90 days
-		if(file_exists($this->logfile) && empty($this->resume_version)) {
+		if(file_exists($logfile_path) && empty($this->resume_version)) {
 			// delete file if it is too old
-			if(filemtime($this->logfile) < time() - 30*24*60*60) {
-				if(!@unlink($this->logfile)) {
-					error_log('"'.$this->logfile.'" cannot be deleted! No upgrade log file will be written!');
+			if(filemtime($logfile_path) < time() - 30*24*60*60) {
+				if(!@unlink($logfile_path)) {
+					error_log('The logfile "'.$logfile_path.'" cannot be deleted! No upgrade log file will be written!');
 					return false;
 				}
 			}
 		}
 		// open logfile for writing
-		$this->logfile_handle = @fopen($this->logfile, 'a');
+		$this->logfile_handle = @fopen($logfile_path, 'a');
 		if(empty($this->logfile_handle)) {
-			error_log('"'.$this->logfile.'" cannot be opened for writing! No upgrade log file will be written!');
+			error_log('The logfile "'.$logfile_path.'" cannot be opened for writing! No upgrade log file will be written!');
 			return false;
 		}
 		return true;
