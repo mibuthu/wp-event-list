@@ -96,6 +96,11 @@ $sc_eventlist_helptexts = array(
 	                                            Choose "false" to always hide and "true" to always show the category.<br />
 	                                            With "event_list_only" the categories are only visible in the event list and with "single_event_only" only for a single event','event-list')),
 
+	'show_excerpt'     => array('val'    => array('false', 'true', 'event_list_only', 'single_event_only'),
+	                            'desc'   => __('This attribute specifies if the excerpt is displayed in the event list.<br />
+	                                            Choose "false" to always hide and "true" to always show the excerpt.<br />
+	                                            With "event_list_only" the excerpt is only visible in the event list and with "single_event_only" only for a single event','event-list')),
+
 	'show_content'     => array('val'    => array('false', 'true', 'event_list_only', 'single_event_only'),
 	                            'desc'   => __('This attribute specifies if the content is displayed in the event list.<br />
 	                                            Choose "false" to always hide and "true" to always show the content.<br />

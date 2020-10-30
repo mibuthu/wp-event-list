@@ -29,6 +29,7 @@ class EL_Widget extends WP_Widget {
 			'show_starttime'       => array('std_value' => 'true'),
 			'show_location'        => array('std_value' => 'false'),
 			'location_length'      => array('std_value' => '0'),
+			'show_excerpt'         => array('std_value' => 'false'),
 			'show_content'         => array('std_value' => 'false'),
 			'content_length'       => array('std_value' => '0'),
 			'url_to_page'          => array('std_value' => ''),
@@ -75,6 +76,7 @@ class EL_Widget extends WP_Widget {
 		$shortcode .= ' show_starttime='.$instance['show_starttime'];
 		$shortcode .= ' show_location='.$instance['show_location'];
 		$shortcode .= ' location_length='.$instance['location_length'];
+		$shortcode .= ' show_excerpt='.$instance['show_excerpt'];
 		$shortcode .= ' show_content='.$instance['show_content'];
 		$shortcode .= ' content_length='.$instance['content_length'];
 		if($linked_page_is_set && $linked_page_id_is_set) {

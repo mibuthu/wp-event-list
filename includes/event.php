@@ -19,6 +19,7 @@ class EL_Event {
 	public $enddate = '0000-00-00';
 	public $starttime = '';
 	public $location = '';
+	public $excerpt = '';
 	public $content = '';
 
 	public function __construct($post) {
@@ -37,6 +38,7 @@ class EL_Event {
 
 	private function load_eventdata() {
 		$this->title = $this->post->post_title;
+		$this->excerpt = $this->post->post_excerpt;
 		$this->content = $this->post->post_content;
 		$postmeta = get_post_meta($this->post->ID);
 		foreach(array('startdate', 'enddate', 'starttime', 'location') as $meta) {
@@ -54,6 +56,7 @@ class EL_Event {
 		$postdata['post_type'] = 'el_events';
 		$postdata['post_status'] = 'publish';
 		$postdata['post_title'] = $eventdata['title'];
+		$postdata['post_excerpt'] = $eventdata['excerpt'];
 		$postdata['post_content'] = $eventdata['content'];
 		if(isset($eventdata['slug'])) {
 			$postdata['post_name'] = $eventdata['slug'];
@@ -272,10 +275,10 @@ class EL_Event {
 			// Print ellipsis ("...") if the html was truncated
 			if($truncated) {
 				if($link) {
-					$out .= ' <a href="'.$link.'">&hellip;</a>';
+					$out .= ' <a href="'.$link.'"> [read more...]</a>';
 				}
 				else {
-					$out .= ' &hellip;';
+					$out .= ' [read more...]';
 				}
 			}
 			// Close any open tags.
