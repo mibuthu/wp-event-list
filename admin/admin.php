@@ -51,11 +51,10 @@ class EL_Admin {
 		if($this->show_upgr_message) {
 			// load upgrade class
 			require_once(EL_PATH.'admin/includes/upgrade.php');
-			$logfile = str_replace(EL_PATH, EL_URL, EL_Upgrade::get_instance()->logfile);
 			$error = 2 == $this->show_upgr_message;
 			$class = $error ? 'error' : 'updated fade';
 			$title = sprintf($error ? __('Errors during upgrade of plugin %1$s','event-list') : __('Upgrade of plugin %1$s successful','event-list'), '"Event List"');
-			$logfile = ' (<a href="'.$logfile.'">upgrade log</a>)';
+			$logfile = ' (<a href="'.content_url(EL_Upgrade::get_instance()->logfile).'">upgrade log</a>)';
 			echo '<div id="message" class="'.$class.'"><p><strong>'.$title.'</strong>'.$logfile.'</p></div>';
 		}
 	}
