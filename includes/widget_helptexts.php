@@ -55,6 +55,13 @@ $widget_items_helptexts = array(
 	                                'form_style'    => 'margin:0 0 0.6em 0.9em',
 	                                'form_width'    => 40),
 
+	'show_excerpt' =>         array('type'          => 'checkbox',
+	                                'caption'       => __('Show event excerpt','event-list'),
+	                                'caption_after' => null,
+	                                'tooltip'       => __('This option defines if the event excerpt will be displayed.','event-list'),
+	                                'form_style'    => 'margin:0 0 0.2em 0',
+	                                'form_width'    => null),
+
 	'show_content' =>         array('type'          => 'checkbox',
 	                                'caption'       => __('Show event content','event-list'),
 	                                'caption_after' => null,
