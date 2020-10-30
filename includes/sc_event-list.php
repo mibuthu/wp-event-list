@@ -174,7 +174,6 @@ class SC_Event_List {
 				<ul class="event-list-view">';
 			$single_day_only = $this->is_single_day_only($events);
 			foreach ($events as $event) {
-				$single_day_only = $this->is_single_day_only($event);
 				$out .= $this->html_event($event, $a, $single_day_only);
 			}
 			$out .= '</ul>';
