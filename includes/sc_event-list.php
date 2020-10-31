@@ -56,6 +56,7 @@ class SC_Event_List {
 			'add_feed_link'    => array('std_val' => 'false'),
 			'url_to_page'      => array('std_val' => ''),
 			'sc_id_for_url'    => array('std_val' => ''),
+			'add_ical_link'    => array('std_val' => 'false'),
 			// Internal attributes: This parameters will be added by the script and are not available in the shortcode
 			//  'sc_id'
 			//  'selected_date'
@@ -179,6 +180,7 @@ class SC_Event_List {
 			$out .= '</ul>';
 		}
 		$out .= $this->html_feed_link($a, 'bottom');
+		$out .= $this->html_ical_link($a);
 		return $out;
 	}
 
@@ -314,6 +316,29 @@ class SC_Event_List {
 			// create html
 			$out .= '<div class="feed" style="text-align:'.$align.'">
 						<a href="'.$feed_link.'">'.$text.'</a>
+					</div>';
+		}
+		return $out;
+	}
+
+	private function html_ical_link(&$a) {
+		$out = '';
+		if($this->options->get('el_enable_ical') && $this->is_visible($a['add_ical_link'])) {
+			//prepare url
+			require_once( EL_PATH.'includes/ical.php' );
+			$ical_link = EL_iCal::get_instance($a['cat_filter'])->ical_feed_url();
+			$link_text = $this->options->get('el_ical_link_text');
+			$link_description = $this->options->get('el_ical_link_description');
+			// prepare align
+			$align = $this->options->get('el_feed_link_align');
+			if('left' !== $align && 'center' !== $align && 'right' !== $align) {
+				$align = 'left';
+			}
+			// prepare text
+			$text = $image.esc_attr($this->options->get('el_ical_name'));
+			// create html
+			$out .= '<div class="ical" style="text-align:'.$align.'">
+						'.$link_description.' <a href="'.$ical_link.'">&#128197; '.$link_text.'</a>
 					</div>';
 		}
 		return $out;

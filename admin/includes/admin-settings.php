@@ -56,6 +56,11 @@ class EL_Admin_Settings {
 					require_once(EL_PATH.'admin/includes/event-category_functions.php');
 					EL_Event_Category_Functions::get_instance()->update_cat_count();
 					break;
+				case 'ical':
+					// check feed rewrite status and update it if required
+					require_once(EL_PATH.'includes/ical.php');
+					EL_iCal::get_instance()->update_ical_rewrite_status();
+					break;
 			}
 		}
 
@@ -83,6 +88,7 @@ class EL_Admin_Settings {
 		              'frontend' => __('Frontend Settings','event-list'),
 		              'admin'    => __('Admin Page Settings','event-list'),
 		              'feed'     => __('Feed Settings','event-list'),
+		              'ical'     => __('ICal Settings','event-list'),
 		              'taxonomy' => __('Category Taxonomy','event-list'));
 		$out = '<h3 class="nav-tab-wrapper">';
 		foreach($tabs as $tab => $name) {

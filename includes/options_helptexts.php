@@ -145,6 +145,32 @@ $options_helptexts = array(
 	                                   'desc'    => __('This option specifies if the an image should be dispayed in the feed link in front of the text.','event-list').'<br />
 	                                                '.sprintf(__('You have to set the shortcode attribute %1$s to %2$s if you want to show the feed link.','event-list'), '<code>add_feed_link</code>', '"true"')),
 
+	// Section: "iCal"
+	'el_enable_ical'           => array('type'    => 'checkbox',
+										'label'   => __('Enable iCal feed','event-list'),
+										'caption' => __('Enable support for an event iCal feed','event-list'),
+										'desc'    => __('This option activates an iCal feed for the events.','event-list').'<br />
+													'.__('You have to enable this option if you want to use one of the iCal features.','event-list')),
+
+	'el_ical_name'            => array('type'    => 'text',
+										'label'   => __('iCal name','event-list'),
+										'desc'    => sprintf(__('This option sets the iCal feed name. The default value is %1$s.'), '"event-list.ics"').'<br />
+													'.sprintf(__('This name will be used in the iCal feed url (e.g. %1$s, or %2$s with permalinks enabled).','event-list'), '<code>domain.com/?feed=event-list.ics</code>', '<code>domain.com/feed/eventlist.ics</code>')),
+
+	'el_ical_upcoming_only'    => array('type'    => 'checkbox',
+										'label'   => __('Listed events','event-list'),
+										'caption' => __('Only show upcoming events in feed','event-list'),
+										'desc'    => __('If this option is enabled only the upcoming events are listed in the iCal file.<br />
+														If disabled all events (upcoming and past) will be listed.')),
+
+	'el_ical_link_description' => array('type'    => 'text',
+										'label'   => __('Link description','event-list'),
+										'desc'    => sprintf(__('This option sets the iCal link description. The default value is %1$s.'), '"Events as iCal"')),
+
+	'el_ical_link_text'             => array('type'    => 'text',
+										'label'   => __('Link text','event-list'),
+										'desc'    => sprintf(__('This option sets the iCal link. The default value is %1$s.'), '"event-list.ics"')),
+
 	// Section: taxonomy
 	'el_use_post_cats'        => array('type'    => 'checkbox',
 	                                   'disable' => true,
