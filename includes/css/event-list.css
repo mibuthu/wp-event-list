@@ -87,8 +87,8 @@ li.event {
 	font-size: 0.95em;
 }
 
-.event-content {
-	font-size: 0.8em;
+.event-content, .event-excerpt {
+	font-size: 0.9em;
 }
 
 div.feed,
