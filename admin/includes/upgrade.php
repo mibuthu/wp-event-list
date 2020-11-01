@@ -456,7 +456,7 @@ class EL_Upgrade {
 	}
 
 	private function logfile_init() {
-		$logfile_path = WP_CONTENT_DIR . $this->logfile;
+		$logfile_path = WP_CONTENT_DIR . '/' . $this->logfile;
 		// rename all existing log files and remove files older than 90 days
 		if(file_exists($logfile_path) && empty($this->resume_version)) {
 			// delete file if it is too old
