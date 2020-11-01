@@ -118,19 +118,19 @@ class SC_Event_List {
 		if(!empty($a['event_id'])) {
 			// show events content if event_id is set
 			$this->single_event = true;
-			$out .= $this->html_event_content($a);
+			$out .= $this->html_single_event($a);
 		}
 		else {
 			// show full event list
 			$this->single_event = false;
-			$out .= $this->html_events($a);
+			$out .= $this->html_event_list($a);
 		}
 		$out .= '
 				</div>';
 		return $out;
 	}
 
-	private function html_event_content(&$a) {
+	private function html_single_event(&$a) {
 		$event = new EL_Event($a['event_id']);
 		$out = $this->html_filterbar($a);
 		$out .= '
@@ -142,7 +142,7 @@ class SC_Event_List {
 		return $out;
 	}
 
-	private function html_events(&$a) {
+	private function html_event_list(&$a) {
 		// specify to show all events if not upcoming is selected
 		if('upcoming' != $a['selected_date']) {
 			$a['num_events'] = 0;
