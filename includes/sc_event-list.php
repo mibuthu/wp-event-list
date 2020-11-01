@@ -335,7 +335,7 @@ class SC_Event_List {
 				$align = 'left';
 			}
 			// prepare text
-			$text = $image.esc_attr($this->options->get('el_ical_name'));
+			$text = esc_attr($this->options->get('el_ical_name'));
 			// create html
 			$out .= '<div class="ical" style="text-align:'.$align.'">
 						'.$link_description.' <a href="'.$ical_link.'">&#128197; '.$link_text.'</a>
