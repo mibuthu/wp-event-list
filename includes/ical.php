@@ -68,7 +68,10 @@ class EL_iCal {
                     'BEGIN:VEVENT'.$eol.
 					'UID:'.md5(uniqid(mt_rand(), true)).'@'.get_bloginfo('name').$eol.
                     'DTSTART'.$timezone_string.':'.mysql2date('Ymd\T', $event->startdate, false).mysql2date('His', $event->starttime, false).$eol.
-					'DTEND'.$timezone_string.':'.mysql2date('Ymd\T', $event->enddate, false).mysql2date('His', $event->endtime, false).$eol.
+				if($event->enddate !== $event->startdate) {
+					echo 'DTEND:'.mysql2date('Ymd', $event->enddate, false).$eol;
+				}
+				echo
 					'DTSTAMP:'.date("Ymd\THis\Z").$eol.
                     'LOCATION:'.$event->location.$eol.
                     'SUMMARY:'.$this->sanitize_feed_text($event->title).$eol;
