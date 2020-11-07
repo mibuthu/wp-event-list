@@ -58,10 +58,10 @@ class EL_iCal {
             foreach ($events as $event) {
 				$timezone_string = wp_timezone_string();
 				if( strpos($timezone_string, '/')) {
-					// When a country/city timezone is set in the WordPress settings, the TZID can be used.
+					// Use the TZID, when the Wordpress setting is a Country/City timezone.
 					$timezone_string = ';TZID=' . $timezone_string;
 				} else {
-					// Else the local time will be used without any timezone.
+					// Use the local time without any timezone, when the Wordpress option is an offset timezone.
 					$timezone_string = '';
 				}
                 echo
