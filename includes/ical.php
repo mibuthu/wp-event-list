@@ -56,18 +56,10 @@ class EL_iCal {
 
         if(!empty($events)) {
             foreach ($events as $event) {
-				$timezone_string = wp_timezone_string();
-				if( strpos($timezone_string, '/')) {
-					// Use the TZID, when the Wordpress setting is a Country/City timezone.
-					$timezone_string = ';TZID=' . $timezone_string;
-				} else {
-					// Use the local time without any timezone, when the Wordpress option is an offset timezone.
-					$timezone_string = '';
-				}
                 echo
                     'BEGIN:VEVENT'.$eol.
 					'UID:'.md5(uniqid(mt_rand(), true)).'@'.get_bloginfo('name').$eol.
-                    'DTSTART'.$timezone_string.':'.mysql2date('Ymd\T', $event->startdate, false).mysql2date('His', $event->starttime, false).$eol.
+					'DTSTART:'.mysql2date('Ymd', $event->startdate, false).get_gmt_from_date($event->starttime, '\THis\Z').$eol;
 				if($event->enddate !== $event->startdate) {
 					echo 'DTEND:'.mysql2date('Ymd', $event->enddate, false).$eol;
 				}
