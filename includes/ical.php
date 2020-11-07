@@ -76,12 +76,8 @@ class EL_iCal {
                         echo
                         'DESCRIPTION:'.$this->sanitize_feed_text(str_replace(array("\r", "\n"), ' ', $event->content)).$eol;
                     }
-                    echo
-                    'END:VEVENT';
-                    if ($event == end(array_keys($events))) {
-                    } else {
-                        echo $eol;
-                    }
+                echo
+                    'END:VEVENT'.$eol;
             }
         }
 		echo 'END:VCALENDAR';
