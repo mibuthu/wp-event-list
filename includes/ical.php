@@ -26,19 +26,12 @@ class EL_iCal {
 	private function __construct( $cat_filter ) {
 		$this->options = EL_Options::get_instance();
 		$this->events = EL_Events::get_instance();
-
-		// set current category filter
-		$this->set_cat_filter($cat_filter);
-
-		// register feed properly with WordPress
+		$this->cat_filter = $cat_filter;
 		$this->init();
 	}
 
-	private function set_cat_filter($cat_filter) {
-		$this->cat_filter = $cat_filter;
-    }
-
 	public function init() {
+		// register feed properly with WordPress
         add_feed($this->get_feed_name(), array(&$this, 'print_eventlist_ical'));
     }
 
