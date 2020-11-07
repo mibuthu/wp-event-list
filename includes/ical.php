@@ -32,32 +32,32 @@ class EL_iCal {
 
 	public function init() {
 		// register feed properly with WordPress
-        add_feed($this->get_feed_name(), array(&$this, 'print_eventlist_ical'));
-    }
+		add_feed($this->get_feed_name(), array(&$this, 'print_eventlist_ical'));
+	}
 
 	public function print_eventlist_ical() {
 		header('Content-Type: text/calendar; charset='.get_option('blog_charset'), true);
-        $options = array(
+		$options = array(
 			'date_filter' => $this->options->get('el_ical_upcoming_only') ? 'upcoming' : null,
-            'order' => array('startdate DESC', 'starttime DESC', 'enddate DESC'),
-            'cat_filter' => $this->cat_filter
-        );
+			'order' => array('startdate DESC', 'starttime DESC', 'enddate DESC'),
+			'cat_filter' => $this->cat_filter
+		);
 
 		$events = $this->events->get($options);
 
-        // Print feeds
-        $eol = "\r\n";
+		// Print feeds
+		$eol = "\r\n";
 		echo
-        'BEGIN:VCALENDAR'.$eol.
-        'VERSION:2.0'.$eol.
-        'PRODID:-//'.get_bloginfo('name').'//NONSGML v1.0//EN'.$eol.
+		'BEGIN:VCALENDAR'.$eol.
+		'VERSION:2.0'.$eol.
+		'PRODID:-//'.get_bloginfo('name').'//NONSGML v1.0//EN'.$eol.
 		'CALSCALE:GREGORIAN'.$eol.
 		'UID:'.md5(uniqid(mt_rand(), true)).'@'.get_bloginfo('name').$eol;
 
-        if(!empty($events)) {
-            foreach ($events as $event) {
-                echo
-                    'BEGIN:VEVENT'.$eol.
+		if(!empty($events)) {
+			foreach ($events as $event) {
+				echo
+					'BEGIN:VEVENT'.$eol.
 					'UID:'.md5(uniqid(mt_rand(), true)).'@'.get_bloginfo('name').$eol.
 					'DTSTART:'.mysql2date('Ymd', $event->startdate, false).get_gmt_from_date($event->starttime, '\THis\Z').$eol;
 				if($event->enddate !== $event->startdate) {
@@ -65,19 +65,18 @@ class EL_iCal {
 				}
 				echo
 					'DTSTAMP:'.date("Ymd\THis\Z").$eol.
-                    'LOCATION:'.$event->location.$eol.
-                    'SUMMARY:'.$this->sanitize_feed_text($event->title).$eol;
-                    if(!empty($event->content)) {
-                        echo
-                        'DESCRIPTION:'.$this->sanitize_feed_text(str_replace(array("\r", "\n"), ' ', $event->content)).$eol;
-                    }
-                echo
-                    'END:VEVENT'.$eol;
-            }
-        }
+					'LOCATION:'.$event->location.$eol.
+					'SUMMARY:'.$this->sanitize_feed_text($event->title).$eol;
+					if(!empty($event->content)) {
+						echo
+						'DESCRIPTION:'.$this->sanitize_feed_text(str_replace(array("\r", "\n"), ' ', $event->content)).$eol;
+					}
+				echo
+					'END:VEVENT'.$eol;
+			}
+		}
 		echo 'END:VCALENDAR';
-
-    }
+	}
 
 	public function update_ical_rewrite_status() {
 		$feeds = array_keys((array)get_option('rewrite_rules'), 'index.php?&feed=$matches[1]');
@@ -92,9 +91,9 @@ class EL_iCal {
 			// result: remove eventlist ical from rewrite rules
 			flush_rewrite_rules(false);
 		}
-    }
+	}
 
-    private function sanitize_feed_text($text) {
+	private function sanitize_feed_text($text) {
 		return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
 	}
 
@@ -103,7 +102,7 @@ class EL_iCal {
 		return $cat . $this->options->get('el_ical_name');
 	}
 
-    public function ical_feed_url() {
+	public function ical_feed_url() {
 		if(get_option('permalink_structure')) {
 			$feed_link = get_bloginfo('url').'/feed/';
 		}
