@@ -384,7 +384,7 @@ class SC_Event_List {
 
 	private function html_ical_link(&$a) {
 		require_once( EL_PATH.'includes/ical.php' );
-		$feed_url = EL_iCal::get_instance($a['cat_filter'])->ical_feed_url();
+		$feed_url = EL_ICal::get_instance($a['cat_filter'])->feed_url();
 		$link_text = $this->options->get('el_feed_ical_link_text');
 		return '
 					<a href="'.$feed_url.'" title="'.__('Link to iCal feed', 'event-list').'" class="el-ical"><span class="dashicons dashicons-calendar"></span>'.$link_text.'</a>';

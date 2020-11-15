@@ -7,7 +7,7 @@ require_once(EL_PATH.'includes/options.php');
 require_once(EL_PATH.'includes/events.php');
 
 // This class handles iCal feed
-class EL_iCal {
+class EL_ICal {
 	private static $instances = array();
 	private $options;
 	private $events;
@@ -32,10 +32,10 @@ class EL_iCal {
 
 	public function init() {
 		// register feed properly with WordPress
-		add_feed($this->get_feed_name(), array(&$this, 'print_eventlist_ical'));
+		add_feed($this->get_feed_name(), array(&$this, 'print_ical'));
 	}
 
-	public function print_eventlist_ical() {
+	public function print_ical() {
 		header('Content-Type: text/calendar; charset='.get_option('blog_charset'), true);
 		$options = array(
 			'date_filter' => $this->options->get('el_feed_ical_upcoming_only') ? 'upcoming' : null,
@@ -45,7 +45,7 @@ class EL_iCal {
 
 		$events = $this->events->get($options);
 
-		// Print feeds
+		// Print iCal
 		$eol = "\r\n";
 		echo
 		'BEGIN:VCALENDAR'.$eol.
@@ -102,7 +102,7 @@ class EL_iCal {
 		return $cat . $this->options->get('el_feed_ical_name');
 	}
 
-	public function ical_feed_url() {
+	public function feed_url() {
 		if(get_option('permalink_structure')) {
 			$feed_link = get_bloginfo('url').'/feed/';
 		}

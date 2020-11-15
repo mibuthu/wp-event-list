@@ -51,7 +51,7 @@ class EL_Admin_Settings {
 					require_once(EL_PATH.'includes/rss.php');
 					EL_Rss::get_instance()->update_rewrite_status();
 					require_once(EL_PATH.'includes/ical.php');
-					EL_iCal::get_instance()->update_ical_rewrite_status();
+					EL_ICal::get_instance()->update_ical_rewrite_status();
 					break;
 				case 'taxonomy':
 					// update category count

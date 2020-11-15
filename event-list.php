@@ -109,8 +109,8 @@ class Event_List {
 
 	public function feed_init() {
 		if($this->options->get('el_feed_enable_rss')) {
-			include_once(EL_PATH.'includes/feed.php');
-			EL_Feed::get_instance();
+			include_once(EL_PATH.'includes/rss.php');
+			EL_Rss::get_instance();
 		}
 	}
 
@@ -127,7 +127,7 @@ class Event_List {
 
 			// inialize iCal feed for all categories
 			foreach ( $cat_slugs as $cat_slug ) {
-				EL_iCal::get_instance( $cat_slug );
+				EL_ICal::get_instance( $cat_slug );
 			}
 		}
 	}
