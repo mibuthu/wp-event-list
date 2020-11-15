@@ -53,10 +53,10 @@ class SC_Event_List {
 			'content_length'   => array('std_val' => '0'),
 			'collapse_content' => array('std_val' => 'false'),
 			'link_to_event'    => array('std_val' => 'event_list_only'),
-			'add_feed_link'    => array('std_val' => 'false'),
+			'add_rss_link'     => array('std_val' => 'false'),
+			'add_ical_link'    => array('std_val' => 'false'),
 			'url_to_page'      => array('std_val' => ''),
 			'sc_id_for_url'    => array('std_val' => ''),
-			'add_ical_link'    => array('std_val' => 'false'),
 			// Internal attributes: This parameters will be added by the script and are not available in the shortcode
 			//  'sc_id'
 			//  'selected_date'
@@ -94,6 +94,12 @@ class SC_Event_List {
 	public function show_html($atts) {
 		// change number of shortcodes
 		$this->num_sc_loaded++;
+		// Fallback for versions < 0.8.5 where the attribute 'add_feed_link' was renamed to 'add_rss_link'
+		// This can be removed in a later version.
+		if((!isset($atts['add_rss_link'])) && isset($atts['add_feed_link'])) {
+			error_log('The event-list shortcode attribute "add_feed_link" is deprecated, please change your shortcode to use the new name "add_rss_link"!');
+			$atts['add_rss_link'] = $atts['add_feed_link'];
+		}
 		// check shortcode attributes
 		$std_values = array();
 		foreach($this->atts as $aname => $attribute) {
@@ -350,7 +356,7 @@ class SC_Event_List {
 		if( $pos !== $this->options->get('el_feed_link_pos')) {
 			return '';
 		}
-		$show_rss = '' !== $this->options->get('el_feed_enable_rss') && $this->is_visible($a['add_feed_link']);
+		$show_rss = '' !== $this->options->get('el_feed_enable_rss') && $this->is_visible($a['add_rss_link']);
 		$show_ical = '' !== $this->options->get('el_feed_enable_ical') && $this->is_visible($a['add_ical_link']);
 		if( $show_rss || $show_ical) {
 			// prepare align

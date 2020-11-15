@@ -125,23 +125,24 @@ $sc_eventlist_helptexts = array(
 	                                            With "event_list_only" the link is only added in the event list and with "single_event_only" only for a single event.<br />
 	                                            With "events_with_content_only" the link is only added in the event list for events with event content.','event-list')),
 
-	'add_feed_link'    => array('val'    => array('false', 'true', 'event_list_only', 'single_event_only'),
+	'add_rss_link'     => array('val'    => array('false', 'true', 'event_list_only', 'single_event_only'),
 	                            'desc'   => __('This attribute specifies if a rss feed link should be added.<br />
 	                                            You have to enable the feed in the eventlist settings to make this attribute workable.<br />
 	                                            On that page you can also find some settings to modify the output.<br />
 	                                            Choose "false" to never add and "true" to always add the link.<br />
 	                                            With "event_list_only" the link is only added in the event list and with "single_event_only" only for a single event','event-list')),
-	'url_to_page'      => array('val'    => array('url'),
-	                            'desc'   => __('This attribute specifies the page or post url for event links.<br />
-	                                            The standard is an empty string. Then the url will be calculated automatically.<br />
-	                                            An url is normally only required for the use of the shortcode in sidebars. It is also used in the event-list widget.','event-list')),
 
 	'add_ical_link'    => array('val'    => array('false', 'true'),
 	                            'desc'   => __('This attribute specifies if a ical feed link should be added.<br />
 	                                            You have to enable the ical feed in the eventlist settings to make this attribute workable.<br />
 	                                            On that page you can also find some settings to modify the output.<br />
 	                                            Choose "false" to never add and "true" to always add the link.<br />', 'event-list')),
-	
+
+	'url_to_page'      => array('val'    => array('url'),
+	                            'desc'   => __('This attribute specifies the page or post url for event links.<br />
+	                                            The standard is an empty string. Then the url will be calculated automatically.<br />
+	                                            An url is normally only required for the use of the shortcode in sidebars. It is also used in the event-list widget.','event-list')),
+
 	// Invisible attributes ('hidden' = true): This attributes are required for the widget but will not be listed in the attributes table on the admin info page
 	'sc_id_for_url'    => array('val'    => array('number'),
 	                            'hidden' => true,

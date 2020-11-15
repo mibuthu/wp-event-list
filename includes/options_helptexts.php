@@ -144,18 +144,14 @@ $options_helptexts = array(
 		'type'    => 'radio',
 		'label'   => __('Position of the RSS feed link','event-list'),
 		'caption' => array('top' => __('at the top (above the navigation bar)','event-list'), 'below_nav' => __('between navigation bar and events','event-list'), 'bottom' => __('at the bottom','event-list')),
-		'desc'    =>
-			__('This option specifies the position of the RSS feed link in the event list.','event-list').'<br />
-			'.sprintf(__('You have to set the shortcode attribute %1$s to %2$s if you want to show the feed link.','event-list'), '<code>add_feed_link</code>', '"true"')
+		'desc'    => __('This option specifies the position of the RSS feed link in the event list.','event-list')
 	),
 
 	'el_feed_link_align' => array(
 		'type'    => 'radio',
 		'label'   => __('Align of the RSS feed link','event-list'),
 		'caption' => array('left' => __('left','event-list'), 'center' => __('center','event-list'), 'right' => __('right','event-list')),
-		'desc'    =>
-			__('This option specifies the align of the RSS feed link in the event list.','event-list').'<br />
-			'.sprintf(__('You have to set the shortcode attribute %1$s to %2$s if you want to show the feed link.','event-list'), '<code>add_feed_link</code>', '"true"')
+		'desc'    => __('This option specifies the align of the RSS feed link in the event list.','event-list')
 	),
 
 	'el_feed_rss_name' => array(
