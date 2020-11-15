@@ -349,7 +349,7 @@ class SC_Event_List {
 
 	private function html_feed_link(&$a, $pos) {
 		$out = '';
-		if($this->options->get('el_enable_feed') && 'true' === $a['add_feed_link'] && $pos === $this->options->get('el_feed_link_pos')) {
+		if('' !== $this->options->get('el_enable_feed') && $this->is_visible($a['add_feed_link']) && $pos === $this->options->get('el_feed_link_pos')) {
 			// prepare url
 			require_once( EL_PATH.'includes/feed.php' );
 			$feed_link = EL_Feed::get_instance()->eventlist_feed_url();

@@ -36,7 +36,8 @@ class EL_Feed {
 	}
 
 	public function print_head_feed_link() {
-		echo '<link rel="alternate" type="application/rss+xml" title="'.get_bloginfo_rss('name').' &raquo; '.$this->options->get('el_feed_description').'" href="'.$this->eventlist_feed_url().'" />';
+		echo '
+<link rel="alternate" type="application/rss+xml" title="'.get_bloginfo_rss('name').' &raquo; '.$this->options->get('el_feed_description').'" href="'.$this->eventlist_feed_url().'" />';
 	}
 
 	public function print_eventlist_feed() {
