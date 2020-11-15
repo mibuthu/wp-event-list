@@ -138,13 +138,16 @@ class SC_Event_List {
 
 	private function html_single_event(&$a) {
 		$event = new EL_Event($a['event_id']);
-		$out = $this->html_filterbar($a);
+		$out = $this->html_feed_links($a, 'top');
+		$out .= $this->html_filterbar($a);
+		$out .= $this->html_feed_links($a, 'below_nav');
 		$out .= '
 			<h2>'.__('Event Information:','event-list').'</h2>
 			<ul class="single-event-view">';
 		$single_day_only = ($event->startdate == $event->enddate) ? true : false;
 		$out .= $this->html_event($event, $a, $single_day_only);
 		$out .= '</ul>';
+		$out .= $this->html_feed_links($a, 'bottom');
 		return $out;
 	}
 
