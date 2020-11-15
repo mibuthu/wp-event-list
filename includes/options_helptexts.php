@@ -122,50 +122,22 @@ $options_helptexts = array(
 	),
 
 	// Section: "feed"
-	'el_enable_feed' => array(
+	'el_feed_enable_rss' => array(
 		'type'    => 'checkbox',
 		'label'   => __('Enable RSS feed','event-list'),
-		'caption' => __('Enable support for an event RSS feed','event-list'),
+		'caption' => __('Enable support for the event RSS feed','event-list'),
 		'desc'    =>
-			__('This option activates a RSS feed for the events.','event-list').'<br />
+			__('This option activates the RSS feed for the events and adds a feed link in the html head.','event-list').'<br />
 			'.__('You have to enable this option if you want to use one of the RSS feed features.','event-list')
 	),
 
-	'el_feed_name' => array(
-		'type'    => 'text',
-		'label'   => __('Feed name','event-list'),
-		'desc'    =>
-			sprintf(__('This option sets the feed name. The default value is %1$s.','event-list'), '"event-list"').'<br />
-			'.sprintf(__('This name will be used in the feed url (e.g. %1$s, or %2$s with permalinks enabled).','event-list'), '<code>domain.com/?feed=event-list</code>', '<code>domain.com/feed/eventlist</code>')
-	),
-
-	'el_feed_description' => array(
-		'type'    => 'text',
-		'label'   => __('Feed Description','event-list'),
-		'desc'    =>
-			sprintf(__('This options set the feed description. The default value is %1$s.','event-list'), '"Eventlist Feed"').'<br />
-			'.__('This description will be used in the title for the feed link in the html head and for the description in the feed itself.','event-list')
-	),
-
-	'el_feed_upcoming_only' => array(
+	'el_feed_enable_ical' => array(
 		'type'    => 'checkbox',
-		'label'   => __('Listed events','event-list'),
-		'caption' => __('Only show upcoming events in feed','event-list'),
+		'label'   => __('Enable iCal feed','event-list'),
+		'caption' => __('Enable support for the event iCal feed','event-list'),
 		'desc'    =>
-			__('If this option is enabled only the upcoming events are listed in the feed.','event-list').'<br />
-			'.__('If disabled all events (upcoming and past) will be listed.','event-list')
-	),
-
-	'el_head_feed_link' => array(
-		'type'    => 'checkbox',
-		'label'   => __('Add RSS feed link in head','event-list'),
-		'caption' => __('Add RSS feed link in the html head','event-list'),
-		'desc'    =>
-			__('This option adds a RSS feed in the html head for the events.','event-list').'<br />
-			'.__('There are 2 alternatives to include the RSS feed','event-list').':<br />
-			'.__('The first way is this option to include a link in the html head. This link will be recognized by browers or feed readers.','event-list').'<br />
-			'.sprintf(__('The second way is to include a visible feed link directly in the event list. This can be done by setting the shortcode attribute %1$s to %2$s.','event-list'), '<code>add_feed_link</code>', '"true"').'<br />
-			'.sprintf(__('This option is only valid if the setting %1$s is enabled.','event-list'), '"'.__('Enable RSS feed','event-list').'"')
+			__('This option activates the iCal feed for events.','event-list').'<br />
+			'.__('You have to enable this option if you want to use one of the iCal features.','event-list')
 	),
 
 	'el_feed_link_pos' => array(
@@ -186,61 +158,64 @@ $options_helptexts = array(
 			'.sprintf(__('You have to set the shortcode attribute %1$s to %2$s if you want to show the feed link.','event-list'), '<code>add_feed_link</code>', '"true"')
 	),
 
-	'el_feed_link_text' => array(
+	'el_feed_rss_name' => array(
+		'type'    => 'text',
+		'label'   => __('RSS feed name','event-list'),
+		'desc'    =>
+			sprintf(__('This option sets the RSS feed name. The default value is %1$s.','event-list'), '"event-list"').'<br />
+			'.sprintf(__('This name will be used in the feed url (e.g. %1$s, or %2$s with permalinks enabled).','event-list'), '<code>domain.com/?feed=event-list</code>', '<code>domain.com/feed/eventlist</code>')
+	),
+
+	'el_feed_rss_description' => array(
+		'type'    => 'text',
+		'label'   => __('RSS feed Description','event-list'),
+		'desc'    =>
+			sprintf(__('This options set the RSS feed description. The default value is %1$s.','event-list'), '"Eventlist Feed"').'<br />
+			'.__('This description will be used in the title for the feed link in the html head and for the description in the feed itself.','event-list')
+	),
+
+	'el_feed_rss_upcoming_only' => array(
+		'type'    => 'checkbox',
+		'label'   => __('RSS feed events','event-list'),
+		'caption' => __('Only show upcoming events in the RSS feed','event-list'),
+		'desc'    =>
+			__('If this option is enabled only the upcoming events are listed in the RSS feed.','event-list').'<br />
+			'.__('If disabled, all events (upcoming and past) will be listed.','event-list')
+	),
+
+	'el_feed_rss_link_text' => array(
 		'type'  => 'text',
-		'label' => __('Feed link text','event-list'),
+		'label' => __('RSS link text','event-list'),
 		'desc'  =>
-			__('This option specifies the caption of the RSS feed link in the event list.','event-list').'<br />
-			'.__('Insert an empty text to hide any text if you only want to show the rss image.','event-list').'<br />
-			'.sprintf(__('You have to set the shortcode attribute %1$s to %2$s if you want to show the feed link.','event-list'), '<code>add_feed_link</code>', '"true"')
+			__('This option sets the caption of the RSS feed link in the event list.','event-list').'<br />
+			'.__('Use an empty text to only show the rss image.','event-list').'<br />
+			'.sprintf(__('You have to set the shortcode attribute %1$s to %2$s if you want to show the RSS feed link.','event-list'), '<code>add_rss_link</code>', '"true"')
 	),
 
-	'el_feed_link_img' => array(
-		'type'    => 'checkbox',
-		'label'   => __('Feed link image','event-list'),
-		'caption' => __('Show rss image in feed link','event-list'),
-		'desc'    =>
-			__('This option specifies if the an image should be dispayed in the feed link in front of the text.','event-list').'<br />
-			'.sprintf(__('You have to set the shortcode attribute %1$s to %2$s if you want to show the feed link.','event-list'), '<code>add_feed_link</code>', '"true"')
-	),
-
-	// Section: "iCal"
-	'el_enable_ical' => array(
-		'type'    => 'checkbox',
-		'label'   => __('Enable iCal feed','event-list'),
-		'caption' => __('Enable support for an event iCal feed','event-list'),
-		'desc'    =>
-			__('This option activates an iCal feed for the events.','event-list').'<br />
-			'.__('You have to enable this option if you want to use one of the iCal features.','event-list')
-	),
-
-	'el_ical_name' => array(
+	'el_feed_ical_name' => array(
 		'type'  => 'text',
-		'label' => __('iCal name','event-list'),
+		'label' => __('iCal feed name','event-list'),
 		'desc'  =>
 			sprintf(__('This option sets the iCal feed name. The default value is %1$s.', 'event-list'), '"event-list.ics"').'<br />
 			'.sprintf(__('This name will be used in the iCal feed url (e.g. %1$s, or %2$s with permalinks enabled).','event-list'), '<code>domain.com/?feed=event-list.ics</code>', '<code>domain.com/feed/eventlist.ics</code>')
 	),
 
-	'el_ical_upcoming_only' => array(
+	'el_feed_ical_upcoming_only' => array(
 		'type'    => 'checkbox',
-		'label'   => __('Listed events','event-list'),
-		'caption' => __('Only show upcoming events in feed','event-list'),
+		'label'   => __('iCal feed events','event-list'),
+		'caption' => __('Only show upcoming events in the iCal feed','event-list'),
 		'desc'    => 
-			__('If this option is enabled only the upcoming events are listed in the iCal file.<br />
-			If disabled all events (upcoming and past) will be listed.', 'event-list')
+			__('If this option is enabled only the upcoming events are listed in the iCal file.','event-list').'<br />
+			'.__('If disabled, all events (upcoming and past) will be listed.', 'event-list')
 	),
 
-	'el_ical_link_description' => array(
+	'el_feed_ical_link_text' => array(
 		'type'  => 'text',
-		'label' => __('Link description','event-list'),
-		'desc'  => sprintf(__('This option sets the iCal link description. The default value is %1$s.', 'event-list'), '"Events as iCal"')
-	),
-
-	'el_ical_link_text' => array(
-		'type'  => 'text',
-		'label' => __('Link text','event-list'),
-		'desc'  => sprintf(__('This option sets the iCal link. The default value is %1$s.', 'event-list'), '"event-list.ics"')
+		'label' => __('iCal link text','event-list'),
+		'desc'  =>
+			__('This option sets the iCal link text in the event list.', 'event-list').'<br />
+			'.__('Use an empty text to only show the iCal image.','event-list').'<br />
+			'.sprintf(__('You have to set the shortcode attribute %1$s to %2$s if you want to show the iCal feed link.','event-list'), '<code>add_ical_link</code>', '"true"')
 	),
 
 	// Section: taxonomy

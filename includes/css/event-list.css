@@ -91,22 +91,29 @@ li.event {
 	font-size: 0.9em;
 }
 
-div.feed,
-div.ical {
+div.feed {
 	display: block;
-	/* show link on own line */
 	clear: both;
 }
 
-div.feed a *,
-div.ical a * {
+div.feed a {
+	padding: 0.65rem 0.45rem 0.45rem 0.3rem;
+	color: #ffffff;
+	text-decoration: none;
+}
+
+div.feed a span {
+	padding-right: 0.05em;
+	font-size: 0.95rem;
 	vertical-align: middle;
 }
 
-div.feed img {
-	margin: 0 5px 0 2px;
-	/* modern WP themes have 'display: block' on 'a > img', so remove that behavior */
-	display: inline;
+a.el-rss {
+	background-color: #e98300;
+}
+
+a.el-ical {
+	background-color: #820000;
 }
 
 div.filterbar, div.filterbar div {
@@ -133,4 +140,16 @@ div.filterbar ul.hlist li + li:before {
 
 div.el-hidden {
 	display: none;
+}
+
+.el-text-align-left {
+	text-align: left;
+}
+
+.el-text-align-center {
+	text-align: center;
+}
+
+.el-text-align-right {
+	text-align: right;
 }

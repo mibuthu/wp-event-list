@@ -108,14 +108,14 @@ class Event_List {
 	}
 
 	public function feed_init() {
-		if($this->options->get('el_enable_feed')) {
+		if($this->options->get('el_feed_enable_rss')) {
 			include_once(EL_PATH.'includes/feed.php');
 			EL_Feed::get_instance();
 		}
 	}
 
 	public function ical_init() {
-		if ( $this->options->get( 'el_enable_ical' ) ) {
+		if ( $this->options->get( 'el_feed_enable_ical' ) ) {
 			include_once( EL_PATH . 'includes/ical.php' );
 			// get all event-list categories as slugs
 			$cat_terms = get_categories( array( 'taxonomy' => EL_Events_Post_Type::get_instance()->taxonomy ) );

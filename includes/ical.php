@@ -38,7 +38,7 @@ class EL_iCal {
 	public function print_eventlist_ical() {
 		header('Content-Type: text/calendar; charset='.get_option('blog_charset'), true);
 		$options = array(
-			'date_filter' => $this->options->get('el_ical_upcoming_only') ? 'upcoming' : null,
+			'date_filter' => $this->options->get('el_feed_ical_upcoming_only') ? 'upcoming' : null,
 			'order' => array('startdate DESC', 'starttime DESC', 'enddate DESC'),
 			'cat_filter' => $this->cat_filter
 		);
@@ -82,12 +82,12 @@ class EL_iCal {
 		$feeds = array_keys((array)get_option('rewrite_rules'), 'index.php?&feed=$matches[1]');
 		$feed_rewrite_status = 0 < count(preg_grep('@[(\|]'.$this->get_feed_name().'[\|)]@', $feeds));
 		// if iCal is enabled but rewrite rules do not exist already, flush rewrite rules
-		if('1' == $this->options->get('el_enable_ical') && !$feed_rewrite_status) {
+		if('1' == $this->options->get('el_feed_enable_ical') && !$feed_rewrite_status) {
 			// result: add eventlist ical to rewrite rules
 			flush_rewrite_rules(false);
 		}
 		// if iCal is disabled but rewrite rules do exist already, flush rewrite rules also
-		elseif('1' != $this->options->get('el_enable_ical') && $feed_rewrite_status) {
+		elseif('1' != $this->options->get('el_feed_enable_ical') && $feed_rewrite_status) {
 			// result: remove eventlist ical from rewrite rules
 			flush_rewrite_rules(false);
 		}
@@ -99,7 +99,7 @@ class EL_iCal {
 
 	private function get_feed_name() {
 		$cat = isset($this->cat_filter) && $this->cat_filter !== "" ? $this->cat_filter . "-" : "";
-		return $cat . $this->options->get('el_ical_name');
+		return $cat . $this->options->get('el_feed_ical_name');
 	}
 
 	public function ical_feed_url() {

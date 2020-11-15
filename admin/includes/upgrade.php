@@ -99,6 +99,9 @@ class EL_Upgrade {
 		if($this->upgrade_required('0.8.0')) {
 			$this->upgrade_to_0_8_0();
 		}
+		if($this->upgrade_required('0.8.5')) {
+			$this->upgrade_to_0_8_5();
+		}
 
 		// update last_upgr_version
 		$this->update_last_upgr_version();
@@ -247,6 +250,27 @@ class EL_Upgrade {
 
 		// Rename option "el_sync_cats" to "el_use_post_cats"
 		$this->rename_option('el_sync_cats', 'el_use_post_cats');
+	}
+
+	/** Upgrade to VERSION 0.8.5: change feed options
+	 *   * rename option "el_enable_feed" to "el_feed_enable_rss"
+	 *   * rename option "el_enable_ical" to "el_feed_enable_ical"
+	 *   * rename option "el_feed_name" to "el_feed_rss_name"
+	 *   * rename option "el_feed_description" to "el_feed_rss_description"
+	 *   * rename option "el_feed_upcoming_only" to "el_feed_rss_upcoming_only"
+	 *   * rename option "el_feed_link_text" to "el_feed_rss_link_text"
+	 *   * delete option "el_feed_link_img"
+	 *   * delete option "el_head_feed_link"
+	 **/
+	private function upgrade_to_0_8_5() {
+		$this->rename_option('el_enable_feed', 'el_feed_enable_rss');
+		$this->rename_option('el_enable_ical', 'el_feed_enable_ical');
+		$this->rename_option('el_feed_name', 'el_feed_rss_name');
+		$this->rename_option('el_feed_description', 'el_feed_rss_description');
+		$this->rename_option('el_feed_upcoming_only', 'el_feed_rss_upcoming_only');
+		$this->rename_option('el_feed_link_text', 'el_feed_rss_link_text');
+		$this->delete_option('el_feed_link_img');
+		$this->delete_option('el_head_feed_link');
 	}
 
 	private function upgrade_required($version) {
