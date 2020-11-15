@@ -50,16 +50,13 @@ class EL_Admin_Settings {
 					// update feed rewrite status if required
 					require_once(EL_PATH.'includes/feed.php');
 					EL_Feed::get_instance()->update_feed_rewrite_status();
+					require_once(EL_PATH.'includes/ical.php');
+					EL_iCal::get_instance()->update_ical_rewrite_status();
 					break;
 				case 'taxonomy':
 					// update category count
 					require_once(EL_PATH.'admin/includes/event-category_functions.php');
 					EL_Event_Category_Functions::get_instance()->update_cat_count();
-					break;
-				case 'ical':
-					// check feed rewrite status and update it if required
-					require_once(EL_PATH.'includes/ical.php');
-					EL_iCal::get_instance()->update_ical_rewrite_status();
 					break;
 			}
 		}
