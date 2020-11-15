@@ -375,8 +375,8 @@ class SC_Event_List {
 	}
 
 	private function html_rss_link(&$a) {
-		require_once( EL_PATH.'includes/feed.php' );
-		$feed_url = EL_Feed::get_instance()->eventlist_feed_url();
+		require_once( EL_PATH.'includes/rss.php' );
+		$feed_url = EL_Rss::get_instance()->feed_url();
 		$link_text = $this->options->get('el_feed_rss_link_text');
 		return '
 					<a href="'.$feed_url.'" title="'.__('Link to RSS feed', 'event-list').'" class="el-rss"><span class="dashicons dashicons-rss"></span>'.$link_text.'</a>';
