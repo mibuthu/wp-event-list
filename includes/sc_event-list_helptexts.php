@@ -96,15 +96,17 @@ $sc_eventlist_helptexts = array(
 	                                            Choose "false" to always hide and "true" to always show the category.<br />
 	                                            With "event_list_only" the categories are only visible in the event list and with "single_event_only" only for a single event','event-list')),
 
-	'show_excerpt'     => array('val'    => array('false', 'true', 'event_list_only', 'single_event_only'),
-	                            'desc'   => __('This attribute specifies if the excerpt is displayed in the event list.<br />
-	                                            Choose "false" to always hide and "true" to always show the excerpt.<br />
-	                                            With "event_list_only" the excerpt is only visible in the event list and with "single_event_only" only for a single event','event-list')),
-
 	'show_content'     => array('val'    => array('false', 'true', 'event_list_only', 'single_event_only'),
 	                            'desc'   => __('This attribute specifies if the content is displayed in the event list.<br />
 	                                            Choose "false" to always hide and "true" to always show the content.<br />
 	                                            With "event_list_only" the content is only visible in the event list and with "single_event_only" only for a single event','event-list')),
+
+	'show_excerpt'     => array('val'    => array('false', 'true', 'event_list_only', 'single_event_only'),
+	                            'desc'   => __('This attribute specifies if the excerpt is displayed in the event list.<br />
+	                                            Choose "false" to always hide and "true" to always show the excerpt.<br />
+												With "event_list_only" the excerpt is only visible in the event list and with "single_event_only" only for a single event.<br />
+												If no excerpt is set, the event content will be displayed instead.<br />
+												This attribute will be ignored when the attribute "show_content" is enabled for the same display type (single event or event list).','event-list')),
 
 	'content_length'   => array('val'    => array(__('number','event-list')),
 	                            'desc'   => __('This attribute specifies if the content should be truncate to the given number of characters in the event list.','event-list').'<br />'.
@@ -112,7 +114,7 @@ $sc_eventlist_helptexts = array(
 	                                        __('This attribute has no influence if only a single event is shown.','event-list')),
 
 	'collapse_content' => array('val'    => array('false', 'true', 'event_list_only', 'single_event_only'),
-	                            'desc'   => __('This attribute specifies if the content should be collapsed initially.<br />
+	                            'desc'   => __('This attribute specifies if the content or excerpt should be collapsed initially.<br />
 	                                            Then a link will be displayed instead of the content. By clicking this link the content are getting visible.<br />
 	                                            Available option are "false" to always disable collapsing and "true" to always enable collapsing of the content.<br />
 	                                            With "event_list_only" the content is only collapsed in the event list view and with "single_event_only" only in single event view.','event-list')),
@@ -123,12 +125,19 @@ $sc_eventlist_helptexts = array(
 	                                            With "event_list_only" the link is only added in the event list and with "single_event_only" only for a single event.<br />
 	                                            With "events_with_content_only" the link is only added in the event list for events with event content.','event-list')),
 
-	'add_feed_link'    => array('val'    => array('false', 'true', 'event_list_only', 'single_event_only'),
+	'add_rss_link'     => array('val'    => array('false', 'true', 'event_list_only', 'single_event_only'),
 	                            'desc'   => __('This attribute specifies if a rss feed link should be added.<br />
 	                                            You have to enable the feed in the eventlist settings to make this attribute workable.<br />
 	                                            On that page you can also find some settings to modify the output.<br />
 	                                            Choose "false" to never add and "true" to always add the link.<br />
 	                                            With "event_list_only" the link is only added in the event list and with "single_event_only" only for a single event','event-list')),
+
+	'add_ical_link'    => array('val'    => array('false', 'true'),
+	                            'desc'   => __('This attribute specifies if a ical feed link should be added.<br />
+	                                            You have to enable the ical feed in the eventlist settings to make this attribute workable.<br />
+	                                            On that page you can also find some settings to modify the output.<br />
+	                                            Choose "false" to never add and "true" to always add the link.<br />', 'event-list')),
+
 	'url_to_page'      => array('val'    => array('url'),
 	                            'desc'   => __('This attribute specifies the page or post url for event links.<br />
 	                                            The standard is an empty string. Then the url will be calculated automatically.<br />

@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-event-list\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/event-list/\n"
-"POT-Creation-Date: 2020-10-30 20:31+0100\n"
-"PO-Revision-Date: 2020-10-30 19:32+0000\n"
+"POT-Creation-Date: 2020-11-16 17:29+0100\n"
+"PO-Revision-Date: 2020-11-16 16:29+0000\n"
 "Last-Translator: mibuthu\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/mibuthu/wp-event-list/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -30,7 +30,7 @@ msgstr ""
 msgid "Upgrade of plugin %1$s successful"
 msgstr ""
 
-#: admin/admin.php:105 admin/includes/admin-settings.php:65
+#: admin/admin.php:105 admin/includes/admin-settings.php:67
 msgid "Event List Settings"
 msgstr "Configurações da Lista de Eventos"
 
@@ -53,7 +53,7 @@ msgid_plural "%s Events"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/includes/admin-about.php:59 admin/includes/admin-settings.php:82
+#: admin/includes/admin-about.php:59 admin/includes/admin-settings.php:84
 msgid "General"
 msgstr "Geral"
 
@@ -561,13 +561,13 @@ msgid "End Date"
 msgstr "Término"
 
 #: admin/includes/admin-import.php:229 admin/includes/admin-new.php:91
-#: includes/options_helptexts.php:52 includes/options_helptexts.php:53
+#: includes/options_helptexts.php:66 includes/options_helptexts.php:67
 msgid "Time"
 msgstr "Hora"
 
 #: admin/includes/admin-import.php:230 admin/includes/admin-main.php:62
-#: admin/includes/admin-new.php:93 includes/options_helptexts.php:57
-#: includes/options_helptexts.php:58
+#: admin/includes/admin-new.php:93 includes/options_helptexts.php:73
+#: includes/options_helptexts.php:74
 msgid "Location"
 msgstr "Localização"
 
@@ -707,23 +707,23 @@ msgstr ""
 msgid "Event draft updated."
 msgstr ""
 
-#: admin/includes/admin-settings.php:71
+#: admin/includes/admin-settings.php:73
 msgid "Go to Event Category switching page"
 msgstr ""
 
-#: admin/includes/admin-settings.php:83
+#: admin/includes/admin-settings.php:85
 msgid "Frontend Settings"
 msgstr "Configurações de Frontend"
 
-#: admin/includes/admin-settings.php:84
+#: admin/includes/admin-settings.php:86
 msgid "Admin Page Settings"
 msgstr "Configurações do Administrador"
 
-#: admin/includes/admin-settings.php:85
+#: admin/includes/admin-settings.php:87
 msgid "Feed Settings"
 msgstr "Configurações de Feed"
 
-#: admin/includes/admin-settings.php:86
+#: admin/includes/admin-settings.php:88
 msgid "Category Taxonomy"
 msgstr ""
 
@@ -978,146 +978,146 @@ msgstr "Tudo"
 msgid "All Dates"
 msgstr ""
 
-#: includes/options_helptexts.php:10
+#: includes/options_helptexts.php:11
 msgid "CSV File to import"
 msgstr "Arquivo CSV a importar"
 
-#: includes/options_helptexts.php:12
+#: includes/options_helptexts.php:13
 msgid "Please select the file which contains the event data in CSV format."
 msgstr ""
 
-#: includes/options_helptexts.php:15
+#: includes/options_helptexts.php:18
 msgid "Used date format"
 msgstr "Formato de data usado"
 
-#: includes/options_helptexts.php:17
+#: includes/options_helptexts.php:21
 msgid ""
 "With this option the given date format for event start and end date in the "
 "CSV file can be specified."
 msgstr ""
 
-#: includes/options_helptexts.php:18
+#: includes/options_helptexts.php:22
 #, php-format
 msgid ""
 "You can use the php date format options given in %1$s, the most important "
 "ones are:"
 msgstr ""
 
-#: includes/options_helptexts.php:20
+#: includes/options_helptexts.php:24
 msgid "full year representation, with 4 digits"
 msgstr ""
 
-#: includes/options_helptexts.php:21
+#: includes/options_helptexts.php:25
 msgid "numeric representation of a month, with leading zeros"
 msgstr ""
 
-#: includes/options_helptexts.php:22
+#: includes/options_helptexts.php:26
 msgid "day of the month, 2 digits with leading zeros"
 msgstr ""
 
-#: includes/options_helptexts.php:24
+#: includes/options_helptexts.php:28
 msgid ""
 "If the date format in the CSV file does not correspond to the given format, "
 "the import script tries to recognize the date format by itself."
 msgstr ""
 
-#: includes/options_helptexts.php:25
+#: includes/options_helptexts.php:29
 msgid ""
 "But this can cause problems or result in wrong dates, so it is recommended "
 "to specify the correct date format here."
 msgstr ""
 
-#: includes/options_helptexts.php:26
+#: includes/options_helptexts.php:30
 msgid "Examples"
 msgstr ""
 
-#: includes/options_helptexts.php:33
+#: includes/options_helptexts.php:39
 msgid "Text for no events"
 msgstr "Texto para \"nenhum evento\""
 
-#: includes/options_helptexts.php:35
+#: includes/options_helptexts.php:41
 msgid ""
 "This option defines the displayed text when no events are available for the "
 "selected view."
 msgstr ""
 
-#: includes/options_helptexts.php:38
+#: includes/options_helptexts.php:46
 msgid "Multiday filter range"
 msgstr ""
 
-#: includes/options_helptexts.php:39
+#: includes/options_helptexts.php:47
 msgid "Use the complete event range in the date filter"
 msgstr ""
 
-#: includes/options_helptexts.php:40
+#: includes/options_helptexts.php:49
 msgid ""
 "This option defines if the complete range of a multiday event shall be "
 "considered in the date filter."
 msgstr ""
 
-#: includes/options_helptexts.php:41
+#: includes/options_helptexts.php:50
 msgid ""
 "If disabled, only the start day of an event is considered in the filter."
 msgstr ""
 
-#: includes/options_helptexts.php:42
+#: includes/options_helptexts.php:51
 msgid ""
 "For an example multiday event which started yesterday and ends tomorrow this"
 " means, that it is displayed in umcoming dates when this option is enabled, "
 "but it is hidden when the option is disabled."
 msgstr ""
 
-#: includes/options_helptexts.php:45
+#: includes/options_helptexts.php:56
 msgid "Date display"
 msgstr "Exibição de data"
 
-#: includes/options_helptexts.php:46
+#: includes/options_helptexts.php:57
 msgid "Show the date only once per day"
 msgstr ""
 
-#: includes/options_helptexts.php:47
+#: includes/options_helptexts.php:59
 msgid ""
 "With this option enabled the date is only displayed once per day if more "
 "than one event is available on the same day."
 msgstr ""
 
-#: includes/options_helptexts.php:48
+#: includes/options_helptexts.php:60
 msgid ""
 "If enabled, the events are ordered in a different way (end date before start"
 " time) to allow using the same date for as much events as possible."
 msgstr ""
 
-#: includes/options_helptexts.php:51
+#: includes/options_helptexts.php:65
 msgid "HTML tags"
 msgstr "Tags HTML"
 
-#: includes/options_helptexts.php:52 includes/options_helptexts.php:57
+#: includes/options_helptexts.php:66 includes/options_helptexts.php:73
 #, php-format
 msgid "Allow HTML tags in the event field \"%1$s\""
 msgstr ""
 
-#: includes/options_helptexts.php:53 includes/options_helptexts.php:58
+#: includes/options_helptexts.php:67 includes/options_helptexts.php:74
 #, php-format
 msgid ""
 "This option specifies if HTML tags are allowed in the event field \"%1$s\"."
 msgstr ""
 
-#: includes/options_helptexts.php:61
+#: includes/options_helptexts.php:79
 msgid "Preferred language file"
 msgstr ""
 
-#: includes/options_helptexts.php:62
+#: includes/options_helptexts.php:80
 msgid "Load translations from general language directory first"
 msgstr ""
 
-#: includes/options_helptexts.php:63
+#: includes/options_helptexts.php:82
 #, php-format
 msgid ""
 "The default is to load the %1$s translation file from the plugin language "
 "directory first (%2$s)."
 msgstr ""
 
-#: includes/options_helptexts.php:64
+#: includes/options_helptexts.php:83
 #, php-format
 msgid ""
 "If you want to load your own language file from the general language "
@@ -1125,273 +1125,290 @@ msgid ""
 "language directory, you have to enable this option."
 msgstr ""
 
-#: includes/options_helptexts.php:68
+#: includes/options_helptexts.php:89
 msgid "Events permalink slug"
 msgstr ""
 
-#: includes/options_helptexts.php:69
+#: includes/options_helptexts.php:90
 msgid ""
 "With this option the slug for the events permalink URLs can be defined."
 msgstr ""
 
-#: includes/options_helptexts.php:72
+#: includes/options_helptexts.php:95
 msgid "Text for \"Show content\""
 msgstr ""
 
-#: includes/options_helptexts.php:73
+#: includes/options_helptexts.php:96
 msgid ""
 "With this option the displayed text for the link to show the event content "
 "can be changed, when collapsing is enabled."
 msgstr ""
 
-#: includes/options_helptexts.php:76
+#: includes/options_helptexts.php:101
 msgid "Text for \"Hide content\""
 msgstr ""
 
-#: includes/options_helptexts.php:77
+#: includes/options_helptexts.php:102
 msgid ""
 "With this option the displayed text for the link to hide the event content "
 "can be changed, when collapsing is enabled."
 msgstr ""
 
-#: includes/options_helptexts.php:80
+#: includes/options_helptexts.php:107
 msgid "Disable CSS file"
 msgstr "Desativar arquivo CSS"
 
-#: includes/options_helptexts.php:81
+#: includes/options_helptexts.php:108
 #, php-format
 msgid "Disable the %1$s file."
 msgstr ""
 
-#: includes/options_helptexts.php:82
+#: includes/options_helptexts.php:110
 #, php-format
 msgid "With this option you can disable the inclusion of the %1$s file."
 msgstr ""
 
-#: includes/options_helptexts.php:83
+#: includes/options_helptexts.php:111
 msgid ""
 "This normally only make sense if you have css conflicts with your theme and "
 "want to set all required css styles somewhere else (e.g. in the theme css)."
 msgstr ""
 
-#: includes/options_helptexts.php:87
+#: includes/options_helptexts.php:117
 msgid "Date format in edit form"
 msgstr ""
 
-#: includes/options_helptexts.php:88
+#: includes/options_helptexts.php:119
 msgid ""
 "This option sets the displayed date format for the event date fields in the "
 "event new / edit form."
 msgstr ""
 
-#: includes/options_helptexts.php:89
+#: includes/options_helptexts.php:120
 msgid "The default is an empty string to use the Wordpress standard setting."
 msgstr ""
 
-#: includes/options_helptexts.php:90
+#: includes/options_helptexts.php:121
 #, php-format
 msgid ""
 "All available options to specify the date format can be found %1$shere%2$s."
 msgstr ""
 
-#: includes/options_helptexts.php:94 includes/options_helptexts.php:122
+#: includes/options_helptexts.php:127
 msgid "Enable RSS feed"
 msgstr "Habilitar Feed RSS"
 
-#: includes/options_helptexts.php:95
-msgid "Enable support for an event RSS feed"
+#: includes/options_helptexts.php:128
+msgid "Enable support for the event RSS feed"
 msgstr ""
 
-#: includes/options_helptexts.php:96
-msgid "This option activates a RSS feed for the events."
+#: includes/options_helptexts.php:130
+msgid ""
+"This option activates the RSS feed for the events and adds a feed link in "
+"the html head."
 msgstr ""
 
-#: includes/options_helptexts.php:97
+#: includes/options_helptexts.php:131
 msgid ""
 "You have to enable this option if you want to use one of the RSS feed "
 "features."
 msgstr ""
 
-#: includes/options_helptexts.php:100
-msgid "Feed name"
-msgstr "Nome do feed"
-
-#: includes/options_helptexts.php:101
-#, php-format
-msgid "This option sets the feed name. The default value is %1$s."
+#: includes/options_helptexts.php:136
+msgid "Enable iCal feed"
 msgstr ""
 
-#: includes/options_helptexts.php:102
+#: includes/options_helptexts.php:137
+msgid "Enable support for the event iCal feed"
+msgstr ""
+
+#: includes/options_helptexts.php:139
+msgid "This option activates the iCal feed for events."
+msgstr ""
+
+#: includes/options_helptexts.php:140
+msgid ""
+"You have to enable this option if you want to use one of the iCal features."
+msgstr ""
+
+#: includes/options_helptexts.php:145
+msgid "Position of the RSS feed link"
+msgstr ""
+
+#: includes/options_helptexts.php:146
+msgid "at the top (above the navigation bar)"
+msgstr ""
+
+#: includes/options_helptexts.php:146
+msgid "between navigation bar and events"
+msgstr ""
+
+#: includes/options_helptexts.php:146
+msgid "at the bottom"
+msgstr ""
+
+#: includes/options_helptexts.php:147
+msgid ""
+"This option specifies the position of the RSS feed link in the event list."
+msgstr ""
+
+#: includes/options_helptexts.php:152
+msgid "Align of the RSS feed link"
+msgstr ""
+
+#: includes/options_helptexts.php:153
+msgid "left"
+msgstr ""
+
+#: includes/options_helptexts.php:153
+msgid "center"
+msgstr ""
+
+#: includes/options_helptexts.php:153
+msgid "right"
+msgstr ""
+
+#: includes/options_helptexts.php:154
+msgid ""
+"This option specifies the align of the RSS feed link in the event list."
+msgstr ""
+
+#: includes/options_helptexts.php:159
+msgid "RSS feed name"
+msgstr ""
+
+#: includes/options_helptexts.php:161
+#, php-format
+msgid "This option sets the RSS feed name. The default value is %1$s."
+msgstr ""
+
+#: includes/options_helptexts.php:162
 #, php-format
 msgid ""
 "This name will be used in the feed url (e.g. %1$s, or %2$s with permalinks "
 "enabled)."
 msgstr ""
 
-#: includes/options_helptexts.php:105
-msgid "Feed Description"
-msgstr "Descrição do feed"
-
-#: includes/options_helptexts.php:106
-#, php-format
-msgid "This options set the feed description. The default value is %1$s."
+#: includes/options_helptexts.php:167
+msgid "RSS feed Description"
 msgstr ""
 
-#: includes/options_helptexts.php:107
+#: includes/options_helptexts.php:169
+#, php-format
+msgid "This options set the RSS feed description. The default value is %1$s."
+msgstr ""
+
+#: includes/options_helptexts.php:170
 msgid ""
 "This description will be used in the title for the feed link in the html "
 "head and for the description in the feed itself."
 msgstr ""
 
-#: includes/options_helptexts.php:110
-msgid "Listed events"
-msgstr "Eventos listados"
-
-#: includes/options_helptexts.php:111
-msgid "Only show upcoming events in feed"
+#: includes/options_helptexts.php:175
+msgid "RSS feed events"
 msgstr ""
 
-#: includes/options_helptexts.php:112
+#: includes/options_helptexts.php:176
+msgid "Only show upcoming events in the RSS feed"
+msgstr ""
+
+#: includes/options_helptexts.php:178
 msgid ""
-"If this option is enabled only the upcoming events are listed in the feed."
+"If this option is enabled only the upcoming events are listed in the RSS "
+"feed."
 msgstr ""
 
-#: includes/options_helptexts.php:113
-msgid "If disabled all events (upcoming and past) will be listed."
+#: includes/options_helptexts.php:179 includes/options_helptexts.php:205
+msgid "If disabled, all events (upcoming and past) will be listed."
 msgstr ""
 
-#: includes/options_helptexts.php:116
-msgid "Add RSS feed link in head"
+#: includes/options_helptexts.php:184
+msgid "RSS link text"
 msgstr ""
 
-#: includes/options_helptexts.php:117
-msgid "Add RSS feed link in the html head"
+#: includes/options_helptexts.php:186
+msgid "This option sets the caption of the RSS feed link in the event list."
 msgstr ""
 
-#: includes/options_helptexts.php:118
-msgid "This option adds a RSS feed in the html head for the events."
+#: includes/options_helptexts.php:187
+msgid "Use an empty text to only show the rss image."
 msgstr ""
 
-#: includes/options_helptexts.php:119
-msgid "There are 2 alternatives to include the RSS feed"
-msgstr ""
-
-#: includes/options_helptexts.php:120
-msgid ""
-"The first way is this option to include a link in the html head. This link "
-"will be recognized by browers or feed readers."
-msgstr ""
-
-#: includes/options_helptexts.php:121
-#, php-format
-msgid ""
-"The second way is to include a visible feed link directly in the event list."
-" This can be done by setting the shortcode attribute %1$s to %2$s."
-msgstr ""
-
-#: includes/options_helptexts.php:122
-#, php-format
-msgid "This option is only valid if the setting %1$s is enabled."
-msgstr ""
-
-#: includes/options_helptexts.php:125
-msgid "Position of the RSS feed link"
-msgstr ""
-
-#: includes/options_helptexts.php:126
-msgid "at the top (above the navigation bar)"
-msgstr ""
-
-#: includes/options_helptexts.php:126
-msgid "between navigation bar and events"
-msgstr ""
-
-#: includes/options_helptexts.php:126
-msgid "at the bottom"
-msgstr ""
-
-#: includes/options_helptexts.php:127
-msgid ""
-"This option specifies the position of the RSS feed link in the event list."
-msgstr ""
-
-#: includes/options_helptexts.php:128 includes/options_helptexts.php:134
-#: includes/options_helptexts.php:140 includes/options_helptexts.php:146
+#: includes/options_helptexts.php:188
 #, php-format
 msgid ""
 "You have to set the shortcode attribute %1$s to %2$s if you want to show the"
-" feed link."
+" RSS feed link."
 msgstr ""
 
-#: includes/options_helptexts.php:131
-msgid "Align of the RSS feed link"
+#: includes/options_helptexts.php:193
+msgid "iCal feed name"
 msgstr ""
 
-#: includes/options_helptexts.php:132
-msgid "left"
+#: includes/options_helptexts.php:195
+#, php-format
+msgid "This option sets the iCal feed name. The default value is %1$s."
 msgstr ""
 
-#: includes/options_helptexts.php:132
-msgid "center"
-msgstr ""
-
-#: includes/options_helptexts.php:132
-msgid "right"
-msgstr ""
-
-#: includes/options_helptexts.php:133
+#: includes/options_helptexts.php:196
+#, php-format
 msgid ""
-"This option specifies the align of the RSS feed link in the event list."
+"This name will be used in the iCal feed url (e.g. %1$s, or %2$s with "
+"permalinks enabled)."
 msgstr ""
 
-#: includes/options_helptexts.php:137
-msgid "Feed link text"
-msgstr "Texto do link do Feed"
+#: includes/options_helptexts.php:201
+msgid "iCal feed events"
+msgstr ""
 
-#: includes/options_helptexts.php:138
+#: includes/options_helptexts.php:202
+msgid "Only show upcoming events in the iCal feed"
+msgstr ""
+
+#: includes/options_helptexts.php:204
 msgid ""
-"This option specifies the caption of the RSS feed link in the event list."
+"If this option is enabled only the upcoming events are listed in the iCal "
+"file."
 msgstr ""
 
-#: includes/options_helptexts.php:139
+#: includes/options_helptexts.php:210
+msgid "iCal link text"
+msgstr ""
+
+#: includes/options_helptexts.php:212
+msgid "This option sets the iCal link text in the event list."
+msgstr ""
+
+#: includes/options_helptexts.php:213
+msgid "Use an empty text to only show the iCal image."
+msgstr ""
+
+#: includes/options_helptexts.php:214
+#, php-format
 msgid ""
-"Insert an empty text to hide any text if you only want to show the rss "
-"image."
+"You have to set the shortcode attribute %1$s to %2$s if you want to show the"
+" iCal feed link."
 msgstr ""
 
-#: includes/options_helptexts.php:143
-msgid "Feed link image"
-msgstr "Imagem do link do Feed"
-
-#: includes/options_helptexts.php:144
-msgid "Show rss image in feed link"
-msgstr "Exibir imagem rss no link do feed"
-
-#: includes/options_helptexts.php:145
-msgid ""
-"This option specifies if the an image should be dispayed in the feed link in"
-" front of the text."
-msgstr ""
-
-#: includes/options_helptexts.php:151
+#: includes/options_helptexts.php:221
 msgid "Event Category handling"
 msgstr ""
 
-#: includes/options_helptexts.php:152
+#: includes/options_helptexts.php:222
 msgid "Use Post Categories"
 msgstr ""
 
-#: includes/options_helptexts.php:153
+#: includes/options_helptexts.php:224
 msgid ""
 "Do not maintain seperate categories for the events, and use the existing "
 "post categories instead."
 msgstr ""
 
-#: includes/options_helptexts.php:154
+#: includes/options_helptexts.php:225
 msgid "Attention"
 msgstr "Atenção"
 
-#: includes/options_helptexts.php:155
+#: includes/options_helptexts.php:226
 msgid ""
 "This option cannot be changed directly, but you can go to the Event Category"
 " switching page from here."
@@ -1517,7 +1534,7 @@ msgstr ""
 #: includes/sc_event-list_helptexts.php:33
 #: includes/sc_event-list_helptexts.php:74
 #: includes/sc_event-list_helptexts.php:89
-#: includes/sc_event-list_helptexts.php:109
+#: includes/sc_event-list_helptexts.php:111
 msgid "number"
 msgstr ""
 
@@ -1746,7 +1763,7 @@ msgstr ""
 
 #: includes/sc_event-list_helptexts.php:77
 #: includes/sc_event-list_helptexts.php:92
-#: includes/sc_event-list_helptexts.php:112
+#: includes/sc_event-list_helptexts.php:114
 msgid "This attribute has no influence if only a single event is shown."
 msgstr ""
 
@@ -1773,38 +1790,40 @@ msgstr ""
 
 #: includes/sc_event-list_helptexts.php:100
 msgid ""
-"This attribute specifies if the excerpt is displayed in the event list.<br />\n"
-"\t                                            Choose \"false\" to always hide and \"true\" to always show the excerpt.<br />\n"
-"\t                                            With \"event_list_only\" the excerpt is only visible in the event list and with \"single_event_only\" only for a single event"
-msgstr ""
-
-#: includes/sc_event-list_helptexts.php:105
-msgid ""
 "This attribute specifies if the content is displayed in the event list.<br />\n"
 "\t                                            Choose \"false\" to always hide and \"true\" to always show the content.<br />\n"
 "\t                                            With \"event_list_only\" the content is only visible in the event list and with \"single_event_only\" only for a single event"
 msgstr ""
 
-#: includes/sc_event-list_helptexts.php:110
+#: includes/sc_event-list_helptexts.php:105
+msgid ""
+"This attribute specifies if the excerpt is displayed in the event list.<br />\n"
+"\t                                            Choose \"false\" to always hide and \"true\" to always show the excerpt.<br />\n"
+"\t\t\t\t\t\t\t\t\t\t\t\tWith \"event_list_only\" the excerpt is only visible in the event list and with \"single_event_only\" only for a single event.<br />\n"
+"\t\t\t\t\t\t\t\t\t\t\t\tIf no excerpt is set, the event content will be displayed instead.<br />\n"
+"\t\t\t\t\t\t\t\t\t\t\t\tThis attribute will be ignored when the attribute \"show_content\" is enabled for the same display type (single event or event list)."
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:112
 msgid ""
 "This attribute specifies if the content should be truncate to the given "
 "number of characters in the event list."
 msgstr ""
 
-#: includes/sc_event-list_helptexts.php:111
+#: includes/sc_event-list_helptexts.php:113
 #, php-format
 msgid "With the standard value %1$s the full text is displayed."
 msgstr ""
 
-#: includes/sc_event-list_helptexts.php:115
+#: includes/sc_event-list_helptexts.php:117
 msgid ""
-"This attribute specifies if the content should be collapsed initially.<br />\n"
+"This attribute specifies if the content or excerpt should be collapsed initially.<br />\n"
 "\t                                            Then a link will be displayed instead of the content. By clicking this link the content are getting visible.<br />\n"
 "\t                                            Available option are \"false\" to always disable collapsing and \"true\" to always enable collapsing of the content.<br />\n"
 "\t                                            With \"event_list_only\" the content is only collapsed in the event list view and with \"single_event_only\" only in single event view."
 msgstr ""
 
-#: includes/sc_event-list_helptexts.php:121
+#: includes/sc_event-list_helptexts.php:123
 msgid ""
 "This attribute specifies if a link to the single event should be added onto the event name in the event list.<br />\n"
 "\t                                            Choose \"false\" to never add and \"true\" to always add the link.<br />\n"
@@ -1812,7 +1831,7 @@ msgid ""
 "\t                                            With \"events_with_content_only\" the link is only added in the event list for events with event content."
 msgstr ""
 
-#: includes/sc_event-list_helptexts.php:127
+#: includes/sc_event-list_helptexts.php:129
 msgid ""
 "This attribute specifies if a rss feed link should be added.<br />\n"
 "\t                                            You have to enable the feed in the eventlist settings to make this attribute workable.<br />\n"
@@ -1821,22 +1840,38 @@ msgid ""
 "\t                                            With \"event_list_only\" the link is only added in the event list and with \"single_event_only\" only for a single event"
 msgstr ""
 
-#: includes/sc_event-list_helptexts.php:133
+#: includes/sc_event-list_helptexts.php:136
+msgid ""
+"This attribute specifies if a ical feed link should be added.<br />\n"
+"\t                                            You have to enable the ical feed in the eventlist settings to make this attribute workable.<br />\n"
+"\t                                            On that page you can also find some settings to modify the output.<br />\n"
+"\t                                            Choose \"false\" to never add and \"true\" to always add the link.<br />"
+msgstr ""
+
+#: includes/sc_event-list_helptexts.php:142
 msgid ""
 "This attribute specifies the page or post url for event links.<br />\n"
 "\t                                            The standard is an empty string. Then the url will be calculated automatically.<br />\n"
 "\t                                            An url is normally only required for the use of the shortcode in sidebars. It is also used in the event-list widget."
 msgstr ""
 
-#: includes/sc_event-list_helptexts.php:140
+#: includes/sc_event-list_helptexts.php:149
 msgid ""
 "This attribute the specifies shortcode id of the used shortcode on the page specified with \"url_to_page\" attribute.<br />\n"
 "\t                                            The empty standard value is o.k. for the normal use. This attribute is normally only required for the event-list widget."
 msgstr ""
 
-#: includes/sc_event-list.php:136
+#: includes/sc_event-list.php:145
 msgid "Event Information:"
 msgstr "Informação do Evento:"
+
+#: includes/sc_event-list.php:391
+msgid "Link to RSS feed"
+msgstr ""
+
+#: includes/sc_event-list.php:399
+msgid "Link to iCal feed"
+msgstr ""
 
 #: includes/widget_helptexts.php:10
 msgid "This option defines the displayed title for the widget."

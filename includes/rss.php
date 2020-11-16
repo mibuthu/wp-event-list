@@ -7,7 +7,7 @@ require_once(EL_PATH.'includes/options.php');
 require_once(EL_PATH.'includes/events.php');
 
 // This class handles rss feeds
-class EL_Feed {
+class EL_Rss {
 
 	private static $instance;
 	private $options;
@@ -29,25 +29,24 @@ class EL_Feed {
 	}
 
 	public function init() {
-		add_feed($this->options->get('el_feed_name'), array(&$this, 'print_eventlist_feed'));
-		if($this->options->get('el_head_feed_link')) {
-			add_action('wp_head', array(&$this, 'print_head_feed_link'));
-		}
+		add_feed($this->options->get('el_feed_rss_name'), array(&$this, 'print_rss'));
+		add_action('wp_head', array(&$this, 'print_head_feed_link'));
 	}
 
 	public function print_head_feed_link() {
-		echo '<link rel="alternate" type="application/rss+xml" title="'.get_bloginfo_rss('name').' &raquo; '.$this->options->get('el_feed_description').'" href="'.$this->eventlist_feed_url().'" />';
+		echo '
+<link rel="alternate" type="application/rss+xml" title="'.get_bloginfo_rss('name').' &raquo; '.$this->options->get('el_feed_rss_description').'" href="'.$this->feed_url().'" />';
 	}
 
-	public function print_eventlist_feed() {
+	public function print_rss() {
 		header('Content-Type: '.feed_content_type('rss-http').'; charset='.get_option('blog_charset'), true);
 		$options = array(
-			'date_filter' => $this->options->get('el_feed_upcoming_only') ? 'upcoming' : null,
+			'date_filter' => $this->options->get('el_feed_rss_upcoming_only') ? 'upcoming' : null,
 			'order' => array('startdate DESC', 'starttime DESC', 'enddate DESC'),
 		);
 		$events = $this->events->get($options);
 
-		// Print feeds
+		// Print RSS
 		echo
 '<?xml version="1.0" encoding="'.get_option('blog_charset').'"?>
 	<rss version="2.0"
@@ -62,7 +61,7 @@ class EL_Feed {
 			<title>'.get_bloginfo_rss('name').'</title>
 			<atom:link href="'.apply_filters('self_link', get_bloginfo()).'" rel="self" type="application/rss+xml" />
 			<link>'.get_bloginfo_rss('url').'</link>
-			<description>'.$this->options->get('el_feed_description').'</description>
+			<description>'.$this->options->get('el_feed_rss_description').'</description>
 			<lastBuildDate>'.mysql2date('D, d M Y H:i:s +0000', get_lastpostmodified('GMT'), false).'</lastBuildDate>
 			<language>'.get_option('rss_language').'</language>
 			<sy:updatePeriod>'.apply_filters('rss_update_period', 'hourly').'</sy:updatePeriod>
@@ -74,7 +73,6 @@ class EL_Feed {
 			<item>
 				<title>'.$this->format_date($event->startdate, $event->enddate).' - '.$this->sanitize_feed_text($event->title).'</title>
 				<pubDate>'.mysql2date('D, d M Y H:i:s +0000', $event->startdate, false).'</pubDate>';
-				// Feed categories
 				foreach ($event->categories as $cat) {
 					echo '
 				<category>'.$this->sanitize_feed_text($cat->name).'</category>';
@@ -98,25 +96,25 @@ class EL_Feed {
 	</rss>';
 	}
 
-	public function eventlist_feed_url() {
+	public function feed_url() {
 		if(get_option('permalink_structure')) {
 			$feed_link = get_bloginfo('url').'/feed/';
 		}
 		else {
 			$feed_link = get_bloginfo('url').'/?feed=';
 		}
-		return $feed_link.$this->options->get('el_feed_name');
+		return $feed_link.$this->options->get('el_feed_rss_name');
 	}
 
-	public function update_feed_rewrite_status() {
+	public function update_rewrite_status() {
 		$feeds = array_keys((array)get_option('rewrite_rules'), 'index.php?&feed=$matches[1]');
-		$feed_rewrite_status = (0 < count(preg_grep('@[(\|]'.$this->options->get('el_feed_name').'[\|)]@', $feeds))) ? true : false;
-		if('1' == $this->options->get('el_enable_feed') && !$feed_rewrite_status) {
-			// add eventlist feed to rewrite rules
+		$feed_rewrite_status = (0 < count(preg_grep('@[(\|]'.$this->options->get('el_feed_rss_name').'[\|)]@', $feeds))) ? true : false;
+		if('1' == $this->options->get('el_feed_enable_rss') && !$feed_rewrite_status) {
+			// add eventlist RSS feed to rewrite rules
 			flush_rewrite_rules(false);
 		}
-		elseif('1' != $this->options->get('el_enable_feed') && $feed_rewrite_status) {
-			// remove eventlist feed from rewrite rules
+		elseif('1' != $this->options->get('el_feed_enable_rss') && $feed_rewrite_status) {
+			// remove eventlist RSS feed from rewrite rules
 			flush_rewrite_rules(false);
 		}
 	}

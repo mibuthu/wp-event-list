@@ -48,12 +48,13 @@ class SC_Event_List {
 			'show_location'    => array('std_val' => 'true'),
 			'location_length'  => array('std_val' => '0'),
 			'show_cat'         => array('std_val' => 'false'),
-			'show_excerpt'     => array('std_val' => 'event_list_only'),
 			'show_content'     => array('std_val' => 'single_event_only'),
+			'show_excerpt'     => array('std_val' => 'event_list_only'),
 			'content_length'   => array('std_val' => '0'),
 			'collapse_content' => array('std_val' => 'false'),
 			'link_to_event'    => array('std_val' => 'event_list_only'),
-			'add_feed_link'    => array('std_val' => 'false'),
+			'add_rss_link'     => array('std_val' => 'false'),
+			'add_ical_link'    => array('std_val' => 'false'),
 			'url_to_page'      => array('std_val' => ''),
 			'sc_id_for_url'    => array('std_val' => ''),
 			// Internal attributes: This parameters will be added by the script and are not available in the shortcode
@@ -93,6 +94,12 @@ class SC_Event_List {
 	public function show_html($atts) {
 		// change number of shortcodes
 		$this->num_sc_loaded++;
+		// Fallback for versions < 0.8.5 where the attribute 'add_feed_link' was renamed to 'add_rss_link'
+		// This can be removed in a later version.
+		if((!isset($atts['add_rss_link'])) && isset($atts['add_feed_link'])) {
+			error_log('The event-list shortcode attribute "add_feed_link" is deprecated, please change your shortcode to use the new name "add_rss_link"!');
+			$atts['add_rss_link'] = $atts['add_feed_link'];
+		}
 		// check shortcode attributes
 		$std_values = array();
 		foreach($this->atts as $aname => $attribute) {
@@ -117,31 +124,34 @@ class SC_Event_List {
 		if(!empty($a['event_id'])) {
 			// show events content if event_id is set
 			$this->single_event = true;
-			$out .= $this->html_event_content($a);
+			$out .= $this->html_single_event($a);
 		}
 		else {
 			// show full event list
 			$this->single_event = false;
-			$out .= $this->html_events($a);
+			$out .= $this->html_event_list($a);
 		}
 		$out .= '
 				</div>';
 		return $out;
 	}
 
-	private function html_event_content(&$a) {
+	private function html_single_event(&$a) {
 		$event = new EL_Event($a['event_id']);
-		$out = $this->html_filterbar($a);
+		$out = $this->html_feed_links($a, 'top');
+		$out .= $this->html_filterbar($a);
+		$out .= $this->html_feed_links($a, 'below_nav');
 		$out .= '
 			<h2>'.__('Event Information:','event-list').'</h2>
 			<ul class="single-event-view">';
 		$single_day_only = ($event->startdate == $event->enddate) ? true : false;
 		$out .= $this->html_event($event, $a, $single_day_only);
 		$out .= '</ul>';
+		$out .= $this->html_feed_links($a, 'bottom');
 		return $out;
 	}
 
-	private function html_events(&$a) {
+	private function html_event_list(&$a) {
 		// specify to show all events if not upcoming is selected
 		if('upcoming' != $a['selected_date']) {
 			$a['num_events'] = 0;
@@ -161,9 +171,9 @@ class SC_Event_List {
 		$events = $this->events->get($options);
 
 		// generate output
-		$out  = $this->html_feed_link($a, 'top');
+		$out  = $this->html_feed_links($a, 'top');
 		$out .= $this->html_filterbar($a);
-		$out .= $this->html_feed_link($a, 'below_nav');
+		$out .= $this->html_feed_links($a, 'below_nav');
 		if(empty($events)) {
 			// no events found
 			$out .= '<p>'.$this->options->get('el_no_event_text').'</p>';
@@ -178,7 +188,7 @@ class SC_Event_List {
 			}
 			$out .= '</ul>';
 		}
-		$out .= $this->html_feed_link($a, 'bottom');
+		$out .= $this->html_feed_links($a, 'bottom');
 		return $out;
 	}
 
@@ -232,19 +242,71 @@ class SC_Event_List {
 		if( $this->is_visible( $a['show_cat'] ) ) {
 			$out .= '<div class="event-cat">'.esc_attr(implode(', ', $event->get_category_names())).'</div>';
 		}
-		// event excerpt
-		if( $this->is_visible( $a['show_excerpt'] ) ) {
-			$out .= $this->get_excerpt($event, $a);
-		}
-		// event content
-		if( $this->is_visible( $a['show_content'] ) ) {
-			$out .= $this->get_content($event, $a);
-		}
+		// event excerpt or content
+		$out .= $this->html_event_content($event, $a);
 		$out .= '</div>
 				</li>';
 		$last_event_startdate = $event->startdate;
 		$last_event_enddate = $event->enddate;
 		return $out;
+	}
+
+	private function html_event_content(&$event, &$a) {
+		// Show content if content is not empty and if content is visible or excerpt is visible but empty.
+		if( ('' !== $event->content
+				&& ($this->is_visible($a['show_content']) || ($this->is_visible($a['show_excerpt']) && '' === $event->excerpt) ))) {
+			// Show content.
+			$content = $event->content;
+			$content_class = 'event-content';
+		}
+		else if( $this->is_visible($a['show_excerpt']) && '' !== $event->excerpt) {
+			// Show excerpt.
+			$content = $event->excerpt;
+			$content_class = 'event-excerpt';
+		}
+		else {
+			// No content or excerpt.
+			return '';
+		}
+		$truncate_url = false;
+		// Check and handle the read more tag if available
+		// search fore more-tag (no more tag handling if truncate of content is set)
+		if(preg_match('/<!--more(.*?)?-->/', $content, $matches)) {
+			$part = explode($matches[0], $content, 2);
+			if(!$this->is_link_available($a, $event) || 0 < $a['content_length'] || $this->single_event) {
+				//content with removed more-tag
+				$content = $part[0].$part[1];
+			}
+			else {
+				//set more-link text
+				if(!empty($matches[1])) {
+					$more_link_text = strip_tags(wp_kses_no_null(trim($matches[1])));
+				}
+				else {
+					$more_link_text = __('[ read more&hellip;]');
+				}
+				//content with more-link
+				$content = apply_filters('the_content_more_link', $part[0].$this->get_event_link($a, $event->post->ID, $more_link_text));
+			}
+		}
+		else {
+			//normal content
+			if($this->is_link_available($a, $event)) {
+				$truncate_url = $this->get_event_url($a, $event->post->ID);
+			}
+		}
+		// last preparations of content
+		$content = $event->truncate(do_shortcode(wpautop($content)), $a['content_length'], $this->single_event, true, $truncate_url);
+		// preparations for collapsed content
+		if($this->is_visible($a['collapse_content'])) {
+			wp_register_script('el_event-list', EL_URL.'includes/js/event-list.js', null, true);
+			add_action('wp_footer', array(&$this, 'print_eventlist_script'));
+			return '<div><div id="event-content-'.$event->post->ID.'" class="el-hidden"><div class="' . $content_class . '">' . $content . '</div></div>' .
+				   '<a class="event-content-link" id="event-content-a' . $event->post->ID . '" onclick="el_toggle_content(' . $event->post->ID.')" href="javascript:void(0)">' .
+				   $this->options->get('el_content_show_text') . '</a></div>';
+		}
+		// return without collapsing
+		return '<div class="' . $content_class . '">'.$content.'</div>';;
 	}
 
 	private function html_fulldate($startdate, $enddate, $single_day_only=false) {
@@ -293,30 +355,48 @@ class SC_Event_List {
 		return $filterbar->show($this->get_url($a), $a);
 	}
 
-	private function html_feed_link(&$a, $pos) {
-		$out = '';
-		if($this->options->get('el_enable_feed') && 'true' === $a['add_feed_link'] && $pos === $this->options->get('el_feed_link_pos')) {
-			// prepare url
-			require_once( EL_PATH.'includes/feed.php' );
-			$feed_link = EL_Feed::get_instance()->eventlist_feed_url();
+	private function html_feed_links(&$a, $pos) {
+		if( $pos !== $this->options->get('el_feed_link_pos')) {
+			return '';
+		}
+		$show_rss = '' !== $this->options->get('el_feed_enable_rss') && $this->is_visible($a['add_rss_link']);
+		$show_ical = '' !== $this->options->get('el_feed_enable_ical') && $this->is_visible($a['add_ical_link']);
+		if( $show_rss || $show_ical) {
 			// prepare align
 			$align = $this->options->get('el_feed_link_align');
 			if('left' !== $align && 'center' !== $align && 'right' !== $align) {
 				$align = 'left';
 			}
-			// prepare image
-			$image = '';
-			if('' !== $this->options->get('el_feed_link_img')) {
-				$image = '<img src="'.includes_url('images/rss.png').'" alt="rss" />';
+			// prepare output
+			$out = '
+				<div class="feed el-text-align-'.$align.'">';
+			if($show_rss) {
+				$out .= $this->html_rss_link($a);
 			}
-			// prepare text
-			$text = $image.esc_attr($this->options->get('el_feed_link_text'));
-			// create html
-			$out .= '<div class="feed" style="text-align:'.$align.'">
-						<a href="'.$feed_link.'">'.$text.'</a>
-					</div>';
+			if($show_ical) {
+				$out .= $this->html_ical_link($a);
+			}
+			$out .= '
+				</div>';
+			return $out;
 		}
-		return $out;
+		return '';
+	}
+
+	private function html_rss_link(&$a) {
+		require_once( EL_PATH.'includes/rss.php' );
+		$feed_url = EL_Rss::get_instance()->feed_url();
+		$link_text = $this->options->get('el_feed_rss_link_text');
+		return '
+					<a href="'.$feed_url.'" title="'.__('Link to RSS feed', 'event-list').'" class="el-rss"><span class="dashicons dashicons-rss"></span>'.$link_text.'</a>';
+	}
+
+	private function html_ical_link(&$a) {
+		require_once( EL_PATH.'includes/ical.php' );
+		$feed_url = EL_ICal::get_instance($a['cat_filter'])->feed_url();
+		$link_text = $this->options->get('el_feed_ical_link_text');
+		return '
+					<a href="'.$feed_url.'" title="'.__('Link to iCal feed', 'event-list').'" class="el-ical"><span class="dashicons dashicons-calendar"></span>'.$link_text.'</a>';
 	}
 
 	private function get_selected_date(&$a) {
@@ -396,95 +476,6 @@ class SC_Event_List {
 				return '('.$cat_filter.')&('.$selected_cat.')';
 			}
 		}
-	}
-
-	private function get_excerpt(&$event, &$a) {
-		// check if excerpt is available
-		$truncate_url = false;
-		if('' == $event->excerpt) {
-			// check and handle the read more tag if available
-			//search fore more-tag (no more tag handling if truncate of content is set)
-			if(preg_match('/<!--more(.*?)?-->/', $event->content, $matches)) {
-				$part = explode($matches[0], $event->content, 2);
-				//set more-link text
-				if(!empty($matches[1])) {
-					$more_link_text = strip_tags(wp_kses_no_null(trim($matches[1])));
-				}
-				else {
-					$more_link_text = __(' [read more&hellip;]');
-				}
-				//content with more-link
-				$excerpt = apply_filters('the_content_more_link', $part[0].$this->get_event_link($a, $event->post->ID, $more_link_text));
-				// return more-link content
-				return '<div class="event-excerpt"><p>'.$excerpt.'</p></div>';
-			}
-			else {
-				//normal content - make excerpt
-				$content = $event->content;
-				if($this->is_link_available($a, $event)) {
-					$truncate_url = $this->get_event_url($a, $event->post->ID);
-				}
-				$excerpt = $event->truncate(do_shortcode(wpautop($content)), $a['content_length'], $this->single_event, true, $truncate_url);
-				// return truncated content
-				return '<div class="event-excerpt">'.$excerpt.'</div>';
-			}
-		}
-		else {
-			//custom excerpt
-				$excerpt = $event->excerpt;
-				if($this->is_link_available($a, $event)) {
-					$truncate_url = $this->get_event_url($a, $event->post->ID);
-				}
-				// return custom excerpt
-				return '<div class="event-excerpt"><p>'.$excerpt.'</p></div>';
-		}
-	}
-
-
-	private function get_content(&$event, &$a) {
-		// check if content is available
-		if('' == $event->content) {
-			return '';
-		}
-		$truncate_url = false;
-		// check and handle the read more tag if available
-		//search fore more-tag (no more tag handling if truncate of content is set)
-		if(preg_match('/<!--more(.*?)?-->/', $event->content, $matches)) {
-			$part = explode($matches[0], $event->content, 2);
-			if(!$this->is_link_available($a, $event) || 0 < $a['content_length'] || $this->single_event) {
-				//content with removed more-tag
-				$content = $part[0].$part[1];
-			}
-			else {
-				//set more-link text
-				if(!empty($matches[1])) {
-					$more_link_text = strip_tags(wp_kses_no_null(trim($matches[1])));
-				}
-				else {
-					$more_link_text = __('[ read more&hellip;]');
-				}
-				//content with more-link
-				$content = apply_filters('the_content_more_link', $part[0].$this->get_event_link($a, $event->post->ID, $more_link_text));
-			}
-		}
-		else {
-			//normal content
-			$content = $event->content;
-			if($this->is_link_available($a, $event)) {
-				$truncate_url = $this->get_event_url($a, $event->post->ID);
-			}
-		}
-		// last preparations of content
-		$content = $event->truncate(do_shortcode(wpautop($content)), $a['content_length'], $this->single_event, true, $truncate_url);
-		// preparations for collapsed content
-		if($this->is_visible($a['collapse_content'])) {
-			wp_register_script('el_event-list', EL_URL.'includes/js/event-list.js', null, true);
-			add_action('wp_footer', array(&$this, 'print_eventlist_script'));
-			return '<div class="event-content"><div id="event-content-'.$event->post->ID.'" class="el-hidden">'.$content.
-			       '</div><a class="event-content-link" id="event-content-a'.$event->post->ID.'" onclick="el_toggle_content('.$event->post->ID.')" href="javascript:void(0)">'.$this->options->get('el_content_show_text').'</a></div>';
-		}
-		// return without collapsing
-		return '<div class="event-content">'.$content.'</div>';
 	}
 
 	private function get_event_link(&$a, $event_id, $title) {

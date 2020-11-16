@@ -3,7 +3,7 @@
 Plugin Name: Event List
 Plugin URI: https://wordpress.org/plugins/event-list/
 Description: Manage your events and show them in a list view on your site.
-Version: 0.8.4
+Version: 0.8.5
 Author: mibuthu
 Author URI: https://wordpress.org/plugins/event-list/
 Text Domain: event-list
@@ -61,6 +61,8 @@ class Event_List {
 		add_action('widgets_init', array(&$this, 'widget_init'));
 		// Register RSS feed
 		add_action('init', array(&$this, 'feed_init'), 10);
+		// Register iCal feed
+		add_action('init', array(&$this, 'ical_init'), 10);
 
 		// ADMIN PAGE:
 		if(is_admin()) {
@@ -106,9 +108,16 @@ class Event_List {
 	}
 
 	public function feed_init() {
-		if($this->options->get('el_enable_feed')) {
-			include_once(EL_PATH.'includes/feed.php');
-			EL_Feed::get_instance();
+		if($this->options->get('el_feed_enable_rss')) {
+			include_once(EL_PATH.'includes/rss.php');
+			EL_Rss::get_instance();
+		}
+	}
+
+	public function ical_init() {
+		if ( $this->options->get( 'el_feed_enable_ical' ) ) {
+			include_once( EL_PATH . 'includes/ical.php' );
+			EL_ICal::get_instance();
 		}
 	}
 
