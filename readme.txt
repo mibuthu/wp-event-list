@@ -5,7 +5,7 @@ Tags: event, events, list, listview, calendar, schedule, shortcode, page, catego
 Requires at least: 4.5
 Tested up to: 5.6
 Requires PHP: 5.2
-Stable tag: 0.8.4
+Stable tag: 0.8.5
 Plugin URI: https://wordpress.org/plugins/event-list
 Licence: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -85,6 +85,14 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 
 
 == Changelog ==
+
+= 0.8.5 (2020-11-16) =
+* add iCal support (add a link in the event-list with the new shortcode attribute)
+* changes in feed options
+* updated feed link styling
+* changed rss feed link attribute name from "add_feed_link" to "add_rss_link". Please update your shortcode!
+* some internal changed in feed handling
+* fixed logfile path for upgrade
 
 = 0.8.4 (2020-10-30) =
 * added support for excerpts in events
