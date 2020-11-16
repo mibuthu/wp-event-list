@@ -117,18 +117,7 @@ class Event_List {
 	public function ical_init() {
 		if ( $this->options->get( 'el_feed_enable_ical' ) ) {
 			include_once( EL_PATH . 'includes/ical.php' );
-			// get all event-list categories as slugs
-			$cat_terms = get_categories( array( 'taxonomy' => EL_Events_Post_Type::get_instance()->taxonomy ) );
-			$cat_slugs = array_map( function ( $cat_term ) {
-				return $cat_term->slug;
-			}, $cat_terms );
-			// add the no-category slug
-			array_push( $cat_slugs, 'all' );
-
-			// inialize iCal feed for all categories
-			foreach ( $cat_slugs as $cat_slug ) {
-				EL_ICal::get_instance( $cat_slug );
-			}
+			EL_ICal::get_instance();
 		}
 	}
 

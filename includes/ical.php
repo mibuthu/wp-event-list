@@ -8,25 +8,23 @@ require_once(EL_PATH.'includes/events.php');
 
 // This class handles iCal feed
 class EL_ICal {
-	private static $instances = array();
+	private static $instance;
 	private $options;
 	private $events;
-	private $cat_filter;
 
-	public static function &get_instance( $cat_filter = 'all') {
+	public static function &get_instance() {
 		// Create class instance if required
-		if ( ! isset( self::$instances[ $cat_filter ] ) ) {
-			self::$instances[ $cat_filter ] = new self( $cat_filter );
+		if(!isset(self::$instance)) {
+			self::$instance = new self();
 		}
 
 		// Return class instance
-		return self::$instances[ $cat_filter ];
+		return self::$instance;
 	}
 
-	private function __construct( $cat_filter ) {
+	private function __construct() {
 		$this->options = EL_Options::get_instance();
 		$this->events = EL_Events::get_instance();
-		$this->cat_filter = $cat_filter;
 		$this->init();
 	}
 
@@ -39,8 +37,7 @@ class EL_ICal {
 		header('Content-Type: text/calendar; charset='.get_option('blog_charset'), true);
 		$options = array(
 			'date_filter' => $this->options->get('el_feed_ical_upcoming_only') ? 'upcoming' : null,
-			'order' => array('startdate DESC', 'starttime DESC', 'enddate DESC'),
-			'cat_filter' => $this->cat_filter
+			'order' => array('startdate DESC', 'starttime DESC', 'enddate DESC')
 		);
 
 		$events = $this->events->get($options);
@@ -98,8 +95,7 @@ class EL_ICal {
 	}
 
 	private function get_feed_name() {
-		$cat = isset($this->cat_filter) && $this->cat_filter !== "" ? $this->cat_filter . "-" : "";
-		return $cat . $this->options->get('el_feed_ical_name');
+		return $this->options->get('el_feed_ical_name');
 	}
 
 	public function feed_url() {
