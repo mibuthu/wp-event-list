@@ -56,8 +56,10 @@ class EL_Event {
 		$postdata['post_type'] = 'el_events';
 		$postdata['post_status'] = 'publish';
 		$postdata['post_title'] = $eventdata['title'];
-		$postdata['post_excerpt'] = $eventdata['excerpt'];
 		$postdata['post_content'] = $eventdata['content'];
+		if(isset($eventdata['excerpt'])) {
+			$postdata['post_excerpt'] = $eventdata['excerpt'];
+		}
 		if(isset($eventdata['slug'])) {
 			$postdata['post_name'] = $eventdata['slug'];
 		}
