@@ -26,22 +26,26 @@ You can view a copy of the HTML version of the GNU General Public
 License at http://www.gnu.org/copyleft/gpl.html
 */
 
-if(!defined('WPINC')) {
+if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
 
 // GENERAL DEFINITIONS
-define('EL_URL', plugin_dir_url(__FILE__));
-define('EL_PATH', plugin_dir_path(__FILE__));
+define( 'EL_URL', plugin_dir_url( __FILE__ ) );
+define( 'EL_PATH', plugin_dir_path( __FILE__ ) );
 
-require_once(EL_PATH.'includes/options.php');
-require_once(EL_PATH.'includes/events_post_type.php');
+require_once EL_PATH . 'includes/options.php';
+require_once EL_PATH . 'includes/events_post_type.php';
 
 // MAIN PLUGIN CLASS
 class Event_List {
+
 	private $options;
+
 	private $shortcode = null;
+
 	private $styles_loaded = false;
+
 
 	/**
 	 * Constructor:
@@ -52,98 +56,105 @@ class Event_List {
 
 		// ALWAYS:
 		// Register translation
-		add_action('plugins_loaded', array(&$this, 'load_textdomain'));
+		add_action( 'plugins_loaded', array( &$this, 'load_textdomain' ) );
 		// Register Events post type
 		EL_Events_Post_Type::get_instance();
 		// Register shortcodes
-		add_shortcode('event-list', array(&$this, 'shortcode_event_list'));
+		add_shortcode( 'event-list', array( &$this, 'shortcode_event_list' ) );
 		// Register widgets
-		add_action('widgets_init', array(&$this, 'widget_init'));
+		add_action( 'widgets_init', array( &$this, 'widget_init' ) );
 		// Register RSS feed
-		add_action('init', array(&$this, 'feed_init'), 10);
+		add_action( 'init', array( &$this, 'feed_init' ), 10 );
 		// Register iCal feed
-		add_action('init', array(&$this, 'ical_init'), 10);
+		add_action( 'init', array( &$this, 'ical_init' ), 10 );
 
 		// ADMIN PAGE:
-		if(is_admin()) {
+		if ( is_admin() ) {
 			// Init admin page
-			require_once(EL_PATH.'admin/admin.php');
+			require_once EL_PATH . 'admin/admin.php';
 			EL_Admin::get_instance();
 		}
 
 		// FRONT PAGE:
 		else {
 			// Register actions
-			add_action('wp_print_styles', array(&$this, 'print_styles'));
+			add_action( 'wp_print_styles', array( &$this, 'print_styles' ) );
 		}
 	} // end constructor
 
+
 	public function load_textdomain() {
-		$el_lang_path = basename(EL_PATH).'/languages';
-		$domain = 'event-list';
-		if('' !== get_option('el_mo_lang_dir_first', '')) { // this->option->get not available in this early stage
-			// use default wordpress function (language files from language dir wp-content/languages/plugins/ are preferred)
-			load_plugin_textdomain($domain, false, $el_lang_path);
-		}
-		else {
-			// use fork of wordpress function load_plugin_textdomain (see wp-includes/l10n.php) to prefer language files included in plugin (wp-content/plugins/event-list/languages/) and additionally from language dir
-			$locale = apply_filters('plugin_locale', is_callable('get_user_locale') ? get_user_locale() : get_locale(), $domain);
-			$mofile = $domain.'-'.$locale.'.mo';
-			load_textdomain($domain, WP_PLUGIN_DIR.'/'.$el_lang_path.'/'.$mofile);
-			load_textdomain($domain, WP_LANG_DIR.'/plugins/'.$mofile);
+		$el_lang_path = basename( EL_PATH ) . '/languages';
+		$domain       = 'event-list';
+		if ( '' !== get_option( 'el_mo_lang_dir_first', '' ) ) { // this->option->get not available in this early stage
+			// use default WordPress function (language files from language dir wp-content/languages/plugins/ are preferred)
+			load_plugin_textdomain( $domain, false, $el_lang_path );
+		} else {
+			// use fork of WordPress function load_plugin_textdomain (see wp-includes/l10n.php) to prefer language files included in plugin (wp-content/plugins/event-list/languages/) and additionally from language dir
+			$locale = apply_filters( 'plugin_locale', is_callable( 'get_user_locale' ) ? get_user_locale() : get_locale(), $domain );
+			$mofile = $domain . '-' . $locale . '.mo';
+			load_textdomain( $domain, WP_PLUGIN_DIR . '/' . $el_lang_path . '/' . $mofile );
+			load_textdomain( $domain, WP_LANG_DIR . '/plugins/' . $mofile );
 		}
 	}
 
-	public function shortcode_event_list($atts) {
-		if(null == $this->shortcode) {
-			require_once(EL_PATH.'includes/sc_event-list.php');
+
+	public function shortcode_event_list( $atts ) {
+		if ( null == $this->shortcode ) {
+			require_once EL_PATH . 'includes/sc_event-list.php';
 			$this->shortcode = SC_Event_List::get_instance();
-			if(!$this->styles_loaded) {
+			if ( ! $this->styles_loaded ) {
 				// normally styles are loaded with wp_print_styles action in head
 				// but if the shortcode is not in post content (e.g. included in a theme) it must be loaded here
 				$this->enqueue_styles();
 			}
 		}
-		return $this->shortcode->show_html($atts);
+		return $this->shortcode->show_html( $atts );
 	}
 
+
 	public function feed_init() {
-		if($this->options->get('el_feed_enable_rss')) {
-			include_once(EL_PATH.'includes/rss.php');
+		if ( $this->options->get( 'el_feed_enable_rss' ) ) {
+			include_once EL_PATH . 'includes/rss.php';
 			EL_Rss::get_instance();
 		}
 	}
 
+
 	public function ical_init() {
 		if ( $this->options->get( 'el_feed_enable_ical' ) ) {
-			include_once( EL_PATH . 'includes/ical.php' );
+			include_once EL_PATH . 'includes/ical.php';
 			EL_ICal::get_instance();
 		}
 	}
 
+
 	public function widget_init() {
 		// Widget "event-list"
-		require_once(EL_PATH.'includes/widget.php');
-		return register_widget('EL_Widget');
+		require_once EL_PATH . 'includes/widget.php';
+		return register_widget( 'EL_Widget' );
 	}
+
 
 	public function print_styles() {
 		global $post;
-		if(is_active_widget(null, null, 'event_list_widget') || (is_object($post) && strstr($post->post_content, '[event-list'))) {
+		if ( is_active_widget( null, null, 'event_list_widget' ) || ( is_object( $post ) && strstr( $post->post_content, '[event-list' ) ) ) {
 			$this->enqueue_styles();
 		}
 	}
 
+
 	public function enqueue_styles() {
-		if('' == $this->options->get('el_disable_css_file')) {
-			wp_register_style('event-list', EL_URL.'includes/css/event-list.css');
-			wp_enqueue_style('event-list');
+		if ( '' == $this->options->get( 'el_disable_css_file' ) ) {
+			wp_register_style( 'event-list', EL_URL . 'includes/css/event-list.css' );
+			wp_enqueue_style( 'event-list' );
 		}
 		$this->styles_loaded = true;
 	}
+
 } // end class linkview
 
 
 // create a class instance
 $event_list = new Event_List();
-?>
+
