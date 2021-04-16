@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="WordPress-mibuthu" xsi:noNamespaceSchemaLocation="phpcs.xsd">
+    <description>WordPress Coding Standards with some adaptions</description>
+
+    <file>src</file>
+    <file>.phan</file>
+
+    <!-- <exclude-pattern>*/src/Standards/*/Tests/*\.(inc|css|js)$</exclude-pattern> -->
+
+    <arg name="basepath" value="."/>
+    <arg name="colors"/>
+    <arg name="extensions" value="php,inc" />
+    <arg name="report" value="full"/>
+    <arg name="parallel" value="8"/>
+
+
+    <rule ref="WordPress">
+    </rule>
+
+    <rule ref="WordPress.Files.FileName">
+        <properties>
+            <property name="strict_class_file_names" type="bool" value="false" />
+        </properties>
+    </rule>
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array" value="event-list,default" />
+        </properties>
+    </rule>
+    <rule ref="WordPress.WP.DeprecatedFunctions">
+        <properties>
+            <property name="minimum_supported_version" value="4.9" />
+        </properties>
+    </rule>
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="check_translator_comments" value="false" />
+        </properties>
+    </rule>
+    <rule ref="WordPress.WhiteSpace.ControlStructureSpacing">
+        <properties>
+            <property name="blank_line_check" value="true" />
+        </properties>
+    </rule>
+    <rule ref="WordPress.Arrays.MultipleStatementAlignment">
+        <properties>
+            <property name="ignoreNewlines" value="false" />
+        </properties>
+    </rule>
+    <rule ref="Squiz.WhiteSpace.FunctionSpacing">
+        <properties>
+            <property name="spacing" value="2" />
+            <property name="spacingAfterLast" value="1" />
+        </properties>
+    </rule>
+    <rule ref="Squiz.WhiteSpace.MemberVarSpacing">
+        <properties>
+            <property name="spacing" value="1" />
+            <property name="spacingBeforeFirst" value="1" />
+        </properties>
+    </rule>
+    <rule ref="WordPress.Security.EscapeOutput">
+        <properties>
+            <property name="customEscapingFunctions" type="array" value="admin_url" />
+            <property name="customAutoEscapedFunctions" type="array" value="PLUGIN_URL" />
+        </properties>
+    </rule>
+
+    <!-- Use short array syntax instead of long array syntax specified in Wordpress (switch not possible as long as PHP 5.2 is supported)
+    <rule ref="Generic.Arrays.DisallowShortArraySyntax.Found">
+        <severity>0</severity>
+    </rule>
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax.Found"/>
+    -->
+    <config name="minimum_supported_wp_version" value="4.9"/>
+
+</ruleset>
