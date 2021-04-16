@@ -2,7 +2,7 @@
 
 # ===== SETTINGS ===== #
 
-plugin_root_dir="../.."
+plugin_root_dir="."
 lang_dir="languages"
 
 plugin_path="$(cd "$(dirname "$0")/${plugin_root_dir}" && pwd)"
