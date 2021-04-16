@@ -3,14 +3,14 @@
 Plugin Name: Event List
 Plugin URI: https://wordpress.org/plugins/event-list/
 Description: Manage your events and show them in a list view on your site.
-Version: 0.8.5
+Version: 0.8.6
 Author: mibuthu
 Author URI: https://wordpress.org/plugins/event-list/
 Text Domain: event-list
 License: GPLv2
 
 A plugin for the blogging MySQL/PHP-based WordPress.
-Copyright 2012-2020 mibuthu
+Copyright 2012-2021 mibuthu
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNUs General Public License

@@ -143,7 +143,7 @@ class EL_Admin_Import {
 			echo '
 					'.__('You can still import all other events listed below.','event-list').'
 				</div>';
-			$import_data = array_filter($import_data, create_function('$v', 'return !is_wp_error($v)'));
+			$import_data = array_filter($import_data, array($this, 'is_no_wp_error'));
 		}
 
 		// missing categories
@@ -191,6 +191,10 @@ class EL_Admin_Import {
 			</div>
 			<input type="hidden" name="reviewed_events" id="reviewed_events" value="'.esc_html(json_encode($import_data)).'" />
 			</form>';
+	}
+
+	private function is_no_wp_error($value) {
+		return !is_wp_error($value);
 	}
 
 	private function show_import_finished($import_status) {
@@ -303,7 +307,7 @@ class EL_Admin_Import {
 
 	private function prepare_event($event, $date_format=false) {
 		// trim all fields
-		array_walk($event, create_function('&$v', '$v = is_array($v) ? array_map("trim", $v) : trim($v);'));
+		array_walk($event, array($this, 'trim_event_fields'));
 		// title
 		if(empty($event['title'])) {
 			$event = new WP_Error('empty_title', __('Empty event title found','event-list'), $event['csv_line']);
@@ -328,6 +332,14 @@ class EL_Admin_Import {
 		// categories
 		$event['categories'] = array_map('trim', $event['categories']);
 		return $event;
+	}
+
+	private function trim_event_fields(&$value) {
+		if (is_array($value)) {
+			$value = array_map('trim', $value);
+		} else {
+			$value = trim($value);
+		}
 	}
 
 	private function prepare_date($date_string, $date_format) {

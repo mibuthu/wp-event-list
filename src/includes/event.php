@@ -130,11 +130,15 @@ class EL_Event {
 			//if((isset($_POST['publish']) || isset( $_POST['save'] ) ) && $_POST['post_status'] == 'publish' ) {
 			global $wpdb;
 			$wpdb->update($wpdb->posts, array('post_status' => 'pending'), array('ID' => $pid));
-			add_filter('redirect_post_location', create_function('$location','return add_query_arg("'.implode('<br />', $errors).'", "4", $location);'));
+			add_filter('redirect_post_location', array(&$this, 'save_metadata_redirect_post_location_filter'));
 			unset($instance);
 			return false;
 		}
 		return $instance;
+	}
+
+	private function save_metadata_redirect_post_location_filter($location) {
+		return add_query_arg("'.implode('<br />', $errors).'", "4", $location);
 	}
 
 	private static function set_categories($pid, $cats) {
