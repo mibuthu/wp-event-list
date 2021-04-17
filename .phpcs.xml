@@ -65,6 +65,9 @@
             <property name="customAutoEscapedFunctions" type="array" value="PLUGIN_URL" />
         </properties>
     </rule>
+    <rule ref="Squiz.Commenting.InlineComment">
+        <exclude name="Squiz.Commenting.InlineComment.InvalidEndChar" />
+    </rule>
 
     <!-- Use short array syntax instead of long array syntax specified in Wordpress (switch not possible as long as PHP 5.2 is supported)
     <rule ref="Generic.Arrays.DisallowShortArraySyntax.Found">
