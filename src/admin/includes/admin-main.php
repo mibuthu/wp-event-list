@@ -22,6 +22,13 @@ class EL_Admin_Main {
 
 	private $filterbar;
 
+	/**
+	 * Is the trash page displayed?
+	 *
+	 * @var bool
+	 */
+	private $is_trash;
+
 
 	public static function &get_instance() {
 		// Create class instance if required
@@ -37,6 +44,8 @@ class EL_Admin_Main {
 		$this->options          = &EL_Options::get_instance();
 		$this->events_post_type = &EL_Events_Post_Type::get_instance();
 		$this->filterbar        = &EL_Filterbar::get_instance();
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$this->is_trash = isset( $_REQUEST['post_status'] ) && 'trash' === $_REQUEST['post_status'];
 		add_action( 'manage_posts_custom_column', array( &$this, 'events_custom_columns' ), 10, 2 );
 		add_filter( 'manage_edit-el_events_columns', array( &$this, 'events_edit_columns' ) );
 		add_filter( 'manage_edit-el_events_sortable_columns', array( &$this, 'events_sortable_columns' ) );
@@ -134,7 +143,11 @@ class EL_Admin_Main {
 
 
 	public function add_action_row_elements( $actions, $post ) {
-		$actions['copy'] = '<a href="' . admin_url( add_query_arg( 'copy', $post->ID, 'post-new.php?post_type=el_events' ) ) . '" aria-label="' . sprintf( __( 'Add a copy of %1$s', 'event-list' ), '&#8222;' . $post->post_title . '&#8220;' ) . '">' . __( 'Copy', 'event-list' ) . '</a>';
+		if ( ! $this->is_trash ) {
+			$actions['copy'] = '<a href="' . admin_url( add_query_arg( 'copy', $post->ID, 'post-new.php?post_type=el_events' ) ) .
+				'" aria-label="' . sprintf( __( 'Add a copy of %1$s', 'event-list' ), '&#8222;' . $post->post_title . '&#8220;' ) . '">' . __( 'Copy', 'event-list' ) . '</a>';
+		}
+
 		return $actions;
 	}
 
@@ -169,8 +182,9 @@ class EL_Admin_Main {
 
 
 	public function filter_request( $query ) {
-		// check used get parameters
-		$selected_date = isset( $_GET['date'] ) ? sanitize_key( $_GET['date'] ) : 'upcoming';
+		// Check used get parameters
+		$default_date  = $this->is_trash ? 'all' : 'upcoming';
+		$selected_date = isset( $_GET['date'] ) ? sanitize_key( $_GET['date'] ) : $default_date;
 
 		$meta_query = array( 'relation' => 'AND' );
 		// date filter
