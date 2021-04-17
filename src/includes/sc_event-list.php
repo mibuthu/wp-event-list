@@ -283,13 +283,13 @@ class SC_Event_List {
 				// content with removed more-tag
 				$content = $part[0] . $part[1];
 			} else {
-				// set more-link text
+				// Set more-link text.
 				if ( ! empty( $matches[1] ) ) {
-					$more_link_text = strip_tags( wp_kses_no_null( trim( $matches[1] ) ) );
+					$more_link_text = wp_strip_all_tags( wp_kses_no_null( trim( $matches[1] ) ) );
 				} else {
-					$more_link_text = __( '[ read more&hellip;]' );
+					$more_link_text = '[' . __( 'read more', 'event-list' ) . '&hellip;]';
 				}
-				// content with more-link
+				// Content with more-link.
 				$content = apply_filters( 'the_content_more_link', $part[0] . $this->get_event_link( $a, $event->post->ID, $more_link_text ) );
 			}
 		} else {

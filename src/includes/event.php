@@ -293,12 +293,12 @@ class EL_Event {
 			if ( $printedLength < $length && $position < mb_strlen( $html ) ) {
 				$out .= mb_substr( $html, $position, $length - $printedLength );
 			}
-			// Print ellipsis ("...") if the html was truncated
+			// Print ellipsis ("...") if the html was truncated.
 			if ( $truncated ) {
 				if ( $link ) {
-					$out .= ' <a href="' . $link . '"> [read more...]</a>';
+					$out .= ' <a href="' . $link . '"> [' . __( 'read more', 'event-list' ) . '&hellip;]</a>';
 				} else {
-					$out .= ' [read more...]';
+					$out .= ' [' . __( 'read more', 'event-list' ) . '&hellip;]';
 				}
 			}
 			// Close any open tags.
