@@ -1,55 +1,78 @@
 <?php
-/*
-Plugin Name: Event List
-Plugin URI: https://wordpress.org/plugins/event-list/
-Description: Manage your events and show them in a list view on your site.
-Version: 0.8.6
-Author: mibuthu
-Author URI: https://wordpress.org/plugins/event-list/
-Text Domain: event-list
-License: GPLv2
-
-A plugin for the blogging MySQL/PHP-based WordPress.
-Copyright 2012-2021 mibuthu
-
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNUs General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You can view a copy of the HTML version of the GNU General Public
-License at http://www.gnu.org/copyleft/gpl.html
-*/
+/**
+ * Plugin Name: Event List
+ * Plugin URI: https://wordpress.org/plugins/event-list/
+ * Description: Manage your events and show them in a list view on your site.
+ * Version: 0.8.6
+ * Author: mibuthu
+ * Author URI: https://wordpress.org/plugins/event-list/
+ * Text Domain: event-list
+ * License: GPLv2
+ *
+ * A plugin for the blogging MySQL/PHP-based WordPress.
+ * Copyright 2012-2021 mibuthu
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNUs General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You can view a copy of the HTML version of the GNU General Public
+ * License at http://www.gnu.org/copyleft/gpl.html
+ *
+ * @package event-list
+ */
 
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
 
-// GENERAL DEFINITIONS
+// General definitions
 define( 'EL_URL', plugin_dir_url( __FILE__ ) );
 define( 'EL_PATH', plugin_dir_path( __FILE__ ) );
 
 require_once EL_PATH . 'includes/options.php';
 require_once EL_PATH . 'includes/events_post_type.php';
 
-// MAIN PLUGIN CLASS
+/**
+ * Main plugin class
+ *
+ * This is the inital class for loading the plugin.
+ */
 class Event_List {
 
+	/**
+	 * Option instance used for the whole plugin
+	 *
+	 * @var EL_Options
+	 */
 	private $options;
 
+	/**
+	 * Shortcode instance
+	 *
+	 * @var SC_Event_List
+	 */
 	private $shortcode = null;
 
+	/**
+	 * Holds the status if the event-list styles are already loaded
+	 *
+	 * @var bool
+	 */
 	private $styles_loaded = false;
 
 
 	/**
 	 * Constructor:
 	 * Initializes the plugin.
+	 *
+	 * @return void
 	 */
 	public function __construct() {
 		$this->options = EL_Options::get_instance();
@@ -68,30 +91,33 @@ class Event_List {
 		// Register iCal feed
 		add_action( 'init', array( &$this, 'ical_init' ), 10 );
 
-		// ADMIN PAGE:
+		// Admin page
 		if ( is_admin() ) {
 			// Init admin page
 			require_once EL_PATH . 'admin/admin.php';
 			EL_Admin::get_instance();
-		}
-
-		// FRONT PAGE:
-		else {
+		} else {  // Front page
 			// Register actions
 			add_action( 'wp_print_styles', array( &$this, 'print_styles' ) );
 		}
-	} // end constructor
+	}
 
 
+	/**
+	 * Load the textdomain
+	 *
+	 * @return void
+	 */
 	public function load_textdomain() {
 		$el_lang_path = basename( EL_PATH ) . '/languages';
 		$domain       = 'event-list';
 		if ( '' !== get_option( 'el_mo_lang_dir_first', '' ) ) { // this->option->get not available in this early stage
-			// use default WordPress function (language files from language dir wp-content/languages/plugins/ are preferred)
+			// Use default WordPress function (language files from language dir wp-content/languages/plugins/ are preferred)
 			load_plugin_textdomain( $domain, false, $el_lang_path );
 		} else {
-			// use fork of WordPress function load_plugin_textdomain (see wp-includes/l10n.php) to prefer language files included in plugin (wp-content/plugins/event-list/languages/) and additionally from language dir
-			$locale = apply_filters( 'plugin_locale', is_callable( 'get_user_locale' ) ? get_user_locale() : get_locale(), $domain );
+			// Use fork of WordPress function load_plugin_textdomain (see wp-includes/l10n.php) to prefer the language files provided within the plugin (wp-content/plugins/event-list/languages/)
+			// @phan-suppress-next-line PhanParamTooMany
+			$locale = apply_filters( 'plugin_locale', get_user_locale(), $domain );
 			$mofile = $domain . '-' . $locale . '.mo';
 			load_textdomain( $domain, WP_PLUGIN_DIR . '/' . $el_lang_path . '/' . $mofile );
 			load_textdomain( $domain, WP_LANG_DIR . '/plugins/' . $mofile );
@@ -99,8 +125,14 @@ class Event_List {
 	}
 
 
+	/**
+	 * Load the shortcode
+	 *
+	 * @param array<string,string|string[]> $atts The shortcode attributes.
+	 * @return string
+	 */
 	public function shortcode_event_list( $atts ) {
-		if ( null == $this->shortcode ) {
+		if ( null === $this->shortcode ) {
 			require_once EL_PATH . 'includes/sc_event-list.php';
 			$this->shortcode = SC_Event_List::get_instance();
 			if ( ! $this->styles_loaded ) {
@@ -113,6 +145,11 @@ class Event_List {
 	}
 
 
+	/**
+	 * Load the feed
+	 *
+	 * @return void
+	 */
 	public function feed_init() {
 		if ( $this->options->get( 'el_feed_enable_rss' ) ) {
 			include_once EL_PATH . 'includes/rss.php';
@@ -121,6 +158,11 @@ class Event_List {
 	}
 
 
+	/**
+	 * Load the ical support
+	 *
+	 * @return void
+	 */
 	public function ical_init() {
 		if ( $this->options->get( 'el_feed_enable_ical' ) ) {
 			include_once EL_PATH . 'includes/ical.php';
@@ -129,32 +171,51 @@ class Event_List {
 	}
 
 
+	/**
+	 * Load the widget
+	 *
+	 * @return void
+	 */
 	public function widget_init() {
 		// Widget "event-list"
 		require_once EL_PATH . 'includes/widget.php';
-		return register_widget( 'EL_Widget' );
+		register_widget( 'EL_Widget' );
 	}
 
 
+	/**
+	 * Print the event-list styles
+	 *
+	 * @return void
+	 */
 	public function print_styles() {
 		global $post;
-		if ( is_active_widget( null, null, 'event_list_widget' ) || ( is_object( $post ) && strstr( $post->post_content, '[event-list' ) ) ) {
+		if ( is_active_widget( false, false, 'event_list_widget' ) || ( is_object( $post ) && strstr( $post->post_content, '[event-list' ) ) ) {
 			$this->enqueue_styles();
 		}
 	}
 
 
+	/**
+	 * Equeue the event-list styles
+	 *
+	 * @return void
+	 */
 	public function enqueue_styles() {
-		if ( '' == $this->options->get( 'el_disable_css_file' ) ) {
-			wp_register_style( 'event-list', EL_URL . 'includes/css/event-list.css' );
+		if ( '' === $this->options->get( 'el_disable_css_file' ) ) {
+			wp_register_style( 'event-list', EL_URL . 'includes/css/event-list.css', array(), '1.0' );
 			wp_enqueue_style( 'event-list' );
 		}
 		$this->styles_loaded = true;
 	}
 
-} // end class linkview
+}
 
 
-// create a class instance
+/**
+ * EventList Class instance
+ *
+ * @var EL_EventList
+ */
 $event_list = new Event_List();
 
