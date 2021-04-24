@@ -39,8 +39,8 @@ class EL_Event {
 			$this->post = $post;
 		} else {
 			$this->post = get_post( $post );
-			if ( 0 === $this->post->ID ) {
-				die( 'ERROR: Post not found!' );
+			if ( null === $this->post ) {
+				return;
 			}
 		}
 		$this->load_eventdata();

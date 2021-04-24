@@ -147,14 +147,22 @@ class SC_Event_List {
 
 
 	private function html_single_event( &$a ) {
-		$event           = new EL_Event( $a['event_id'] );
+		$event = new EL_Event( $a['event_id'] );
+		// Show an error and the event list view if an invalid event_id was provided
+		if ( null === $event->post ) {
+			$this->single_event = false;
+			$out                = '<div class="el-error single-event-error">' . __( 'Sorry, the requested event is not available!', 'event-list' ) . '</div>';
+			$out               .= $this->html_event_list( $a );
+			return $out;
+		}
+		// Default behaviour
 		$out             = $this->html_feed_links( $a, 'top' );
 		$out            .= $this->html_filterbar( $a );
 		$out            .= $this->html_feed_links( $a, 'below_nav' );
 		$out            .= '
 			<h2>' . __( 'Event Information:', 'event-list' ) . '</h2>
 			<ul class="single-event-view">';
-		$single_day_only = ( $event->startdate == $event->enddate ) ? true : false;
+		$single_day_only = ( $event->startdate === $event->enddate );
 		$out            .= $this->html_event( $event, $a, $single_day_only );
 		$out            .= '</ul>';
 		$out            .= $this->html_feed_links( $a, 'bottom' );
