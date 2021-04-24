@@ -46,6 +46,7 @@ class EL_Admin_New {
 		add_action( 'edit_form_top', array( &$this, 'form_top_content' ) );
 		add_action( 'edit_form_after_title', array( &$this, 'form_after_title_content' ) );
 		add_action( 'admin_print_scripts', array( &$this, 'embed_scripts' ) );
+		add_action( 'admin_print_styles-post-new.php', array( &$this, 'remove_ot_admin_styles'), 12 );
 		add_action( 'save_post_el_events', array( &$this, 'save_eventdata' ), 10, 3 );
 		add_filter( 'enter_title_here', array( &$this, 'change_default_title' ) );
 		add_filter( 'post_updated_messages', array( &$this, 'updated_messages' ) );
@@ -151,6 +152,12 @@ class EL_Admin_New {
 		wp_enqueue_style( 'eventlist_jqueryui', EL_URL . 'admin/css/jquery-ui.min.css' );
 		// add the xwp datepicker skin (see https://github.com/xwp/wp-jquery-ui-datepicker-skins)
 		wp_enqueue_style( 'eventlist_datepicker', EL_URL . 'admin/css/jquery-ui-datepicker.css' );
+	}
+
+
+	public function remove_ot_admin_styles() {
+		// remove styles from Option Tree to prevent conflicts with jquery-ui-datepicker css
+		wp_dequeue_style( 'ot-admin-css' );
 	}
 
 
