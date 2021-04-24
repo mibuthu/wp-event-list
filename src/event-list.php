@@ -36,6 +36,7 @@ define( 'EL_PATH', plugin_dir_path( __FILE__ ) );
 
 require_once EL_PATH . 'includes/options.php';
 require_once EL_PATH . 'includes/events_post_type.php';
+require_once EL_PATH . 'includes/rest_api.php';
 
 // MAIN PLUGIN CLASS
 class Event_List {
