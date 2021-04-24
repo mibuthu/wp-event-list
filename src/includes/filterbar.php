@@ -174,7 +174,7 @@ class EL_Filterbar {
 	}
 
 
-	public function show_daterange( $url, &$args, $type = 'hlist', $options ) {
+	public function show_daterange( $url, &$args, $type = 'hlist', $options = array() ) {
 		// prepare displayed elements
 		if ( isset( $options['item_order'] ) ) {
 			$items = explode( '&', $options['item_order'] );
