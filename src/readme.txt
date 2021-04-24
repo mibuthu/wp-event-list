@@ -2,8 +2,8 @@
 Contributors: mibuthu, clhunsen, chunsen1, seeseekey
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W54LNZMWF9KW2
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, filter, admin, attribute, widget, sidebar, feed, rss
-Requires at least: 4.5
-Tested up to: 5.6
+Requires at least: 4.9
+Tested up to: 5.7
 Requires PHP: 5.2
 Stable tag: 0.8.6
 Plugin URI: https://wordpress.org/plugins/event-list
@@ -85,6 +85,15 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 
 
 == Changelog ==
+
+= 0.8.6 (2021-04-24) =
+* fixed saving a new event when no excerpt is provided (also fixes CSV import of events)
+* added missing translation function for the read more links
+* removed deprecated css zoom function (which was only required for a fix for IE 6+7)
+* fixed trash view in admin page
+* fixed shortcode page display when an invalid event_id was provided (e.g. from a link to a deleted event)
+* switched to WordPress coding standard
+* some other internal fixes and improvements
 
 = 0.8.5 (2020-11-16) =
 * add iCal support (add a link in the event-list with the new shortcode attribute)
