@@ -1,11 +1,27 @@
 <?php
+/**
+ * The main class for the admin pages
+ *
+ * TODO: Fix phan warnings to remove the suppressed checks
+ *
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPublicMethod
+ * @phan-file-suppress PhanPluginUnknownPropertyType
+ * @phan-file-suppress PhanPluginUnknownMethodParamType
+ * @phan-file-suppress PhanPluginUnknownMethodReturnType
+ *
+ * @package event-list
+ */
+
 if ( ! defined( 'WP_ADMIN' ) ) {
 	exit;
 }
 
 require_once EL_PATH . 'includes/options.php';
 
-// This class handles general functions which can be used on different admin pages
+/**
+ * This class handles general functions which can be used on different admin pages
+ */
 class EL_Admin_Functions {
 
 	private static $instance;
@@ -58,11 +74,11 @@ class EL_Admin_Functions {
 			<div class="el-settings">
 			<table class="form-table">';
 		foreach ( $this->options->options as $oname => $o ) {
-			if ( $o['section'] == $section ) {
+			if ( $section === $o['section'] ) {
 				$out .= '
 					<tr>
 						<th>';
-				if ( $o['label'] != '' ) {
+				if ( '' !== $o['label'] ) {
 					$out .= '<label for="' . $oname . '">' . $o['label'] . ':</label>';
 				}
 				$out .= '</th>
@@ -103,7 +119,7 @@ class EL_Admin_Functions {
 		$out = '
 							<label for="' . $name . '">
 								<input name="' . $name . '" type="checkbox" id="' . $name . '" value="1"';
-		if ( $value == 1 ) {
+		if ( 1 === $value ) {
 			$out .= ' checked="checked"';
 		}
 		$out .= $this->get_disabled_text( $disabled ) . ' />
