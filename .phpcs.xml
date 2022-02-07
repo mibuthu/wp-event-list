@@ -79,13 +79,11 @@
             <property name="customAutoEscapedFunctions" type="array" value="PLUGIN_URL" />
         </properties>
     </rule>
-    <!-- Allow inline comments without special end character -->
-    <rule ref="Squiz.Commenting.InlineComment">
+    <!-- Allow inline comments without special end character and remove condition closing comments -->
+    <rule ref="Squiz.Commenting">
         <exclude name="Squiz.Commenting.InlineComment.InvalidEndChar" />
-    </rule>
-    <!-- Allow function comments without special end character -->
-    <rule ref="Squiz.Commenting.FunctionComment">
         <exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop" />
+        <exclude name="Squiz.Commenting.LongConditionClosingComment.Missing" />
     </rule>
 
     <!-- Use short array syntax instead of long array syntax specified in Wordpress (switch not possible as long as PHP 5.2 is supported)
