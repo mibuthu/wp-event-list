@@ -1,4 +1,20 @@
 <?php
+/**
+ * This file displays the admin settings page
+ *
+ * TODO: Fix phan warnings to remove the suppressed checks
+ *
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPublicMethod
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateMethod
+ * @phan-file-suppress PhanPluginUnknownPropertyType
+ * @phan-file-suppress PhanPluginUnknownMethodReturnType
+ * @phan-file-suppress PhanPluginRemoveDebugEcho
+ * @phan-file-suppress PhanPartialTypeMismatchArgument
+ *
+ * @package event-list
+ */
+
 if ( ! defined( 'WP_ADMIN' ) ) {
 	exit;
 }
@@ -6,7 +22,9 @@ if ( ! defined( 'WP_ADMIN' ) ) {
 require_once EL_PATH . 'includes/options.php';
 require_once EL_PATH . 'admin/includes/admin-functions.php';
 
-// This class handles all data for the admin settings page
+/**
+ * This class handles all data for the admin settings page
+ */
 class EL_Admin_Settings {
 
 	private static $instance;
@@ -34,7 +52,7 @@ class EL_Admin_Settings {
 
 	public function show_settings() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
 		}
 		// check used get parameters
 		$tab              = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : 'general';
@@ -45,7 +63,7 @@ class EL_Admin_Settings {
 		if ( 'true' === $settings_updated ) {
 			// show "settings saved" message
 			$out .= '<div id="message" class="updated">
-				<p><strong>' . __( 'Settings saved.' ) . '</strong></p>
+				<p><strong>' . __( 'Settings saved.', 'default' ) . '</strong></p>
 			</div>';
 			switch ( $tab ) {
 				case 'frontend':
@@ -77,7 +95,7 @@ class EL_Admin_Settings {
 		if ( 'taxonomy' === $tab ) {
 			$options['page']         = admin_url( 'edit.php?post_type=el_events&page=el_admin_cat_sync&switch_taxonomy=1' );
 			$options['button_text']  = __( 'Go to Event Category switching page', 'event-list' );
-			$options['button_class'] = __( 'secondary' );
+			$options['button_class'] = __( 'secondary', 'default' );
 		}
 		$out .= $this->functions->show_option_form( $tab, $options );
 		$out .= '
@@ -97,7 +115,7 @@ class EL_Admin_Settings {
 		);
 		$out  = '<h3 class="nav-tab-wrapper">';
 		foreach ( $tabs as $tab => $name ) {
-			$class = ( $tab == $current ) ? ' nav-tab-active' : '';
+			$class = ( $tab === $current ) ? ' nav-tab-active' : '';
 			$out  .= '<a class="nav-tab' . $class . '" href="' . remove_query_arg( 'settings-updated', add_query_arg( 'tab', $tab ) ) . '">' . $name . '</a>';
 		}
 		$out .= '</h3>';
@@ -106,7 +124,7 @@ class EL_Admin_Settings {
 
 
 	public function embed_settings_scripts() {
-		wp_enqueue_style( 'eventlist_admin_settings', EL_URL . 'admin/css/admin_settings.css' );
+		wp_enqueue_style( 'eventlist_admin_settings', EL_URL . 'admin/css/admin_settings.css', array(), '1.0' );
 	}
 
 }
