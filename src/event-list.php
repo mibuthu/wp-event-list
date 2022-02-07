@@ -96,7 +96,8 @@ class Event_List {
 			// Init admin page
 			require_once EL_PATH . 'admin/admin.php';
 			EL_Admin::get_instance();
-		} else {  // Front page
+		} else {
+			// Front page
 			// Register actions
 			add_action( 'wp_print_styles', array( &$this, 'print_styles' ) );
 		}
@@ -111,7 +112,8 @@ class Event_List {
 	public function load_textdomain() {
 		$el_lang_path = basename( EL_PATH ) . '/languages';
 		$domain       = 'event-list';
-		if ( '' !== get_option( 'el_mo_lang_dir_first', '' ) ) { // this->option->get not available in this early stage
+		if ( '' !== get_option( 'el_mo_lang_dir_first', '' ) ) {
+			// this->option->get not available in this early stage
 			// Use default WordPress function (language files from language dir wp-content/languages/plugins/ are preferred)
 			load_plugin_textdomain( $domain, false, $el_lang_path );
 		} else {
