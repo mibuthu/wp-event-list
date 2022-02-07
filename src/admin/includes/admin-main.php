@@ -1,4 +1,21 @@
 <?php
+/**
+ * The main class for the admin pages
+ *
+ * TODO: Fix phan warnings to remove the suppressed checks
+ *
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPublicMethod
+ * @phan-file-suppress PhanPluginUnknownPropertyType
+ * @phan-file-suppress PhanPluginUnknownMethodParamType
+ * @phan-file-suppress PhanPluginUnknownMethodReturnType
+ * @phan-file-suppress PhanPluginRemoveDebugEcho
+ * @phan-file-suppress PhanPartialTypeMismatchArgument
+ * @phan-file-suppress PhanTypeMismatchProperty
+ *
+ * @package event-list
+ */
+
 if ( ! defined( 'WP_ADMIN' ) ) {
 	exit;
 }
@@ -18,6 +35,11 @@ class EL_Admin_Main {
 
 	private $options;
 
+	/**
+	 * The event post type
+	 *
+	 * @var EL_Events_Post_Type
+	 */
 	private $events_post_type;
 
 	private $filterbar;
@@ -62,23 +84,26 @@ class EL_Admin_Main {
 	}
 
 
-	/** ************************************************************************
+	/**
 	 * This method dictates the table's columns and titles. This should returns
 	 * an array where the key is the column slug (and class) and the value is
 	 * the column's title text.
 	 *
 	 * @see WP_List_Table::::single_row_columns()
-	 * @return array An associative array containing column information: 'slugs'=>'Visible Titles'
-	 ***************************************************************************/
+	 *
+	 * @param array<string,string> $columns The columns
+	 * @return array<string,string> An associative array containing column information: 'slugs'=>'Visible Titles'
+	 */
 	public function events_edit_columns( $columns ) {
 		return array(
-			'cb'        => '<input type="checkbox" />', // Render a checkbox instead of text
+			// Render a checkbox instead of text
+			'cb'        => '<input type="checkbox" />',
 			'eventdate' => __( 'Event Date', 'event-list' ),
 			'title'     => __( 'Title', 'event-list' ),
 			'location'  => __( 'Location', 'event-list' ),
-			'taxonomy-' . $this->events_post_type->taxonomy => __( 'Categories' ),
+			'taxonomy-' . $this->events_post_type->taxonomy => __( 'Categories', 'default' ),
 			'author'    => __( 'Author', 'event-list' ),
-			'date'      => __( 'Date' ),
+			'date'      => __( 'Date', 'default' ),
 		);
 	}
 
@@ -87,11 +112,11 @@ class EL_Admin_Main {
 		switch ( $column_name ) {
 			case 'eventdate':
 				$event = new EL_Event( $pid );
-				echo $this->format_event_date( $event->startdate, $event->enddate, $event->starttime_i18n() );
+				echo esc_html( $this->format_event_date( $event->startdate, $event->enddate, $event->starttime_i18n() ) );
 				break;
 			case 'location':
 				$event = new EL_Event( $pid );
-				echo $event->location;
+				echo esc_html( $event->location );
 				break;
 		}
 	}
@@ -156,15 +181,15 @@ class EL_Admin_Main {
 		global $cat;
 		// check used get parameters
 		// set default date ("upcoming" for All, Published; "all" for everything else)
-		$selected_status       = isset( $_GET['post_status'] ) ? sanitize_key( $_GET['post_status'] ) : 'publish';
-		$default_date          = 'publish' === $selected_status ? 'upcoming' : 'all';
-		$args['selected_date'] = isset( $_GET['date'] ) ? sanitize_key( $_GET['date'] ) : $default_date;
+		$selected_status = isset( $_GET['post_status'] ) ? sanitize_key( $_GET['post_status'] ) : 'publish';
+		$default_date    = 'publish' === $selected_status ? 'upcoming' : 'all';
+		$args            = array( 'selected_date' => isset( $_GET['date'] ) ? sanitize_key( $_GET['date'] ) : $default_date );
 
 		// date filter
-		echo( $this->filterbar->show_years( admin_url( 'edit.php?post_type=el_events' ), $args, 'dropdown', array( 'show_past' => true ) ) );
+		echo( esc_html( $this->filterbar->show_years( admin_url( 'edit.php?post_type=el_events' ), $args, 'dropdown', array( 'show_past' => true ) ) ) );
 		// cat filter
 		$cat_args = array(
-			'show_option_all' => __( 'All Categories' ),
+			'show_option_all' => __( 'All Categories', 'default' ),
 			'taxonomy'        => $this->events_post_type->taxonomy,
 			'orderby'         => 'name',
 			'hierarchical'    => true,
@@ -181,6 +206,13 @@ class EL_Admin_Main {
 	}
 
 
+	/**
+	 * Filter the request
+	 *
+	 * @param WP_Query $query The WordPress Query class
+	 * @return void
+	 * @suppress PhanPluginMixedKeyNoKey
+	 */
 	public function filter_request( $query ) {
 		// Check used get parameters
 		$default_date  = $this->is_trash ? 'all' : 'upcoming';
@@ -188,7 +220,7 @@ class EL_Admin_Main {
 
 		$meta_query = array( 'relation' => 'AND' );
 		// date filter
-		$date_for_startrange = ( '' == $this->options->get( 'el_multiday_filterrange' ) ) ? 'startdate' : 'enddate';
+		$date_for_startrange = ( '' === $this->options->get( 'el_multiday_filterrange' ) ) ? 'startdate' : 'enddate';
 		$date_range          = EL_Daterange::get_instance()->check_daterange_format( $selected_date );
 		if ( empty( $date_range ) ) {
 			$date_range = EL_Daterange::get_instance()->check_date_format( $selected_date );
@@ -218,12 +250,15 @@ class EL_Admin_Main {
 	}
 
 
-	/*
-	 Reload the page to show all events when:
-	 * - published events are selected
-	 * - no specific date is selected
-	 * - no upcoming events are available
-	*/
+	/**
+	 * Reload the page to show all events when:
+	 *  - published events are selected
+	 *  - no specific date is selected
+	 *  - no upcoming events are available
+	 *
+	 * @param EL_Event[] $events The events
+	 * @return EL_Event[]
+	 */
 	public function check_events_results( $events ) {
 		$selected_status = isset( $_GET['post_status'] ) ? sanitize_key( $_GET['post_status'] ) : 'publish';
 		$date_selected   = isset( $_GET['date'] );
@@ -238,7 +273,7 @@ class EL_Admin_Main {
 	public function set_default_posts_list_mode() {
 		// check used get parameters
 		$post_type = isset( $_GET['post_type'] ) ? sanitize_key( $_GET['post_type'] ) : '';
-		$mode      = isset( $_REQUEST['mode'] ) ? sanitize_title( $_REQUEST['mode'] ) : '';
+		$mode      = isset( $_REQUEST['mode'] ) ? sanitize_title( wp_unslash( $_REQUEST['mode'] ) ) : '';
 
 		if ( 'el_events' === $post_type && empty( $_REQUEST['mode'] ) ) {
 			$_REQUEST['mode'] = 'excerpt';
@@ -247,32 +282,32 @@ class EL_Admin_Main {
 
 
 	public function embed_scripts() {
-		wp_enqueue_style( 'eventlist_admin_main', EL_URL . 'admin/css/admin_main.css' );
+		wp_enqueue_style( 'eventlist_admin_main', EL_URL . 'admin/css/admin_main.css', array(), '1.0' );
 	}
 
 
 	public function add_import_button() {
 		echo '
 			<script>jQuery(document).ready(function($) { items = $("a.page-title-action").length ? $("a.page-title-action") : $("a.add-new-h2"); ' .
-			'items.first().after(\'<a href="' . admin_url( 'edit.php?post_type=el_events&page=el_admin_import' ) . '" class="add-new-h2">' . __( 'Import', 'event-list' ) . '</a>\'); });</script>';
+			'items.first().after(\'<a href="' . admin_url( 'edit.php?post_type=el_events&page=el_admin_import' ) . '" class="add-new-h2">' . esc_html( __( 'Import', 'event-list' ) ) . '</a>\'); });</script>';
 	}
 
 
-		/** ************************************************************************
-		 * In this function the start date, the end date and time is formated for
-		 * the output.
-		 *
-		 * @param string $startdate The start date of the event
-		 * @param string $enddate The end date of the event
-		 * @param string $starttime The start time of the event
-		 ***************************************************************************/
+	/** ************************************************************************
+	 * In this function the start date, the end date and time is formated for
+	 * the output.
+	 *
+	 * @param string $startdate The start date of the event
+	 * @param string $enddate The end date of the event
+	 * @param string $starttime The start time of the event
+	 ***************************************************************************/
 	private function format_event_date( $startdate, $enddate, $starttime ) {
 		$out = '<span style="white-space:nowrap;">';
 		// start date
-		$out .= mysql2date( __( 'Y/m/d' ), $startdate );
+		$out .= mysql2date( __( 'Y/m/d', 'default' ), $startdate );
 		// end date for multiday event
 		if ( $startdate !== $enddate ) {
-			$out .= ' -<br />' . mysql2date( __( 'Y/m/d' ), $enddate );
+			$out .= ' -<br />' . mysql2date( __( 'Y/m/d', 'default' ), $enddate );
 		}
 		// event starttime
 		if ( '' !== $starttime ) {
