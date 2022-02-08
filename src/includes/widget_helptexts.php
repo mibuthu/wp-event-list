@@ -35,8 +35,13 @@ $widget_items_helptexts = array(
 		'type'          => 'text',
 		'caption'       => __( 'Truncate event title to', 'event-list' ),
 		'caption_after' => __( 'characters', 'event-list' ),
-		'tooltip'       => __( 'This option defines the number of displayed characters for the event title.', 'event-list' ) . ' ' .
-						   sprintf( __( 'Set this value to %1$s to view the full text, or set it to %2$s to automatically truncate the text via css.', 'event-list' ), '[0]', '[auto]' ),
+		'tooltip'       =>
+			__( 'This option defines the number of displayed characters for the event title.', 'event-list' ) . ' ' .
+			sprintf(
+				__( 'Set this value to %1$s to view the full text, or set it to %2$s to automatically truncate the text via css.', 'event-list' ),
+				'[0]',
+				'[auto]'
+			),
 		'form_style'    => null,
 		'form_width'    => 40,
 	),
@@ -63,8 +68,13 @@ $widget_items_helptexts = array(
 		'type'          => 'text',
 		'caption'       => __( 'Truncate location to', 'event-list' ),
 		'caption_after' => __( 'characters', 'event-list' ),
-		'tooltip'       => __( 'If the event location is diplayed this option defines the number of displayed characters.', 'event-list' ) . ' ' .
-						   sprintf( __( 'Set this value to %1$s to view the full text, or set it to %2$s to automatically truncate the text via css.', 'event-list' ), '[0]', '[auto]' ),
+		'tooltip'       =>
+			__( 'If the event location is diplayed this option defines the number of displayed characters.', 'event-list' ) . ' ' .
+			sprintf(
+				__( 'Set this value to %1$s to view the full text, or set it to %2$s to automatically truncate the text via css.', 'event-list' ),
+				'[0]',
+				'[auto]'
+			),
 		'form_style'    => 'margin:0 0 0.6em 0.9em',
 		'form_width'    => 40,
 	),
@@ -91,8 +101,12 @@ $widget_items_helptexts = array(
 		'type'          => 'text',
 		'caption'       => __( 'Truncate content to', 'event-list' ),
 		'caption_after' => __( 'characters', 'event-list' ),
-		'tooltip'       => __( 'If the event content are diplayed this option defines the number of diplayed characters.', 'event-list' ) . ' ' .
-						   sprintf( __( 'Set this value to %1$s to view the full text.', 'event-list' ), '[0]' ),
+		'tooltip'       =>
+			__( 'If the event content are diplayed this option defines the number of diplayed characters.', 'event-list' ) . ' ' .
+			sprintf(
+				__( 'Set this value to %1$s to view the full text.', 'event-list' ),
+				'[0]'
+			),
 		'form_style'    => 'margin:0 0 0.6em 0.9em',
 		'form_width'    => 40,
 	),
