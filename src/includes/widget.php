@@ -1,4 +1,20 @@
 <?php
+/**
+ * This file includes the EL_Widget class which handles the event-list widget
+ *
+ * TODO: Fix phan warnings to remove the suppressed checks
+ *
+ * @phan-file-suppress PhanPluginNoCommentOnPublicProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPublicMethod
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateMethod
+ * @phan-file-suppress PhanPluginUnknownPropertyType
+ * @phan-file-suppress PhanPluginUnknownMethodReturnType
+ * @phan-file-suppress PhanPluginRemoveDebugEcho
+ *
+ * @package event-list
+ */
+
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
@@ -16,9 +32,12 @@ class EL_Widget extends WP_Widget {
 	 */
 	public function __construct() {
 		parent::__construct(
-			'event_list_widget', // Base ID
-			'Event List', // Name
-			array( 'description' => __( 'With this widget a list of upcoming events can be displayed.', 'event-list' ) ) // Args
+			// Base ID
+			'event_list_widget',
+			// Name
+			'Event List',
+			// Args
+			array( 'description' => __( 'With this widget a list of upcoming events can be displayed.', 'event-list' ) )
 		);
 
 		// define all available items
@@ -46,7 +65,8 @@ class EL_Widget extends WP_Widget {
 
 	public function load_widget_items_helptexts() {
 		require_once EL_PATH . 'includes/widget_helptexts.php';
-		foreach ( $widget_items_helptexts as $name => $values ) {
+		// @phan-suppress-next-line PhanUndeclaredVariable
+		foreach ( (array) $widget_items_helptexts as $name => $values ) {
 			$this->items[ $name ] += $values;
 		}
 		unset( $widget_items_helptexts );
@@ -58,8 +78,8 @@ class EL_Widget extends WP_Widget {
 	 *
 	 * @see WP_Widget::widget()
 	 *
-	 * @param array $args     Widget arguments.
-	 * @param array $instance Saved values from database.
+	 * @param array<string,string> $args     Widget arguments.
+	 * @param array<string,string> $instance Saved values from database.
 	 */
 	public function widget( $args, $instance ) {
 		$this->prepare_instance( $instance );
@@ -103,18 +123,19 @@ class EL_Widget extends WP_Widget {
 	 *
 	 * @see WP_Widget::update()
 	 *
-	 * @param array $new_instance Values just sent to be saved.
-	 * @param array $old_instance Previously saved values from database.
+	 * @param array<string,string> $new_instance Values just sent to be saved.
+	 * @param array<string,string> $old_instance Previously saved values from database.
 	 *
-	 * @return array Updated values to be saved.
+	 * @return array<string,string> Updated values to be saved.
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();
 		foreach ( $this->items as $itemname => $item ) {
 			if ( 'checkbox' === $item['type'] ) {
-				$instance[ $itemname ] = ( isset( $new_instance[ $itemname ] ) && 1 == $new_instance[ $itemname ] ) ? 'true' : 'false';
-			} else { // 'text'
-				$instance[ $itemname ] = strip_tags( $new_instance[ $itemname ] );
+				$instance[ $itemname ] = ( isset( $new_instance[ $itemname ] ) && 1 === intval( $new_instance[ $itemname ] ) ) ? 'true' : 'false';
+			} else {
+				// 'text'
+				$instance[ $itemname ] = wp_strip_all_tags( $new_instance[ $itemname ] );
 			}
 		}
 		return $instance;
@@ -126,23 +147,26 @@ class EL_Widget extends WP_Widget {
 	 *
 	 * @see WP_Widget::form()
 	 *
-	 * @param array $instance Previously saved values from database.
+	 * @param array<string,string> $instance Previously saved values from database.
+	 * @return string
 	 */
 	public function form( $instance ) {
 		$this->upgrade_widget( $instance );
 		$out = '';
 		foreach ( $this->items as $itemname => $item ) {
+			$itemname = strval( $itemname );
 			if ( ! isset( $instance[ $itemname ] ) ) {
 				$instance[ $itemname ] = $item['std_value'];
 			}
 			$style_text = ( null === $item['form_style'] ) ? '' : ' style="' . $item['form_style'] . '"';
 			if ( 'checkbox' === $item['type'] ) {
-				$checked_text = ( 'true' === $instance[ $itemname ] || 1 == $instance[ $itemname ] ) ? 'checked = "checked" ' : '';
+				$checked_text = ( 'true' === $instance[ $itemname ] || 1 === intval( $instance[ $itemname ] ) ) ? 'checked = "checked" ' : '';
 				$out         .= '
 					<p' . $style_text . ' title="' . $item['tooltip'] . '">
 						<label><input class="widefat" id="' . $this->get_field_id( $itemname ) . '" name="' . $this->get_field_name( $itemname ) . '" type="checkbox" ' . $checked_text . 'value="1" /> ' . $item['caption'] . '</label>
 					</p>';
-			} else { // 'text'
+			} else {
+				// 'text'
 				$width_text         = ( null === $item['form_width'] ) ? '' : 'style="width:' . $item['form_width'] . 'px" ';
 				$caption_after_text = ( null === $item['caption_after'] ) ? '' : '<label>' . $item['caption_after'] . '</label>';
 				$out               .= '
@@ -153,6 +177,7 @@ class EL_Widget extends WP_Widget {
 			}
 		}
 		echo $out;
+		return 'form';
 	}
 
 
@@ -161,7 +186,7 @@ class EL_Widget extends WP_Widget {
 	 *
 	 * This is required for a plugin upgrades: In existing widgets laster added widget options are not available.
 	 *
-	 * @param array &$instance Previously saved values from database.
+	 * @param array<string,string> $instance Previously saved values from database.
 	 */
 	private function prepare_instance( &$instance ) {
 		foreach ( $this->items as $itemname => $item ) {
@@ -175,8 +200,8 @@ class EL_Widget extends WP_Widget {
 	/**
 	 * Upgrades which are required due to modifications in the widget args
 	 *
-	 * @param array $instance     Values from the database
-	 * @param bool  $on_frontpage true if the frontpage is displayed, false if the admin page is displayed
+	 * @param array<string,string> $instance     Values from the database
+	 * @param bool                 $on_frontpage true if the frontpage is displayed, false if the admin page is displayed
 	 */
 	private function upgrade_widget( &$instance, $on_frontpage = false ) {
 		$upgrade_required = false;
