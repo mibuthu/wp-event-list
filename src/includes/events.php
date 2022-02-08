@@ -1,4 +1,25 @@
 <?php
+/**
+ * The events class
+ *
+ * TODO: Fix phan warnings to remove the suppressed checks
+ *
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPublicMethod
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateMethod
+ * @phan-file-suppress PhanPluginUnknownPropertyType
+ * @phan-file-suppress PhanPluginUnknownMethodParamType
+ * @phan-file-suppress PhanPluginUnknownMethodReturnType
+ * @phan-file-suppress PhanImpossibleTypeComparison
+ *
+ * @package event-list
+ */
+
+// TODO: Fix phpcs warnings to remove the disabled checks
+// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching
+
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
@@ -93,8 +114,9 @@ class EL_Events {
 		}
 		$event_sql = $this->get_events_sql( $options );
 		$where     = $this->get_sql_filter_string( $options['date_filter'], $options['cat_filter'] );
-		if ( 'desc' != $options['order'] ) {
-			$options['order'] = 'asc';   // standard order is ASC
+		if ( 'desc' !== $options['order'] ) {
+			$options['order'] = 'asc';
+			// standard order is ASC
 		}
 		$sql    = 'SELECT DISTINCT ' . $distinct . ' AS listitems FROM (' . $event_sql . ' WHERE ' . $where . ') AS filterlist ORDER BY listitems ' . strtoupper( $options['order'] );
 		$result = wp_list_pluck( $wpdb->get_results( $sql ), 'listitems' );
@@ -116,7 +138,7 @@ class EL_Events {
 			foreach ( $result as $cat ) {
 				$terms[] = $this->get_cat_by_slug( $cat );
 			}
-			/*
+			/**
 			* Separate elements into two buckets: top level and children elements.
 			* Children_elements is two dimensional array, eg.
 			* Children_elements[10][] contains all sub-elements whose parent is 10.
@@ -181,10 +203,10 @@ class EL_Events {
 		}
 		if ( $options['incl_categories'] ) {
 			$sql .= ', (CONCAT("|", (SELECT GROUP_CONCAT(' . $wpdb->terms . '.slug SEPARATOR "|") FROM ' . $wpdb->terms
-				   . ' INNER JOIN ' . $wpdb->term_taxonomy . ' ON ' . $wpdb->terms . '.term_id = ' . $wpdb->term_taxonomy . '.term_id'
-				   . ' INNER JOIN ' . $wpdb->term_relationships . ' wpr ON wpr.term_taxonomy_id = ' . $wpdb->term_taxonomy . '.term_taxonomy_id'
-				   . ' WHERE taxonomy= "' . $this->events_post_type->taxonomy . '" AND ' . $wpdb->posts . '.ID = wpr.object_id'
-				   . '), "|")) AS categories';
+				. ' INNER JOIN ' . $wpdb->term_taxonomy . ' ON ' . $wpdb->terms . '.term_id = ' . $wpdb->term_taxonomy . '.term_id'
+				. ' INNER JOIN ' . $wpdb->term_relationships . ' wpr ON wpr.term_taxonomy_id = ' . $wpdb->term_taxonomy . '.term_taxonomy_id'
+				. ' WHERE taxonomy= "' . $this->events_post_type->taxonomy . '" AND ' . $wpdb->posts . '.ID = wpr.object_id'
+				. '), "|")) AS categories';
 		}
 		$status_sql = empty( $options['status'] ) ? '' : ' AND post_status = "' . $options['status'] . '"';
 		$sql       .= ' FROM ' . $wpdb->posts . ' WHERE post_type = "el_events"' . $status_sql . ') AS events';
@@ -194,35 +216,14 @@ class EL_Events {
 
 	public function get_num_events( $status = 'publish' ) {
 		$count = wp_count_posts( 'el_events' );
-		// return special case 'all'
+		// return the special case 'all'
 		if ( 'all' === $status ) {
 			return $count->publish + $count->future + $count->draft + $count->pending + $count->private;
 		}
-		if ( in_array( $status, array( 'publish', 'future', 'draft', 'pending', 'private', 'trash', 'auto-draft', 'inherit' ) ) ) {
+		if ( in_array( $status, array( 'publish', 'future', 'draft', 'pending', 'private', 'trash', 'auto-draft', 'inherit' ), true ) ) {
 			return $count->$status;
 		}
 		return false;
-	}
-
-
-	public function delete_events( $id_array ) {
-		global $wpdb;
-		// sanitize to int values only
-		$id_array = array_map( 'intval', $id_array );
-		if ( in_array( 0, $id_array ) ) {
-			// something is wrong with the event_ids array
-			return false;
-		}
-		// sql query
-		$num_deleted = intval( $wpdb->query( 'DELETE FROM ' . $this->table . ' WHERE id IN (' . implode( ',', $id_array ) . ')' ) );
-		return $num_deleted == count( $id_array );
-	}
-
-
-	public function count_events( $slug ) {
-		global $wpdb;
-		$sql = 'SELECT COUNT(*) FROM ' . $this->table . ' WHERE categories LIKE "%|' . $slug . '|%"';
-		return $wpdb->get_var( $sql );
 	}
 
 
@@ -230,20 +231,21 @@ class EL_Events {
 		$sql_filter_string = '';
 		// date filter
 		$date_filter = str_replace( ' ', '', $date_filter );
-		if ( null != $date_filter && 'all' != $date_filter && '' != $date_filter ) {
+		if ( null !== $date_filter && 'all' !== $date_filter && '' !== $date_filter ) {
 			$sql_filter_string .= $this->filter_walker( $date_filter, 'sql_date_filter' );
 		}
 		// cat_filter
 		$cat_filter = str_replace( ' ', '', $cat_filter );
-		if ( null != $cat_filter && 'all' != $cat_filter && '' != $cat_filter ) {
-			if ( '' != $sql_filter_string ) {
+		if ( null !== $cat_filter && 'all' !== $cat_filter && '' !== $cat_filter ) {
+			if ( '' !== $sql_filter_string ) {
 				$sql_filter_string .= ' AND ';
 			}
 			$sql_filter_string .= $this->filter_walker( $cat_filter, 'sql_cat_filter' );
 		}
 		// no filter
-		if ( '' == $sql_filter_string ) {
-			$sql_filter_string = '1';   // in SQL "WHERE 1" is used to show all events
+		if ( '' === $sql_filter_string ) {
+			// in SQL "WHERE 1" can be used to show all events
+			$sql_filter_string = '1';
 		}
 		return $sql_filter_string;
 	}
@@ -262,7 +264,7 @@ class EL_Events {
 		$filter_length  = strlen( $filter_text );
 		$filter_sql     = '(';
 		for ( $i = 0; $i < $filter_length; $i++ ) {
-			if ( in_array( $filter_text[ $i ], $delimiter_keys ) ) {
+			if ( in_array( $filter_text[ $i ], $delimiter_keys, true ) ) {
 				if ( '' !== $element ) {
 					$filter_sql .= call_user_func( array( $this, $callback ), $element );
 					$element     = '';
@@ -288,7 +290,7 @@ class EL_Events {
 			// set to standard (upcoming)
 			$range = $this->daterange->get_date_range( $element, $this->options->daterange_formats['upcoming'] );
 		}
-		$date_for_startrange = ( '' == $this->options->get( 'el_multiday_filterrange' ) ) ? 'startdate' : 'enddate';
+		$date_for_startrange = ( '' === $this->options->get( 'el_multiday_filterrange' ) ) ? 'startdate' : 'enddate';
 		return '(' . $date_for_startrange . ' >= "' . $range[0] . '" AND startdate <= "' . $range[1] . '")';
 	}
 
