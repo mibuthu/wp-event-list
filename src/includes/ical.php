@@ -1,4 +1,21 @@
 <?php
+/**
+ * The ICAL class
+ *
+ * TODO: Fix phan warnings to remove the suppressed checks
+ *
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPublicMethod
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateMethod
+ * @phan-file-suppress PhanPluginUnknownPropertyType
+ * @phan-file-suppress PhanPluginUnknownMethodParamType
+ * @phan-file-suppress PhanPluginUnknownMethodReturnType
+ * @phan-file-suppress PhanPluginRemoveDebugEcho
+ * @phan-file-suppress PhanPossiblyFalseTypeArgument
+ *
+ * @package event-list
+ */
+
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
@@ -6,7 +23,9 @@ if ( ! defined( 'WPINC' ) ) {
 require_once EL_PATH . 'includes/options.php';
 require_once EL_PATH . 'includes/events.php';
 
-// This class handles iCal feed
+/**
+ * This class handles iCal feed
+ */
 class EL_ICal {
 
 	private static $instance;
@@ -55,17 +74,17 @@ class EL_ICal {
 		'VERSION:2.0' . $eol .
 		'PRODID:-//' . get_bloginfo( 'name' ) . '//NONSGML v1.0//EN' . $eol .
 		'CALSCALE:GREGORIAN' . $eol .
-		'UID:' . md5( uniqid( mt_rand(), true ) ) . '@' . get_bloginfo( 'name' ) . $eol;
+		'UID:' . md5( uniqid( strval( wp_rand() ), true ) ) . '@' . get_bloginfo( 'name' ) . $eol;
 
 		if ( ! empty( $events ) ) {
 			foreach ( $events as $event ) {
 				echo 'BEGIN:VEVENT' . $eol .
-					'UID:' . md5( uniqid( mt_rand(), true ) ) . '@' . get_bloginfo( 'name' ) . $eol .
+					'UID:' . md5( uniqid( strval( wp_rand() ), true ) ) . '@' . get_bloginfo( 'name' ) . $eol .
 					'DTSTART:' . mysql2date( 'Ymd', $event->startdate, false ) . get_gmt_from_date( $event->starttime, '\THis\Z' ) . $eol;
 				if ( $event->enddate !== $event->startdate ) {
 					echo 'DTEND:' . mysql2date( 'Ymd', $event->enddate, false ) . $eol;
 				}
-				echo 'DTSTAMP:' . date( 'Ymd\THis\Z' ) . $eol .
+				echo 'DTSTAMP:' . gmdate( 'Ymd\THis\Z' ) . $eol .
 					'LOCATION:' . $event->location . $eol .
 					'SUMMARY:' . $this->sanitize_feed_text( $event->title ) . $eol;
 				if ( ! empty( $event->content ) ) {
@@ -79,15 +98,14 @@ class EL_ICal {
 
 
 	public function update_ical_rewrite_status() {
-		$feeds               = array_keys( (array) get_option( 'rewrite_rules' ), 'index.php?&feed=$matches[1]' );
+		$feeds               = array_keys( (array) get_option( 'rewrite_rules' ), 'index.php?&feed=$matches[1]', true );
 		$feed_rewrite_status = 0 < count( preg_grep( '@[(\|]' . $this->get_feed_name() . '[\|)]@', $feeds ) );
-		// if iCal is enabled but rewrite rules do not exist already, flush rewrite rules
-		if ( '1' == $this->options->get( 'el_feed_enable_ical' ) && ! $feed_rewrite_status ) {
+		if ( '1' === $this->options->get( 'el_feed_enable_ical' ) && ! $feed_rewrite_status ) {
+			// if iCal is enabled but rewrite rules do not exist already, flush rewrite rules
 			// result: add eventlist ical to rewrite rules
 			flush_rewrite_rules( false );
-		}
-		// if iCal is disabled but rewrite rules do exist already, flush rewrite rules also
-		elseif ( '1' != $this->options->get( 'el_feed_enable_ical' ) && $feed_rewrite_status ) {
+		} elseif ( '1' !== $this->options->get( 'el_feed_enable_ical' ) && $feed_rewrite_status ) {
+			// if iCal is disabled but rewrite rules do exist already, flush rewrite rules also
 			// result: remove eventlist ical from rewrite rules
 			flush_rewrite_rules( false );
 		}
