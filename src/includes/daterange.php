@@ -1,9 +1,32 @@
 <?php
+/**
+ * The class to handle date ranges
+ *
+ * TODO: Fix phan warnings to remove the suppressed checks
+ *
+ * @phan-file-suppress PhanPluginNoCommentOnPublicProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPublicMethod
+ * @phan-file-suppress PhanPluginUnknownPropertyType
+ * @phan-file-suppress PhanPluginUnknownMethodParamType
+ * @phan-file-suppress PhanPluginUnknownMethodReturnType
+ * @phan-file-suppress PhanPartialTypeMismatchArgumentInternal
+ * @phan-file-suppress PhanPossiblyFalseTypeArgumentInternal
+ * @phan-file-suppress PhanTypeArraySuspiciousNullable
+ *
+ * @package event-list
+ */
+
+// TODO: Fix phpcs warnings to remove the disabled checks
+// phpcs:disable WordPress.WhiteSpace.ControlStructureSpacing.BlankLineAfterEnd
+
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
 
-// Class for database access via WordPress functions
+/**
+ * Class for database access via WordPress functions
+ */
 class EL_Daterange {
 
 	private static $instance;
@@ -63,11 +86,11 @@ class EL_Daterange {
 			// replace special values due to some date calculation problems,
 			// then calculate the new date
 			// and at last remove calculated days to get first day of the week (acc. start_of_week option), add 6 day for end date (- sign due to - for first day calculation)
-		'rel_day'       => array(
-			'regex' => '^((([+-]?\d+|last|previous|next|this)_day[s]?)|yesterday|today|tomorrow)$',
-			'start' => '--func--date("Y-m-d", strtotime(str_replace("_", " ", "%v%")));',
-			'end'   => '--func--date("Y-m-d", strtotime(str_replace("_", " ", "%v%")));',
-		),
+			'rel_day'   => array(
+				'regex' => '^((([+-]?\d+|last|previous|next|this)_day[s]?)|yesterday|today|tomorrow)$',
+				'start' => '--func--date("Y-m-d", strtotime(str_replace("_", " ", "%v%")));',
+				'end'   => '--func--date("Y-m-d", strtotime(str_replace("_", " ", "%v%")));',
+			),
 		);
 		$this->daterange_formats = array(
 			'date_range' => array( 'regex' => '.+~.+' ),
@@ -84,19 +107,27 @@ class EL_Daterange {
 			'past'       => array(
 				'regex' => '^past$',
 				'start' => '1970-01-01',
+				// previous day (86400 seconds = 1*24*60*60 = 1 day
 				'end'   => '--func--date("Y-m-d", current_time("timestamp")-86400);',
-			),  // previous day (86400 seconds = 1*24*60*60 = 1 day
+			),
 		);
 	}
 
 
+	/**
+	 * Load the formats help texts required for the admin page
+	 *
+	 * @return void
+	 *
+	 * @suppress PhanUndeclaredVariable
+	 */
 	public function load_formats_helptexts() {
 		require_once EL_PATH . 'includes/daterange_helptexts.php';
-		foreach ( $date_formats_helptexts as $name => $values ) {
+		foreach ( (array) $date_formats_helptexts as $name => $values ) {
 			$this->date_formats[ $name ] += $values;
 		}
 		unset( $date_formats_helptexts );
-		foreach ( $daterange_formats_helptexts as $name => $values ) {
+		foreach ( (array) $daterange_formats_helptexts as $name => $values ) {
 			$this->daterange_formats[ $name ] += $values;
 		}
 		unset( $daterange_formats_helptexts );
@@ -117,7 +148,7 @@ class EL_Daterange {
 		foreach ( $this->daterange_formats as $key => $daterange_type ) {
 			if ( preg_match( '@' . $daterange_type['regex'] . '@', $element ) ) {
 				// check for date_range which requires special handling
-				if ( 'date_range' == $key ) {
+				if ( 'date_range' === $key ) {
 					$sep_pos    = strpos( $element, '~' );
 					$startrange = $this->check_date_format( substr( $element, 0, $sep_pos ), 'start' );
 					$endrange   = $this->check_date_format( substr( $element, $sep_pos + 1 ), 'end' );
@@ -130,20 +161,35 @@ class EL_Daterange {
 	}
 
 
+	/**
+	 * Get the date range of an element
+	 *
+	 * @param string               $element The element
+	 * @param array<string,string> $range_type The range type
+	 * @param null|string          $ret_value The return value
+	 * @return string[]
+	 *
+	 * @suppress PhanPluginUnsafeEval
+	 */
 	public function get_date_range( $element, &$range_type, $ret_value = null ) {
-		if ( 'end' != $ret_value ) {
+		$range = array();
+		if ( 'end' !== $ret_value ) {
 			// start date:
 			// set range values by replacing %v% in $range_type string with $element
 			$range[0] = str_replace( '%v%', $element, $range_type['start'] );
 			// enum function if required
-			if ( substr( $range[0], 0, 8 ) == '--func--' ) {  // start
+			if ( substr( $range[0], 0, 8 ) === '--func--' ) {
+				// start
+				// phpcs:ignore Squiz.PHP.Eval.Discouraged
 				eval( '$range[0] = ' . substr( $range[0], 8 ) );
 			}
 		}
-		if ( 'start' != $ret_value ) {
+		if ( 'start' !== $ret_value ) {
 			// same for end date:
 			$range[1] = str_replace( '%v%', $element, $range_type['end'] );
-			if ( substr( $range[1], 0, 8 ) == '--func--' ) {  // end
+			if ( substr( $range[1], 0, 8 ) === '--func--' ) {
+				// end
+				// phpcs:ignore Squiz.PHP.Eval.Discouraged
 				eval( '$range[1] = ' . substr( $range[1], 8 ) );
 			}
 		}
@@ -152,22 +198,34 @@ class EL_Daterange {
 
 }
 
-/*
- create date_create_from_format (DateTime::createFromFormat) alternative for PHP 5.2
+/**
+ * Create date_create_from_format (DateTime::createFromFormat) alternative for PHP 5.2
  */
 if ( ! function_exists( 'date_create_from_format' ) ) {
 
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $dformat The date format
+	 * @param string $dvalue The date value
+	 * @return DateTime
+	 *
+	 * @suppress PhanDeprecatedFunctionInternal
+	 */
 	function date_create_from_format( $dformat, $dvalue ) {
 		$schedule        = $dvalue;
 		$schedule_format = str_replace( array( 'Y', 'm', 'd', 'H', 'i', 'a' ), array( '%Y', '%m', '%d', '%I', '%M', '%p' ), $dformat );
-		$ugly            = strptime( $schedule, $schedule_format );
-		$ymd             = sprintf(
+		// phpcs:ignore Generic.PHP.DeprecatedFunctions.Deprecated
+		$ugly = strptime( $schedule, $schedule_format );
+		$ymd  = sprintf(
 			// This is a format string that takes six total decimal arguments, then left-pads
 			// them with zeros to either 4 or 2 characters, as needed
 			'%04d-%02d-%02d %02d:%02d:%02d',
-			$ugly['tm_year'] + 1900,  // This will be "111", so we need to add 1900.
-			$ugly['tm_mon'] + 1,      // This will be the month minus one, so we add one.
+			// This will be "111", so we need to add 1900.
+			$ugly['tm_year'] + 1900,
+			// This will be the month minus one, so we add one.
+			$ugly['tm_mon'] + 1,
 			$ugly['tm_mday'],
 			$ugly['tm_hour'],
 			$ugly['tm_min'],
@@ -175,5 +233,6 @@ if ( ! function_exists( 'date_create_from_format' ) ) {
 		);
 		return new DateTime( $ymd );
 	}
+
 }
 
