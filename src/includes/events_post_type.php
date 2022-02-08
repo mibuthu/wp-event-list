@@ -1,4 +1,18 @@
 <?php
+/**
+ * The events post type class
+ *
+ * TODO: Fix phan warnings to remove the suppressed checks
+ *
+ * @phan-file-suppress PhanPluginNoCommentOnPublicProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPublicMethod
+ * @phan-file-suppress PhanPluginUnknownPropertyType
+ * @phan-file-suppress PhanPluginUnknownMethodReturnType
+ *
+ * @package event-list
+ */
+
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
@@ -25,7 +39,7 @@ class EL_Events_Post_Type {
 	/**
 	 * Get the singleton instance of the class.
 	 *
-	 * @return  class instance reference
+	 * @return self
 	 */
 	public static function &get_instance() {
 		// Create class instance if required
@@ -40,7 +54,7 @@ class EL_Events_Post_Type {
 	/**
 	 * Constructor which handles all required class preparations
 	 *
-	 * @return  null
+	 * @return void
 	 */
 	private function __construct() {
 		// Register actions and filters
@@ -62,7 +76,7 @@ class EL_Events_Post_Type {
 	/**
 	 * Register the events post type to handle the events.
 	 *
-	 * @return  null
+	 * @return void
 	 */
 	public function register_event_post_type() {
 		$labels = array(
@@ -119,29 +133,29 @@ class EL_Events_Post_Type {
 	/**
 	 * Register the event category taxonomy for handling event categories.
 	 *
-	 * @return
+	 * @return void
 	 */
 	public function register_event_category_taxonomy() {
 		$labels = array(
-			'name'                       => _x( 'Categories', 'taxonomy general name' ),
-			'singular_name'              => _x( 'Category', 'taxonomy singular name' ),
-			'search_items'               => __( 'Search Categories' ),
-			'popular_items'              => __( 'Popular Categories' ),
-			'all_items'                  => __( 'All Categories' ),
+			'name'                       => _x( 'Categories', 'taxonomy general name', 'default' ),
+			'singular_name'              => _x( 'Category', 'taxonomy singular name', 'default' ),
+			'search_items'               => __( 'Search Categories', 'default' ),
+			'popular_items'              => __( 'Popular Categories', 'default' ),
+			'all_items'                  => __( 'All Categories', 'default' ),
 			'parent_item'                => null,
 			'parent_item_colon'          => null,
-			'edit_item'                  => __( 'Edit Category' ),
-			'update_item'                => __( 'Update Category' ),
-			'add_new_item'               => __( 'Add New Category' ),
-			'new_item_name'              => __( 'New Category Name' ),
-			'separate_items_with_commas' => __( 'Separate categories with commas' ),
-			'add_or_remove_items'        => __( 'Add or remove categories' ),
-			'choose_from_most_used'      => __( 'Choose from the most used categories' ),
+			'edit_item'                  => __( 'Edit Category', 'default' ),
+			'update_item'                => __( 'Update Category', 'default' ),
+			'add_new_item'               => __( 'Add New Category', 'default' ),
+			'new_item_name'              => __( 'New Category Name', 'default' ),
+			'separate_items_with_commas' => __( 'Separate categories with commas', 'default' ),
+			'add_or_remove_items'        => __( 'Add or remove categories', 'default' ),
+			'choose_from_most_used'      => __( 'Choose from the most used categories', 'default' ),
 		);
 		$args   = array(
-			'label'              => __( 'Event Category' ),
+			'label'              => __( 'Event Category', 'default' ),
 			'labels'             => $labels,
-			'description'        => __( 'Event category handling' ),
+			'description'        => __( 'Event category handling', 'default' ),
 			'public'             => true,
 			'publicly_queryable' => true,
 			'hierarchical'       => true,
