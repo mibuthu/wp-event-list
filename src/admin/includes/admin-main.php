@@ -112,11 +112,11 @@ class EL_Admin_Main {
 		switch ( $column_name ) {
 			case 'eventdate':
 				$event = new EL_Event( $pid );
-				echo esc_html( $this->format_event_date( $event->startdate, $event->enddate, $event->starttime_i18n() ) );
+				echo $this->format_event_date( $event->startdate, $event->enddate, $event->starttime_i18n() );
 				break;
 			case 'location':
 				$event = new EL_Event( $pid );
-				echo esc_html( $event->location );
+				echo $event->location;
 				break;
 		}
 	}
@@ -186,7 +186,7 @@ class EL_Admin_Main {
 		$args            = array( 'selected_date' => isset( $_GET['date'] ) ? sanitize_key( $_GET['date'] ) : $default_date );
 
 		// date filter
-		echo( esc_html( $this->filterbar->show_years( admin_url( 'edit.php?post_type=el_events' ), $args, 'dropdown', array( 'show_past' => true ) ) ) );
+		echo( $this->filterbar->show_years( admin_url( 'edit.php?post_type=el_events' ), $args, 'dropdown', array( 'show_past' => true ) ) );
 		// cat filter
 		$cat_args = array(
 			'show_option_all' => __( 'All Categories', 'default' ),
@@ -289,7 +289,7 @@ class EL_Admin_Main {
 	public function add_import_button() {
 		echo '
 			<script>jQuery(document).ready(function($) { items = $("a.page-title-action").length ? $("a.page-title-action") : $("a.add-new-h2"); ' .
-			'items.first().after(\'<a href="' . admin_url( 'edit.php?post_type=el_events&page=el_admin_import' ) . '" class="add-new-h2">' . esc_html( __( 'Import', 'event-list' ) ) . '</a>\'); });</script>';
+			'items.first().after(\'<a href="' . admin_url( 'edit.php?post_type=el_events&page=el_admin_import' ) . '" class="add-new-h2">' . __( 'Import', 'event-list' ) . '</a>\'); });</script>';
 	}
 
 
