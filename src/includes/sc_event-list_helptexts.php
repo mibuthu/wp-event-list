@@ -47,7 +47,7 @@ $sc_eventlist_helptexts = array(
 		'desc' =>
 			__( 'This attribute defines the initial order of the events.', 'event-list' ) . '<br />' .
 			sprintf(
-				__( 'With %1$S (default value) the events are sorted from old to new, with %2$s in the opposite direction (from new to old).', 'event-list' ),
+				__( 'With %1$s (default value) the events are sorted from old to new, with %2$s in the opposite direction (from new to old).', 'event-list' ),
 				'"date_asc"',
 				'"date_desc"'
 			),
@@ -128,7 +128,14 @@ $sc_eventlist_helptexts = array(
 			__( 'Find below an overview of the available filterbar items and their options:', 'event-list' ) . '<br />' .
 			sc_eventlist_helptexts_filterbar_table(
 				array(
-					array( '<th class="el-filterbar-item">' . __( 'filterbar item', 'event-list' ), '<th class="el-filterbar-desc">' . __( 'description', 'event-list' ), '<th class="el-filterbar-options">' . __( 'item options', 'event-list' ), '<th class="el-filterbar-values">' . __( 'option values', 'event-list' ), '<th class="el-filterbar-default">' . __( 'default value', 'event-list' ), '<th class="el-filterbar-desc2">' . __( 'option description', 'event-list' ) ),
+					array(
+						'<th class="el-filterbar-item">' . __( 'filterbar item', 'event-list' ),
+						'<th class="el-filterbar-desc">' . __( 'description', 'event-list' ),
+						'<th class="el-filterbar-options">' . __( 'item options', 'event-list' ),
+						'<th class="el-filterbar-values">' . __( 'option values', 'event-list' ),
+						'<th class="el-filterbar-default">' . __( 'default value', 'event-list' ),
+						'<th class="el-filterbar-desc2">' . __( 'option description', 'event-list' ),
+					),
 					array(
 						'<td rowspan="4">years',
 						'<td rowspan="4">' . __( 'Show a list of all available years. Additional there are some special entries available (see item options).', 'event-list' ),
@@ -401,7 +408,7 @@ function sc_eventlist_helptexts_filterbar_table( $tabledata_array ) {
 			<tr>';
 		foreach ( $row as $column_val ) {
 			// opening tag (if required)
-			$out .= ( '<' . substr( $column_val, 0, 3 ) === $tableitem_tag ) ? '' : '<' . $tableitem_tag . '>';
+			$out .= ( substr( $column_val, 0, 3 ) === '<' . $tableitem_tag ) ? '' : '<' . $tableitem_tag . '>';
 			// column value and closing tag
 			$out .= $column_val . '</' . $tableitem_tag . '>';
 		}
