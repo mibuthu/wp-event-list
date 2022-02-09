@@ -1,4 +1,34 @@
 <?php
+/**
+ * The class for version upgrade handling
+ *
+ * TODO: Fix phan warnings to remove the suppressed checks
+ *
+ * @phan-file-suppress PhanPluginNoCommentOnPublicProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPublicMethod
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateMethod
+ * @phan-file-suppress PhanPluginUnknownPropertyType
+ * @phan-file-suppress PhanPluginUnknownMethodParamType
+ * @phan-file-suppress PhanPluginUnknownMethodReturnType
+ * @phan-file-suppress PhanPluginRemoveDebugEcho
+ * @phan-file-suppress PhanPartialTypeMismatchProperty
+ * @phan-file-suppress PhanPartialTypeMismatchArgument
+ * @phan-file-suppress PhanTypeMismatchArgumentProbablyReal
+ *
+ * @package event-list
+ */
+
+// TODO: Fix phpcs warnings to remove the disabled checks
+// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching
+// phpcs:disable WordPress.PHP.NoSilencedErrors.Discouraged
+// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_error_log
+// phpcs:disable WordPress.WP.AlternativeFunctions.file_system_read_fopen
+// phpcs:disable WordPress.WP.AlternativeFunctions.file_system_read_fwrite
+// phpcs:disable WordPress.WP.AlternativeFunctions.file_system_read_fclose
+
 if ( ! defined( 'WP_ADMIN' ) ) {
 	exit;
 }
@@ -46,7 +76,7 @@ class EL_Upgrade {
 
 	public function upgrade() {
 		// check required get parameters
-		$this->resume_version = isset( $_GET['resume-el-upgr'] ) ? str_replace( '-', '.', sanitize_title( $_GET['resume-el-upgr'] ) ) : false;
+		$this->resume_version = isset( $_GET['resume-el-upgr'] ) ? str_replace( '-', '.', sanitize_title( wp_unslash( $_GET['resume-el-upgr'] ) ) ) : false;
 		$this->set_max_exec_time();
 		$this->upgrade_starttime = time();
 		// check upgrade trigger to avoid duplicate updates
@@ -100,7 +130,7 @@ class EL_Upgrade {
 			return false;
 		}
 		// show upgrade message
-		echo 'Event list plugin upgrade in progress &hellip;<br />Please be patience until this process is finished.<br />' .
+		echo 'Event list plugin upgrade in progress &hellip;<br />Please be patience until this process is finished.<br />';
 		flush();
 		return true;
 	}
@@ -144,6 +174,7 @@ class EL_Upgrade {
 		$events_post_type->use_post_categories = false !== get_option( 'el_sync_cats' );
 		$events_post_type->taxonomy            = $events_post_type->use_post_categories ? $events_post_type->post_cat_taxonomy : $events_post_type->event_cat_taxonomy;
 		// re-register events post type with correct taxonomy
+		// @phan-suppress-next-line PhanUndeclaredFunction  The WordPress function unregister_post_type() is existing.
 		unregister_post_type( 'el_events' );
 		$events_post_type->register_event_post_type();
 		// register event_cateogry taxonomy if required
@@ -169,8 +200,10 @@ class EL_Upgrade {
 							continue;
 						}
 						// import event category
-						$args['slug']        = $cat['slug'];
-						$args['description'] = $cat['desc'];
+						$args = array(
+							'slug'        => $cat['slug'],
+							'description' => $cat['desc'],
+						);
 						if ( isset( $cat['parent'] ) ) {
 							$parent = EL_Events::get_instance()->get_cat_by_slug( $cat['parent'] );
 							if ( ! empty( $parent ) ) {
@@ -226,16 +259,18 @@ class EL_Upgrade {
 						continue;
 					}
 					// import event
-					$eventdata['title']      = $event['title'];
-					$eventdata['startdate']  = $event['start_date'];
-					$eventdata['enddate']    = $event['end_date'];
-					$eventdata['starttime']  = $event['time'];
-					$eventdata['location']   = $event['location'];
-					$eventdata['content']    = $event['details'];
-					$eventdata['post_date']  = $event['pub_date'];
-					$eventdata['post_user']  = $event['pub_user'];
-					$eventdata['categories'] = explode( '|', substr( $event['categories'], 1, -1 ) );
-					$ret                     = EL_Event::save( $eventdata );
+					$eventdata = array(
+						'title'      => $event['title'],
+						'startdate'  => $event['start_date'],
+						'enddate'    => $event['end_date'],
+						'starttime'  => $event['time'],
+						'location'   => $event['location'],
+						'content'    => $event['details'],
+						'post_date'  => $event['pub_date'],
+						'post_user'  => $event['pub_user'],
+						'categories' => explode( '|', substr( $event['categories'], 1, -1 ) ),
+					);
+					$ret       = EL_Event::save( $eventdata );
 					if ( empty( $ret ) ) {
 						$this->log( 'Import of event "' . $eventdata['title'] . '" failed!', true, true );
 					} else {
@@ -317,7 +352,7 @@ class EL_Upgrade {
 
 
 	private function is_action_item_completed( $action, $id ) {
-		return in_array( $id, $this->upgr_action_status[ $action ] );
+		return in_array( $id, $this->upgr_action_status[ $action ], true );
 	}
 
 
@@ -532,12 +567,13 @@ class EL_Upgrade {
 	 *  This function prints the error messages to the log file, prepares the text for the admin ui message
 	 *  and sets the error flag (required for the admin ui message)
 	 *
-	 *  @param string    $text   Message text
-	 *  @param bool|null $msg    Print error message:
-	 *                           null:  don't print message to debug log or upgrade log file
-	 *                           false: only print message to debug log
-	 *                           true:  print message to log and upgrade log file
-	 *  @return null
+	 *  @param string    $text  Message text
+	 *  @param bool|null $msg   Print error message:
+	 *                          null:  don't print message to debug log or upgrade log file
+	 *                          false: only print message to debug log
+	 *                          true:  print message to log and upgrade log file
+	 *  @param bool      $error Shall the error be logged
+	 *  @return void
 	 */
 	private function log( $text, $msg = true, $error = false ) {
 		$error_text = '';
@@ -549,26 +585,11 @@ class EL_Upgrade {
 			error_log( 'EL_UPGRADE: ' . $error_text . $text );
 		}
 		if ( $this->logfile_handle && $msg ) {
-			$time = date( '[Y-m-d H:i:s] ', time() );
+			$time = gmdate( '[Y-m-d H:i:s] ' );
 			fwrite( $this->logfile_handle, $time . $error_text . $text . PHP_EOL );
 		}
 	}
 
 }
 
-/** Function to unregister posttype before WordPress version 4.5
- */
-if ( ! function_exists( 'unregister_post_type' ) ) {
-
-
-	function unregister_post_type( $post_type ) {
-		 global $wp_post_types;
-		if ( isset( $wp_post_types[ $post_type ] ) ) {
-			unset( $wp_post_types[ $post_type ] );
-			return true;
-		}
-		 return false;
-	}
-
-}
 
