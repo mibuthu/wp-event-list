@@ -1,4 +1,27 @@
 <?php
+/**
+ * The class to handle the event category functions
+ *
+ * TODO: Fix phan warnings to remove the suppressed checks
+ *
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPublicMethod
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateMethod
+ * @phan-file-suppress PhanPluginUnknownPropertyType
+ * @phan-file-suppress PhanPluginUnknownMethodParamType
+ * @phan-file-suppress PhanPluginUnknownMethodReturnType
+ * @phan-file-suppress PhanPossiblyUndeclaredProperty
+ * @phan-file-suppress PhanPluginDuplicateConditionalNullCoalescing
+ *
+ * @package event-list
+ */
+
+// TODO: Fix phpcs warnings to remove the disabled checks
+// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching
+// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_error_log
+
 if ( ! defined( 'WP_ADMIN' ) ) {
 	exit;
 }
@@ -6,11 +29,18 @@ if ( ! defined( 'WP_ADMIN' ) ) {
 require_once EL_PATH . 'includes/events_post_type.php';
 require_once EL_PATH . 'includes/events.php';
 
-// This class handles general functions which can be used on different admin pages
+/**
+ * This class handles general functions which can be used on different admin pages
+ */
 class EL_Event_Category_Functions {
 
 	private static $instance;
 
+	/**
+	 * The event post type
+	 *
+	 * @var EL_Events_Post_Type
+	 */
 	private $events_post_type;
 
 	private $events;
@@ -33,6 +63,7 @@ class EL_Event_Category_Functions {
 
 
 	public function get_sync_affected_cats( $direction, $types = array( 'to_add', 'to_del', 'to_mod' ) ) {
+		$affected_cats = array();
 		if ( 'to_event_cats' === $direction ) {
 			$this->register_event_category_taxonomy();
 		}
@@ -61,15 +92,15 @@ class EL_Event_Category_Functions {
 			$target_cats = $event_cat_slugs;
 		}
 		// to_add:
-		if ( in_array( 'to_add', $types ) ) {
+		if ( in_array( 'to_add', $types, true ) ) {
 			$affected_cats['to_add'] = array_diff( $source_cats, $target_cats );
 		}
 		// to_del:
-		if ( in_array( 'to_del', $types ) ) {
+		if ( in_array( 'to_del', $types, true ) ) {
 			$affected_cats['to_del'] = array_diff( $target_cats, $source_cats );
 		}
 		// to_mod:
-		if ( in_array( 'to_mod', $types ) ) {
+		if ( in_array( 'to_mod', $types, true ) ) {
 			$cat_intersect = array_intersect( $source_cats, $target_cats );
 			// compare intersect elements and determine which categories require an update
 			$affected_cats['to_mod'] = array();
@@ -85,10 +116,11 @@ class EL_Event_Category_Functions {
 				// parent checking
 				$post_cat_parent  = 0 === $post_cat->parent ? null : get_category( $post_cat->parent );
 				$event_cat_parent = 0 === $event_cat->parent ? null : $this->events->get_cat_by_id( $event_cat->parent );
-				/*
-				 Add to $affected_cats['to_mod'] when:
-				 *  * one of the category is root (parent isnull) and the other is not
-				 *  * both category parent exists (instanceof WP_Term) and parent slug of post and event category are different
+
+				/**
+				 * Add to $affected_cats['to_mod'] when:
+				 *   * one of the category is root (parent isnull) and the other is not
+				 *   * both category parent exists (instanceof WP_Term) and parent slug of post and event category are different
 				 */
 				if ( ( is_null( $post_cat_parent ) xor is_null( $event_cat_parent ) ) ||
 					( $post_cat_parent instanceof WP_Term && $event_cat_parent instanceof WP_Term && ( $post_cat_parent->slug !== $event_cat_parent->slug ) ) ) {
@@ -126,7 +158,8 @@ class EL_Event_Category_Functions {
 					$parent_id = $parent_target_cat instanceof WP_Term ? $parent_target_cat->term_id : 0;
 					$args      = array(
 						'name'        => $source_cat->name,
-						'alias_of'    => isset( $source_cat->alias_of ) ? $source_cat->alias_of : '',  // availability check required for older WordPress versions
+						// availability check required for older WordPress versions
+						'alias_of'    => isset( $source_cat->alias_of ) ? $source_cat->alias_of : '',
 						'description' => $source_cat->description,
 						'parent'      => $parent_id,
 						'slug'        => $source_cat->slug,
@@ -189,7 +222,7 @@ class EL_Event_Category_Functions {
 			$target_taxonomy = $this->events_post_type->post_cat_taxonomy;
 			$use_post_cats   = '1';
 		} else {
-			return WP_Error( 'Wrong direction specified for translate_events_cats!' );
+			return new WP_Error( 'Wrong direction specified for translate_events_cats!' );
 		}
 		// Iterate over all events
 		foreach ( $events as $event ) {
@@ -259,6 +292,7 @@ class EL_Event_Category_Functions {
 
 	private function unregister_event_category_taxonomy() {
 		$this->events_post_type->taxonomy = $this->events_post_type->post_cat_taxonomy;
+		// @phan-suppress-next-line PhanUndeclaredFunction  The WordPress function unregister_taxonimy() exists
 		unregister_taxonomy( $this->events_post_type->event_cat_taxonomy );
 	}
 
@@ -290,25 +324,3 @@ class EL_Event_Category_Functions {
 	}
 
 }
-
-/** Function to unregister taxonomy before WordPress version 4.5
- */
-if ( ! function_exists( 'unregister_taxonomy' ) ) {
-
-
-	function unregister_taxonomy( $taxonomy ) {
-		if ( ! taxonomy_exists( $taxonomy ) ) {
-			return new WP_Error( 'invalid_taxonomy', __( 'Invalid taxonomy.' ) );
-		}
-		$taxonomy_object = get_taxonomy( $taxonomy );
-		// Do not allow unregistering internal taxonomies.
-		if ( $taxonomy_object->_builtin ) {
-			return new WP_Error( 'invalid_taxonomy', __( 'Unregistering a built-in taxonomy is not allowed.' ) );
-		}
-		global $wp_taxonomies;
-		// Remove the taxonomy.
-		unset( $wp_taxonomies[ $taxonomy ] );
-		return true;
-	}
-}
-
