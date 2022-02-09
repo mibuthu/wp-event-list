@@ -399,7 +399,7 @@ $sc_eventlist_helptexts = array(
 function sc_eventlist_helptexts_filterbar_table( $tabledata_array ) {
 	// table opening tag
 	$out = '
-		<small><table class="el-filterbar-table">';
+		<table class="el-filterbar-table">';
 	// Start with th items (table head for first row)
 	$tableitem_tag = 'th';
 	foreach ( $tabledata_array as $row ) {
@@ -419,7 +419,7 @@ function sc_eventlist_helptexts_filterbar_table( $tabledata_array ) {
 	}
 	// table closing tag
 	$out .= '
-		</table></small>
+		</table>
 		';
 	return $out;
 }
