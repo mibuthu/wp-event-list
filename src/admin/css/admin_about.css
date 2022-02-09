@@ -12,6 +12,7 @@
 	border: 1px solid #aaa;
 	border-collapse: collapse;
 	width: 98%;
+	font-size: small;
 }
 .el-atts-table th {
 	border: 1px solid #aaa;
