@@ -1,4 +1,24 @@
 <?php
+/**
+ * The admin category sync class
+ *
+ * TODO: Fix phan warnings to remove the suppressed checks
+ *
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPublicMethod
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateMethod
+ * @phan-file-suppress PhanPluginUnknownPropertyType
+ * @phan-file-suppress PhanPluginUnknownMethodParamType
+ * @phan-file-suppress PhanPluginUnknownMethodReturnType
+ * @phan-file-suppress PhanPluginRemoveDebugEcho
+ * @phan-file-suppress PhanPartialTypeMismatchArgument
+ * @phan-file-suppress PhanPartialTypeMismatchArgumentInternal
+ * @phan-file-suppress PhanPossiblyUndeclaredProperty
+ * @phan-file-suppress PhanPossiblyFalseTypeArgument
+ *
+ * @package event-list
+ */
+
 if ( ! defined( 'WP_ADMIN' ) ) {
 	exit;
 }
@@ -8,7 +28,9 @@ require_once EL_PATH . 'includes/events_post_type.php';
 require_once EL_PATH . 'includes/events.php';
 require_once EL_PATH . 'admin/includes/event-category_functions.php';
 
-// This class handles all data for the admin categories page
+/**
+ * This class handles all data for the admin categories page
+ */
 class EL_Admin_Category_Sync {
 
 	private static $instance;
@@ -48,7 +70,7 @@ class EL_Admin_Category_Sync {
 
 		// permission checks
 		if ( ! current_user_can( 'manage_categories' ) || ( $this->switch_taxonomy && ! current_user_can( 'manage_options' ) ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
 		}
 		if ( ! (bool) wp_get_referer() || ( ! $this->switch_taxonomy && $this->use_post_cats ) ) {
 			wp_die( __( 'Error: You are not allowed to view this page!', 'event-list' ) );
@@ -70,12 +92,13 @@ class EL_Admin_Category_Sync {
 			$main_title  = __( 'Affected Categories when switching to seperate Event Categories', 'event-list' );
 			$button_text = __( 'Switch option to seperate Event Categories', 'event-list' );
 			$description = __( 'If you proceed, all post categories will be copied and all events will be re-assigned to this new categories.', 'event-list' ) . '<br />' .
-						   __( 'Afterwards the event categories are independent of the post categories.', 'event-list' );
+				__( 'Afterwards the event categories are independent of the post categories.', 'event-list' );
 		} elseif ( 'switch-to-post' === $action ) {
 			$main_title  = __( 'Affected Categories when switching to use Post Categories for events', 'event-list' );
 			$button_text = __( 'Switch option to use Post Categories for events', 'event-list' );
 			$description = __( 'Take a detailed look at the affected categories above before you proceed! All seperate event categories will be deleted, this cannot be undone!', 'event-list' );
-		} else {  // 'sync' === action
+		} else {
+			// 'sync' === action
 			$main_title  = __( 'Event Categories: Synchronise with Post Categories', 'event-list' );
 			$button_text = __( 'Start synchronisation', 'event-list' );
 			$description = __( 'If this option is enabled the above listed categories will be deleted and removed from the existing events!', 'event-list' );
@@ -127,14 +150,14 @@ class EL_Admin_Category_Sync {
 			foreach ( $cat_slugs as $cat_slug ) {
 				$cat_name = 'event' === $cat_type ? $this->events->get_cat_by_slug( $cat_slug )->name : get_category_by_slug( $cat_slug )->name;
 				echo '
-							<li>' . $cat_name . ' (' . __( 'Slug' ) . ': ' . $cat_slug . ')</li>';
+							<li>' . $cat_name . ' (' . __( 'Slug', 'default' ) . ': ' . $cat_slug . ')</li>';
 			}
 			echo '
 					</ul>';
 		}
 		echo '
 				</div>';
-		$this->show_hidden( $input_id, esc_html( json_encode( $cat_slugs ) ) );
+		$this->show_hidden( $input_id, esc_html( wp_json_encode( $cat_slugs ) ) );
 	}
 
 
@@ -152,20 +175,25 @@ class EL_Admin_Category_Sync {
 
 
 	public function handle_actions() {
+		$affected_cats = array();
+		$args          = array();
 		// check used post parameter
 		$action = isset( $_POST['action'] ) ? sanitize_key( $_POST['action'] ) : '';
 		// action handling
 		switch ( $action ) {
 			case 'sync':
 				// check used post parameters
-				$delete_cats             = isset( $_POST['delete-cats'] ) ? (bool) intval( $_POST['delete-cats'] ) : false;
-				$affected_cats['to_mod'] = isset( $_POST['cats-to-mod'] ) ? array_map( 'sanitize_key', json_decode( stripslashes( $_POST['cats-to-mod'] ), true ) ) : array();
-				$affected_cats['to_add'] = isset( $_POST['cats-to-add'] ) ? array_map( 'sanitize_key', json_decode( stripslashes( $_POST['cats-to-add'] ), true ) ) : array();
+				$delete_cats = isset( $_POST['delete-cats'] ) ? (bool) intval( $_POST['delete-cats'] ) : false;
+				// sanitize_key is called through array_map
+				// phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+				$affected_cats['to_mod'] = isset( $_POST['cats-to-mod'] ) ? array_map( 'sanitize_key', json_decode( wp_unslash( $_POST['cats-to-mod'] ), true ) ) : array();
+				$affected_cats['to_add'] = isset( $_POST['cats-to-add'] ) ? array_map( 'sanitize_key', json_decode( wp_unslash( $_POST['cats-to-add'] ), true ) ) : array();
 				if ( $delete_cats ) {
-					$affected_cats['to_del'] = isset( $_POST['cats-to-del'] ) ? array_map( 'sanitize_key', json_decode( stripslashes( $_POST['cats-to-del'] ), true ) ) : array();
+					$affected_cats['to_del'] = isset( $_POST['cats-to-del'] ) ? array_map( 'sanitize_key', json_decode( wp_unslash( $_POST['cats-to-del'] ), true ) ) : array();
 				} else {
 					$affected_cats['to_del'] = array();
 				}
+				// phpcs:enable
 				// do actual sync
 				$args['msgdata'] = $this->event_category_functions->sync_categories( 'to_event_cats', $affected_cats );
 				if ( empty( $args['msgdata']['mod_error'] ) && empty( $args['msgdata']['add_error'] ) && empty( $args['msgdata']['del_error'] ) ) {
@@ -189,7 +217,9 @@ class EL_Admin_Category_Sync {
 				// check used post parameters
 				$add_cats = isset( $_POST['add-cats'] ) ? (bool) intval( $_POST['add-cats'] ) : false;
 				if ( $add_cats ) {
-					$affected_cats['to_add'] = isset( $_POST['cats-to-add'] ) ? array_map( 'sanitize_key', json_decode( stripslashes( $_POST['cats-to-add'] ), true ) ) : array();
+					// sanitize_key is called through array_map
+					// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+					$affected_cats['to_add'] = isset( $_POST['cats-to-add'] ) ? array_map( 'sanitize_key', json_decode( wp_unslash( $_POST['cats-to-add'] ), true ) ) : array();
 					$this->event_category_functions->sync_categories( 'to_post_cats', $affected_cats );
 				}
 				$args['msgdata'] = $this->event_category_functions->switch_event_taxonomy( 'to_post_cats' );
