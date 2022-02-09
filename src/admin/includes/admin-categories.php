@@ -1,4 +1,20 @@
 <?php
+/**
+ * The admin categories class
+ *
+ * TODO: Fix phan warnings to remove the suppressed checks
+ *
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPublicMethod
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateMethod
+ * @phan-file-suppress PhanPluginUnknownPropertyType
+ * @phan-file-suppress PhanPluginUnknownMethodParamType
+ * @phan-file-suppress PhanPluginUnknownMethodReturnType
+ * @phan-file-suppress PhanPluginRemoveDebugEcho
+ *
+ * @package event-list
+ */
+
 if ( ! defined( 'WP_ADMIN' ) ) {
 	exit;
 }
@@ -6,11 +22,18 @@ if ( ! defined( 'WP_ADMIN' ) ) {
 require_once EL_PATH . 'includes/options.php';
 require_once EL_PATH . 'includes/events_post_type.php';
 
-// This class handles all data for the admin categories page
+/**
+ * This class handles all data for the admin categories page
+ */
 class EL_Admin_Categories {
 
 	private static $instance;
 
+	/**
+	 * The event post type
+	 *
+	 * @var EL_Events_Post_Type
+	 */
 	private $events_post_type;
 
 
@@ -35,7 +58,7 @@ class EL_Admin_Categories {
 
 	public function embed_categories_scripts() {
 		wp_enqueue_script( 'jquery' );
-		wp_enqueue_script( 'eventlist_admin_categories_js', EL_URL . 'admin/js/admin_categories.js' );
+		wp_enqueue_script( 'eventlist_admin_categories_js', EL_URL . 'admin/js/admin_categories.js', array(), '1.0', true );
 	}
 
 
@@ -45,7 +68,9 @@ class EL_Admin_Categories {
 				add_query_arg(
 					array(
 						'page'             => 'el_admin_cat_sync',
-						'_wp_http_referer' => $_SERVER['REQUEST_URI'],
+						// TODO: check sanitize of server request URI
+						// phpcs:ignore
+						'_wp_http_referer' => wp_unslash( $_SERVER['REQUEST_URI'] ),
 					),
 					'edit.php?post_type=el_events'
 				)
@@ -57,12 +82,15 @@ class EL_Admin_Categories {
 
 	public function prepare_syncdone_message( $messages ) {
 		// prepare used get parameters
-		$msgdata = isset( $_GET['msgdata'] ) ? $_GET['msgdata'] : array();
+		// msgdata is sanitized later on
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$msgdata = isset( $_GET['msgdata'] ) ? wp_unslash( $_GET['msgdata'] ) : array();
 		$error   = isset( $_GET['error'] );
-
-		$items['mod_ok'] = __( '%1$s categories modified (%2$s)', 'event-list' );
-		$items['add_ok'] = __( '%1$s categories added (%2$s)', 'event-list' );
-		$items['del_ok'] = __( '%1$s categories deleted (%2$s)', 'event-list' );
+		$items   = array(
+			'mod_ok' => __( '%1$s categories modified (%2$s)', 'event-list' ),
+			'add_ok' => __( '%1$s categories added (%2$s)', 'event-list' ),
+			'del_ok' => __( '%1$s categories deleted (%2$s)', 'event-list' ),
+		);
 		if ( $error ) {
 			$items['mod_error'] = __( '%1$s categories not modified (%2$s)', 'event-list' );
 			$items['add_error'] = __( '%1$s categories not added (%2$s)', 'event-list' );
@@ -78,6 +106,7 @@ class EL_Admin_Categories {
 		$msgtext .= '<ul style="list-style:inside">';
 		foreach ( $items as $name => $text ) {
 			if ( isset( $msgdata[ $name ] ) && is_array( $msgdata[ $name ] ) ) {
+				// @suppress PhanPartialTypeMismatchArgumentInternal
 				$items    = array_map( 'sanitize_key', $msgdata[ $name ] );
 				$msgtext .= $this->show_sync_items( $items, $text );
 			}
