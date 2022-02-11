@@ -89,19 +89,19 @@ class EL_Filterbar {
 							$options[ $o[0] ] = $o[1];
 						}
 					}
-					$item_array = explode( '_', $item_array[0] );
-					switch ( $item_array[0] ) {
+					list( $filter_type, $display_type ) = explode( '_', $item_array[0] );
+					switch ( $filter_type ) {
 						case 'years':
-							$out .= $this->show_years( $url, $args, $item_array[1], $options );
+							$out .= $this->show_years( $url, $args, $display_type, $options );
 							break;
 						case 'daterange':
-							$out .= $this->show_daterange( $url, $args, $item_array[1], $options );
+							$out .= $this->show_daterange( $url, $args, $display_type, $options );
 							break;
 						case 'cats':
-							$out .= $this->show_cats( $url, $args, $item_array[1], $options );
+							$out .= $this->show_cats( $url, $args, $display_type, $options );
 							break;
 						case 'months':
-							$out .= $this->show_months( $url, $args, $item_array[1], $options );
+							$out .= $this->show_months( $url, $args, $display_type, $options );
 							break;
 						case 'reset':
 							$out .= $this->show_reset( $url, $args, $options );
