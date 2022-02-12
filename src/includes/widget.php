@@ -58,18 +58,6 @@ class EL_Widget extends WP_Widget {
 			'link_to_page'         => array( 'std_value' => 'false' ),
 			'link_to_page_caption' => array( 'std_value' => __( 'show events page', 'event-list' ) ),
 		);
-
-		add_action( 'admin_init', array( &$this, 'load_widget_items_helptexts' ), 2 );
-	}
-
-
-	public function load_widget_items_helptexts() {
-		require_once EL_PATH . 'includes/widget_helptexts.php';
-		// @phan-suppress-next-line PhanUndeclaredVariable
-		foreach ( (array) $widget_items_helptexts as $name => $values ) {
-			$this->items[ $name ] += $values;
-		}
-		unset( $widget_items_helptexts );
 	}
 
 
@@ -152,6 +140,7 @@ class EL_Widget extends WP_Widget {
 	 */
 	public function form( $instance ) {
 		$this->upgrade_widget( $instance );
+		$this->load_widget_items_helptexts();
 		$out = '';
 		foreach ( $this->items as $itemname => $item ) {
 			$itemname = strval( $itemname );
@@ -224,6 +213,16 @@ class EL_Widget extends WP_Widget {
 		if ( $upgrade_required && ! $on_frontpage && current_user_can( 'edit_theme_options' ) ) {
 			echo '<p style="color:red"><strong>This widget is old and requires an update! Please press "Save" to execute the required modifications!</strong></p>';
 		}
+	}
+
+
+	private function load_widget_items_helptexts() {
+		require_once EL_PATH . 'includes/widget_helptexts.php';
+		// @phan-suppress-next-line PhanUndeclaredVariable
+		foreach ( (array) $widget_items_helptexts as $name => $values ) {
+			$this->items[ $name ] += $values;
+		}
+		unset( $widget_items_helptexts );
 	}
 
 }
