@@ -4,9 +4,7 @@
  *
  * TODO: Fix phan warnings to remove the suppressed checks
  *
- * @phan-file-suppress PhanPluginNoCommentOnPublicProperty
  * @phan-file-suppress PhanPluginNoCommentOnPrivateProperty
- * @phan-file-suppress PhanPluginNoCommentOnPublicMethod
  * @phan-file-suppress PhanPluginNoCommentOnPrivateMethod
  * @phan-file-suppress PhanPluginUnknownPropertyType
  * @phan-file-suppress PhanPluginUnknownMethodReturnType
