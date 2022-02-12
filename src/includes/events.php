@@ -230,19 +230,23 @@ class EL_Events {
 	private function get_sql_filter_string( $date_filter = null, $cat_filter = null ) {
 		$sql_filter_string = '';
 		// date filter
-		$date_filter = is_array( $date_filter ) ? implode( '&', $date_filter ) : $date_filter;
-		$date_filter = str_replace( ' ', '', $date_filter );
-		if ( null !== $date_filter && 'all' !== $date_filter && '' !== $date_filter ) {
-			$sql_filter_string .= $this->filter_walker( $date_filter, 'sql_date_filter' );
+		if ( null !== $date_filter ) {
+			$date_filter = is_array( $date_filter ) ? implode( '&', $date_filter ) : $date_filter;
+			$date_filter = str_replace( ' ', '', $date_filter );
+			if ( 'all' !== $date_filter && '' !== $date_filter ) {
+				$sql_filter_string .= $this->filter_walker( $date_filter, 'sql_date_filter' );
+			}
 		}
 		// cat_filter
-		$cat_filter = str_replace( ' ', '', $cat_filter );
-		$cat_filter = is_array( $cat_filter ) ? implode( '&', $cat_filter ) : $cat_filter;
-		if ( null !== $cat_filter && 'all' !== $cat_filter && '' !== $cat_filter ) {
-			if ( '' !== $sql_filter_string ) {
-				$sql_filter_string .= ' AND ';
+		if ( null !== $cat_filter ) {
+			$cat_filter = is_array( $cat_filter ) ? implode( '&', $cat_filter ) : $cat_filter;
+			$cat_filter = str_replace( ' ', '', $cat_filter );
+			if ( 'all' !== $cat_filter && '' !== $cat_filter ) {
+				if ( '' !== $sql_filter_string ) {
+					$sql_filter_string .= ' AND ';
+				}
+				$sql_filter_string .= $this->filter_walker( $cat_filter, 'sql_cat_filter' );
 			}
-			$sql_filter_string .= $this->filter_walker( $cat_filter, 'sql_cat_filter' );
 		}
 		// no filter
 		if ( '' === $sql_filter_string ) {
