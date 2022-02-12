@@ -468,11 +468,14 @@ class EL_Admin_Import {
 		}
 		// prepare additional categories
 		if ( $this->events_post_type->event_cat_taxonomy === $this->events_post_type->taxonomy ) {
-			$additional_cat_ids = isset( $_POST['tax_input'][ $this->events_post_type->taxonomy ] ) ? sanitize_title( wp_unslash( $_POST['tax_input'][ $this->events_post_type->taxonomy ] ) ) : array();
+			$additional_cat_ids = isset( $_POST['tax_input'][ $this->events_post_type->taxonomy ] ) ?
+				array_map( 'intval', (array) wp_unslash( $_POST['tax_input'][ $this->events_post_type->taxonomy ] ) ) :
+				array();
 		} else {
-			$additional_cat_ids = isset( $_POST[ 'post_' . $this->events_post_type->taxonomy ] ) ? sanitize_title( wp_unslash( $_POST[ 'post_' . $this->events_post_type->taxonomy ] ) ) : array();
+			$additional_cat_ids = isset( $_POST[ 'post_' . $this->events_post_type->taxonomy ] ) ?
+				array_map( 'intval', (array) wp_unslash( $_POST[ 'post_' . $this->events_post_type->taxonomy ] ) ) :
+				array();
 		}
-		$additional_cat_ids   = is_array( $additional_cat_ids ) ? array_map( 'intval', $additional_cat_ids ) : array();
 		$additional_cat_slugs = array();
 		foreach ( $additional_cat_ids as $cat_id ) {
 			$cat = $this->events->get_cat_by_id( $cat_id );
