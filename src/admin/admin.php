@@ -147,11 +147,11 @@ class EL_Admin {
 		add_action( 'admin_print_scripts-' . $page, array( &$this, 'embed_about_scripts' ) );
 
 		// Import page (invisible in menu, but callable by import button on admin main page)
-		$page = add_submenu_page( null, null, null, 'edit_posts', 'el_admin_import', array( &$this, 'show_import_page' ) );
+		$page = add_submenu_page( '', '', '', 'edit_posts', 'el_admin_import', array( &$this, 'show_import_page' ) );
 		add_action( 'admin_print_scripts-' . $page, array( &$this, 'embed_import_scripts' ) );
 
 		// Sync Post Categories page (invisible in menu, but callable by sync button on admin categories page)
-		$page = add_submenu_page( null, null, null, 'manage_categories', 'el_admin_cat_sync', array( &$this, 'show_cat_sync_page' ) );
+		$page = add_submenu_page( '', '', '', 'manage_categories', 'el_admin_cat_sync', array( &$this, 'show_cat_sync_page' ) );
 		add_action( 'load-' . $page, array( &$this, 'handle_cat_sync_actions' ) );
 	}
 
