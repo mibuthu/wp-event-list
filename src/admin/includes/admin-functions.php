@@ -119,7 +119,7 @@ class EL_Admin_Functions {
 		$out = '
 							<label for="' . $name . '">
 								<input name="' . $name . '" type="checkbox" id="' . $name . '" value="1"';
-		if ( 1 === $value ) {
+		if ( '1' === $value ) {
 			$out .= ' checked="checked"';
 		}
 		$out .= $this->get_disabled_text( $disabled ) . ' />
