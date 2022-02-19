@@ -95,6 +95,7 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 * fixed a bug in the date and cat filter handling
 * small improvements in the admin about output
 * some internal code improvements
+* translation updates
 
 = 0.8.6 (2021-04-24) =
 * fixed saving a new event when no excerpt is provided (also fixes CSV import of events)
