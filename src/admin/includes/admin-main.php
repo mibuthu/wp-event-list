@@ -243,7 +243,9 @@ class EL_Admin_Main {
 		if ( ! $this->events_post_type->use_post_categories ) {
 			// check used get parameters
 			$selected_cat = isset( $_GET['cat'] ) ? sanitize_key( $_GET['cat'] ) : '';
-
+			if ( 'all' === $selected_cat ) {
+				$selected_cat = '';
+			}
 			$query->query_vars['cat']                               = false;
 			$query->query_vars[ $this->events_post_type->taxonomy ] = $selected_cat;
 		}
