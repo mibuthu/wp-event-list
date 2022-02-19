@@ -138,12 +138,12 @@ class EL_Admin_Main {
 
 
 	public function sort_events( $args ) {
-		// Set default order to 'eventdate' of no other sorting is set
-		if ( ! isset( $args['orderby'] ) ) {
-			$args['orderby'] = 'eventdate';
-			$args['order']   = 'asc';
-		}
 		$add_args = array();
+		// Set default order to 'eventdate' if no custom sorting is set
+		if ( empty( $args['orderby'] ) ) {
+			$args['orderby'] = 'eventdate';
+			$args['order']   = 'desc';
+		}
 		switch ( $args['orderby'] ) {
 			case 'eventdate':
 				$add_args = array(
