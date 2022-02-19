@@ -231,6 +231,13 @@ class EL_Filterbar {
 
 
 	public function show_cats( $url, &$args, $type = 'dropdown', $options = array() ) {
+		$default_args    = array(
+			'date_filter'   => array(),
+			'cat_filter'    => array(),
+			'sc_id_for_url' => false,
+			'selected_cats' => false,
+		);
+		$args            = wp_parse_args( $args, $default_args );
 		$default_options = array(
 			'show_all' => 'true',
 		);
