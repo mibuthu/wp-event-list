@@ -1,4 +1,23 @@
 <?php
+/**
+ * The main class for the admin pages
+ *
+ * TODO: Fix phan warnings to remove the suppressed checks
+ *
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPublicMethod
+ * @phan-file-suppress PhanPluginUnknownPropertyType
+ * @phan-file-suppress PhanPluginUnknownMethodParamType
+ * @phan-file-suppress PhanPluginUnknownMethodReturnType
+ * @phan-file-suppress PhanPluginRemoveDebugEcho
+ * @phan-file-suppress PhanPartialTypeMismatchArgument
+ * @phan-file-suppress PhanTypeMismatchArgumentProbablyReal
+ * @phan-file-suppress PhanTypeMismatchProperty
+ * @phan-file-suppress PhanPossiblyUndeclaredProperty
+ *
+ * @package event-list
+ */
+
 if ( ! defined( 'WP_ADMIN' ) ) {
 	exit;
 }
@@ -6,13 +25,20 @@ if ( ! defined( 'WP_ADMIN' ) ) {
 require_once EL_PATH . 'includes/options.php';
 require_once EL_PATH . 'includes/events_post_type.php';
 
-// This class handles all available admin pages
+/**
+ * This class handles all available admin pages
+ */
 class EL_Admin {
 
 	private static $instance;
 
 	private $options;
 
+	/**
+	 * The event post type
+	 *
+	 * @var EL_Events_Post_Type
+	 */
 	private $events_post_type;
 
 	private $show_upgr_message = false;
@@ -47,7 +73,7 @@ class EL_Admin {
 		// Upgrade check
 		$file_data         = get_file_data( EL_PATH . 'event-list.php', array( 'version' => 'Version' ) );
 		$last_upgr_version = get_option( 'el_last_upgr_version', '' );
-		if ( $file_data['version'] != $last_upgr_version || isset( $_GET['resume-el-upgr'] ) ) {
+		if ( $file_data['version'] !== $last_upgr_version || isset( $_GET['resume-el-upgr'] ) ) {
 			// load upgrade class
 			require_once EL_PATH . 'admin/includes/upgrade.php';
 			EL_Upgrade::get_instance()->upgrade();
@@ -59,7 +85,7 @@ class EL_Admin {
 		if ( $this->show_upgr_message ) {
 			// load upgrade class
 			require_once EL_PATH . 'admin/includes/upgrade.php';
-			$error   = 2 == $this->show_upgr_message;
+			$error   = 2 === $this->show_upgr_message;
 			$class   = $error ? 'error' : 'updated fade';
 			$title   = sprintf( $error ? __( 'Errors during upgrade of plugin %1$s', 'event-list' ) : __( 'Upgrade of plugin %1$s successful', 'event-list' ), '"Event List"' );
 			$logfile = ' (<a href="' . content_url( EL_Upgrade::get_instance()->logfile ) . '">upgrade log</a>)';
@@ -121,11 +147,11 @@ class EL_Admin {
 		add_action( 'admin_print_scripts-' . $page, array( &$this, 'embed_about_scripts' ) );
 
 		// Import page (invisible in menu, but callable by import button on admin main page)
-		$page = add_submenu_page( null, null, null, 'edit_posts', 'el_admin_import', array( &$this, 'show_import_page' ) );
+		$page = add_submenu_page( '', '', '', 'edit_posts', 'el_admin_import', array( &$this, 'show_import_page' ) );
 		add_action( 'admin_print_scripts-' . $page, array( &$this, 'embed_import_scripts' ) );
 
 		// Sync Post Categories page (invisible in menu, but callable by sync button on admin categories page)
-		$page = add_submenu_page( null, null, null, 'manage_categories', 'el_admin_cat_sync', array( &$this, 'show_cat_sync_page' ) );
+		$page = add_submenu_page( '', '', '', 'manage_categories', 'el_admin_cat_sync', array( &$this, 'show_cat_sync_page' ) );
 		add_action( 'load-' . $page, array( &$this, 'handle_cat_sync_actions' ) );
 	}
 

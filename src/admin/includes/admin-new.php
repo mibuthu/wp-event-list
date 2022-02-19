@@ -1,4 +1,29 @@
 <?php
+/**
+ * The admin new class
+ *
+ * TODO: Fix phan warnings to remove the suppressed checks
+ *
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPublicMethod
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateMethod
+ * @phan-file-suppress PhanPluginUnknownPropertyType
+ * @phan-file-suppress PhanPluginUnknownMethodParamType
+ * @phan-file-suppress PhanPluginUnknownMethodReturnType
+ * @phan-file-suppress PhanPluginRemoveDebugEcho
+ * @phan-file-suppress PhanPartialTypeMismatchArgument
+ * @phan-file-suppress PhanPartialTypeMismatchArgumentInternal
+ * @phan-file-suppress PhanPossiblyNullTypeArgument
+ * @phan-file-suppress PhanPossiblyUndeclaredVariable
+ * @phan-file-suppress PhanPossiblyFalseTypeArgument
+ * @phan-file-suppress PhanPossiblyFalseTypeArgumentInternal
+ *
+ * @package event-list
+ */
+
+// TODO: Fix phpcs warnings to remove the disabled checks
+// phpcs:disable WordPress.DateTime.CurrentTimeTimestamp.Requested
+
 if ( ! defined( 'WP_ADMIN' ) ) {
 	exit;
 }
@@ -68,7 +93,8 @@ class EL_Admin_New {
 		global $post;
 		if ( $this->is_new && empty( $this->copy_event ) ) {
 			// set next day as date
-			$startdate = current_time( 'timestamp' ) + 86400; // next day (86400 seconds = 1*24*60*60 = 1 day);
+			// next day (86400 seconds = 1*24*60*60 = 1 day);
+			$startdate = current_time( 'timestamp' ) + 86400;
 			$enddate   = $startdate;
 			$starttime = '';
 			$location  = '';
@@ -81,7 +107,7 @@ class EL_Admin_New {
 			$location  = esc_html( $event->location );
 		}
 		// Add required data for javascript in a hidden field
-		$json = json_encode(
+		$json = wp_json_encode(
 			array(
 				'el_date_format'   => $this->datepicker_format( $this->get_event_dateformat() ),
 				'el_start_of_week' => get_option( 'start_of_week' ),
@@ -96,8 +122,8 @@ class EL_Admin_New {
 		echo '
 				<input type="hidden" id="json_for_js" value=\'' . $json . '\' />
 					<label class="event-option">' . __( 'Date', 'event-list' ) . ' (' . __( 'required', 'event-list' ) . '):</label>
-					<div class="event-data"><span class="date-wrapper"><input type="text" class="text form-required" name="startdate" id="startdate" value="' . date( 'Y-m-d', $startdate ) . '" /><i class="dashicons dashicons-calendar-alt"></i></span>
-						<span id="enddate-area"> - <span class="date-wrapper"><input type="text" class="text" name="enddate" id="enddate" value="' . date( 'Y-m-d', $enddate ) . '" /><i class="dashicons dashicons-calendar-alt"></i></span></span>
+					<div class="event-data"><span class="date-wrapper"><input type="text" class="text form-required" name="startdate" id="startdate" value="' . gmdate( 'Y-m-d', $startdate ) . '" /><i class="dashicons dashicons-calendar-alt"></i></span>
+						<span id="enddate-area"> - <span class="date-wrapper"><input type="text" class="text" name="enddate" id="enddate" value="' . gmdate( 'Y-m-d', $enddate ) . '" /><i class="dashicons dashicons-calendar-alt"></i></span></span>
 						<label class="el-inline-checkbox"><input type="checkbox" name="multiday" id="multiday" value="1" /> ' . __( 'Multi-Day Event', 'event-list' ) . '</label>
 						<input type="hidden" id="startdate-iso" name="startdate-iso" value="" />
 						<input type="hidden" id="enddate-iso" name="enddate-iso" value="" />
@@ -124,14 +150,15 @@ class EL_Admin_New {
 
 	public function form_after_title_content() {
 		global $post, $wp_meta_boxes;
-
 		// create "primary" metabox container, show all "primary" metaboxes in that container and unset the "primary" metaboxes afterwards
 		echo '
 			<div id="postbox-container-0" class="postbox-container">';
 		do_meta_boxes( get_current_screen(), 'primary', $post );
-		unset( $wp_meta_boxes[ get_post_type( 'post' ) ]['primary'] );
 		echo '
 			</div>';
+		// TODO: Check if get_post_type with argument 'post' is possible and if unsetting the primary metabox is required at all
+		// @phan-suppress-next-line PhanTypeMismatchArgument
+		unset( $wp_meta_boxes[ get_post_type( 'post' ) ]['primary'] );
 		// show label for event content
 		echo '
 			<label class="event-option">' . __( 'Event Content', 'event-list' ) . ':</label>';
@@ -140,20 +167,31 @@ class EL_Admin_New {
 
 	public function embed_scripts() {
 		wp_enqueue_script( 'jquery-ui-datepicker' );
-		wp_enqueue_script( 'eventlist_admin_new_js', EL_URL . 'admin/js/admin_new.js' );
+		wp_enqueue_script( 'eventlist_admin_new_js', EL_URL . 'admin/js/admin_new.js', array(), '1.0', true );
 		// TODO: wp_localize_jquery_ui_datepicker is available since WordPress version 4.6.0.
 		// For compatibility to older versions the function_exists test was added, this test can be removed again in a later version.
 		if ( function_exists( 'wp_localize_jquery_ui_datepicker' ) ) {
 			wp_localize_jquery_ui_datepicker();
 		}
-		wp_enqueue_style( 'eventlist_admin_new', EL_URL . 'admin/css/admin_new.css' );
+		wp_enqueue_style( 'eventlist_admin_new', EL_URL . 'admin/css/admin_new.css', array(), '1.0' );
 		// add the jquery-ui style "smooth" (see https://jqueryui.com/download/) (required for the xwp datepicker skin)
-		wp_enqueue_style( 'eventlist_jqueryui', EL_URL . 'admin/css/jquery-ui.min.css' );
+		wp_enqueue_style( 'eventlist_jqueryui', EL_URL . 'admin/css/jquery-ui.min.css', array(), '1.0' );
 		// add the xwp datepicker skin (see https://github.com/xwp/wp-jquery-ui-datepicker-skins)
-		wp_enqueue_style( 'eventlist_datepicker', EL_URL . 'admin/css/jquery-ui-datepicker.css' );
+		wp_enqueue_style( 'eventlist_datepicker', EL_URL . 'admin/css/jquery-ui-datepicker.css', array(), '1.0' );
 	}
 
 
+	/**
+	 * Safe the event data
+	 *
+	 * @param int     $pid Post ID
+	 * @param WP_Post $post Post Object
+	 * @param bool    $update Whether this is an existing post being updated
+	 * @return bool|int
+	 *
+	 * TODO: Prepare a new array for the metadata from the $_POST array instead of using the $_POST array directly
+	 * @suppress PhanTypePossiblyInvalidDimOffset
+	 */
 	public function save_eventdata( $pid, $post, $update ) {
 		// don't do on autosave or when new posts are first created
 		if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || 'auto-draft' === $post->post_status ) {
@@ -176,7 +214,8 @@ class EL_Admin_New {
 
 
 	private function get_event_dateformat() {
-		if ( '' == $this->options->get( 'el_edit_dateformat' ) ) {
+		if ( '' === $this->options->get( 'el_edit_dateformat' ) ) {
+			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
 			return __( 'Y/m/d' );
 		} else {
 			return $this->options->get( 'el_edit_dateformat' );
@@ -196,17 +235,21 @@ class EL_Admin_New {
 
 		global $post, $post_ID;
 		$messages['el_events'] = array(
-			0  => '', // Unused. Messages start at index 1.
+			// Unused. Messages start at index 1.
+			0  => '',
 			1  => __( 'Event updated.', 'event-list' ) . ' <a href="' . esc_url( get_permalink( $post_ID ) ) . '">' . __( 'View event', 'event-list' ) . '</a>',
-			2  => '', // Custom field updated is not required (no custom fields)
-			3  => '', // Custom field deleted is not required (no custom fields)
+			// Custom field updated is not required (no custom fields)
+			2  => '',
+			// Custom field deleted is not required (no custom fields)
+			3  => '',
 			4  => __( 'Event updated.', 'event-list' ),
 			5  => is_null( $revision ) ? false : sprintf( __( 'Event restored to revision from %1$s', 'event-list' ), wp_post_revision_title( $revision, false ) ),
 			6  => __( 'Event published.', 'event-list' ) . ' <a href="' . esc_url( get_permalink( $post_ID ) ) . '">' . __( 'View event', 'event-list' ) . '</a>',
-			7  => __( 'Event saved.' ),
+			7  => __( 'Event saved.', 'event-list' ),
 			8  => __( 'Event submitted.', 'event-list' ) . ' <a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">' . __( 'Preview event', 'event-list' ) . '</a>',
+			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
 			9  => sprintf( __( 'Event scheduled for: %1$s>', 'event-list' ), '<strong>' . date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ) . '</strong>' ) .
-				  ' <a target="_blank" href="' . esc_url( get_permalink( $post_ID ) ) . '">' . __( 'Preview event', 'event-list' ) . '</a>',
+				' <a target="_blank" href="' . esc_url( get_permalink( $post_ID ) ) . '">' . __( 'Preview event', 'event-list' ) . '</a>',
 			10 => __( 'Event draft updated.', 'event-list' ) . ' <a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">' . __( 'Preview event', 'event-list' ) . '</a>',
 		);
 		return $messages;
@@ -230,26 +273,32 @@ class EL_Admin_New {
 	private function datepicker_format( $format ) {
 		return str_replace(
 			array(
+				// Day
 				'd',
 				'j',
 				'l',
-				'z', // Day.
+				'z',
+				// Month
 				'F',
 				'M',
 				'n',
-				'm', // Month.
+				'm',
+				// Year
 				'Y',
-				'y',            // Year.
+				'y',
 			),
 			array(
+				// Day
 				'dd',
 				'd',
 				'DD',
 				'o',
+				// Month
 				'MM',
 				'M',
 				'm',
 				'mm',
+				// Year
 				'yy',
 				'y',
 			),

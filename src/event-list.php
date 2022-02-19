@@ -3,14 +3,14 @@
  * Plugin Name: Event List
  * Plugin URI: https://wordpress.org/plugins/event-list/
  * Description: Manage your events and show them in a list view on your site.
- * Version: 0.8.6
+ * Version: 0.8.7
  * Author: mibuthu
  * Author URI: https://wordpress.org/plugins/event-list/
  * Text Domain: event-list
  * License: GPLv2
  *
  * A plugin for the blogging MySQL/PHP-based WordPress.
- * Copyright 2012-2021 mibuthu
+ * Copyright 2012-2022 mibuthu
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNUs General Public License
@@ -96,7 +96,8 @@ class Event_List {
 			// Init admin page
 			require_once EL_PATH . 'admin/admin.php';
 			EL_Admin::get_instance();
-		} else {  // Front page
+		} else {
+			// Front page
 			// Register actions
 			add_action( 'wp_print_styles', array( &$this, 'print_styles' ) );
 		}
@@ -111,7 +112,8 @@ class Event_List {
 	public function load_textdomain() {
 		$el_lang_path = basename( EL_PATH ) . '/languages';
 		$domain       = 'event-list';
-		if ( '' !== get_option( 'el_mo_lang_dir_first', '' ) ) { // this->option->get not available in this early stage
+		if ( '' !== get_option( 'el_mo_lang_dir_first', '' ) ) {
+			// this->option->get not available in this early stage
 			// Use default WordPress function (language files from language dir wp-content/languages/plugins/ are preferred)
 			load_plugin_textdomain( $domain, false, $el_lang_path );
 		} else {

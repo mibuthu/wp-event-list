@@ -1,4 +1,21 @@
 <?php
+/**
+ * The main class for the admin pages
+ *
+ * TODO: Fix phan warnings to remove the suppressed checks
+ *
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPublicMethod
+ * @phan-file-suppress PhanPluginUnknownPropertyType
+ * @phan-file-suppress PhanPluginUnknownMethodParamType
+ * @phan-file-suppress PhanPluginUnknownMethodReturnType
+ * @phan-file-suppress PhanPluginRemoveDebugEcho
+ * @phan-file-suppress PhanPartialTypeMismatchArgument
+ * @phan-file-suppress PhanTypeMismatchProperty
+ *
+ * @package event-list
+ */
+
 if ( ! defined( 'WP_ADMIN' ) ) {
 	exit;
 }
@@ -18,16 +35,28 @@ class EL_Admin_Main {
 
 	private $options;
 
+	/**
+	 * The event post type
+	 *
+	 * @var EL_Events_Post_Type
+	 */
 	private $events_post_type;
 
 	private $filterbar;
 
 	/**
-	 * Is the trash page displayed?
+	 * The post_status of the actual view
 	 *
-	 * @var bool
+	 * @var string
 	 */
-	private $is_trash;
+	private $post_status;
+
+	/**
+	 * The default date for the actual view ('upcoming' or 'all')
+	 *
+	 * @var string
+	 */
+	private $default_date;
 
 
 	public static function &get_instance() {
@@ -45,7 +74,8 @@ class EL_Admin_Main {
 		$this->events_post_type = &EL_Events_Post_Type::get_instance();
 		$this->filterbar        = &EL_Filterbar::get_instance();
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$this->is_trash = isset( $_REQUEST['post_status'] ) && 'trash' === $_REQUEST['post_status'];
+		$this->post_status  = isset( $_GET['post_status'] ) ? sanitize_key( $_GET['post_status'] ) : 'publish';
+		$this->default_date = 'all';
 		add_action( 'manage_posts_custom_column', array( &$this, 'events_custom_columns' ), 10, 2 );
 		add_filter( 'manage_edit-el_events_columns', array( &$this, 'events_edit_columns' ) );
 		add_filter( 'manage_edit-el_events_sortable_columns', array( &$this, 'events_sortable_columns' ) );
@@ -55,29 +85,33 @@ class EL_Admin_Main {
 		add_filter( 'disable_categories_dropdown', '__return_true' );
 		add_action( 'restrict_manage_posts', array( &$this, 'add_table_filters' ) );
 		add_filter( 'parse_query', array( &$this, 'filter_request' ) );
-		add_filter( 'posts_results', array( &$this, 'check_events_results' ) );
 		add_action( 'load-edit.php', array( &$this, 'set_default_posts_list_mode' ) );
 		add_action( 'admin_print_scripts', array( &$this, 'embed_scripts' ) );
 		add_action( 'admin_head', array( &$this, 'add_import_button' ) );
 	}
 
 
-	/** ************************************************************************
+	/**
 	 * This method dictates the table's columns and titles. This should returns
 	 * an array where the key is the column slug (and class) and the value is
 	 * the column's title text.
 	 *
 	 * @see WP_List_Table::::single_row_columns()
-	 * @return array An associative array containing column information: 'slugs'=>'Visible Titles'
-	 ***************************************************************************/
+	 *
+	 * @param array<string,string> $columns The columns
+	 * @return array<string,string> An associative array containing column information: 'slugs'=>'Visible Titles'
+	 */
 	public function events_edit_columns( $columns ) {
 		return array(
-			'cb'        => '<input type="checkbox" />', // Render a checkbox instead of text
+			// Render a checkbox instead of text
+			'cb'        => '<input type="checkbox" />',
 			'eventdate' => __( 'Event Date', 'event-list' ),
 			'title'     => __( 'Title', 'event-list' ),
 			'location'  => __( 'Location', 'event-list' ),
+			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
 			'taxonomy-' . $this->events_post_type->taxonomy => __( 'Categories' ),
 			'author'    => __( 'Author', 'event-list' ),
+			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
 			'date'      => __( 'Date' ),
 		);
 	}
@@ -106,12 +140,12 @@ class EL_Admin_Main {
 
 
 	public function sort_events( $args ) {
-		// Set default order to 'eventdate' of no other sorting is set
-		if ( ! isset( $args['orderby'] ) ) {
-			$args['orderby'] = 'eventdate';
-			$args['order']   = 'asc';
-		}
 		$add_args = array();
+		// Set default order to 'eventdate' if no custom sorting is set
+		if ( empty( $args['orderby'] ) ) {
+			$args['orderby'] = 'eventdate';
+			$args['order']   = 'desc';
+		}
 		switch ( $args['orderby'] ) {
 			case 'eventdate':
 				$add_args = array(
@@ -143,7 +177,7 @@ class EL_Admin_Main {
 
 
 	public function add_action_row_elements( $actions, $post ) {
-		if ( ! $this->is_trash ) {
+		if ( 'trash' !== $this->post_status ) {
 			$actions['copy'] = '<a href="' . admin_url( add_query_arg( 'copy', $post->ID, 'post-new.php?post_type=el_events' ) ) .
 				'" aria-label="' . sprintf( __( 'Add a copy of %1$s', 'event-list' ), '&#8222;' . $post->post_title . '&#8220;' ) . '">' . __( 'Copy', 'event-list' ) . '</a>';
 		}
@@ -154,41 +188,33 @@ class EL_Admin_Main {
 
 	public function add_table_filters() {
 		global $cat;
-		// check used get parameters
-		// set default date ("upcoming" for All, Published; "all" for everything else)
-		$selected_status       = isset( $_GET['post_status'] ) ? sanitize_key( $_GET['post_status'] ) : 'publish';
-		$default_date          = 'publish' === $selected_status ? 'upcoming' : 'all';
-		$args['selected_date'] = isset( $_GET['date'] ) ? sanitize_key( $_GET['date'] ) : $default_date;
 
 		// date filter
-		echo( $this->filterbar->show_years( admin_url( 'edit.php?post_type=el_events' ), $args, 'dropdown', array( 'show_past' => true ) ) );
+		$date_args = array(
+			'selected_date' => isset( $_GET['date'] ) ? sanitize_key( $_GET['date'] ) : $this->default_date,
+		);
+		echo( $this->filterbar->show_years( admin_url( 'edit.php?post_type=el_events' ), $date_args, 'dropdown', array( 'show_past' => true ) ) );
+
 		// cat filter
 		$cat_args = array(
-			'show_option_all' => __( 'All Categories' ),
-			'taxonomy'        => $this->events_post_type->taxonomy,
-			'orderby'         => 'name',
-			'hierarchical'    => true,
+			'selected_cat' => isset( $_GET['cat'] ) ? sanitize_key( $_GET['cat'] ) : 'all',
 		);
-		// additional parameters required if a seperate taxonomy is used
-		if ( ! $this->events_post_type->use_post_categories ) {
-			// check used get parameters
-			$selected_cat = isset( $_GET['cat'] ) ? sanitize_key( $_GET['cat'] ) : '';
-
-			$cat_args['value_field'] = 'slug';
-			$cat_args['selected']    = $selected_cat;
-		}
-		wp_dropdown_categories( $cat_args );
+		echo( $this->filterbar->show_cats( admin_url( 'edit.php?post_type=el_events' ), $cat_args, 'dropdown' ) );
 	}
 
 
+	/**
+	 * Filter the request
+	 *
+	 * @param WP_Query $query The WordPress Query class
+	 * @return void
+	 * @suppress PhanPluginMixedKeyNoKey
+	 */
 	public function filter_request( $query ) {
-		// Check used get parameters
-		$default_date  = $this->is_trash ? 'all' : 'upcoming';
-		$selected_date = isset( $_GET['date'] ) ? sanitize_key( $_GET['date'] ) : $default_date;
-
-		$meta_query = array( 'relation' => 'AND' );
+		$selected_date = isset( $_GET['date'] ) ? sanitize_key( $_GET['date'] ) : $this->default_date;
+		$meta_query    = array( 'relation' => 'AND' );
 		// date filter
-		$date_for_startrange = ( '' == $this->options->get( 'el_multiday_filterrange' ) ) ? 'startdate' : 'enddate';
+		$date_for_startrange = ( '' === $this->options->get( 'el_multiday_filterrange' ) ) ? 'startdate' : 'enddate';
 		$date_range          = EL_Daterange::get_instance()->check_daterange_format( $selected_date );
 		if ( empty( $date_range ) ) {
 			$date_range = EL_Daterange::get_instance()->check_date_format( $selected_date );
@@ -211,34 +237,19 @@ class EL_Admin_Main {
 		if ( ! $this->events_post_type->use_post_categories ) {
 			// check used get parameters
 			$selected_cat = isset( $_GET['cat'] ) ? sanitize_key( $_GET['cat'] ) : '';
-
+			if ( 'all' === $selected_cat ) {
+				$selected_cat = '';
+			}
 			$query->query_vars['cat']                               = false;
 			$query->query_vars[ $this->events_post_type->taxonomy ] = $selected_cat;
 		}
 	}
 
 
-	/*
-	 Reload the page to show all events when:
-	 * - published events are selected
-	 * - no specific date is selected
-	 * - no upcoming events are available
-	*/
-	public function check_events_results( $events ) {
-		$selected_status = isset( $_GET['post_status'] ) ? sanitize_key( $_GET['post_status'] ) : 'publish';
-		$date_selected   = isset( $_GET['date'] );
-		if ( 'publish' === $selected_status && ! $date_selected && ! count( $events ) ) {
-			wp_safe_redirect( add_query_arg( 'date', 'all' ) );
-			exit;
-		}
-		return $events;
-	}
-
-
 	public function set_default_posts_list_mode() {
 		// check used get parameters
 		$post_type = isset( $_GET['post_type'] ) ? sanitize_key( $_GET['post_type'] ) : '';
-		$mode      = isset( $_REQUEST['mode'] ) ? sanitize_title( $_REQUEST['mode'] ) : '';
+		$mode      = isset( $_REQUEST['mode'] ) ? sanitize_title( wp_unslash( $_REQUEST['mode'] ) ) : '';
 
 		if ( 'el_events' === $post_type && empty( $_REQUEST['mode'] ) ) {
 			$_REQUEST['mode'] = 'excerpt';
@@ -247,7 +258,7 @@ class EL_Admin_Main {
 
 
 	public function embed_scripts() {
-		wp_enqueue_style( 'eventlist_admin_main', EL_URL . 'admin/css/admin_main.css' );
+		wp_enqueue_style( 'eventlist_admin_main', EL_URL . 'admin/css/admin_main.css', array(), '1.0' );
 	}
 
 
@@ -258,20 +269,23 @@ class EL_Admin_Main {
 	}
 
 
-		/** ************************************************************************
-		 * In this function the start date, the end date and time is formated for
-		 * the output.
-		 *
-		 * @param string $startdate The start date of the event
-		 * @param string $enddate The end date of the event
-		 * @param string $starttime The start time of the event
-		 ***************************************************************************/
+	/**
+	 * In this function the start date, the end date and time is formated for
+	 * the output.
+	 *
+	 * @param string $startdate The start date of the event
+	 * @param string $enddate The end date of the event
+	 * @param string $starttime The start time of the event
+	 * @return string
+	 */
 	private function format_event_date( $startdate, $enddate, $starttime ) {
 		$out = '<span style="white-space:nowrap;">';
 		// start date
+		// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
 		$out .= mysql2date( __( 'Y/m/d' ), $startdate );
 		// end date for multiday event
 		if ( $startdate !== $enddate ) {
+			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
 			$out .= ' -<br />' . mysql2date( __( 'Y/m/d' ), $enddate );
 		}
 		// event starttime

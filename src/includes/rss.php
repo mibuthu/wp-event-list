@@ -1,4 +1,22 @@
 <?php
+/**
+ * The RSS class
+ *
+ * TODO: Fix phan warnings to remove the suppressed checks
+ *
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPublicMethod
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateMethod
+ * @phan-file-suppress PhanPluginUnknownPropertyType
+ * @phan-file-suppress PhanPluginUnknownMethodParamType
+ * @phan-file-suppress PhanPluginUnknownMethodReturnType
+ * @phan-file-suppress PhanPluginRemoveDebugEcho
+ * @phan-file-suppress PhanPossiblyNullTypeArgument
+ * @phan-file-suppress PhanPossiblyFalseTypeArgument
+ *
+ * @package event-list
+ */
+
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
@@ -6,7 +24,9 @@ if ( ! defined( 'WPINC' ) ) {
 require_once EL_PATH . 'includes/options.php';
 require_once EL_PATH . 'includes/events.php';
 
-// This class handles rss feeds
+/**
+ * This class handles rss feeds
+ */
 class EL_Rss {
 
 	private static $instance;
@@ -46,7 +66,8 @@ class EL_Rss {
 
 
 	public function print_rss() {
-		header( 'Content-Type: ' . feed_content_type( 'rss-http' ) . '; charset=' . get_option( 'blog_charset' ), true );
+		// @phan-suppress-next-line PhanTypeVoidArgument  Missing @return in WordPress 5.9 source code for feed_content_type function
+		header( 'Content-Type: ' . strval( feed_content_type( 'rss-http' ) ) . '; charset=' . get_option( 'blog_charset' ), true );
 		$options = array(
 			'date_filter' => $this->options->get( 'el_feed_rss_upcoming_only' ) ? 'upcoming' : null,
 			'order'       => array( 'startdate DESC', 'starttime DESC', 'enddate DESC' ),
@@ -80,7 +101,7 @@ class EL_Rss {
 			<item>
 				<title>' . $this->format_date( $event->startdate, $event->enddate ) . ' - ' . $this->sanitize_feed_text( $event->title ) . '</title>
 				<pubDate>' . mysql2date( 'D, d M Y H:i:s +0000', $event->startdate, false ) . '</pubDate>';
-				foreach ( $event->categories as $cat ) {
+				foreach ( (array) $event->categories as $cat ) {
 					echo '
 				<category>' . $this->sanitize_feed_text( $cat->name ) . '</category>';
 				}
@@ -115,12 +136,12 @@ class EL_Rss {
 
 
 	public function update_rewrite_status() {
-		$feeds               = array_keys( (array) get_option( 'rewrite_rules' ), 'index.php?&feed=$matches[1]' );
-		$feed_rewrite_status = ( 0 < count( preg_grep( '@[(\|]' . $this->options->get( 'el_feed_rss_name' ) . '[\|)]@', $feeds ) ) ) ? true : false;
-		if ( '1' == $this->options->get( 'el_feed_enable_rss' ) && ! $feed_rewrite_status ) {
+		$feeds               = array_keys( (array) get_option( 'rewrite_rules' ), 'index.php?&feed=$matches[1]', true );
+		$feed_rewrite_status = 0 < count( preg_grep( '@[(\|]' . $this->options->get( 'el_feed_rss_name' ) . '[\|)]@', $feeds ) );
+		if ( '1' === $this->options->get( 'el_feed_enable_rss' ) && ! $feed_rewrite_status ) {
 			// add eventlist RSS feed to rewrite rules
 			flush_rewrite_rules( false );
-		} elseif ( '1' != $this->options->get( 'el_feed_enable_rss' ) && $feed_rewrite_status ) {
+		} elseif ( '1' !== $this->options->get( 'el_feed_enable_rss' ) && $feed_rewrite_status ) {
 			// remove eventlist RSS feed from rewrite rules
 			flush_rewrite_rules( false );
 		}
@@ -141,33 +162,33 @@ class EL_Rss {
 
 	private function format_date( $startdate, $enddate ) {
 		$start_array = explode( '-', $startdate );
-		$startdate   = mktime( 0, 0, 0, $start_array[1], $start_array[2], $start_array[0] );
+		$startdate   = intval( mktime( 0, 0, 0, intval( $start_array[1] ), intval( $start_array[2] ), intval( $start_array[0] ) ) );
 
 		$end_array = explode( '-', $enddate );
-		$enddate   = mktime( 0, 0, 0, $end_array[1], $end_array[2], $end_array[0] );
+		$enddate   = intval( mktime( 0, 0, 0, intval( $end_array[1] ), intval( $end_array[2] ), intval( $end_array[0] ) ) );
 
 		$eventdate = '';
 
-		if ( $startdate == $enddate ) {
-			if ( $start_array[2] == '00' ) {
-				$startdate  = mktime( 0, 0, 0, $start_array[1], 15, $start_array[0] );
-				$eventdate .= date( 'F, Y', $startdate );
+		if ( $startdate === $enddate ) {
+			if ( '00' === $start_array[2] ) {
+				$startdate  = intval( mktime( 0, 0, 0, intval( $start_array[1] ), 15, intval( $start_array[0] ) ) );
+				$eventdate .= gmdate( 'F, Y', $startdate );
 				return $eventdate;
 			}
-			$eventdate .= date( 'M j, Y', $startdate );
+			$eventdate .= gmdate( 'M j, Y', $startdate );
 			return $eventdate;
 		}
 
-		if ( $start_array[0] == $end_array[0] ) {
-			if ( $start_array[1] == $end_array[1] ) {
-				$eventdate .= date( 'M j', $startdate ) . '-' . date( 'j, Y', $enddate );
+		if ( $start_array[0] === $end_array[0] ) {
+			if ( $start_array[1] === $end_array[1] ) {
+				$eventdate .= gmdate( 'M j', $startdate ) . '-' . gmdate( 'j, Y', $enddate );
 				return $eventdate;
 			}
-			$eventdate .= date( 'M j', $startdate ) . '-' . date( 'M j, Y', $enddate );
+			$eventdate .= gmdate( 'M j', $startdate ) . '-' . gmdate( 'M j, Y', $enddate );
 			return $eventdate;
 		}
 
-		$eventdate .= date( 'M j, Y', $startdate ) . '-' . date( 'M j, Y', $enddate );
+		$eventdate .= gmdate( 'M j, Y', $startdate ) . '-' . gmdate( 'M j, Y', $enddate );
 		return $eventdate;
 	}
 

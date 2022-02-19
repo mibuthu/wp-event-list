@@ -1,4 +1,18 @@
 <?php
+/**
+ * The events post type class
+ *
+ * TODO: Fix phan warnings to remove the suppressed checks
+ *
+ * @phan-file-suppress PhanPluginNoCommentOnPublicProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPublicMethod
+ * @phan-file-suppress PhanPluginUnknownPropertyType
+ * @phan-file-suppress PhanPluginUnknownMethodReturnType
+ *
+ * @package event-list
+ */
+
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
@@ -25,7 +39,7 @@ class EL_Events_Post_Type {
 	/**
 	 * Get the singleton instance of the class.
 	 *
-	 * @return  class instance reference
+	 * @return self
 	 */
 	public static function &get_instance() {
 		// Create class instance if required
@@ -40,7 +54,7 @@ class EL_Events_Post_Type {
 	/**
 	 * Constructor which handles all required class preparations
 	 *
-	 * @return  null
+	 * @return void
 	 */
 	private function __construct() {
 		// Register actions and filters
@@ -62,7 +76,7 @@ class EL_Events_Post_Type {
 	/**
 	 * Register the events post type to handle the events.
 	 *
-	 * @return  null
+	 * @return void
 	 */
 	public function register_event_post_type() {
 		$labels = array(
@@ -119,12 +133,13 @@ class EL_Events_Post_Type {
 	/**
 	 * Register the event category taxonomy for handling event categories.
 	 *
-	 * @return
+	 * @return void
 	 */
 	public function register_event_category_taxonomy() {
+		// phpcs:disable WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
 		$labels = array(
-			'name'                       => _x( 'Categories', 'taxonomy general name' ),
-			'singular_name'              => _x( 'Category', 'taxonomy singular name' ),
+			'name'                       => __( 'Categories' ),
+			'singular_name'              => __( 'Category' ),
 			'search_items'               => __( 'Search Categories' ),
 			'popular_items'              => __( 'Popular Categories' ),
 			'all_items'                  => __( 'All Categories' ),
@@ -161,6 +176,7 @@ class EL_Events_Post_Type {
 			'rewrite'            => array( 'slug' => 'event-category' ),
 			'query_var'          => true,
 		);
+		// phpcs:enable
 		register_taxonomy( $this->event_cat_taxonomy, 'el_events', $args );
 	}
 

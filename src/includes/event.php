@@ -1,4 +1,31 @@
 <?php
+/**
+ * The Event class
+ *
+ * TODO: Fix phan warnings to remove the suppressed checks
+ *
+ * @phan-file-suppress PhanPluginNoCommentOnPublicProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPublicMethod
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateMethod
+ * @phan-file-suppress PhanPluginUnknownPropertyType
+ * @phan-file-suppress PhanPluginUnknownMethodParamType
+ * @phan-file-suppress PhanPluginUnknownMethodReturnType
+ * @phan-file-suppress PhanPartialTypeMismatchArgument
+ * @phan-file-suppress PhanPartialTypeMismatchArgumentInternal
+ * @phan-file-suppress PhanTypeMismatchProperty
+ * @phan-file-suppress PhanPossiblyUndeclaredProperty
+ * @phan-file-suppress PhanPluginDuplicateConditionalNullCoalescing
+ * @phan-file-suppress PhanPossiblyFalseTypeArgumentInternal
+ * @phan-file-suppress PhanTypeArraySuspiciousNullable
+ *
+ * @package event-list
+ */
+
+// TODO: Fix phpcs warnings to remove the disabled checks
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching
+// phpcs:disable PHPCompatibility.ParameterValues.NewIconvMbstringCharsetDefault.NotSet
+
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
@@ -9,9 +36,16 @@ if ( version_compare( PHP_VERSION, '5.3' ) < 0 ) {
 	require_once EL_PATH . 'includes/daterange.php';
 }
 
-// Class to manage categories
+/**
+ * The Event class
+ */
 class EL_Event {
 
+	/**
+	 * The event post type
+	 *
+	 * @var EL_Events_Post_Type
+	 */
 	private $events_post_type;
 
 	public $post;
@@ -65,10 +99,12 @@ class EL_Event {
 
 	public static function save( $eventdata ) {
 		// create new post
-		$postdata['post_type']    = 'el_events';
-		$postdata['post_status']  = 'publish';
-		$postdata['post_title']   = $eventdata['title'];
-		$postdata['post_content'] = $eventdata['content'];
+		$postdata = array(
+			'post_type'    => 'el_events',
+			'post_status'  => 'publish',
+			'post_title'   => $eventdata['title'],
+			'post_content' => $eventdata['content'],
+		);
 		if ( isset( $eventdata['excerpt'] ) ) {
 			$postdata['post_excerpt'] = $eventdata['excerpt'];
 		}
@@ -97,20 +133,17 @@ class EL_Event {
 	}
 
 
-	/** ************************************************************************************************************
+	/**
 	 * Create or update the event data (all event data except title and content)
 	 *
-	 * @param   int   $pid        The post id of the event to update.
-	 * @param   array $eventdata  The event data provided in an array where the key is the event field and the
-	 *                            value is the corresponding data. The provided data does not have to be
-	 *                            sanitized from the user imputs because this is done in the function.
-	 * @return  int|bool           event id ... for a successfully created new event
-	 *                             true     ... for a successfully modified existing event
-	 *                             false    ... if an error occured during the creation or modification an event
-	 **************************************************************************************************************/
+	 * @param  int                  $pid       The post id of the event to update.
+	 * @param  array<string,string> $eventdata The event data provided in an array where the key is the event field and the value is the corresponding data.
+	 *                                         The provided data does not have to be sanitized from the user imputs because this is done in the function.
+	 * @return self|false
+	 */
 	public static function save_postmeta( $pid, $eventdata ) {
+		global $el_event_errors;
 		$instance = new self( $pid );
-		$errors   = array();
 
 		// Sanitize event data (event data will be provided without sanitation of user input)
 		$eventdata['startdate'] = empty( $eventdata['startdate'] ) ? '' : preg_replace( '/[^0-9\-]/', '', $eventdata['startdate'] );
@@ -121,10 +154,11 @@ class EL_Event {
 		// startdate
 		$instance->startdate = $instance->validate_date( $eventdata['startdate'] );
 		if ( empty( $instance->startdate ) ) {
-			$errors[] = __( 'No valid start date provided', 'event-list' );
+			$el_event_errors[] = __( 'No valid start date provided', 'event-list' );
 		}
 		// enddate
 		$instance->enddate = $instance->validate_date( $eventdata['enddate'] );
+		// @phan-suppress-next-line PhanPluginComparisonObjectOrdering  Comparing DateTime instances is allowed
 		if ( empty( $instance->enddate ) || new DateTime( $instance->enddate ) < new DateTime( $instance->startdate ) ) {
 			$instance->enddate = $instance->startdate;
 		}
@@ -138,11 +172,11 @@ class EL_Event {
 			update_post_meta( $pid, $meta, $instance->$meta );
 		}
 		// error handling: set event back to pending, and publish error message
-		if ( ! empty( $errors ) ) {
-			// if((isset($_POST['publish']) || isset( $_POST['save'] ) ) && $_POST['post_status'] == 'publish' ) {
+		if ( ! empty( $el_event_errors ) ) {
+			// TODO: Check the comment: "if((isset($_POST['publish']) || isset( $_POST['save'] ) ) && $_POST['post_status'] == 'publish' )"
 			global $wpdb;
 			$wpdb->update( $wpdb->posts, array( 'post_status' => 'pending' ), array( 'ID' => $pid ) );
-			add_filter( 'redirect_post_location', array( &$this, 'save_metadata_redirect_post_location_filter' ) );
+			add_filter( 'redirect_post_location', array( &$instance, 'save_metadata_redirect_post_location_filter' ) );
 			unset( $instance );
 			return false;
 		}
@@ -151,7 +185,10 @@ class EL_Event {
 
 
 	private function save_metadata_redirect_post_location_filter( $location ) {
-		return add_query_arg( "'.implode('<br />', $errors).'", '4', $location );
+		global $el_event_errors;
+		$location = add_query_arg( "'.implode('<br />', $el_event_errors).'", '4', $location );
+		unset( $el_event_errors );
+		return $location;
 	}
 
 
@@ -169,11 +206,20 @@ class EL_Event {
 	}
 
 
+	/**
+	 * Validate a given date string
+	 *
+	 * @param string $datestring The date string to validate
+	 * @return false|string
+	 *
+	 * @suppress PhanDeprecatedFunctionInternal
+	 */
 	private function validate_date( $datestring ) {
+		// phpcs:ignore PHPCompatibility.FunctionUse.NewFunctions.date_create_from_formatFound
 		$d = date_create_from_format( 'Y-m-d', $datestring );
-		if ( $d && $d->format( 'Y-m-d' ) == $datestring
-			  && 1970 <= $d->format( 'Y' )
-			  && 2999 >= $d->format( 'Y' ) ) {
+		if ( $d && $d->format( 'Y-m-d' ) === $datestring
+				&& 1970 <= $d->format( 'Y' )
+				&& 2999 >= $d->format( 'Y' ) ) {
 			return $datestring;
 		}
 		return false;
@@ -185,7 +231,7 @@ class EL_Event {
 		$timestamp = strtotime( stripslashes( $timestring ) );
 		// Return a standard time format if the conversion was successful
 		if ( $timestamp ) {
-			return date( 'H:i:s', $timestamp );
+			return gmdate( 'H:i:s', $timestamp );
 		}
 		// Else return the given text
 		return $timestring;
@@ -216,23 +262,20 @@ class EL_Event {
 	}
 
 
-	/** ************************************************************************************************************
+	/**
 	 * Truncate HTML, close opened tags
 	 *
-	 * @param string $html          The html code which should be shortened.
-	 * @param int    $length        The length (number of characters) to which the text will be shortened.
-	 *                              With [0] the full text will be returned. With [auto] also the complete text
-	 *                              will be used, but a wrapper div will be added which shortens the text to 1 full
-	 *                              line via css.
-	 * @param bool   $skip          If this value is true the truncate will be skipped (nothing will be done)
-	 * @param bool   $perserve_tags Specifies if html tags should be preserved or if only the text should be
-	 *                              shortened.
-	 * @param string $link          If an url is given a link to the given url will be added for the ellipsis at
-	 *                              the end of the truncated text.
-	 ***************************************************************************************************************/
+	 * @param string       $html          The html code which should be shortened.
+	 * @param int          $length        The length (number of characters) to which the text will be shortened.
+	 *                                    With [0] the full text will be returned. With [auto] also the complete text will be used,
+	 *                                    but a wrapper div will be added which shortens the text to 1 full line via css.
+	 * @param bool         $skip          If this value is true the truncate will be skipped (nothing will be done).
+	 * @param bool         $preserve_tags Specifies if html tags should be preserved or if only the text should be shortened.
+	 * @param false|string $link          If an url is given a link to the given url will be added for the ellipsis at the end of the truncated text.
+	 */
 	public function truncate( $html, $length, $skip = false, $preserve_tags = true, $link = false ) {
 		mb_internal_encoding( 'UTF-8' );
-		if ( 'auto' == $length ) {
+		if ( 'auto' === $length ) {
 			// add wrapper div with css styles for css truncate and return
 			return '<div style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis">' . $html . '</div>';
 		} elseif ( empty( $length ) || mb_strlen( $html ) <= $length || $skip ) {
@@ -243,37 +286,38 @@ class EL_Event {
 			return mb_substr( $html, 0, $length );
 		} else {
 			// truncate with preserving html tags
-			$truncated     = false;
-			$printedLength = 0;
-			$position      = 0;
-			$tags          = array();
-			$out           = '';
-			while ( $printedLength < $length && $this->mb_preg_match( '{</?([a-z]+\d?)[^>]*>|&#?[a-zA-Z0-9]+;}', $html, $match, PREG_OFFSET_CAPTURE, $position ) ) {
-				list($tag, $tagPosition) = $match[0];
+			$truncated      = false;
+			$printed_length = 0;
+			$position       = 0;
+			$tags           = array();
+			$out            = '';
+			while ( $printed_length < $length && $this->mb_preg_match( '{</?([a-z]+\d?)[^>]*>|&#?[a-zA-Z0-9]+;}', $html, $match, PREG_OFFSET_CAPTURE, $position ) ) {
+				list($tag, $tag_position) = $match[0];
 				// Print text leading up to the tag
-				$str = mb_substr( $html, $position, $tagPosition - $position );
-				if ( $printedLength + mb_strlen( $str ) > $length ) {
-					$out          .= mb_substr( $str, 0, $length - $printedLength );
-					$printedLength = $length;
-					$truncated     = true;
+				$str = mb_substr( $html, $position, $tag_position - $position );
+				if ( $printed_length + mb_strlen( $str ) > $length ) {
+					$out           .= mb_substr( $str, 0, $length - $printed_length );
+					$printed_length = $length;
+					$truncated      = true;
 					break;
 				}
-				$out           .= $str;
-				$printedLength += mb_strlen( $str );
-				if ( '&' == $tag[0] ) {
+				$out            .= $str;
+				$printed_length += mb_strlen( $str );
+				if ( '&' === $tag[0] ) {
 					// Handle the entity
 					$out .= $tag;
-					$printedLength++;
+					$printed_length++;
 				} else {
 					// Handle the tag
-					$tagName = $match[1][0];
+					$tag_name = $match[1][0];
 					if ( $this->mb_preg_match( '{^</}', $tag ) ) {
 						// This is a closing tag
-						$openingTag = array_pop( $tags );
-						if ( $openingTag != $tagName ) {
+						$opening_tag = array_pop( $tags );
+						if ( $opening_tag !== $tag_name ) {
 							// Not properly nested tag found: trigger a warning and add the not matching opening tag again
-							trigger_error( 'Not properly nested tag found (last opening tag: ' . $openingTag . ', closing tag: ' . $tagName . ')', E_USER_NOTICE );
-							$tags[] = $openingTag;
+							// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
+							trigger_error( 'Not properly nested tag found (last opening tag: ' . $opening_tag . ', closing tag: ' . $tag_name . ')', E_USER_NOTICE );
+							$tags[] = $opening_tag;
 						} else {
 							$out .= $tag;
 						}
@@ -283,19 +327,19 @@ class EL_Event {
 					} else {
 						// Opening tag
 						$out   .= $tag;
-						$tags[] = $tagName;
+						$tags[] = $tag_name;
 					}
 				}
 				// Continue after the tag
-				$position = $tagPosition + mb_strlen( $tag );
+				$position = $tag_position + mb_strlen( $tag );
 			}
 			// Print any remaining text
-			if ( $printedLength < $length && $position < mb_strlen( $html ) ) {
-				$out .= mb_substr( $html, $position, $length - $printedLength );
+			if ( $printed_length < $length && $position < mb_strlen( $html ) ) {
+				$out .= mb_substr( $html, $position, $length - $printed_length );
 			}
 			// Print ellipsis ("...") if the html was truncated.
 			if ( $truncated ) {
-				if ( $link ) {
+				if ( is_string( $link ) ) {
 					$out .= ' <a href="' . $link . '"> [' . __( 'read more', 'event-list' ) . '&hellip;]</a>';
 				} else {
 					$out .= ' [' . __( 'read more', 'event-list' ) . '&hellip;]';

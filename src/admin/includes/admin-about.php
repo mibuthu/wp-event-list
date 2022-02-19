@@ -1,4 +1,21 @@
 <?php
+/**
+ * The main class for the admin pages
+ *
+ * TODO: Fix phan warnings to remove the suppressed checks
+ *
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPublicMethod
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateMethod
+ * @phan-file-suppress PhanPluginUnknownPropertyType
+ * @phan-file-suppress PhanPluginUnknownMethodParamType
+ * @phan-file-suppress PhanPluginUnknownMethodReturnType
+ * @phan-file-suppress PhanPluginRemoveDebugEcho
+ * @phan-file-suppress PhanPartialTypeMismatchArgument
+ *
+ * @package event-list
+ */
+
 if ( ! defined( 'WP_ADMIN' ) ) {
 	exit;
 }
@@ -6,7 +23,9 @@ if ( ! defined( 'WP_ADMIN' ) ) {
 require_once EL_PATH . 'includes/options.php';
 require_once EL_PATH . 'includes/daterange.php';
 
-// This class handles all data for the admin about page
+/**
+ * This class handles all data for the admin about page
+ */
 class EL_Admin_About {
 
 	private static $instance;
@@ -34,6 +53,7 @@ class EL_Admin_About {
 
 	public function show_about() {
 		if ( ! current_user_can( 'edit_posts' ) ) {
+			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
 		// check used get parameters
@@ -42,7 +62,7 @@ class EL_Admin_About {
 		echo '<div class="wrap">
 				<div id="icon-edit-pages" class="icon32"><br /></div><h2>' . __( 'About Event List', 'event-list' ) . '</h2>';
 		echo $this->show_tabs( $tab );
-		if ( 'atts' == $tab ) {
+		if ( 'atts' === $tab ) {
 			$this->daterange->load_formats_helptexts();
 			$this->show_atts();
 			$this->show_filter_syntax();
@@ -58,7 +78,7 @@ class EL_Admin_About {
 
 
 	public function embed_about_scripts() {
-		wp_enqueue_style( 'eventlist_admin_about', EL_URL . 'admin/css/admin_about.css' );
+		wp_enqueue_style( 'eventlist_admin_about', EL_URL . 'admin/css/admin_about.css', array(), '1.0' );
 	}
 
 
@@ -69,7 +89,7 @@ class EL_Admin_About {
 		);
 		$out  = '<h3 class="nav-tab-wrapper">';
 		foreach ( $tabs as $tab => $name ) {
-			$class = ( $tab == $current ) ? ' nav-tab-active' : '';
+			$class = ( $tab === $current ) ? ' nav-tab-active' : '';
 			$out  .= '<a class="nav-tab' . $class . '" href="' . add_query_arg( 'tab', $tab, add_query_arg( array() ) ) . '">' . $name . '</a>';
 		}
 		$out .= '</h3>';

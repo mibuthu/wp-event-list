@@ -12,6 +12,7 @@
 	border: 1px solid #aaa;
 	border-collapse: collapse;
 	width: 98%;
+	font-size: small;
 }
 .el-atts-table th {
 	border: 1px solid #aaa;
@@ -33,6 +34,7 @@
 	width: 100%;
 	margin: 0.2em 0 1.2em 0;
 	line-height: 1.6em;
+	font-size: small;
 }
 .el-filterbar-table th {
 	border: 1px solid #aaa;

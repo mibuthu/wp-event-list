@@ -1,4 +1,29 @@
 <?php
+/**
+ * The admin import class
+ *
+ * TODO: Fix phan warnings to remove the suppressed checks
+ *
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPublicMethod
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateMethod
+ * @phan-file-suppress PhanPluginUnknownPropertyType
+ * @phan-file-suppress PhanPluginUnknownMethodParamType
+ * @phan-file-suppress PhanPluginUnknownMethodReturnType
+ * @phan-file-suppress PhanPluginRemoveDebugEcho
+ * @phan-file-suppress PhanPartialTypeMismatchArgument
+ * @phan-file-suppress PhanPartialTypeMismatchArgumentInternal
+ * @phan-file-suppress PhanTypeMismatchArgumentInternal
+ * @phan-file-suppress PhanPossiblyNullTypeArgumentInternal
+ * @phan-file-suppress PhanPossiblyFalseTypeArgument
+ * @phan-file-suppress PhanPossiblyFalseTypeArgumentInternal
+ * @phan-file-suppress PhanPossiblyNonClassMethodCall
+ * @phan-file-suppress PhanTypePossiblyInvalidDimOffset
+ * @phan-file-suppress PhanTypeErrorInInternalCall
+ *
+ * @package event-list
+ */
+
 if ( ! defined( 'WP_ADMIN' ) ) {
 	exit;
 }
@@ -12,13 +37,20 @@ if ( version_compare( PHP_VERSION, '5.3' ) < 0 ) {
 	require_once EL_PATH . 'includes/daterange.php';
 }
 
-// This class handles all data for the admin new event page
+/**
+ * This class handles all data for the admin new event page
+ */
 class EL_Admin_Import {
 
 	private static $instance;
 
 	private $options;
 
+	/**
+	 * The event post type
+	 *
+	 * @var EL_Events_Post_Type
+	 */
 	private $events_post_type;
 
 	private $functions;
@@ -50,23 +82,22 @@ class EL_Admin_Import {
 
 	public function show_import() {
 		if ( ! current_user_can( 'edit_posts' ) ) {
+			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
 		echo '
 			<div class="wrap">
 				<div id="icon-edit-pages" class="icon32"><br /></div>
 				<h2>' . __( 'Import Events', 'event-list' ) . '</h2>';
-		// Review import
 		if ( isset( $_FILES['el_import_file'] ) ) {
+			// Review import
 			$this->show_import_review();
-		}
-		// Finish import (add events)
-		elseif ( isset( $_POST['reviewed_events'] ) ) {
+		} elseif ( isset( $_POST['reviewed_events'] ) ) {
+			// Finish import (add events)
 			$import_status = $this->import_events();
 			$this->show_import_finished( $import_status );
-		}
-		// Import form
-		else {
+		} else {
+			// Import form
 			$this->show_import_form();
 		}
 		echo '
@@ -89,17 +120,20 @@ class EL_Admin_Import {
 
 
 	private function show_import_review() {
-		$file = $_FILES['el_import_file']['tmp_name'];
+		// TODO: Check non-sanitized filename
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$file_path = isset( $_FILES['el_import_file']['tmp_name'] ) ? wp_unslash( $_FILES['el_import_file']['tmp_name'] ) : null;
 		// check for file existence (upload failed?)
-		if ( ! is_file( $file ) ) {
+		if ( ! is_file( $file_path ) ) {
 			echo '<h3>' . __( 'Sorry, there has been an error.', 'event-list' ) . '</h3>';
 			echo __( 'The file does not exist, please try again.', 'event-list' ) . '</p>';
 			return;
 		}
 
 		// check for file extension (csv) first
-		$file_parts = pathinfo( $_FILES['el_import_file']['name'] );
-		if ( $file_parts['extension'] !== 'csv' ) {
+		$file_name  = isset( $_FILES['el_import_file']['name'] ) ? sanitize_file_name( wp_unslash( $_FILES['el_import_file']['name'] ) ) : null;
+		$file_parts = pathinfo( $file_name );
+		if ( 'csv' !== $file_parts['extension'] ) {
 			echo '<h3>' . __( 'Sorry, there has been an error.', 'event-list' ) . '</h3>';
 			echo __( 'The uploaded file does not have the required csv extension.', 'event-list' ) . '</p>';
 			return;
@@ -109,7 +143,7 @@ class EL_Admin_Import {
 		$this->save_import_settings();
 
 		// parse file
-		$import_data = $this->parse_import_file( $file );
+		$import_data = $this->parse_import_file( $file_path );
 
 		// show heading
 		echo '
@@ -128,7 +162,7 @@ class EL_Admin_Import {
 		// failed events
 		$num_event_errors = count( array_filter( $import_data, 'is_wp_error' ) );
 		if ( ! empty( $num_event_errors ) ) {
-			if ( $num_event_errors == count( $import_data ) ) {
+			if ( count( $import_data ) === $num_event_errors ) {
 				echo '
 				<div class="el-warning">' . __( 'Error', 'event-list' ) . ': ' . __( 'None of the events in this CSV file can be imported', 'event-list' ) . ':';
 			} else {
@@ -145,13 +179,13 @@ class EL_Admin_Import {
 			}
 			echo '
 					<ul class="el-event-errors">';
-			foreach ( $import_data as $event ) {
+			foreach ( (array) $import_data as $event ) {
 				if ( is_wp_error( $event ) ) {
 					echo '<li>' . sprintf( __( 'CSV line %1$s', 'event-list' ), $event->get_error_data() ) . ': ' . $event->get_error_message() . '</li>';
 				}
 			}
 			echo '</ul>';
-			if ( $num_event_errors == count( $import_data ) ) {
+			if ( count( $import_data ) === $num_event_errors ) {
 				echo '
 				</div>';
 				return;
@@ -164,12 +198,12 @@ class EL_Admin_Import {
 
 		// missing categories
 		$not_available_cats = array();
-		foreach ( $import_data as $event ) {
+		foreach ( (array) $import_data as $event ) {
 			if ( is_wp_error( $event ) ) {
 				continue;
 			}
 			foreach ( $event['categories'] as $cat ) {
-				if ( ! $this->events->cat_exists( $cat ) && ! in_array( $cat, $not_available_cats ) ) {
+				if ( ! $this->events->cat_exists( $cat ) && ! in_array( $cat, $not_available_cats, true ) ) {
 					$not_available_cats[] = $cat;
 				}
 			}
@@ -194,7 +228,7 @@ class EL_Admin_Import {
 			<div id="poststuff">
 				<div id="post-body" class="metabox-holder columns-2">
 					<div id="post-body-content">';
-		foreach ( $import_data as $event ) {
+		foreach ( (array) $import_data as $event ) {
 			$this->show_event( $event );
 		}
 		echo '
@@ -205,7 +239,7 @@ class EL_Admin_Import {
 					</div>
 				</div>
 			</div>
-			<input type="hidden" name="reviewed_events" id="reviewed_events" value="' . esc_html( json_encode( $import_data ) ) . '" />
+			<input type="hidden" name="reviewed_events" id="reviewed_events" value="' . esc_html( wp_json_encode( $import_data ) ) . '" />
 			</form>';
 	}
 
@@ -227,7 +261,7 @@ class EL_Admin_Import {
 					<div class="el-warning">' . __( 'Errors during Import', 'event-list' ) . ':';
 			if ( is_wp_error( $import_status['errors'] ) ) {
 				echo '
-					<p>' . $import_errors->get_error_message() . '</p>';
+					<p>' . $import_status['errors']->get_error_message() . '</p>';
 			} else {
 				echo '
 					<ul class="el-event-errors">';
@@ -256,17 +290,20 @@ class EL_Admin_Import {
 
 
 	/**
-	 * @return WP_Error
+	 * Parse the file to import
+	 *
+	 * @param string $file_path The file path
+	 * @return EL_Event[] | WP_Error | WP_Error[]
 	 */
-	private function parse_import_file( $file ) {
+	private function parse_import_file( $file_path ) {
 		$delimiter      = ',';
 		$header         = array( 'title', 'startdate', 'enddate', 'starttime', 'location', 'content', 'category_slugs' );
 		$separator_line = 'sep=,';
 
 		// list of events to import
 		$events = array();
-
-		$file_handle = fopen( $file, 'r' );
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fopen
+		$file_handle = fopen( $file_path, 'r' );
 		$event_lines = -1;
 		$empty_lines = 0;
 		while ( ! feof( $file_handle ) ) {
@@ -277,19 +314,18 @@ class EL_Admin_Import {
 
 			// skip empty lines
 			if ( ! array_filter( $line ) ) {
-				$empty_lines += 1;
+				$empty_lines ++;
 				continue;
 			}
 			// check header
 			if ( 0 > $event_lines ) {
-				// check optional separator line
 				if ( $line[0] === $separator_line ) {
-					$empty_lines += 1;
+					// check optional separator line
+					$empty_lines ++;
 					continue;
-				}
-				// check header line
-				elseif ( $line === $header || $line === array_slice( $header, 0, -1 ) ) {
-					$event_lines += 1;
+				} elseif ( $header === $line || array_slice( $header, 0, -1 ) === $line ) {
+					// check header line
+					$event_lines ++;
 					continue;
 				} else {
 					return new WP_Error(
@@ -299,10 +335,10 @@ class EL_Admin_Import {
 					);
 				}
 			}
-			$event_lines += 1;
+			$event_lines ++;
 			// check correct number of items in line
 			if ( 6 > count( $line ) || 7 < count( $line ) ) {
-				$events[] = new WP_Error( 'wrong_number_line_items', sprintf( __( 'Wrong number of items in line (%1$s items found, 6-7 required)', 'event-list' ), count( $line ) ), $event_lines + $empty_Lines + 1 );
+				$events[] = new WP_Error( 'wrong_number_line_items', sprintf( __( 'Wrong number of items in line (%1$s items found, 6-7 required)', 'event-list' ), count( $line ) ), $event_lines + $empty_lines + 1 );
 				continue;
 			}
 			// check and prepare event data
@@ -321,6 +357,7 @@ class EL_Admin_Import {
 			$events[] = $event;
 		}
 		// close file
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose
 		fclose( $file_handle );
 		return $events;
 	}
@@ -371,6 +408,7 @@ class EL_Admin_Import {
 			$auto_detect = false;
 		}
 		// create date from given format
+		// phpcs:ignore PHPCompatibility.FunctionUse.NewFunctions.date_create_from_formatFound
 		$date = date_create_from_format( $date_format, $date_string );
 		if ( ! $date instanceof DateTime ) {
 			// try automatic date detection
@@ -388,9 +426,9 @@ class EL_Admin_Import {
 	private function save_import_settings() {
 		foreach ( $this->options->options as $oname => $o ) {
 			// check used post parameters
-			$ovalue = isset( $_POST[ $oname ] ) ? sanitize_text_field( $_POST[ $oname ] ) : '';
+			$ovalue = isset( $_POST[ $oname ] ) ? sanitize_text_field( wp_unslash( $_POST[ $oname ] ) ) : '';
 
-			if ( 'import' == $o['section'] && ! empty( $ovalue ) ) {
+			if ( 'import' === $o['section'] && ! empty( $ovalue ) ) {
 				$this->options->set( $oname, $ovalue );
 			}
 		}
@@ -404,16 +442,19 @@ class EL_Admin_Import {
 
 
 	public function render_publish_metabox() {
+		// phpcs:disable WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
 		echo '
 			<div class="submitbox">
 				<div id="delete-action"><a href="?page=el_admin_main" class="submitdelete deletion">' . __( 'Cancel' ) . '</a></div>
-				<div id="publishing-action"><input type="submit" class="button button-primary button-large" name="import" value="' . __( 'Import', 'event-list' ) . '" id="import"></div>
+				<div id="publishing-action"><input type="submit" class="button button-primary button-large" name="import" value="' . __( 'Import' ) . '" id="import"></div>
 				<div class="clear"></div>
 			</div>';
+		// phpcs:enable
 	}
 
 
 	public function render_category_metabox( $post, $metabox ) {
+		// @phan-suppress-next-line PhanMissingRequireFile  This file is available in WordPress
 		require_once ABSPATH . 'wp-admin/includes/meta-boxes.php';
 		$dpost = get_default_post_to_edit( 'el-events' );
 		$box   = array( 'args' => array( 'taxonomy' => $this->events_post_type->taxonomy ) );
@@ -423,17 +464,21 @@ class EL_Admin_Import {
 
 	private function import_events() {
 		// check used post parameters
-		$reviewed_events = json_decode( stripslashes( $_POST['reviewed_events'] ), true );
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$reviewed_events = isset( $_POST['reviewed_events'] ) ? json_decode( wp_unslash( $_POST['reviewed_events'] ), true ) : array();
 		if ( empty( $reviewed_events ) ) {
 			return new WP_Error( 'no_events', __( 'No events found', 'event-list' ) );
 		}
 		// prepare additional categories
 		if ( $this->events_post_type->event_cat_taxonomy === $this->events_post_type->taxonomy ) {
-			$additional_cat_ids = isset( $_POST['tax_input'][ $this->events_post_type->taxonomy ] ) ? $_POST['tax_input'][ $this->events_post_type->taxonomy ] : array();
+			$additional_cat_ids = isset( $_POST['tax_input'][ $this->events_post_type->taxonomy ] ) ?
+				array_map( 'intval', (array) wp_unslash( $_POST['tax_input'][ $this->events_post_type->taxonomy ] ) ) :
+				array();
 		} else {
-			$additional_cat_ids = isset( $_POST[ 'post_' . $this->events_post_type->taxonomy ] ) ? $_POST[ 'post_' . $this->events_post_type->taxonomy ] : array();
+			$additional_cat_ids = isset( $_POST[ 'post_' . $this->events_post_type->taxonomy ] ) ?
+				array_map( 'intval', (array) wp_unslash( $_POST[ 'post_' . $this->events_post_type->taxonomy ] ) ) :
+				array();
 		}
-		$additional_cat_ids   = is_array( $additional_cat_ids ) ? array_map( 'intval', $additional_cat_ids ) : array();
 		$additional_cat_slugs = array();
 		foreach ( $additional_cat_ids as $cat_id ) {
 			$cat = $this->events->get_cat_by_id( $cat_id );
@@ -480,7 +525,7 @@ class EL_Admin_Import {
 
 
 	public function embed_import_scripts() {
-		wp_enqueue_style( 'eventlist_admin_import', EL_URL . 'admin/css/admin_import.css' );
+		wp_enqueue_style( 'eventlist_admin_import', EL_URL . 'admin/css/admin_import.css', array(), '1.0' );
 	}
 
 }

@@ -1,4 +1,22 @@
 <?php
+/**
+ * The shortcode [event-list] class
+ *
+ * TODO: Fix phan warnings to remove the suppressed checks
+ *
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPublicMethod
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateMethod
+ * @phan-file-suppress PhanPluginUnknownPropertyType
+ * @phan-file-suppress PhanPluginUnknownMethodParamType
+ * @phan-file-suppress PhanPluginUnknownMethodReturnType
+ * @phan-file-suppress PhanPluginRemoveDebugEcho
+ * @phan-file-suppress PhanPartialTypeMismatchArgument
+ * @phan-file-suppress PhanTypeMismatchArgumentProbablyReal
+ *
+ * @package event-list
+ */
+
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
@@ -6,9 +24,10 @@ if ( ! defined( 'WPINC' ) ) {
 require_once EL_PATH . 'includes/options.php';
 require_once EL_PATH . 'includes/events.php';
 require_once EL_PATH . 'includes/event.php';
-// require_once(EL_PATH.'includes/categories.php');
 
-// This class handles the shortcode [event-list]
+/**
+ * This class handles the shortcode [event-list]
+ */
 class SC_Event_List {
 
 	private static $instance;
@@ -17,7 +36,6 @@ class SC_Event_List {
 
 	private $options;
 
-	// private $categories;
 	private $atts;
 
 	private $num_sc_loaded;
@@ -38,7 +56,6 @@ class SC_Event_List {
 	private function __construct() {
 		$this->options = &EL_Options::get_instance();
 		$this->events  = &EL_Events::get_instance();
-		// $this->categories = &EL_Categories::get_instance();
 
 		// All available attributes
 		$this->atts = array(
@@ -76,9 +93,16 @@ class SC_Event_List {
 	}
 
 
+	/**
+	 * Load the shortcode helptexts required for the admin pages
+	 *
+	 * @return void
+	 *
+	 * @suppress PhanUndeclaredVariable
+	 */
 	public function load_sc_eventlist_helptexts() {
 		require_once EL_PATH . 'includes/sc_event-list_helptexts.php';
-		foreach ( $sc_eventlist_helptexts as $name => $values ) {
+		foreach ( (array) $sc_eventlist_helptexts as $name => $values ) {
 			$this->atts[ $name ] = array_merge( $this->atts[ $name ], $values );
 		}
 		unset( $sc_eventlist_helptexts );
@@ -87,7 +111,7 @@ class SC_Event_List {
 
 	public function get_atts( $only_visible = true ) {
 		if ( $only_visible ) {
-			$atts = null;
+			$atts = array();
 			foreach ( $this->atts as $aname => $attr ) {
 				if ( ! isset( $attr['hidden'] ) || true !== $attr['hidden'] ) {
 					$atts[ $aname ] = $attr;
@@ -100,13 +124,19 @@ class SC_Event_List {
 	}
 
 
-	// main function to show the rendered HTML output
+	/**
+	 * Main function to show the rendered HTML output
+	 *
+	 * @param array<string,string|string[]> $atts The shortcode attributes.
+	 * @return string
+	 */
 	public function show_html( $atts ) {
 		// change number of shortcodes
 		$this->num_sc_loaded++;
 		// Fallback for versions < 0.8.5 where the attribute 'add_feed_link' was renamed to 'add_rss_link'
 		// This can be removed in a later version.
 		if ( ( ! isset( $atts['add_rss_link'] ) ) && isset( $atts['add_feed_link'] ) ) {
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			error_log( 'The event-list shortcode attribute "add_feed_link" is deprecated, please change your shortcode to use the new name "add_rss_link"!' );
 			$atts['add_rss_link'] = $atts['add_feed_link'];
 		}
@@ -172,13 +202,15 @@ class SC_Event_List {
 
 	private function html_event_list( &$a ) {
 		// specify to show all events if not upcoming is selected
-		if ( 'upcoming' != $a['selected_date'] ) {
+		if ( 'upcoming' !== $a['selected_date'] ) {
 			$a['num_events'] = 0;
 		}
-		$options['date_filter'] = $this->get_date_filter( $a['date_filter'], $a['selected_date'] );
-		$options['cat_filter']  = $this->get_cat_filter( $a['cat_filter'], $a['selected_cat'] );
-		$options['num_events']  = $a['num_events'];
-		$order                  = 'date_desc' == $a['initial_order'] ? 'DESC' : 'ASC';
+		$options = array(
+			'date_filter' => $this->get_date_filter( $a['date_filter'], $a['selected_date'] ),
+			'cat_filter'  => $this->get_cat_filter( $a['cat_filter'], $a['selected_cat'] ),
+			'num_events'  => $a['num_events'],
+		);
+		$order   = 'date_desc' === $a['initial_order'] ? 'DESC' : 'ASC';
 		if ( '1' !== $this->options->get( 'el_date_once_per_day' ) ) {
 			// normal sort
 			$options['order'] = array( 'startdate ' . $order, 'starttime ASC', 'enddate ' . $order );
@@ -238,15 +270,15 @@ class SC_Event_List {
 		}
 		$out .= '</h3></div>';
 		// event starttime
-		if ( '' != $event->starttime && $this->is_visible( $a['show_starttime'] ) ) {
-			if ( '' == $this->options->get( 'el_html_tags_in_time' ) ) {
+		if ( '' !== $event->starttime && $this->is_visible( $a['show_starttime'] ) ) {
+			if ( '' === $this->options->get( 'el_html_tags_in_time' ) ) {
 				$event->starttime = esc_attr( $event->starttime_i18n() );
 			}
 			$out .= '<span class="event-time">' . $event->starttime_i18n() . '</span>';
 		}
 		// event location
-		if ( '' != $event->location && $this->is_visible( $a['show_location'] ) ) {
-			if ( '' == $this->options->get( 'el_html_tags_in_loc' ) ) {
+		if ( '' !== $event->location && $this->is_visible( $a['show_location'] ) ) {
+			if ( '' === $this->options->get( 'el_html_tags_in_loc' ) ) {
 				$location = $event->truncate( esc_attr( $event->location ), $a['location_length'], $this->single_event, false );
 			} else {
 				$location = $event->truncate( $event->location, $a['location_length'], $this->single_event );
@@ -310,11 +342,11 @@ class SC_Event_List {
 		$content = $event->truncate( do_shortcode( wpautop( $content ) ), $a['content_length'], $this->single_event, true, $truncate_url );
 		// preparations for collapsed content
 		if ( $this->is_visible( $a['collapse_content'] ) ) {
-			wp_register_script( 'el_event-list', EL_URL . 'includes/js/event-list.js', null, true );
+			wp_register_script( 'el_event-list', EL_URL . 'includes/js/event-list.js', null, '1.0', true );
 			add_action( 'wp_footer', array( &$this, 'print_eventlist_script' ) );
 			return '<div><div id="event-content-' . $event->post->ID . '" class="el-hidden"><div class="' . $content_class . '">' . $content . '</div></div>' .
-				   '<a class="event-content-link" id="event-content-a' . $event->post->ID . '" onclick="el_toggle_content(' . $event->post->ID . ')" href="javascript:void(0)">' .
-				   $this->options->get( 'el_content_show_text' ) . '</a></div>';
+				'<a class="event-content-link" id="event-content-a' . $event->post->ID . '" onclick="el_toggle_content(' . $event->post->ID . ')" href="javascript:void(0)">' .
+				$this->options->get( 'el_content_show_text' ) . '</a></div>';
 		}
 		// return without collapsing
 		return '<div class="' . $content_class . '">' . $content . '</div>';
@@ -408,7 +440,8 @@ class SC_Event_List {
 
 	private function html_ical_link( &$a ) {
 		require_once EL_PATH . 'includes/ical.php';
-		$feed_url  = EL_ICal::get_instance( $a['cat_filter'] )->feed_url();
+		// TODO: Respect the catfilter attribute in the ICAL feed
+		$feed_url  = EL_ICal::get_instance()->feed_url();
 		$link_text = $this->options->get( 'el_feed_ical_link_text' );
 		return '
 					<a href="' . $feed_url . '" title="' . __( 'Link to iCal feed', 'event-list' ) . '" class="el-ical"><span class="dashicons dashicons-calendar"></span>' . $link_text . '</a>';
@@ -417,11 +450,13 @@ class SC_Event_List {
 
 	private function get_selected_date( &$a ) {
 		// check used get parameters
-		$date = isset( $_GET[ 'date' . $a['sc_id'] ] ) ? sanitize_key( $_GET[ 'date' . $a['sc_id'] ] ) : null;
-		if ( 'all' === $date || 'upcoming' === $date || 'past' === $date ) {
-			return $date;
-		} elseif ( preg_match( '/^[0-9]{4}(-[0-9]{2})?(-[0-9]{2})?$/', $date ) ) {
-			return $date;
+		if ( isset( $_GET[ 'date' . $a['sc_id'] ] ) ) {
+			$date = sanitize_key( $_GET[ 'date' . $a['sc_id'] ] );
+			if ( 'all' === $date || 'upcoming' === $date || 'past' === $date ) {
+				return $date;
+			} elseif ( preg_match( '/^[0-9]{4}(-[0-9]{2})?(-[0-9]{2})?$/D', $date ) ) {
+				return $date;
+			}
 		}
 		return $a['initial_date'];
 	}
@@ -453,8 +488,8 @@ class SC_Event_List {
 
 
 	private function get_date_filter( $date_filter, $selected_date ) {
-		if ( 'all' == $date_filter || '' == $date_filter ) {
-			if ( 'all' == $selected_date || '' == $selected_date ) {
+		if ( 'all' === $date_filter || '' === $date_filter ) {
+			if ( 'all' === $selected_date || '' === $selected_date ) {
 				return null;
 			} else {
 				return $selected_date;
@@ -462,7 +497,7 @@ class SC_Event_List {
 		} else {
 			// Convert html entities to correct characters, e.g. &amp; to &
 			$date_filter = html_entity_decode( $date_filter );
-			if ( 'all' == $selected_date || '' == $selected_date ) {
+			if ( 'all' === $selected_date || '' === $selected_date ) {
 				return $date_filter;
 			} else {
 				return '(' . $date_filter . ')&(' . $selected_date . ')';
@@ -472,8 +507,8 @@ class SC_Event_List {
 
 
 	private function get_cat_filter( $cat_filter, $selected_cat ) {
-		if ( 'all' == $cat_filter || '' == $cat_filter ) {
-			if ( 'all' == $selected_cat || '' == $selected_cat ) {
+		if ( 'all' === $cat_filter || '' === $cat_filter ) {
+			if ( 'all' === $selected_cat || '' === $selected_cat ) {
 				return null;
 			} else {
 				return $selected_cat;
@@ -481,7 +516,7 @@ class SC_Event_List {
 		} else {
 			// Convert html entities to correct characters, e.g. &amp; to &
 			$cat_filter = html_entity_decode( $cat_filter );
-			if ( 'all' == $selected_cat || '' == $selected_cat ) {
+			if ( 'all' === $selected_cat || '' === $selected_cat ) {
 				return $cat_filter;
 			} else {
 				return '(' . $cat_filter . ')&(' . $selected_cat . ')';
@@ -530,7 +565,8 @@ class SC_Event_List {
 	private function is_visible( $attribute_value ) {
 		switch ( $attribute_value ) {
 			case 'true':
-			case '1': // = 'true'
+			case '1':
+				// = 'true'
 				return true;
 			case 'event_list_only':
 				if ( $this->single_event ) {
@@ -544,14 +580,15 @@ class SC_Event_List {
 				} else {
 					return false;
 				}
-			default: // 'false' or 0 or nothing handled by this function
+			default:
+				// 'false' or 0 or nothing handled by this function
 				return false;
 		}
 	}
 
 
 	private function is_link_available( &$a, &$event ) {
-		return $this->is_visible( $a['link_to_event'] ) || ( 'events_with_content_only' == $a['link_to_event'] && ! $this->single_event && ! empty( $event->content ) );
+		return $this->is_visible( $a['link_to_event'] ) || ( 'events_with_content_only' === $a['link_to_event'] && ! $this->single_event && ! empty( $event->content ) );
 	}
 
 

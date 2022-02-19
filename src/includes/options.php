@@ -1,9 +1,28 @@
 <?php
+/**
+ * The options class
+ *
+ * TODO: Fix phan warnings to remove the suppressed checks
+ *
+ * @phan-file-suppress PhanPluginNoCommentOnPublicProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPrivateProperty
+ * @phan-file-suppress PhanPluginNoCommentOnPublicMethod
+ * @phan-file-suppress PhanPluginUnknownPropertyType
+ * @phan-file-suppress PhanPluginUnknownMethodParamType
+ * @phan-file-suppress PhanPluginUnknownMethodReturnType
+ * @phan-file-suppress PhanPluginRemoveDebugEcho
+ * @phan-file-suppress PhanPartialTypeMismatchArgument
+ *
+ * @package event-list
+ */
+
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
 
-// This class handles all available options
+/**
+ * This class handles all available options
+ */
 class EL_Options {
 
 	private static $instance;
@@ -63,11 +82,11 @@ class EL_Options {
 				'section' => 'general',
 				'std_val' => '',
 			),
+			// default value must be set also in load_textdomain function in Event-List class
 			'el_mo_lang_dir_first'       => array(
 				'section' => 'general',
 				'std_val' => '',
-			), // default value must be set also in load_textdomain function in Event-List class
-
+			),
 			'el_permalink_slug'          => array(
 				'section' => 'frontend',
 				'std_val' => __( 'events', 'event-list' ),
@@ -145,7 +164,8 @@ class EL_Options {
 
 	public function load_options_helptexts() {
 		require_once EL_PATH . 'includes/options_helptexts.php';
-		foreach ( $options_helptexts as $name => $values ) {
+		// @phan-suppress-next-line PhanUndeclaredVariable
+		foreach ( (array) $options_helptexts as $name => $values ) {
 			$this->options[ $name ] += $values;
 		}
 		unset( $options_helptexts );
@@ -154,7 +174,7 @@ class EL_Options {
 
 	public function register_options() {
 		foreach ( $this->options as $oname => $o ) {
-			register_setting( 'el_' . $o['section'], $oname );
+			register_setting( 'el_' . $o['section'], $oname, array( 'sanitize_callback' => array( $this, 'sanitize' ) ) );
 		}
 	}
 
@@ -176,5 +196,16 @@ class EL_Options {
 		}
 	}
 
-}
 
+	/**
+	 * Sanitize an option value before safing the value to the database
+	 *
+	 * @param string $value The value to sanitize
+	 * @return string
+	 */
+	public function sanitize( $value ) {
+		$value = esc_textarea( sanitize_text_field( $value ) );
+		return $value;
+	}
+
+}

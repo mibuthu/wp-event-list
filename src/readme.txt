@@ -3,9 +3,9 @@ Contributors: mibuthu, clhunsen, chunsen1, seeseekey
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W54LNZMWF9KW2
 Tags: event, events, list, listview, calendar, schedule, shortcode, page, category, categories, filter, admin, attribute, widget, sidebar, feed, rss
 Requires at least: 4.9
-Tested up to: 5.7
+Tested up to: 5.9
 Requires PHP: 5.2
-Stable tag: 0.8.6
+Stable tag: 0.8.7
 Plugin URI: https://wordpress.org/plugins/event-list
 Licence: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -85,6 +85,17 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 
 
 == Changelog ==
+
+= 0.8.7 (2022-02-19) =
+* fixed a vulnerability that the plugin does not sanitize and escape the settings before safing them to the database
+* fixed the display of the events in the admin main page
+* always show all events in the admin main page by default, not only the upcoming
+* fixed the default order of the events in the admin main page
+* fixed display of widget settings in the widgets admin page
+* fixed a bug in the date and cat filter handling
+* small improvements in the admin about output
+* some internal code improvements
+* translation updates
 
 = 0.8.6 (2021-04-24) =
 * fixed saving a new event when no excerpt is provided (also fixes CSV import of events)
