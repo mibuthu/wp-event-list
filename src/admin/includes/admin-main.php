@@ -45,11 +45,18 @@ class EL_Admin_Main {
 	private $filterbar;
 
 	/**
-	 * Is the trash page displayed?
+	 * The post_status of the actual view
 	 *
-	 * @var bool
+	 * @var string
 	 */
-	private $is_trash;
+	private $post_status;
+
+	/**
+	 * The default date for the actual view ('upcoming' or 'all')
+	 *
+	 * @var string
+	 */
+	private $default_date;
 
 
 	public static function &get_instance() {
@@ -67,7 +74,8 @@ class EL_Admin_Main {
 		$this->events_post_type = &EL_Events_Post_Type::get_instance();
 		$this->filterbar        = &EL_Filterbar::get_instance();
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$this->is_trash = isset( $_REQUEST['post_status'] ) && 'trash' === $_REQUEST['post_status'];
+		$this->post_status  = isset( $_GET['post_status'] ) ? sanitize_key( $_GET['post_status'] ) : 'publish';
+		$this->default_date = 'all';
 		add_action( 'manage_posts_custom_column', array( &$this, 'events_custom_columns' ), 10, 2 );
 		add_filter( 'manage_edit-el_events_columns', array( &$this, 'events_edit_columns' ) );
 		add_filter( 'manage_edit-el_events_sortable_columns', array( &$this, 'events_sortable_columns' ) );
@@ -77,7 +85,6 @@ class EL_Admin_Main {
 		add_filter( 'disable_categories_dropdown', '__return_true' );
 		add_action( 'restrict_manage_posts', array( &$this, 'add_table_filters' ) );
 		add_filter( 'parse_query', array( &$this, 'filter_request' ) );
-		add_filter( 'posts_results', array( &$this, 'check_events_results' ) );
 		add_action( 'load-edit.php', array( &$this, 'set_default_posts_list_mode' ) );
 		add_action( 'admin_print_scripts', array( &$this, 'embed_scripts' ) );
 		add_action( 'admin_head', array( &$this, 'add_import_button' ) );
@@ -168,7 +175,7 @@ class EL_Admin_Main {
 
 
 	public function add_action_row_elements( $actions, $post ) {
-		if ( ! $this->is_trash ) {
+		if ( 'trash' !== $this->post_status ) {
 			$actions['copy'] = '<a href="' . admin_url( add_query_arg( 'copy', $post->ID, 'post-new.php?post_type=el_events' ) ) .
 				'" aria-label="' . sprintf( __( 'Add a copy of %1$s', 'event-list' ), '&#8222;' . $post->post_title . '&#8220;' ) . '">' . __( 'Copy', 'event-list' ) . '</a>';
 		}
@@ -179,14 +186,13 @@ class EL_Admin_Main {
 
 	public function add_table_filters() {
 		global $cat;
-		// check used get parameters
-		// set default date ("upcoming" for All, Published; "all" for everything else)
-		$selected_status = isset( $_GET['post_status'] ) ? sanitize_key( $_GET['post_status'] ) : 'publish';
-		$default_date    = 'publish' === $selected_status ? 'upcoming' : 'all';
-		$args            = array( 'selected_date' => isset( $_GET['date'] ) ? sanitize_key( $_GET['date'] ) : $default_date );
 
 		// date filter
-		echo( $this->filterbar->show_years( admin_url( 'edit.php?post_type=el_events' ), $args, 'dropdown', array( 'show_past' => true ) ) );
+		$date_args = array(
+			'selected_date' => isset( $_GET['date'] ) ? sanitize_key( $_GET['date'] ) : $this->default_date,
+		);
+		echo( $this->filterbar->show_years( admin_url( 'edit.php?post_type=el_events' ), $date_args, 'dropdown', array( 'show_past' => true ) ) );
+
 		// cat filter
 		$cat_args = array(
 			'selected_cat' => isset( $_GET['cat'] ) ? sanitize_key( $_GET['cat'] ) : 'all',
@@ -203,11 +209,8 @@ class EL_Admin_Main {
 	 * @suppress PhanPluginMixedKeyNoKey
 	 */
 	public function filter_request( $query ) {
-		// Check used get parameters
-		$default_date  = $this->is_trash ? 'all' : 'upcoming';
-		$selected_date = isset( $_GET['date'] ) ? sanitize_key( $_GET['date'] ) : $default_date;
-
-		$meta_query = array( 'relation' => 'AND' );
+		$selected_date = isset( $_GET['date'] ) ? sanitize_key( $_GET['date'] ) : $this->default_date;
+		$meta_query    = array( 'relation' => 'AND' );
 		// date filter
 		$date_for_startrange = ( '' === $this->options->get( 'el_multiday_filterrange' ) ) ? 'startdate' : 'enddate';
 		$date_range          = EL_Daterange::get_instance()->check_daterange_format( $selected_date );
@@ -241,26 +244,6 @@ class EL_Admin_Main {
 	}
 
 
-	/**
-	 * Reload the page to show all events when:
-	 *  - published events are selected
-	 *  - no specific date is selected
-	 *  - no upcoming events are available
-	 *
-	 * @param EL_Event[] $events The events
-	 * @return EL_Event[]
-	 */
-	public function check_events_results( $events ) {
-		$selected_status = isset( $_GET['post_status'] ) ? sanitize_key( $_GET['post_status'] ) : 'publish';
-		$date_selected   = isset( $_GET['date'] );
-		if ( 'publish' === $selected_status && ! $date_selected && ! count( $events ) ) {
-			wp_safe_redirect( add_query_arg( 'date', 'all' ) );
-			exit;
-		}
-		return $events;
-	}
-
-
 	public function set_default_posts_list_mode() {
 		// check used get parameters
 		$post_type = isset( $_GET['post_type'] ) ? sanitize_key( $_GET['post_type'] ) : '';
@@ -284,14 +267,15 @@ class EL_Admin_Main {
 	}
 
 
-	/** ************************************************************************
+	/**
 	 * In this function the start date, the end date and time is formated for
 	 * the output.
 	 *
 	 * @param string $startdate The start date of the event
 	 * @param string $enddate The end date of the event
 	 * @param string $starttime The start time of the event
-	 ***************************************************************************/
+	 * @return string
+	 */
 	private function format_event_date( $startdate, $enddate, $starttime ) {
 		$out = '<span style="white-space:nowrap;">';
 		// start date
