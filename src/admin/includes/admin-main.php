@@ -189,20 +189,9 @@ class EL_Admin_Main {
 		echo( $this->filterbar->show_years( admin_url( 'edit.php?post_type=el_events' ), $args, 'dropdown', array( 'show_past' => true ) ) );
 		// cat filter
 		$cat_args = array(
-			'show_option_all' => __( 'All Categories', 'default' ),
-			'taxonomy'        => $this->events_post_type->taxonomy,
-			'orderby'         => 'name',
-			'hierarchical'    => true,
+			'selected_cat' => isset( $_GET['cat'] ) ? sanitize_key( $_GET['cat'] ) : 'all',
 		);
-		// additional parameters required if a seperate taxonomy is used
-		if ( ! $this->events_post_type->use_post_categories ) {
-			// check used get parameters
-			$selected_cat = isset( $_GET['cat'] ) ? sanitize_key( $_GET['cat'] ) : '';
-
-			$cat_args['value_field'] = 'slug';
-			$cat_args['selected']    = $selected_cat;
-		}
-		wp_dropdown_categories( $cat_args );
+		echo( $this->filterbar->show_cats( admin_url( 'edit.php?post_type=el_events' ), $cat_args, 'dropdown' ) );
 	}
 
 
