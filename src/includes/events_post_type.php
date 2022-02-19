@@ -136,26 +136,27 @@ class EL_Events_Post_Type {
 	 * @return void
 	 */
 	public function register_event_category_taxonomy() {
+		// phpcs:disable WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
 		$labels = array(
-			'name'                       => _x( 'Categories', 'taxonomy general name', 'default' ),
-			'singular_name'              => _x( 'Category', 'taxonomy singular name', 'default' ),
-			'search_items'               => __( 'Search Categories', 'default' ),
-			'popular_items'              => __( 'Popular Categories', 'default' ),
-			'all_items'                  => __( 'All Categories', 'default' ),
+			'name'                       => __( 'Categories' ),
+			'singular_name'              => __( 'Category' ),
+			'search_items'               => __( 'Search Categories' ),
+			'popular_items'              => __( 'Popular Categories' ),
+			'all_items'                  => __( 'All Categories' ),
 			'parent_item'                => null,
 			'parent_item_colon'          => null,
-			'edit_item'                  => __( 'Edit Category', 'default' ),
-			'update_item'                => __( 'Update Category', 'default' ),
-			'add_new_item'               => __( 'Add New Category', 'default' ),
-			'new_item_name'              => __( 'New Category Name', 'default' ),
-			'separate_items_with_commas' => __( 'Separate categories with commas', 'default' ),
-			'add_or_remove_items'        => __( 'Add or remove categories', 'default' ),
-			'choose_from_most_used'      => __( 'Choose from the most used categories', 'default' ),
+			'edit_item'                  => __( 'Edit Category' ),
+			'update_item'                => __( 'Update Category' ),
+			'add_new_item'               => __( 'Add New Category' ),
+			'new_item_name'              => __( 'New Category Name' ),
+			'separate_items_with_commas' => __( 'Separate categories with commas' ),
+			'add_or_remove_items'        => __( 'Add or remove categories' ),
+			'choose_from_most_used'      => __( 'Choose from the most used categories' ),
 		);
 		$args   = array(
-			'label'              => __( 'Event Category', 'default' ),
+			'label'              => __( 'Event Category' ),
 			'labels'             => $labels,
-			'description'        => __( 'Event category handling', 'default' ),
+			'description'        => __( 'Event category handling' ),
 			'public'             => true,
 			'publicly_queryable' => true,
 			'hierarchical'       => true,
@@ -175,6 +176,7 @@ class EL_Events_Post_Type {
 			'rewrite'            => array( 'slug' => 'event-category' ),
 			'query_var'          => true,
 		);
+		// phpcs:enable
 		register_taxonomy( $this->event_cat_taxonomy, 'el_events', $args );
 	}
 

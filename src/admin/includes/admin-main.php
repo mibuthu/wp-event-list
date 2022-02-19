@@ -108,9 +108,11 @@ class EL_Admin_Main {
 			'eventdate' => __( 'Event Date', 'event-list' ),
 			'title'     => __( 'Title', 'event-list' ),
 			'location'  => __( 'Location', 'event-list' ),
-			'taxonomy-' . $this->events_post_type->taxonomy => __( 'Categories', 'default' ),
+			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
+			'taxonomy-' . $this->events_post_type->taxonomy => __( 'Categories' ),
 			'author'    => __( 'Author', 'event-list' ),
-			'date'      => __( 'Date', 'default' ),
+			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
+			'date'      => __( 'Date' ),
 		);
 	}
 
@@ -279,10 +281,12 @@ class EL_Admin_Main {
 	private function format_event_date( $startdate, $enddate, $starttime ) {
 		$out = '<span style="white-space:nowrap;">';
 		// start date
-		$out .= mysql2date( __( 'Y/m/d', 'default' ), $startdate );
+		// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
+		$out .= mysql2date( __( 'Y/m/d' ), $startdate );
 		// end date for multiday event
 		if ( $startdate !== $enddate ) {
-			$out .= ' -<br />' . mysql2date( __( 'Y/m/d', 'default' ), $enddate );
+			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
+			$out .= ' -<br />' . mysql2date( __( 'Y/m/d' ), $enddate );
 		}
 		// event starttime
 		if ( '' !== $starttime ) {

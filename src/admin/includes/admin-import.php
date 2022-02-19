@@ -82,7 +82,8 @@ class EL_Admin_Import {
 
 	public function show_import() {
 		if ( ! current_user_can( 'edit_posts' ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
+			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
+			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
 		echo '
 			<div class="wrap">
@@ -441,12 +442,14 @@ class EL_Admin_Import {
 
 
 	public function render_publish_metabox() {
+		// phpcs:disable WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
 		echo '
 			<div class="submitbox">
-				<div id="delete-action"><a href="?page=el_admin_main" class="submitdelete deletion">' . __( 'Cancel', 'default' ) . '</a></div>
-				<div id="publishing-action"><input type="submit" class="button button-primary button-large" name="import" value="' . __( 'Import', 'event-list' ) . '" id="import"></div>
+				<div id="delete-action"><a href="?page=el_admin_main" class="submitdelete deletion">' . __( 'Cancel' ) . '</a></div>
+				<div id="publishing-action"><input type="submit" class="button button-primary button-large" name="import" value="' . __( 'Import' ) . '" id="import"></div>
 				<div class="clear"></div>
 			</div>';
+		// phpcs:enable
 	}
 
 

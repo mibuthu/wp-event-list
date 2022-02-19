@@ -97,8 +97,10 @@ $date_formats_helptexts = array(
 			) . '<br />' .
 			sprintf(
 				__( 'The first day of the week is depending on the option %1$s which can be found and changed in %2$s.', 'event-list' ),
-				'"' . __( 'Week Starts On', 'default' ) . '"',
-				'"' . __( 'Settings', 'default' ) . '" &rarr; "' . __( 'General', 'default' ) . '"'
+				// phpcs:disable WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
+				'"' . __( 'Week Starts On' ) . '"',
+				'"' . __( 'Settings' ) . '" &rarr; "' . __( 'General' ) . '"'
+				// phpcs:enable
 			) . '<br />' .
 			sprintf( __( 'Additionally the following values are available: %1$s', 'event-list' ), '<em>last_week</em>, <em>next_week</em>, <em>this_week</em>' ),
 		'examp' => '+3_weeks',
@@ -139,7 +141,8 @@ $daterange_formats_helptexts = array(
 	),
 
 	'all'        => array(
-		'name'  => __( 'All', 'default' ),
+		// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
+		'name'  => __( 'All' ),
 		'desc'  =>
 			__( 'This value defines a range without any limits.', 'event-list' ) . '<br />' .
 			sprintf(

@@ -328,7 +328,8 @@ class EL_Filterbar {
 		if ( 'hlist' === $display_type ) {
 			$name = __( 'All', 'event-list' );
 		} else {
-			$name = ( 'date' === $list_type ) ? __( 'All Dates', 'event-list' ) : __( 'All Categories', 'default' );
+			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
+			$name = ( 'date' === $list_type ) ? __( 'All Dates', 'event-list' ) : __( 'All Categories' );
 		}
 		return array(
 			'slug' => 'all',

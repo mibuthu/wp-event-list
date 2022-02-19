@@ -209,4 +209,3 @@ class EL_Options {
 	}
 
 }
-

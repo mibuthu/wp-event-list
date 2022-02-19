@@ -52,7 +52,8 @@ class EL_Admin_Settings {
 
 	public function show_settings() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
+			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
+			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
 		// check used get parameters
 		$tab              = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : 'general';
@@ -62,9 +63,8 @@ class EL_Admin_Settings {
 		// check for changed settings
 		if ( 'true' === $settings_updated ) {
 			// show "settings saved" message
-			$out .= '<div id="message" class="updated">
-				<p><strong>' . __( 'Settings saved.', 'default' ) . '</strong></p>
-			</div>';
+			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
+			$out .= '<div id="message" class="updated"><p><strong>' . __( 'Settings saved.' ) . '</strong></p></div>';
 			switch ( $tab ) {
 				case 'frontend':
 					// flush rewrite rules (required if permalink slug was changed)
@@ -95,7 +95,7 @@ class EL_Admin_Settings {
 		if ( 'taxonomy' === $tab ) {
 			$options['page']         = admin_url( 'edit.php?post_type=el_events&page=el_admin_cat_sync&switch_taxonomy=1' );
 			$options['button_text']  = __( 'Go to Event Category switching page', 'event-list' );
-			$options['button_class'] = __( 'secondary', 'default' );
+			$options['button_class'] = 'secondary';
 		}
 		$out .= $this->functions->show_option_form( $tab, $options );
 		$out .= '

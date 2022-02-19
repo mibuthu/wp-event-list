@@ -215,7 +215,8 @@ class EL_Admin_New {
 
 	private function get_event_dateformat() {
 		if ( '' === $this->options->get( 'el_edit_dateformat' ) ) {
-			return __( 'Y/m/d', 'default' );
+			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
+			return __( 'Y/m/d' );
 		} else {
 			return $this->options->get( 'el_edit_dateformat' );
 		}
@@ -244,9 +245,10 @@ class EL_Admin_New {
 			4  => __( 'Event updated.', 'event-list' ),
 			5  => is_null( $revision ) ? false : sprintf( __( 'Event restored to revision from %1$s', 'event-list' ), wp_post_revision_title( $revision, false ) ),
 			6  => __( 'Event published.', 'event-list' ) . ' <a href="' . esc_url( get_permalink( $post_ID ) ) . '">' . __( 'View event', 'event-list' ) . '</a>',
-			7  => __( 'Event saved.', 'default' ),
+			7  => __( 'Event saved.', 'event-list' ),
 			8  => __( 'Event submitted.', 'event-list' ) . ' <a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">' . __( 'Preview event', 'event-list' ) . '</a>',
-			9  => sprintf( __( 'Event scheduled for: %1$s>', 'event-list' ), '<strong>' . date_i18n( __( 'M j, Y @ G:i', 'default' ), strtotime( $post->post_date ) ) . '</strong>' ) .
+			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
+			9  => sprintf( __( 'Event scheduled for: %1$s>', 'event-list' ), '<strong>' . date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ) . '</strong>' ) .
 				' <a target="_blank" href="' . esc_url( get_permalink( $post_ID ) ) . '">' . __( 'Preview event', 'event-list' ) . '</a>',
 			10 => __( 'Event draft updated.', 'event-list' ) . ' <a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">' . __( 'Preview event', 'event-list' ) . '</a>',
 		);

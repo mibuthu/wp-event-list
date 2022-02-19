@@ -70,7 +70,8 @@ class EL_Admin_Category_Sync {
 
 		// permission checks
 		if ( ! current_user_can( 'manage_categories' ) || ( $this->switch_taxonomy && ! current_user_can( 'manage_options' ) ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
+			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
+			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
 		if ( ! (bool) wp_get_referer() || ( ! $this->switch_taxonomy && $this->use_post_cats ) ) {
 			wp_die( __( 'Error: You are not allowed to view this page!', 'event-list' ) );
@@ -149,8 +150,10 @@ class EL_Admin_Category_Sync {
 					<ul class="el-catlist">';
 			foreach ( $cat_slugs as $cat_slug ) {
 				$cat_name = 'event' === $cat_type ? $this->events->get_cat_by_slug( $cat_slug )->name : get_category_by_slug( $cat_slug )->name;
+				// phpcs:disable WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
 				echo '
-							<li>' . $cat_name . ' (' . __( 'Slug', 'default' ) . ': ' . $cat_slug . ')</li>';
+							<li>' . $cat_name . ' (' . __( 'Slug' ) . ': ' . $cat_slug . ')</li>';
+				// phpcs:enable
 			}
 			echo '
 					</ul>';

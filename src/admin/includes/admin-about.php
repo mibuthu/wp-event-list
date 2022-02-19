@@ -53,7 +53,8 @@ class EL_Admin_About {
 
 	public function show_about() {
 		if ( ! current_user_can( 'edit_posts' ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
+			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
+			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
 		// check used get parameters
 		$tab = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : 'general';
