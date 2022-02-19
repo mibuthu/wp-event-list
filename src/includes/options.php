@@ -174,7 +174,7 @@ class EL_Options {
 
 	public function register_options() {
 		foreach ( $this->options as $oname => $o ) {
-			register_setting( 'el_' . $o['section'], $oname );
+			register_setting( 'el_' . $o['section'], $oname, array( 'sanitize_callback' => array( $this, 'sanitize' ) ) );
 		}
 	}
 
@@ -194,6 +194,18 @@ class EL_Options {
 		} else {
 			return null;
 		}
+	}
+
+
+	/**
+	 * Sanitize an option value before safing the value to the database
+	 *
+	 * @param string $value The value to sanitize
+	 * @return string
+	 */
+	public function sanitize( $value ) {
+		$value = esc_textarea( sanitize_text_field( $value ) );
+		return $value;
 	}
 
 }
