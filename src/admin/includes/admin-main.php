@@ -249,9 +249,9 @@ class EL_Admin_Main {
 	public function set_default_posts_list_mode() {
 		// check used get parameters
 		$post_type = isset( $_GET['post_type'] ) ? sanitize_key( $_GET['post_type'] ) : '';
-		$mode      = isset( $_REQUEST['mode'] ) ? sanitize_title( wp_unslash( $_REQUEST['mode'] ) ) : '';
+		$mode      = isset( $_REQUEST['mode'] ) ? sanitize_key( $_REQUEST['mode'] ) : '';
 
-		if ( 'el_events' === $post_type && empty( $_REQUEST['mode'] ) ) {
+		if ( 'el_events' === $post_type && empty( $mode ) ) {
 			$_REQUEST['mode'] = 'excerpt';
 		}
 	}
