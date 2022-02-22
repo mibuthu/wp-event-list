@@ -543,8 +543,10 @@ class SC_Event_List {
 			// use actual page
 			$url = get_permalink();
 			foreach ( $_GET as  $k => $v ) {
-				if ( 'date' . $a['sc_id'] !== $k && 'event_id' . $a['sc_id'] !== $k ) {
-					$url = add_query_arg( $k, $v, $url );
+				$arg = sanitize_key( $k );
+				$val = sanitize_key( $v );
+				if ( 'date' . $a['sc_id'] !== $arg && 'event_id' . $a['sc_id'] !== $arg ) {
+					$url = add_query_arg( $arg, $val, $url );
 				}
 			}
 		}
