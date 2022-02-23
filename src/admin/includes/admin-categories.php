@@ -10,6 +10,7 @@
  * @phan-file-suppress PhanPluginUnknownPropertyType
  * @phan-file-suppress PhanPluginUnknownMethodParamType
  * @phan-file-suppress PhanPluginUnknownMethodReturnType
+ * @phan-file-suppress PhanPartialTypeMismatchArgument
  * @phan-file-suppress PhanPluginRemoveDebugEcho
  *
  * @package event-list
@@ -68,9 +69,7 @@ class EL_Admin_Categories {
 				add_query_arg(
 					array(
 						'page'             => 'el_admin_cat_sync',
-						// TODO: check sanitize of server request URI
-						// phpcs:ignore
-						'_wp_http_referer' => wp_unslash( $_SERVER['REQUEST_URI'] ),
+						'_wp_http_referer' => isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '',
 					),
 					'edit.php?post_type=el_events'
 				)
