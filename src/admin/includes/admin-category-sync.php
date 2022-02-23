@@ -187,8 +187,7 @@ class EL_Admin_Category_Sync {
 			case 'sync':
 				// check used post parameters
 				$delete_cats = isset( $_POST['delete-cats'] ) ? (bool) intval( $_POST['delete-cats'] ) : false;
-				// sanitize_key is called through array_map
-				// phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+				// phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitize_key is called through array_map
 				$affected_cats['to_mod'] = isset( $_POST['cats-to-mod'] ) ? array_map( 'sanitize_key', json_decode( wp_unslash( $_POST['cats-to-mod'] ), true ) ) : array();
 				$affected_cats['to_add'] = isset( $_POST['cats-to-add'] ) ? array_map( 'sanitize_key', json_decode( wp_unslash( $_POST['cats-to-add'] ), true ) ) : array();
 				if ( $delete_cats ) {
@@ -220,8 +219,7 @@ class EL_Admin_Category_Sync {
 				// check used post parameters
 				$add_cats = isset( $_POST['add-cats'] ) ? (bool) intval( $_POST['add-cats'] ) : false;
 				if ( $add_cats ) {
-					// sanitize_key is called through array_map
-					// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+					// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitize_key is called through array_map
 					$affected_cats['to_add'] = isset( $_POST['cats-to-add'] ) ? array_map( 'sanitize_key', json_decode( wp_unslash( $_POST['cats-to-add'] ), true ) ) : array();
 					$this->event_category_functions->sync_categories( 'to_post_cats', $affected_cats );
 				}

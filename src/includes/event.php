@@ -173,7 +173,7 @@ class EL_Event {
 		}
 		// error handling: set event back to pending, and publish error message
 		if ( ! empty( $el_event_errors ) ) {
-			// TODO: Check the comment: "if((isset($_POST['publish']) || isset( $_POST['save'] ) ) && $_POST['post_status'] == 'publish' )"
+			// TODO: Check the comment: "if((isset($_POST['publish']) || isset( $_POST['save'] ) ) && 'publish' === sanitize_key($_POST['post_status']))"
 			global $wpdb;
 			$wpdb->update( $wpdb->posts, array( 'post_status' => 'pending' ), array( 'ID' => $pid ) );
 			add_filter( 'redirect_post_location', array( &$instance, 'save_metadata_redirect_post_location_filter' ) );
