@@ -188,16 +188,20 @@ class EL_Admin_New {
 	 * @param WP_Post $post Post Object
 	 * @param bool    $update Whether this is an existing post being updated
 	 * @return bool|int
-	 *
-	 * TODO: Prepare a new array for the metadata from the $_POST array instead of using the $_POST array directly
-	 * @suppress PhanTypePossiblyInvalidDimOffset
 	 */
 	public function save_eventdata( $pid, $post, $update ) {
 		// don't do on autosave or when new posts are first created
 		if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || 'auto-draft' === $post->post_status ) {
 			return $pid;
 		}
-		$eventdata = $_POST;
+		$eventdata                  = array();
+		$eventdata['startdate']     = isset( $_POST['startdate'] ) ? sanitize_key( $_POST['startdate'] ) : '';
+		$eventdata['startdate-iso'] = isset( $_POST['startdate-iso'] ) ? sanitize_key( $_POST['startdate-iso'] ) : '';
+		$eventdata['enddate']       = isset( $_POST['enddate'] ) ? sanitize_key( $_POST['enddate'] ) : '';
+		$eventdata['enddate-iso']   = isset( $_POST['enddate-iso'] ) ? sanitize_key( $_POST['enddate-iso'] ) : '';
+		$eventdata['starttime']     = isset( $_POST['starttime'] ) ? wp_kses_post( wp_unslash( $_POST['starttime'] ) ) : '';
+		$eventdata['location']      = isset( $_POST['location'] ) ? wp_kses_post( wp_unslash( $_POST['location'] ) ) : '';
+		$eventdata['multiday']      = isset( $_POST['multiday'] ) ? sanitize_key( $_POST['multiday'] ) : '';
 		// provide iso start- and end-date
 		if ( ! empty( $eventdata['startdate-iso'] ) ) {
 			$eventdata['startdate'] = $eventdata['startdate-iso'];
