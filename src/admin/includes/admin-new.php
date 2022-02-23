@@ -168,11 +168,7 @@ class EL_Admin_New {
 	public function embed_scripts() {
 		wp_enqueue_script( 'jquery-ui-datepicker' );
 		wp_enqueue_script( 'eventlist_admin_new_js', EL_URL . 'admin/js/admin_new.js', array(), '1.0', true );
-		// TODO: wp_localize_jquery_ui_datepicker is available since WordPress version 4.6.0.
-		// For compatibility to older versions the function_exists test was added, this test can be removed again in a later version.
-		if ( function_exists( 'wp_localize_jquery_ui_datepicker' ) ) {
-			wp_localize_jquery_ui_datepicker();
-		}
+		wp_localize_jquery_ui_datepicker();
 		wp_enqueue_style( 'eventlist_admin_new', EL_URL . 'admin/css/admin_new.css', array(), '1.0' );
 		// add the jquery-ui style "smooth" (see https://jqueryui.com/download/) (required for the xwp datepicker skin)
 		wp_enqueue_style( 'eventlist_jqueryui', EL_URL . 'admin/css/jquery-ui.min.css', array(), '1.0' );
