@@ -120,9 +120,8 @@ class EL_Admin_Import {
 
 
 	private function show_import_review() {
-		// TODO: Check non-sanitized filename
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		$file_path = isset( $_FILES['el_import_file']['tmp_name'] ) ? wp_unslash( $_FILES['el_import_file']['tmp_name'] ) : null;
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized with the realpath function
+		$file_path = isset( $_FILES['el_import_file']['tmp_name'] ) ? realpath( wp_unslash( $_FILES['el_import_file']['tmp_name'] ) ) : '';
 		// check for file existence (upload failed?)
 		if ( ! is_file( $file_path ) ) {
 			echo '<h3>' . __( 'Sorry, there has been an error.', 'event-list' ) . '</h3>';
@@ -131,9 +130,8 @@ class EL_Admin_Import {
 		}
 
 		// check for file extension (csv) first
-		$file_name  = isset( $_FILES['el_import_file']['name'] ) ? sanitize_file_name( wp_unslash( $_FILES['el_import_file']['name'] ) ) : null;
-		$file_parts = pathinfo( $file_name );
-		if ( 'csv' !== $file_parts['extension'] ) {
+		$file_name = isset( $_FILES['el_import_file']['name'] ) ? sanitize_file_name( wp_unslash( $_FILES['el_import_file']['name'] ) ) : '';
+		if ( 'csv' !== pathinfo( $file_name, PATHINFO_EXTENSION ) ) {
 			echo '<h3>' . __( 'Sorry, there has been an error.', 'event-list' ) . '</h3>';
 			echo __( 'The uploaded file does not have the required csv extension.', 'event-list' ) . '</p>';
 			return;
@@ -363,63 +361,12 @@ class EL_Admin_Import {
 	}
 
 
-	private function prepare_event( $event, $date_format = false ) {
-		// trim all fields
-		array_walk( $event, array( $this, 'trim_event_fields' ) );
-		// title
-		if ( empty( $event['title'] ) ) {
-			$event = new WP_Error( 'empty_title', __( 'Empty event title found', 'event-list' ), $event['csv_line'] );
-			return $event;
-		}
-		// startdate
-		$event['startdate'] = $this->prepare_date( $event['startdate'], $date_format );
-		if ( false === $event['startdate'] ) {
-			return new WP_Error( 'wrong_startdate', __( 'Wrong date format for startdate', 'event-list' ), $event['csv_line'] );
-		}
-		// enddate
-		if ( empty( $event['enddate'] ) ) {
-			$event['enddate'] = $event['startdate'];
-		} else {
-			$event['enddate'] = $this->prepare_date( $event['enddate'], $date_format );
-			if ( false === $event['enddate'] ) {
-				return new WP_Error( 'wrong_enddate', __( 'Wrong date format for enddate', 'event-list' ), $event['csv_line'] );
-			}
-		}
-		// no additional checks for starttime, location, content required
-		// categories
-		$event['categories'] = array_map( 'trim', $event['categories'] );
-		return $event;
-	}
-
-
 	private function trim_event_fields( &$value ) {
 		if ( is_array( $value ) ) {
 			$value = array_map( 'trim', $value );
 		} else {
 			$value = trim( $value );
 		}
-	}
-
-
-	private function prepare_date( $date_string, $date_format ) {
-		$auto_detect = true;
-		if ( empty( $date_format ) ) {
-			$date_format = 'Y-m-d';
-			$auto_detect = false;
-		}
-		// create date from given format
-		// phpcs:ignore PHPCompatibility.FunctionUse.NewFunctions.date_create_from_formatFound
-		$date = date_create_from_format( $date_format, $date_string );
-		if ( ! $date instanceof DateTime ) {
-			// try automatic date detection
-			if ( $auto_detect ) {
-				$date = date_create( $date_string );
-			}
-			if ( ! $date instanceof DateTime ) {
-				return false;
-			}
-		}
-		return $date->format( 'Y-m-d' );
 	}
 
 
@@ -464,7 +411,7 @@ class EL_Admin_Import {
 
 	private function import_events() {
 		// check used post parameters
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- The eventdata is sanitized in prepare_event() function
 		$reviewed_events = isset( $_POST['reviewed_events'] ) ? json_decode( wp_unslash( $_POST['reviewed_events'] ), true ) : array();
 		if ( empty( $reviewed_events ) ) {
 			return new WP_Error( 'no_events', __( 'No events found', 'event-list' ) );
@@ -479,48 +426,107 @@ class EL_Admin_Import {
 				array_map( 'intval', (array) wp_unslash( $_POST[ 'post_' . $this->events_post_type->taxonomy ] ) ) :
 				array();
 		}
-		$additional_cat_slugs = array();
+		$additional_cats = array();
 		foreach ( $additional_cat_ids as $cat_id ) {
 			$cat = $this->events->get_cat_by_id( $cat_id );
 			if ( ! empty( $cat ) ) {
-				$additional_cat_slugs[] = $cat->slug;
-			}
-		}
-		// prepare events and events categories
-		foreach ( $reviewed_events as &$event_ref ) {
-			// check event data
-			// remove not available categories of import file
-			foreach ( $event_ref['categories'] as $ckey => $cat_slug ) {
-				if ( ! $this->events->cat_exists( $cat_slug ) ) {
-					unset( $event_ref['categories'][ $ckey ] );
-				}
-			}
-			// add the additionally specified categories to the event
-			if ( ! empty( $additional_cat_slugs ) ) {
-				$event_ref['categories'] = array_unique( array_merge( $event_ref['categories'], $additional_cat_slugs ) );
+				$additional_cats[] = $cat->slug;
 			}
 		}
 		// save events
+		require_once EL_PATH . 'includes/event.php';
 		$ret = array(
 			'success' => 0,
 			'errors'  => array(),
 		);
-		require_once EL_PATH . 'includes/event.php';
-		foreach ( $reviewed_events as $eventdata ) {
-			$ed = $this->prepare_event( $eventdata );
-			if ( is_wp_error( $ed ) ) {
-				$ret['errors'][] = $ed;
+		foreach ( $reviewed_events as $eventdata_raw ) {
+			// prepare the event categories
+			$cats = array();
+			foreach ( $eventdata_raw['categories'] as $cat_slug ) {
+				$cat_slug = sanitize_title( $cat_slug );
+				if ( $this->events->cat_exists( $cat_slug ) ) {
+					$cats[] = $cat_slug;
+				}
+			}
+			// add the additionally specified categories
+			if ( ! empty( $additional_cats ) ) {
+				$cats = array_unique( array_merge( $cats, $additional_cats ) );
+			}
+			$eventdata_raw['categories'] = $cats;
+
+			$eventdata = $this->prepare_event( $eventdata_raw );
+			if ( is_wp_error( $eventdata ) ) {
+				$ret['errors'][] = $eventdata;
 				continue;
 			}
 			// TODO: return WP_Error instead of false in EL_Event when safing fails
 			$event = EL_Event::save( $eventdata );
-			if ( ! $event ) {
-				$ret['errors'][] = new WP_Error( 'failed_saving', __( 'Saving of event failed!', 'event-list' ), $event['csv_line'] );
+			if ( ! $event instanceof EL_Event ) {
+				$ret['errors'][] = new WP_Error( 'failed_saving', __( 'Saving of event failed!', 'event-list' ), $eventdata['csv-line'] );
 				continue;
 			}
 			$ret['success'] += 1;
 		}
 		return $ret;
+	}
+
+
+	private function prepare_event( $eventdata_raw, $date_format = false ) {
+		// trim all fields
+		array_walk( $eventdata_raw, array( $this, 'trim_event_fields' ) );
+		$eventdata = array();
+		// prepare csv_line
+		$eventdata['csv-line'] = isset( $eventdata_raw['csv-line'] ) ? strval( $eventdata_raw['csv-line'] ) : '';
+		// title
+		$eventdata['title'] = isset( $eventdata_raw['title'] ) ? sanitize_text_field( $eventdata_raw['title'] ) : '';
+		if ( empty( $eventdata['title'] ) ) {
+			return new WP_Error( 'empty_title', __( 'Empty event title found', 'event-list' ), $eventdata['csv-line'] );
+		}
+		// startdate
+		$eventdata['startdate'] = isset( $eventdata_raw['startdate'] ) ? $this->prepare_date( $eventdata_raw['startdate'], $date_format ) : '';
+		if ( empty( $eventdata['startdate'] ) ) {
+			return new WP_Error( 'wrong_startdate', __( 'Wrong date format for startdate', 'event-list' ), $eventdata['csv-line'] );
+		}
+		// enddate
+		if ( empty( $eventdata_raw['enddate'] ) ) {
+			$eventdata['enddate'] = $eventdata['startdate'];
+		} else {
+			$eventdata['enddate'] = $this->prepare_date( $eventdata_raw['enddate'], $date_format );
+			if ( empty( $eventdata['enddate'] ) ) {
+				return new WP_Error( 'wrong_enddate', __( 'Wrong date format for enddate', 'event-list' ), $eventdata['csv-line'] );
+			}
+		}
+		// starttime
+		$eventdata['starttime'] = isset( $eventdata_raw['starttime'] ) ? wp_kses_post( $eventdata_raw['starttime'] ) : '';
+		// location
+		$eventdata['location'] = isset( $eventdata_raw['location'] ) ? wp_kses_post( $eventdata_raw['location'] ) : '';
+		// content
+		$eventdata['content'] = isset( $eventdata_raw['content'] ) ? wp_kses_post( $eventdata_raw['content'] ) : '';
+		// categories
+		$eventdata['categories'] = array_map( 'sanitize_title', $eventdata_raw['categories'] );
+		return $eventdata;
+	}
+
+
+	private function prepare_date( $date_string, $date_format ) {
+		$auto_detect = true;
+		if ( empty( $date_format ) ) {
+			$date_format = 'Y-m-d';
+			$auto_detect = false;
+		}
+		// create date from given format
+		// phpcs:ignore PHPCompatibility.FunctionUse.NewFunctions.date_create_from_formatFound -- A custom function is created in daterange.php if it does not exist
+		$date = date_create_from_format( $date_format, sanitize_text_field( wp_unslash( $date_string ) ) );
+		if ( ! $date instanceof DateTime ) {
+			// try automatic date detection
+			if ( $auto_detect ) {
+				$date = date_create( $date_string );
+			}
+			if ( ! $date instanceof DateTime ) {
+				return '';
+			}
+		}
+		return $date->format( 'Y-m-d' );
 	}
 
 
