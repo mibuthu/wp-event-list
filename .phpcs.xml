@@ -108,7 +108,6 @@
     <rule ref="WordPress.Security">
         <exclude name="WordPress.Security.NonceVerification.Recommended" />
         <exclude name="WordPress.Security.NonceVerification.Missing" />
-        <exclude name="WordPress.Security.EscapeOutput.OutputNotEscaped" />
     </rule>
     <rule ref="PHPCompatibility.ParameterValues.NewHTMLEntitiesEncodingDefault">
         <exclude name="PHPCompatibility.ParameterValues.NewHTMLEntitiesEncodingDefault.NotSet" />
