@@ -4,8 +4,10 @@
  *
  * @package EventList
  *
- * phpcs:disable Squiz.Commenting.InlineComment.InvalidEndChar
  * phpcs:disable Squiz.PHP.CommentedOutCode.Found
+ * phpcs:disable PHPCompatibility.ControlStructures.NewExecutionDirectives.strict_typesFound
+ * phpcs:disable PHPCompatibility.Keywords.NewKeywords.t_useFound
+ * phpcs:disable PHPCompatibility.LanguageConstructs.NewLanguageConstructs.t_ns_separatorFound
  */
 
 declare(strict_types=1);
@@ -333,10 +335,9 @@ return array(
 		'InvalidArgumentException',
 		'AssertionError',
 		'TypeError',
-		'Phan\Exception\IssueException',  // TODO: Make Phan aware that some arguments suppress certain issues
-		'Phan\AST\TolerantASTConverter\InvalidNodeException',  // This is used internally in TolerantASTConverter
-
-		// TODO: Undo the suppressions for the below categories of issues:
+		'Phan\Exception\IssueException',
+		// This is used internally in TolerantASTConverter
+		'Phan\AST\TolerantASTConverter\InvalidNodeException',
 		'Phan\Exception\CodeBaseException',
 		// phpunit
 		'PHPUnit\Framework\ExpectationFailedException',
@@ -607,7 +608,8 @@ return array(
 		'DuplicateArrayKeyPlugin',
 		'PregRegexCheckerPlugin',
 		'PrintfCheckerPlugin',
-		'PHPUnitAssertionPlugin',  // analyze assertSame/assertInstanceof/assertTrue/assertFalse
+		// analyze assertSame/assertInstanceof/assertTrue/assertFalse
+		'PHPUnitAssertionPlugin',
 		// MODIFIED! Can be used for PHP > 7.1 only!
 		// 'UseReturnValuePlugin',
 
@@ -655,7 +657,8 @@ return array(
 		// It's used in tests/run_test __FakeSelfFallbackTest
 
 		// This checks that there are no accidental echos/printfs left inside Phan's code.
-		'RemoveDebugStatementPlugin',
+		// MODIFIED! echo and printf outputs are required
+		// 'RemoveDebugStatementPlugin',
 		'UnsafeCodePlugin',
 		'DeprecateAliasPlugin',
 
