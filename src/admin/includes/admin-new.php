@@ -191,9 +191,9 @@ class EL_Admin_New {
 			return $pid;
 		}
 		$eventdata                  = array();
-		$eventdata['startdate']     = isset( $_POST['startdate'] ) ? sanitize_key( $_POST['startdate'] ) : '';
+		$eventdata['startdate']     = isset( $_POST['startdate'] ) ? sanitize_text_field( wp_unslash( $_POST['startdate'] ) ) : '';
 		$eventdata['startdate-iso'] = isset( $_POST['startdate-iso'] ) ? sanitize_key( $_POST['startdate-iso'] ) : '';
-		$eventdata['enddate']       = isset( $_POST['enddate'] ) ? sanitize_key( $_POST['enddate'] ) : '';
+		$eventdata['enddate']       = isset( $_POST['enddate'] ) ? sanitize_text_field( wp_unslash( $_POST['enddate'] ) ) : '';
 		$eventdata['enddate-iso']   = isset( $_POST['enddate-iso'] ) ? sanitize_key( $_POST['enddate-iso'] ) : '';
 		$eventdata['starttime']     = isset( $_POST['starttime'] ) ? wp_kses_post( wp_unslash( $_POST['starttime'] ) ) : '';
 		$eventdata['location']      = isset( $_POST['location'] ) ? wp_kses_post( wp_unslash( $_POST['location'] ) ) : '';
