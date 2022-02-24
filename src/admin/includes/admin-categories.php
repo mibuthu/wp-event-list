@@ -11,7 +11,6 @@
  * @phan-file-suppress PhanPluginUnknownMethodParamType
  * @phan-file-suppress PhanPluginUnknownMethodReturnType
  * @phan-file-suppress PhanPartialTypeMismatchArgument
- * @phan-file-suppress PhanPluginRemoveDebugEcho
  *
  * @package event-list
  */
@@ -75,7 +74,7 @@ class EL_Admin_Categories {
 				)
 			)
 		);
-		echo '<button type="button" id="sync-cats" class="button action" onclick="el_show_syncform(\'' . $url . '\')" style="margin-top: 3px">' . __( 'Synchronize with post categories', 'event-list' ) . '</button>';
+		echo '<button type="button" id="sync-cats" class="button action" onclick="el_show_syncform(\'' . esc_url_raw( $url ) . '\')" style="margin-top: 3px">' . esc_html__( 'Synchronize with post categories', 'event-list' ) . '</button>';
 	}
 
 
