@@ -10,7 +10,6 @@
  * @phan-file-suppress PhanPluginUnknownPropertyType
  * @phan-file-suppress PhanPluginUnknownMethodParamType
  * @phan-file-suppress PhanPluginUnknownMethodReturnType
- * @phan-file-suppress PhanPluginRemoveDebugEcho
  * @phan-file-suppress PhanPartialTypeMismatchArgument
  * @phan-file-suppress PhanPartialTypeMismatchArgumentInternal
  * @phan-file-suppress PhanPossiblyUndeclaredProperty
@@ -71,10 +70,10 @@ class EL_Admin_Category_Sync {
 		// permission checks
 		if ( ! current_user_can( 'manage_categories' ) || ( $this->switch_taxonomy && ! current_user_can( 'manage_options' ) ) ) {
 			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
-			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
 		}
 		if ( ! (bool) wp_get_referer() || ( ! $this->switch_taxonomy && $this->use_post_cats ) ) {
-			wp_die( __( 'Error: You are not allowed to view this page!', 'event-list' ) );
+			wp_die( esc_html__( 'Error: You are not allowed to view this page!', 'event-list' ) );
 		}
 	}
 
@@ -109,7 +108,7 @@ class EL_Admin_Category_Sync {
 			<style>.el-catlist {list-style:inside}</style>
 			<div class="wrap">
 				<div id="icon-edit-pages" class="icon32"><br /></div>
-				<h2>' . $main_title . '</h2>
+				<h2>' . esc_html( $main_title ) . '</h2>
 				<div>
 					<form action="" id="el_start_cat_sync" method="post">';
 		$this->show_hidden( 'action', $action );
@@ -128,10 +127,10 @@ class EL_Admin_Category_Sync {
 			$this->show_checkbox( 'add-cats', __( 'Add not available post categories', 'event-list' ), empty( $affected_cats['to_add'] ) );
 		}
 		echo '
-						<p style="margin: 3.5em 0 2.5em">' . $description . '</p>';
+						<p style="margin: 3.5em 0 2.5em">' . wp_kses_post( $description ) . '</p>';
 		$submit_disabled = ( 'sync' === $action && empty( $affected_cats['to_mod'] ) && empty( $affected_cats['to_add'] ) && empty( $affected_cats['to_del'] ) ) ? ' disabled' : '';
 		echo '
-						<button type="submit" id="cat-sync-submit" class="button button-primary"' . $submit_disabled . '>' . $button_text . '</button>
+						<button type="submit" id="cat-sync-submit" class="button button-primary"' . esc_attr( $submit_disabled ) . '>' . esc_html( $button_text ) . '</button>
 					</form>
 				</div
 			</div>';
@@ -141,10 +140,10 @@ class EL_Admin_Category_Sync {
 	private function show_cat_list( $cat_slugs, $cat_type, $input_id, $heading ) {
 		echo '<br />
 				<div>
-					<h3>' . $heading . ':</h3>';
+					<h3>' . esc_html( $heading ) . ':</h3>';
 		if ( empty( $cat_slugs ) ) {
 			echo '
-					<p>' . __( 'none', 'event-list' ) . '</p>';
+					<p>' . esc_html__( 'none', 'event-list' ) . '</p>';
 		} else {
 			echo '
 					<ul class="el-catlist">';
@@ -152,7 +151,7 @@ class EL_Admin_Category_Sync {
 				$cat_name = 'event' === $cat_type ? $this->events->get_cat_by_slug( $cat_slug )->name : get_category_by_slug( $cat_slug )->name;
 				// phpcs:disable WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
 				echo '
-							<li>' . $cat_name . ' (' . __( 'Slug' ) . ': ' . $cat_slug . ')</li>';
+							<li>' . esc_html( $cat_name ) . ' (' . esc_html__( 'Slug' ) . ': ' . esc_attr( $cat_slug ) . ')</li>';
 				// phpcs:enable
 			}
 			echo '
@@ -166,14 +165,14 @@ class EL_Admin_Category_Sync {
 
 	private function show_hidden( $id, $value ) {
 		echo '
-			<input type="hidden" name="' . $id . '" id="' . $id . '" value="' . $value . '">';
+			<input type="hidden" name="' . esc_attr( $id ) . '" id="' . esc_attr( $id ) . '" value="' . esc_html( $value ) . '">';
 	}
 
 
 	private function show_checkbox( $id, $text, $disabled = false ) {
 		$disabled_text = $disabled ? ' disabled' : '';
 		echo '
-			<label for="' . $id . '"><input name="' . $id . '" type="checkbox" id="' . $id . '" value="1"' . $disabled_text . ' />' . $text . '</label>';
+			<label for="' . esc_attr( $id ) . '"><input name="' . esc_attr( $id ) . '" type="checkbox" id="' . esc_attr( $id ) . '" value="1"' . esc_attr( $disabled_text ) . ' />' . esc_html( $text ) . '</label>';
 	}
 
 
