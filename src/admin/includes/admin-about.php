@@ -10,7 +10,6 @@
  * @phan-file-suppress PhanPluginUnknownPropertyType
  * @phan-file-suppress PhanPluginUnknownMethodParamType
  * @phan-file-suppress PhanPluginUnknownMethodReturnType
- * @phan-file-suppress PhanPluginRemoveDebugEcho
  * @phan-file-suppress PhanPartialTypeMismatchArgument
  *
  * @package event-list
@@ -54,14 +53,14 @@ class EL_Admin_About {
 	public function show_about() {
 		if ( ! current_user_can( 'edit_posts' ) ) {
 			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
-			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
 		}
 		// check used get parameters
 		$tab = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : 'general';
 
 		echo '<div class="wrap">
-				<div id="icon-edit-pages" class="icon32"><br /></div><h2>' . __( 'About Event List', 'event-list' ) . '</h2>';
-		echo $this->show_tabs( $tab );
+				<div id="icon-edit-pages" class="icon32"><br /></div><h2>' . esc_html__( 'About Event List', 'event-list' ) . '</h2>';
+		echo wp_kses_post( $this->show_tabs( $tab ) );
 		if ( 'atts' === $tab ) {
 			$this->daterange->load_formats_helptexts();
 			$this->show_atts();
@@ -99,48 +98,78 @@ class EL_Admin_About {
 
 	private function show_help() {
 		echo '
-			<h3 class="el-headline">' . __( 'Help and Instructions', 'event-list' ) . '</h3>
-			<p>' . sprintf( __( 'You can manage the events %1$shere%2$s', 'event-list' ), '<a href="' . admin_url( 'edit.php?post_type=el_events' ) . '">', '</a>' ) . '.</p>
-			<p>' . __( 'To show the events on your site you have 2 possibilities', 'event-list' ) . ':</p>
-			<ul class="el-show-event-options"><li>' . sprintf( __( 'you can place the <strong>shortcode</strong> %1$s on any page or post', 'event-list' ), '<code>[event-list]</code>' ) . '</li>
-			<li>' . sprintf( __( 'you can add the <strong>widget</strong> %1$s in your sidebars', 'event-list' ), '"Event List"' ) . '</li></ul>
-			<p>' . __( 'The displayed events and their style can be modified with the available widget settings and the available attributes for the shortcode.', 'event-list' ) . '<br />
-				' . sprintf( __( 'A list of all available shortcode attributes with their descriptions is available in the %1$s tab.', 'event-list' ), '<a href="' . admin_url( 'admin.php?page=el_admin_about&tab=atts' ) . '">' . __( 'Shortcode Attributes', 'event-list' ) . '</a>' ) . '<br />
-				' . __( 'The available  widget options are described in their tooltip text.', 'event-list' ) . '<br />
-				' . sprintf( __( 'If you enable one of the links options (%1$s or %2$s) in the widget you have to insert an URL to the linked event-list page.', 'event-list' ), '"' . __( 'Add links to the single events', 'event-list' ) . '"', '"' . __( 'Add a link to the Event List page', 'event-list' ) . '"' )
-				. __( 'This is required because the widget does not know in which page or post the shortcode was included.', 'event-list' ) . '<br />
-				' . __( 'Additionally you have to insert the correct Shortcode id on the linked page. This id describes which shortcode should be used on the given page or post if you have more than one.', 'event-list' )
-				. sprintf( __( 'The default value %1$s is normally o.k. (for pages with 1 shortcode only), but if required you can check the id by looking into the URL of an event link on your linked page or post.', 'event-list' ), '[1]' )
-				. sprintf( __( 'The id is available at the end of the URL parameters (e.g. %1$s).', 'event-list' ), '<i>https://www.your-homepage.com/?page_id=99&amp;event_id<strong>1</strong>=11</i>' ) . '
+			<h3 class="el-headline">' . esc_html__( 'Help and Instructions', 'event-list' ) . '</h3>
+			<p>' . sprintf( esc_html__( 'You can manage the events %1$shere%2$s', 'event-list' ), '<a href="' . admin_url( 'edit.php?post_type=el_events' ) . '">', '</a>' ) . '.</p>
+			<p>' . esc_html__( 'To show the events on your site you have 2 possibilities', 'event-list' ) . ':</p>
+			<ul class="el-show-event-options"><li>' . sprintf( wp_kses_post( __( 'you can place the <strong>shortcode</strong> %1$s on any page or post', 'event-list' ) ), '<code>[event-list]</code>' ) . '</li>
+			<li>' . sprintf( wp_kses_post( __( 'you can add the <strong>widget</strong> %1$s in your sidebars', 'event-list' ) ), '"Event List"' ) . '</li></ul>
+			<p>' . esc_html__( 'The displayed events and their style can be modified with the available widget settings and the available attributes for the shortcode.', 'event-list' ) . '<br />
+				' . sprintf(
+				esc_html__( 'A list of all available shortcode attributes with their descriptions is available in the %1$s tab.', 'event-list' ),
+				'<a href="' . admin_url( 'admin.php?page=el_admin_about&tab=atts' ) . '">' . esc_html__( 'Shortcode Attributes', 'event-list' ) . '</a>'
+			) . '<br />
+				' . esc_html__( 'The available  widget options are described in their tooltip text.', 'event-list' ) . '<br />
+				' . sprintf(
+					esc_html__( 'If you enable one of the links options (%1$s or %2$s) in the widget you have to insert an URL to the linked event-list page.', 'event-list' ),
+					'"' . esc_html__( 'Add links to the single events', 'event-list' ) . '"',
+					'"' . esc_html__( 'Add a link to the Event List page', 'event-list' ) . '"'
+				)
+				. esc_html__( 'This is required because the widget does not know in which page or post the shortcode was included.', 'event-list' ) . '<br />
+				' . esc_html__( 'Additionally you have to insert the correct Shortcode id on the linked page. This id describes which shortcode should be used on the given page or post if you have more than one.', 'event-list' )
+				. sprintf(
+					esc_html__( 'The default value %1$s is normally o.k. (for pages with 1 shortcode only), but if required you can check the id by looking into the URL of an event link on your linked page or post.', 'event-list' ),
+					'[1]'
+				)
+				. sprintf(
+					esc_html__( 'The id is available at the end of the URL parameters (e.g. %1$s).', 'event-list' ),
+					'<i>https://www.your-homepage.com/?page_id=99&amp;event_id<strong>1</strong>=11</i>'
+				) . '
 			</p>
-			<p>' . sprintf( __( 'Be sure to also check the %1$s to get the plugin behaving just the way you want.', 'event-list' ), '<a href="' . admin_url( 'admin.php?page=el_admin_settings' ) . '">' . __( 'Settings page', 'event-list' ) . '</a>' ) . '</p>';
+			<p>' . sprintf(
+					esc_html__( 'Be sure to also check the %1$s to get the plugin behaving just the way you want.', 'event-list' ),
+					'<a href="' . admin_url( 'admin.php?page=el_admin_settings' ) . '">' . esc_html__( 'Settings page', 'event-list' ) . '</a>'
+				) . '</p>';
 	}
 
 
 	private function show_author() {
 		echo '
 			<br />
-			<h3>' . __( 'About the plugin author', 'event-list' ) . '</h3>
+			<h3>' . esc_html__( 'About the plugin author', 'event-list' ) . '</h3>
 			<div class="help-content">
-				<p>' . sprintf( __( 'This plugin is developed by %1$s, you can find more information about the plugin on the %2$s.', 'event-list' ), 'mibuthu', '<a href="http://wordpress.org/plugins/event-list" target="_blank" rel="noopener">' . __( 'WordPress plugin site', 'event-list' ) . '</a>' ) . '</p>
-				<p>' . sprintf( __( 'If you like the plugin please rate it on the %1$s.', 'event-list' ), '<a href="http://wordpress.org/support/view/plugin-reviews/event-list" target="_blank" rel="noopener">' . __( 'WordPress plugin review site', 'event-list' ) . '</a>' ) . '<br />
-				<p>' . __( 'If you want to support the plugin I would be happy to get a small donation', 'event-list' ) . ':<br />
-				<a class="donate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W54LNZMWF9KW2" target="_blank" rel="noopener"><img src="' . EL_URL . 'admin/images/paypal_btn_donate.gif" alt="PayPal Donation" title="' . sprintf( __( 'Donate with %1$s', 'event-list' ), 'PayPal' ) . '" border="0"></a>
-				<a class="donate" href="https://liberapay.com/mibuthu/donate" target="_blank" rel="noopener"><img src="' . EL_URL . 'admin/images/liberapay-donate.svg" alt="Liberapay Donation" title="' . sprintf( __( 'Donate with %1$s', 'event-list' ), 'Liberapay' ) . '" border="0"></a>
-				<a class="donate" href="https://flattr.com/submit/auto?user_id=mibuthu&url=https%3A%2F%2Fwordpress.org%2Fplugins%2Fevent-list" target="_blank" rel="noopener"><img src="' . EL_URL . 'admin/images/flattr-badge-large.png" alt="Flattr this" title="' . sprintf( __( 'Donate with %1$s', 'event-list' ), 'Flattr' ) . '" border="0"></a></p>
+				<p>' . sprintf(
+				esc_html__( 'This plugin is developed by %1$s, you can find more information about the plugin on the %2$s.', 'event-list' ),
+				'mibuthu',
+				'<a href="http://wordpress.org/plugins/event-list" target="_blank" rel="noopener">' . esc_html__( 'WordPress plugin site', 'event-list' ) . '</a>'
+			) . '</p>
+				<p>' . sprintf(
+				esc_html__( 'If you like the plugin please rate it on the %1$s.', 'event-list' ),
+				'<a href="http://wordpress.org/support/view/plugin-reviews/event-list" target="_blank" rel="noopener">' . esc_html__( 'WordPress plugin review site', 'event-list' ) . '</a>'
+			) . '<br />
+				<p>' . esc_html__( 'If you want to support the plugin I would be happy to get a small donation', 'event-list' ) . ':<br />
+				<a class="donate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W54LNZMWF9KW2" target="_blank" rel="noopener"><img src="' .
+				esc_url_raw( EL_URL ) . 'admin/images/paypal_btn_donate.gif" alt="PayPal Donation" title="' . sprintf( esc_html__( 'Donate with %1$s', 'event-list' ), 'PayPal' ) . '" border="0"></a>
+				<a class="donate" href="https://liberapay.com/mibuthu/donate" target="_blank" rel="noopener"><img src="' .
+				esc_url_raw( EL_URL ) . 'admin/images/liberapay-donate.svg" alt="Liberapay Donation" title="' . sprintf( esc_html__( 'Donate with %1$s', 'event-list' ), 'Liberapay' ) . '" border="0"></a>
+				<a class="donate" href="https://flattr.com/submit/auto?user_id=mibuthu&url=https%3A%2F%2Fwordpress.org%2Fplugins%2Fevent-list" target="_blank" rel="noopener"><img src="' .
+				esc_url_raw( EL_URL ) . 'admin/images/flattr-badge-large.png" alt="Flattr this" title="' . sprintf( esc_html__( 'Donate with %1$s', 'event-list' ), 'Flattr' ) . '" border="0"></a></p>
 			</div>';
 	}
 
 
 	private function show_atts() {
 		echo '
-			<h3 class="el-headline">' . __( 'Shortcode Attributes', 'event-list' ) . '</h3>
+			<h3 class="el-headline">' . esc_html__( 'Shortcode Attributes', 'event-list' ) . '</h3>
 			<div>
-				' . __( 'You have the possibility to modify the output if you add some of the following attributes to the shortcode.', 'event-list' ) . '<br />
-				' . sprintf( __( 'You can combine and add as much attributes as you want. E.g. the shortcode including the attributes %1$s and %2$s would looks like this:', 'event-list' ), '"num_events"', '"show_filterbar"' ) . '
+				' . esc_html__( 'You have the possibility to modify the output if you add some of the following attributes to the shortcode.', 'event-list' ) . '<br />
+				' . sprintf(
+					esc_html__( 'You can combine and add as much attributes as you want. E.g. the shortcode including the attributes %1$s and %2$s would looks like this:', 'event-list' ),
+					'"num_events"',
+					'"show_filterbar"'
+				) . '
 				<p><code>[event-list num_events=10 show_filterbar=false]</code></p>
-				<p>' . __( 'Below you can find a list of all supported attributes with their descriptions and available options:', 'event-list' ) . '</p>';
-		echo $this->show_atts_table();
+				<p>' . esc_html__( 'Below you can find a list of all supported attributes with their descriptions and available options:', 'event-list' ) . '</p>';
+		echo wp_kses_post( $this->show_atts_table() );
 		echo '
 			</div>';
 	}
@@ -176,32 +205,38 @@ class EL_Admin_About {
 
 	private function show_filter_syntax() {
 		echo '
-			<h3 class="el-headline">' . __( 'Filter Syntax', 'event-list' ) . '</h3>
-			<p>' . __( 'For date and cat filters you can specify complex filters with the following syntax:', 'event-list' ) . '</p>
-			<p>' . sprintf( __( 'You can use %1$s and %2$s connections to define complex filters. Additionally you can set brackets %3$s for nested queries.', 'event-list' ), __( 'AND', 'event-list' ) . ' ( "<strong>&amp;</strong>" )', __( 'OR', 'event-list' ) . ' ( "<strong>&verbar;</strong>" ' . __( 'or', 'event-list' ) . ' "<strong>&comma;</strong>" )', '( "<strong>(</strong>" ' . __( 'and', 'event-list' ) . ' "<strong>)</strong>" )' ) . '</p>
-			' . __( 'Examples for cat filters:', 'event-list' ) . '
-			<p><code>tennis</code>&hellip; ' . sprintf( __( 'Show all events with category %1$s.', 'event-list' ), '"tennis"' ) . '<br />
-			<code>tennis&comma;hockey</code>&hellip; ' . sprintf( __( 'Show all events with category %1$s or %2$s.', 'event-list' ), '"tennis"', '"hockey"' ) . '<br />
-			<code>tennis&verbar;(hockey&amp;winter)</code>&hellip; ' . sprintf( __( 'Show all events with category %1$s and all events where category %2$s as well as %3$s is selected.', 'event-list' ), '"tennis"', '"hockey"', '"winter"' ) . '</p>';
+			<h3 class="el-headline">' . esc_html__( 'Filter Syntax', 'event-list' ) . '</h3>
+			<p>' . esc_html__( 'For date and cat filters you can specify complex filters with the following syntax:', 'event-list' ) . '</p>
+			<p>' . sprintf(
+				esc_html__( 'You can use %1$s and %2$s connections to define complex filters. Additionally you can set brackets %3$s for nested queries.', 'event-list' ),
+				esc_html__( 'AND', 'event-list' ) . ' ( "<strong>&amp;</strong>" )',
+				esc_html__( 'OR', 'event-list' ) . ' ( "<strong>&verbar;</strong>" ' . esc_html__( 'or', 'event-list' ) . ' "<strong>&comma;</strong>" )',
+				'( "<strong>(</strong>" ' . esc_html__( 'and', 'event-list' ) . ' "<strong>)</strong>" )'
+			) . '</p>
+			' . esc_html__( 'Examples for cat filters:', 'event-list' ) . '
+			<p><code>tennis</code>&hellip; ' . sprintf( esc_html__( 'Show all events with category %1$s.', 'event-list' ), '"tennis"' ) . '<br />
+			<code>tennis&comma;hockey</code>&hellip; ' . sprintf( esc_html__( 'Show all events with category %1$s or %2$s.', 'event-list' ), '"tennis"', '"hockey"' ) . '<br />
+			<code>tennis&verbar;(hockey&amp;winter)</code>&hellip; ' .
+			sprintf( esc_html__( 'Show all events with category %1$s and all events where category %2$s as well as %3$s is selected.', 'event-list' ), '"tennis"', '"hockey"', '"winter"' ) . '</p>';
 	}
 
 
 	private function show_date_syntax() {
 		echo '
-			<h3 class="el-headline">' . __( 'Available Date Formats', 'event-list' ) . '</h3>
-			<p>' . __( 'For date filters you can use the following date formats:', 'event-list' ) . '</p>
+			<h3 class="el-headline">' . esc_html__( 'Available Date Formats', 'event-list' ) . '</h3>
+			<p>' . esc_html__( 'For date filters you can use the following date formats:', 'event-list' ) . '</p>
 			<ul class="el-formats">
-			' . $this->show_formats( $this->daterange->date_formats ) . '
+			' . wp_kses_post( $this->show_formats( $this->daterange->date_formats ) ) . '
 			</ul>';
 	}
 
 
 	private function show_daterange_syntax() {
 		echo '
-			<h3 class="el-headline">' . __( 'Available Date Range Formats', 'event-list' ) . '</h3>
-			<p>' . __( 'For date filters you can use the following daterange formats:', 'event-list' ) . '</p>
+			<h3 class="el-headline">' . esc_html__( 'Available Date Range Formats', 'event-list' ) . '</h3>
+			<p>' . esc_html__( 'For date filters you can use the following daterange formats:', 'event-list' ) . '</p>
 			<ul class="el-formats">
-			' . $this->show_formats( $this->daterange->daterange_formats ) . '
+			' . wp_kses_post( $this->show_formats( $this->daterange->daterange_formats ) ) . '
 			</ul>';
 	}
 
