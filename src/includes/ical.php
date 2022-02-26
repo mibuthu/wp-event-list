@@ -10,8 +10,8 @@
  * @phan-file-suppress PhanPluginUnknownPropertyType
  * @phan-file-suppress PhanPluginUnknownMethodParamType
  * @phan-file-suppress PhanPluginUnknownMethodReturnType
- * @phan-file-suppress PhanPluginRemoveDebugEcho
  * @phan-file-suppress PhanPossiblyFalseTypeArgument
+ * @phan-file-suppress PhanPartialTypeMismatchArgument
  *
  * @package event-list
  */
@@ -70,30 +70,33 @@ class EL_ICal {
 
 		// Print iCal
 		$eol = "\r\n";
+		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- Only variables with user content has to be and are escaped
 		echo 'BEGIN:VCALENDAR' . $eol .
 		'VERSION:2.0' . $eol .
-		'PRODID:-//' . get_bloginfo( 'name' ) . '//NONSGML v1.0//EN' . $eol .
+		'PRODID:-//' . $this->esc_text( get_bloginfo( 'name' ) ) . '//NONSGML v1.0//EN' . $eol .
 		'CALSCALE:GREGORIAN' . $eol .
-		'UID:' . md5( uniqid( strval( wp_rand() ), true ) ) . '@' . get_bloginfo( 'name' ) . $eol;
+		'UID:' . md5( uniqid( strval( wp_rand() ), true ) ) . '@' . $this->esc_text( get_bloginfo( 'name' ) ) . $eol;
 
 		if ( ! empty( $events ) ) {
 			foreach ( $events as $event ) {
 				echo 'BEGIN:VEVENT' . $eol .
-					'UID:' . md5( uniqid( strval( wp_rand() ), true ) ) . '@' . get_bloginfo( 'name' ) . $eol .
-					'DTSTART:' . mysql2date( 'Ymd', $event->startdate, false ) . get_gmt_from_date( $event->starttime, '\THis\Z' ) . $eol;
+					'UID:' . md5( uniqid( strval( wp_rand() ), true ) ) . '@' . $this->esc_text( get_bloginfo( 'name' ) ) . $eol .
+					'DTSTART:' . mysql2date( 'Ymd', $this->esc_text( $event->startdate ), false ) . get_gmt_from_date( $this->esc_text( $event->starttime ), '\THis\Z' ) . $eol;
 				if ( $event->enddate !== $event->startdate ) {
-					echo 'DTEND:' . mysql2date( 'Ymd', $event->enddate, false ) . $eol;
+					echo 'DTEND:' . $this->esc_text( mysql2date( 'Ymd', $this->esc_text( $event->enddate ), false ) ) . $eol;
 				}
 				echo 'DTSTAMP:' . gmdate( 'Ymd\THis\Z' ) . $eol .
-					'LOCATION:' . $event->location . $eol .
-					'SUMMARY:' . $this->sanitize_feed_text( $event->title ) . $eol;
+					'LOCATION:' . $this->esc_text( $event->location ) . $eol .
+					'SUMMARY:' . $this->esc_text( $event->title ) . $eol;
 				if ( ! empty( $event->content ) ) {
-					echo 'DESCRIPTION:' . $this->sanitize_feed_text( str_replace( array( "\r", "\n" ), ' ', $event->content ) ) . $eol;
+					echo 'DESCRIPTION:' . $this->esc_text( $event->content ) . $eol;
+					echo 'X-ALT-DESC;FMTTYPE=text/html:' . wp_kses_post( $event->content ) . $eol;
 				}
 				echo 'END:VEVENT' . $eol;
 			}
 		}
 		echo 'END:VCALENDAR';
+		// phpcs:enable
 	}
 
 
@@ -112,8 +115,8 @@ class EL_ICal {
 	}
 
 
-	private function sanitize_feed_text( $text ) {
-		return htmlspecialchars( $text, ENT_QUOTES, 'UTF-8' );
+	private function esc_text( $text ) {
+		return trim( wp_kses( $text, array() ) );
 	}
 
 
