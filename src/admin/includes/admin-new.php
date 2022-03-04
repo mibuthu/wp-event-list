@@ -10,7 +10,6 @@
  * @phan-file-suppress PhanPluginUnknownPropertyType
  * @phan-file-suppress PhanPluginUnknownMethodParamType
  * @phan-file-suppress PhanPluginUnknownMethodReturnType
- * @phan-file-suppress PhanPluginRemoveDebugEcho
  * @phan-file-suppress PhanPartialTypeMismatchArgument
  * @phan-file-suppress PhanPartialTypeMismatchArgumentInternal
  * @phan-file-suppress PhanPossiblyNullTypeArgument
@@ -120,18 +119,20 @@ class EL_Admin_New {
 		);
 		// HTML output (single quotes required for json value due to json layout)
 		echo '
-				<input type="hidden" id="json_for_js" value=\'' . $json . '\' />
-					<label class="event-option">' . __( 'Date', 'event-list' ) . ' (' . __( 'required', 'event-list' ) . '):</label>
-					<div class="event-data"><span class="date-wrapper"><input type="text" class="text form-required" name="startdate" id="startdate" value="' . gmdate( 'Y-m-d', $startdate ) . '" /><i class="dashicons dashicons-calendar-alt"></i></span>
-						<span id="enddate-area"> - <span class="date-wrapper"><input type="text" class="text" name="enddate" id="enddate" value="' . gmdate( 'Y-m-d', $enddate ) . '" /><i class="dashicons dashicons-calendar-alt"></i></span></span>
-						<label class="el-inline-checkbox"><input type="checkbox" name="multiday" id="multiday" value="1" /> ' . __( 'Multi-Day Event', 'event-list' ) . '</label>
+				<input type="hidden" id="json_for_js" value=\'' . esc_js( $json ) . '\' />
+					<label class="event-option">' . esc_html__( 'Date', 'event-list' ) . ' (' . esc_html__( 'required', 'event-list' ) . '):</label>
+					<div class="event-data"><span class="date-wrapper"><input type="text" class="text form-required" name="startdate" id="startdate" value="' .
+					esc_html( gmdate( 'Y-m-d', $startdate ) ) . '" /><i class="dashicons dashicons-calendar-alt"></i></span>
+						<span id="enddate-area"> - <span class="date-wrapper"><input type="text" class="text" name="enddate" id="enddate" value="' .
+						esc_html( gmdate( 'Y-m-d', $enddate ) ) . '" /><i class="dashicons dashicons-calendar-alt"></i></span></span>
+						<label class="el-inline-checkbox"><input type="checkbox" name="multiday" id="multiday" value="1" /> ' . esc_html__( 'Multi-Day Event', 'event-list' ) . '</label>
 						<input type="hidden" id="startdate-iso" name="startdate-iso" value="" />
 						<input type="hidden" id="enddate-iso" name="enddate-iso" value="" />
 					</div>
-					<label class="event-option">' . __( 'Time', 'event-list' ) . ':</label>
-					<div class="event-data"><input type="text" class="text" name="starttime" id="starttime" value="' . $starttime . '" /></div>
-					<label class="event-option">' . __( 'Location', 'event-list' ) . ':</label>
-					<div class="event-data"><input type="text" class="text" name="location" id="location" value="' . $location . '" /></div>';
+					<label class="event-option">' . esc_html__( 'Time', 'event-list' ) . ':</label>
+					<div class="event-data"><input type="text" class="text" name="starttime" id="starttime" value="' . esc_html( $starttime ) . '" /></div>
+					<label class="event-option">' . esc_html__( 'Location', 'event-list' ) . ':</label>
+					<div class="event-data"><input type="text" class="text" name="location" id="location" value="' . esc_html( $location ) . '" /></div>';
 	}
 
 
@@ -144,7 +145,7 @@ class EL_Admin_New {
 		}
 		// show label for event title
 		echo '
-			<label class="event-option">' . __( 'Event Title', 'event-list' ) . ':</label>';
+			<label class="event-option">' . esc_html__( 'Event Title', 'event-list' ) . ':</label>';
 	}
 
 
@@ -161,7 +162,7 @@ class EL_Admin_New {
 		unset( $wp_meta_boxes[ get_post_type( 'post' ) ]['primary'] );
 		// show label for event content
 		echo '
-			<label class="event-option">' . __( 'Event Content', 'event-list' ) . ':</label>';
+			<label class="event-option">' . esc_html__( 'Event Content', 'event-list' ) . ':</label>';
 	}
 
 
@@ -237,20 +238,22 @@ class EL_Admin_New {
 		$messages['el_events'] = array(
 			// Unused. Messages start at index 1.
 			0  => '',
-			1  => __( 'Event updated.', 'event-list' ) . ' <a href="' . esc_url( get_permalink( $post_ID ) ) . '">' . __( 'View event', 'event-list' ) . '</a>',
+			1  => __( 'Event updated.', 'event-list' ) . ' <a href="' . esc_url_raw( get_permalink( $post_ID ) ) . '">' . __( 'View event', 'event-list' ) . '</a>',
 			// Custom field updated is not required (no custom fields)
 			2  => '',
 			// Custom field deleted is not required (no custom fields)
 			3  => '',
 			4  => __( 'Event updated.', 'event-list' ),
 			5  => is_null( $revision ) ? false : sprintf( __( 'Event restored to revision from %1$s', 'event-list' ), wp_post_revision_title( $revision, false ) ),
-			6  => __( 'Event published.', 'event-list' ) . ' <a href="' . esc_url( get_permalink( $post_ID ) ) . '">' . __( 'View event', 'event-list' ) . '</a>',
+			6  => __( 'Event published.', 'event-list' ) . ' <a href="' . esc_url_raw( get_permalink( $post_ID ) ) . '">' . __( 'View event', 'event-list' ) . '</a>',
 			7  => __( 'Event saved.', 'event-list' ),
-			8  => __( 'Event submitted.', 'event-list' ) . ' <a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">' . __( 'Preview event', 'event-list' ) . '</a>',
+			8  => __( 'Event submitted.', 'event-list' ) . ' <a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">' .
+				__( 'Preview event', 'event-list' ) . '</a>',
 			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
 			9  => sprintf( __( 'Event scheduled for: %1$s>', 'event-list' ), '<strong>' . date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ) . '</strong>' ) .
-				' <a target="_blank" href="' . esc_url( get_permalink( $post_ID ) ) . '">' . __( 'Preview event', 'event-list' ) . '</a>',
-			10 => __( 'Event draft updated.', 'event-list' ) . ' <a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">' . __( 'Preview event', 'event-list' ) . '</a>',
+				' <a target="_blank" href="' . esc_url_raw( get_permalink( $post_ID ) ) . '">' . __( 'Preview event', 'event-list' ) . '</a>',
+			10 => __( 'Event draft updated.', 'event-list' ) . ' <a target="_blank" href="' . esc_url_raw( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">' .
+				__( 'Preview event', 'event-list' ) . '</a>',
 		);
 		return $messages;
 	}
