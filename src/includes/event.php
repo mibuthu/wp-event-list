@@ -315,7 +315,7 @@ class EL_Event {
 						$opening_tag = array_pop( $tags );
 						if ( $opening_tag !== $tag_name ) {
 							// Not properly nested tag found: trigger a warning and add the not matching opening tag again
-							// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
+							// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error, WordPress.Security.EscapeOutput.OutputNotEscaped
 							trigger_error( 'Not properly nested tag found (last opening tag: ' . $opening_tag . ', closing tag: ' . $tag_name . ')', E_USER_NOTICE );
 							$tags[] = $opening_tag;
 						} else {
