@@ -75,7 +75,7 @@
     <!-- Set custom escaping functions -->
     <rule ref="WordPress.Security.EscapeOutput">
         <properties>
-            <property name="customEscapingFunctions" type="array" value="admin_url" />
+            <property name="customEscapingFunctions" type="array" value="admin_url, get_submit_button" />
             <property name="customAutoEscapedFunctions" type="array" value="PLUGIN_URL" />
         </properties>
     </rule>

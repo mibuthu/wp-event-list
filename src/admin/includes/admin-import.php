@@ -107,8 +107,9 @@ class EL_Admin_Import {
 	private function show_import_form() {
 		echo '
 				<h3>' . esc_html__( 'Step', 'event-list' ) . ' 1: ' . esc_html__( 'Set import file and options', 'event-list' ) . '</h3>
-				<form action="" id="el_import_upload" method="post" enctype="multipart/form-data">
-					' . $this->functions->show_option_table( 'import' ) . '<br />
+				<form action="" id="el_import_upload" method="post" enctype="multipart/form-data">';
+		$this->functions->show_option_table( 'import' );
+		echo '<br />
 					<input type="submit" name="button-upload-submit" id="button-upload-submit" class="button" value="' .
 					sprintf( esc_html__( 'Proceed with Step %1$s', 'event-list' ), '2' ) . ' &gt;&gt;" />
 				</form>
