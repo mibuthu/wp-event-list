@@ -5,7 +5,7 @@ Tags: event, events, list, listview, calendar, schedule, shortcode, page, catego
 Requires at least: 4.9
 Tested up to: 5.9
 Requires PHP: 5.2
-Stable tag: 0.8.7
+Stable tag: 0.8.8
 Plugin URI: https://wordpress.org/plugins/event-list
 Licence: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -85,6 +85,11 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 
 
 == Changelog ==
+
+= 0.8.8 (2022-03-07) =
+* add some missing sanitization for request variables
+* fixed / improved layout and escaping of html, rss and ical output
+* improved display of widget options form
 
 = 0.8.7 (2022-02-19) =
 * fixed a vulnerability that the plugin does not sanitize and escape the settings before safing them to the database
