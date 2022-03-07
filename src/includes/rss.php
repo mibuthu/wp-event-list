@@ -10,9 +10,9 @@
  * @phan-file-suppress PhanPluginUnknownPropertyType
  * @phan-file-suppress PhanPluginUnknownMethodParamType
  * @phan-file-suppress PhanPluginUnknownMethodReturnType
- * @phan-file-suppress PhanPluginRemoveDebugEcho
  * @phan-file-suppress PhanPossiblyNullTypeArgument
  * @phan-file-suppress PhanPossiblyFalseTypeArgument
+ * @phan-file-suppress PhanPartialTypeMismatchArgument
  *
  * @package event-list
  */
@@ -61,7 +61,8 @@ class EL_Rss {
 
 	public function print_head_feed_link() {
 		echo '
-<link rel="alternate" type="application/rss+xml" title="' . get_bloginfo_rss( 'name' ) . ' &raquo; ' . $this->options->get( 'el_feed_rss_description' ) . '" href="' . $this->feed_url() . '" />';
+<link rel="alternate" type="application/rss+xml" title="' . esc_attr( get_bloginfo_rss( 'name' ) ) . ' &raquo; ' . esc_attr( $this->options->get( 'el_feed_rss_description' ) ) .
+		'" href="' . esc_url_raw( $this->feed_url() ) . '" />';
 	}
 
 
@@ -75,7 +76,7 @@ class EL_Rss {
 		$events  = $this->events->get( $options );
 
 		// Print RSS
-		echo '<?xml version="1.0" encoding="' . get_option( 'blog_charset' ) . '"?>
+		echo '<?xml version="1.0" encoding="' . esc_attr( get_option( 'blog_charset' ) ) . '"?>
 	<rss version="2.0"
 		xmlns:content="http://purl.org/rss/1.0/modules/content/"
 		xmlns:wfw="http://wellformedweb.org/CommentAPI/"
@@ -85,36 +86,47 @@ class EL_Rss {
 		xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
 	>
 		<channel>
-			<title>' . get_bloginfo_rss( 'name' ) . '</title>
-			<atom:link href="' . apply_filters( 'self_link', get_bloginfo() ) . '" rel="self" type="application/rss+xml" />
-			<link>' . get_bloginfo_rss( 'url' ) . '</link>
-			<description>' . $this->options->get( 'el_feed_rss_description' ) . '</description>
-			<lastBuildDate>' . mysql2date( 'D, d M Y H:i:s +0000', get_lastpostmodified( 'GMT' ), false ) . '</lastBuildDate>
-			<language>' . get_option( 'rss_language' ) . '</language>
-			<sy:updatePeriod>' . apply_filters( 'rss_update_period', 'hourly' ) . '</sy:updatePeriod>
-			<sy:updateFrequency>' . apply_filters( 'rss_update_frequency', '1' ) . '</sy:updateFrequency>
+			<title>' . esc_html( get_bloginfo_rss( 'name' ) ) . '</title>
+			<atom:link href="' . esc_url_raw( apply_filters( 'self_link', get_bloginfo() ) ) . '" rel="self" type="application/rss+xml" />
+			<link>' . esc_url_raw( get_bloginfo_rss( 'url' ) ) . '</link>
+			<description>' . esc_html( $this->options->get( 'el_feed_rss_description' ) ) . '</description>
+			<lastBuildDate>' . esc_html( mysql2date( 'D, d M Y H:i:s +0000', get_lastpostmodified( 'GMT' ), false ) ) . '</lastBuildDate>
+			<language>' . esc_attr( get_option( 'rss_language' ) ) . '</language>
+			<sy:updatePeriod>' . esc_attr( apply_filters( 'rss_update_period', 'hourly' ) ) . '</sy:updatePeriod>
+			<sy:updateFrequency>' . esc_attr( apply_filters( 'rss_update_frequency', '1' ) ) . '</sy:updateFrequency>
 			';
 		do_action( 'rss2_head' );
 		if ( ! empty( $events ) ) {
 			foreach ( $events as $event ) {
 				echo '
 			<item>
-				<title>' . $this->format_date( $event->startdate, $event->enddate ) . ' - ' . $this->sanitize_feed_text( $event->title ) . '</title>
-				<pubDate>' . mysql2date( 'D, d M Y H:i:s +0000', $event->startdate, false ) . '</pubDate>';
+				<title>',
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- No escaping required for format_date
+				$this->format_date( $event->startdate, $event->enddate ) . ' - ' . esc_html( $event->title ),
+				'</title>
+				<pubDate>',
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- No escaping required for this date format
+				mysql2date( 'D, d M Y H:i:s +0000', $event->startdate, false ),
+				'</pubDate>';
 				foreach ( (array) $event->categories as $cat ) {
 					echo '
-				<category>' . $this->sanitize_feed_text( $cat->name ) . '</category>';
+				<category>' . esc_attr( $cat->name ) . '</category>';
+				}
+				$timetext     = empty( $event->starttime ) ? '' :
+					__( 'Time', 'event-list' ) . ': ' . $this->format_date( $event->startdate, $event->enddate ) . ' ' . wp_kses_post( $event->starttime ) . '<br />
+					';
+				$locationtext = empty( $event->location ) ? '' :
+					__( 'Location', 'event-list' ) . ': ' . wp_kses_post( $event->location ) . '<br />
+					<br />
+					';
+				if ( ! empty( $timetext ) && empty( $locationtext ) ) {
+					$timetext .= '<br />
+					';
 				}
 				echo '
 				<description>
-					' . $this->event_data( $event ) . '
+					' . esc_html( $timetext . $locationtext . do_shortcode( $event->content ) ) . '
 				</description>';
-				if ( ! empty( $event->content ) ) {
-					echo '
-				<content:encoded>
-					' . $this->event_data( $event ) . ':
-				</content:encoded>';
-				}
 				echo '
 			</item>';
 			}
@@ -145,18 +157,6 @@ class EL_Rss {
 			// remove eventlist RSS feed from rewrite rules
 			flush_rewrite_rules( false );
 		}
-	}
-
-
-	private function event_data( &$event ) {
-		$timetext     = empty( $event->starttime ) ? '' : ' ' . $this->sanitize_feed_text( $event->starttime );
-		$locationtext = empty( $event->location ) ? '' : ' - ' . $this->sanitize_feed_text( $event->location );
-		return $this->format_date( $event->startdate, $event->enddate ) . $timetext . $locationtext . $this->sanitize_feed_text( do_shortcode( $event->content ) );
-	}
-
-
-	private function sanitize_feed_text( $text ) {
-		return htmlspecialchars( $text, ENT_QUOTES, 'UTF-8' );
 	}
 
 
