@@ -54,137 +54,135 @@ class EL_Admin_Functions {
 				'button_class' => 'primary large',
 			)
 		);
-		$out     = '
-		<form method="post" action="' . $options['page'] . '">
+		echo '
+		<form method="post" action="' . esc_attr( $options['page'] ) . '">
 		';
-		ob_start();
 		settings_fields( 'el_' . $section );
-		$out .= ob_get_contents();
-		ob_end_clean();
-		$out .= $this->show_option_table( $section );
-		$out .= get_submit_button( $options['button_text'], $options['button_class'] );
-		$out .= '
+		$this->show_option_table( $section );
+		echo get_submit_button( $options['button_text'], $options['button_class'] );
+		echo '
 		</form>';
-		return $out;
 	}
 
 
 	public function show_option_table( $section ) {
-		$out = '
+		echo '
 			<div class="el-settings">
 			<table class="form-table">';
 		foreach ( $this->options->options as $oname => $o ) {
 			if ( $section === $o['section'] ) {
-				$out .= '
+				echo '
 					<tr>
 						<th>';
 				if ( '' !== $o['label'] ) {
-					$out .= '<label for="' . $oname . '">' . $o['label'] . ':</label>';
+					echo '<label for="' . esc_attr( $oname ) . '">' . esc_html( $o['label'] ) . ':</label>';
 				}
-				$out .= '</th>
+				echo '</th>
 					<td>';
 				switch ( $o['type'] ) {
 					case 'checkbox':
-						$out .= $this->show_checkbox( $oname, $this->options->get( $oname ), $o['caption'], isset( $o['disable'] ) );
+						$this->show_checkbox( $oname, $this->options->get( $oname ), $o['caption'], isset( $o['disable'] ) );
 						break;
 					case 'dropdown':
-						$out .= $this->show_dropdown( $oname, $this->options->get( $oname ), $o['caption'], isset( $o['disable'] ) );
+						$this->show_dropdown( $oname, $this->options->get( $oname ), $o['caption'], isset( $o['disable'] ) );
 						break;
 					case 'radio':
-						$out .= $this->show_radio( $oname, $this->options->get( $oname ), $o['caption'], isset( $o['disable'] ) );
+						$this->show_radio( $oname, $this->options->get( $oname ), $o['caption'], isset( $o['disable'] ) );
 						break;
 					case 'text':
-						$out .= $this->show_text( $oname, $this->options->get( $oname ), isset( $o['disable'] ) );
+						$this->show_text( $oname, $this->options->get( $oname ), isset( $o['disable'] ) );
 						break;
 					case 'textarea':
-						$out .= $this->show_textarea( $oname, $this->options->get( $oname ), isset( $o['disable'] ) );
+						$this->show_textarea( $oname, $this->options->get( $oname ), isset( $o['disable'] ) );
 						break;
 					case 'file-upload':
-						$out .= $this->show_file_upload( $oname, $o['maxsize'], isset( $o['disable'] ) );
+						$this->show_file_upload( $oname, $o['maxsize'], isset( $o['disable'] ) );
 				}
-				$out .= '
+				echo '
 					</td>
-					<td class="description">' . $o['desc'] . '</td>
+					<td class="description">' . wp_kses_post( $o['desc'] ) . '</td>
 				</tr>';
 			}
 		}
-		$out .= '
+		echo '
 		</table>
 		</div>';
-		return $out;
 	}
 
 
 	public function show_checkbox( $name, $value, $caption, $disabled = false ) {
-		$out = '
-							<label for="' . $name . '">
-								<input name="' . $name . '" type="checkbox" id="' . $name . '" value="1"';
+		echo '
+							<label for="' . esc_attr( $name ) . '">
+								<input name="' . esc_attr( $name ) . '" type="checkbox" id="' . esc_attr( $name ) . '" value="1"';
 		if ( '1' === $value ) {
-			$out .= ' checked="checked"';
+			echo ' checked="checked"';
 		}
-		$out .= $this->get_disabled_text( $disabled ) . ' />
-								' . $caption . '
+		$this->show_disabled_text( $disabled );
+		echo ' />
+								' . esc_html( $caption ) . '
 							</label>';
-		return $out;
 	}
 
 
 	public function show_dropdown( $name, $selected, $value_array, $class_array = null, $disabled = false ) {
-		$out = '
-							<select id="' . $name . '" name="' . $name . '"' . $this->get_disabled_text( $disabled ) . '>';
+		echo '
+							<select id="' . esc_attr( $name ) . '" name="' . esc_attr( $name ) . '"';
+		$this->show_disabled_text( $disabled );
+		echo '>';
 		foreach ( $value_array as $key => $value ) {
 			$class_text    = isset( $class_array[ $key ] ) ? 'class="' . $class_array[ $key ] . '" ' : '';
 			$selected_text = $selected === $key ? 'selected ' : '';
-			$out          .= '
-								<option ' . $class_text . $selected_text . 'value="' . $key . '">' . $value . '</option>';
+			echo '
+								<option ' . esc_html( $class_text ) . esc_html( $selected_text ) . 'value="' . esc_attr( $key ) . '">' . esc_html( $value ) . '</option>';
 		}
-		$out .= '
+		echo '
 							</select>';
-		return $out;
 	}
 
 
 	public function show_radio( $name, $selected, $value_array, $disabled = false ) {
-		$out = '
+		echo '
 							<fieldset>';
 		foreach ( $value_array as $key => $value ) {
 			$checked = ( $selected === $key ) ? 'checked="checked" ' : '';
-			$out    .= '
-								<label title="' . $value . '">
-									<input type="radio" ' . $checked . 'value="' . $key . '" name="' . $name . '">
-									<span>' . $value . '</span>
+			echo '
+								<label title="' . esc_attr( $value ) . '">
+									<input type="radio" ' . esc_html( $checked ) . 'value="' . esc_attr( $key ) . '" name="' . esc_attr( $name ) . '">
+									<span>' . esc_html( $value ) . '</span>
 								</label>
 								<br />';
 		}
-		$out .= '
+		echo '
 							</fieldset>';
-		return $out;
 	}
 
 
 	public function show_text( $name, $value, $disabled = false ) {
-		$out = '
-							<input name="' . $name . '" type="text" id="' . $name . '" value="' . $value . '"' . $this->get_disabled_text( $disabled ) . ' />';
-		return $out;
+		echo '
+							<input name="' . esc_attr( $name ) . '" type="text" id="' . esc_attr( $name ) . '" value="' . esc_html( $value ) . '"';
+		$this->show_disabled_text( $disabled );
+		echo ' />';
 	}
 
 
 	public function show_textarea( $name, $value, $disabled = false ) {
-		$out = '
-							<textarea name="' . $name . '" id="' . $name . '" rows="5" class="large-text code"' . $this->get_disabled_text( $disabled ) . '>' . $value . '</textarea>';
-		return $out;
+		echo '
+							<textarea name="' . esc_attr( $name ) . '" id="' . esc_attr( $name ) . '" rows="5" class="large-text code"';
+		$this->show_disabled_text( $disabled );
+		echo '>' . esc_textarea( $value ) . '</textarea>';
 	}
 
 
 	public function show_file_upload( $name, $max_size, $disabled = false ) {
-		$out = '
-							<input name="' . $name . '" type="file" maxlength="' . $max_size . '">';
-		return $out;
+		echo '
+							<input name="' . esc_attr( $name ) . '" type="file" maxlength="' . esc_attr( $max_size ) . '">';
 	}
 
 
-	public function get_disabled_text( $disabled = false ) {
-		return $disabled ? ' disabled="disabled"' : '';
+	public function show_disabled_text( $disabled = false ) {
+		if ( $disabled ) {
+			echo ' disabled="disabled"';
+		}
 	}
 
 }

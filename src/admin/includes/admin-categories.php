@@ -10,7 +10,7 @@
  * @phan-file-suppress PhanPluginUnknownPropertyType
  * @phan-file-suppress PhanPluginUnknownMethodParamType
  * @phan-file-suppress PhanPluginUnknownMethodReturnType
- * @phan-file-suppress PhanPluginRemoveDebugEcho
+ * @phan-file-suppress PhanPartialTypeMismatchArgument
  *
  * @package event-list
  */
@@ -68,22 +68,19 @@ class EL_Admin_Categories {
 				add_query_arg(
 					array(
 						'page'             => 'el_admin_cat_sync',
-						// TODO: check sanitize of server request URI
-						// phpcs:ignore
-						'_wp_http_referer' => wp_unslash( $_SERVER['REQUEST_URI'] ),
+						'_wp_http_referer' => isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '',
 					),
 					'edit.php?post_type=el_events'
 				)
 			)
 		);
-		echo '<button type="button" id="sync-cats" class="button action" onclick="el_show_syncform(\'' . $url . '\')" style="margin-top: 3px">' . __( 'Synchronize with post categories', 'event-list' ) . '</button>';
+		echo '<button type="button" id="sync-cats" class="button action" onclick="el_show_syncform(\'' . esc_url_raw( $url ) . '\')" style="margin-top: 3px">' . esc_html__( 'Synchronize with post categories', 'event-list' ) . '</button>';
 	}
 
 
 	public function prepare_syncdone_message( $messages ) {
 		// prepare used get parameters
-		// msgdata is sanitized later on
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- msgdata is sanitized later
 		$msgdata = isset( $_GET['msgdata'] ) ? wp_unslash( $_GET['msgdata'] ) : array();
 		$error   = isset( $_GET['error'] );
 		$items   = array(
@@ -106,7 +103,6 @@ class EL_Admin_Categories {
 		$msgtext .= '<ul style="list-style:inside">';
 		foreach ( $items as $name => $text ) {
 			if ( isset( $msgdata[ $name ] ) && is_array( $msgdata[ $name ] ) ) {
-				// @suppress PhanPartialTypeMismatchArgumentInternal
 				$items    = array_map( 'sanitize_key', $msgdata[ $name ] );
 				$msgtext .= $this->show_sync_items( $items, $text );
 			}

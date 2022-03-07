@@ -10,7 +10,6 @@
  * @phan-file-suppress PhanPluginUnknownPropertyType
  * @phan-file-suppress PhanPluginUnknownMethodParamType
  * @phan-file-suppress PhanPluginUnknownMethodReturnType
- * @phan-file-suppress PhanPluginRemoveDebugEcho
  * @phan-file-suppress PhanPartialTypeMismatchArgument
  *
  * @package event-list

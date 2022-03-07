@@ -79,7 +79,7 @@ $sc_eventlist_helptexts = array(
 		'val'  => array( 'all', strtoupper( __( 'category slugs', 'event-list' ) ) ),
 		'desc' =>
 			sprintf(
-				__( 'This attribute defines the category filter which filters the events to show. The default is $1$s or an empty string to show all events.', 'event-list' ),
+				__( 'This attribute defines the category filter which filters the events to show. The default is %1$s or an empty string to show all events.', 'event-list' ),
 				'"all"'
 			) . '<br />' .
 			sprintf(

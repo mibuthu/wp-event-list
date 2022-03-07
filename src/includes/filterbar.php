@@ -74,7 +74,7 @@ class EL_Filterbar {
 		for ( $i = 0; $i < $num_sections; $i++ ) {
 			if ( ! empty( $sections[ $i ] ) ) {
 				$out .= '
-					<div style="text-align:' . $section_align[ $i ] . '">';
+					<div style="text-align:' . esc_attr( $section_align[ $i ] ) . '">';
 				// split items in section seperated by comma
 				$items = explode( ',', $sections[ $i ] );
 				foreach ( $items as $item ) {
@@ -285,7 +285,7 @@ class EL_Filterbar {
 		foreach ( $elements as $element ) {
 			$out .= '<li>';
 			if ( $selected === $element['slug'] ) {
-				$out .= '<strong>' . $element['name'] . '</strong>';
+				$out .= '<strong>' . esc_html( $element['name'] ) . '</strong>';
 			} else {
 				$out .= $this->show_link( add_query_arg( $name, $element['slug'], $url ), $element['name'] );
 			}
@@ -301,16 +301,16 @@ class EL_Filterbar {
 		if ( ! is_admin() ) {
 			wp_register_script( 'el_filterbar', EL_URL . 'includes/js/filterbar.js', array(), '1.0', true );
 			add_action( 'wp_footer', array( &$this, 'footer_script' ) );
-			$onchange = ' onchange="el_redirect(this.name,this.value,' . $sc_id . ')"';
+			$onchange = ' onchange="el_redirect(this.name,this.value,' . esc_attr( $sc_id ) . ')"';
 		}
-		$out = '<select class="dropdown" name="' . $name . '"' . $onchange . '>';
+		$out = '<select class="dropdown" name="' . esc_attr( $name ) . '"' . $onchange . '>';
 		foreach ( $elements as $element ) {
 			$out .= '
 					<option';
 			if ( $element['slug'] === $selected ) {
 				$out .= ' selected="selected"';
 			}
-			$out .= ' value="' . $element['slug'] . '">' . esc_html( $element['name'] ) . '</option>';
+			$out .= ' value="' . esc_attr( $element['slug'] ) . '">' . esc_html( $element['name'] ) . '</option>';
 		}
 		$out .= '
 				</select>';
@@ -320,7 +320,7 @@ class EL_Filterbar {
 
 	private function show_link( $url, $caption, $class = null ) {
 		$class = ( null === $class ) ? '' : ' class="' . $class . '"';
-		return '<a href="' . esc_url( $url ) . '"' . $class . '>' . esc_html( $caption ) . '</a>';
+		return '<a href="' . esc_url_raw( $url ) . '"' . $class . '>' . esc_html( $caption ) . '</a>';
 	}
 
 

@@ -28,7 +28,7 @@ $widget_items_helptexts = array(
 		'caption_after' => null,
 		'tooltip'       => __( 'The number of upcoming events to display', 'event-list' ),
 		'form_style'    => '',
-		'form_width'    => 30,
+		'form_width'    => 40,
 	),
 
 	'title_length'         => array(
@@ -43,7 +43,7 @@ $widget_items_helptexts = array(
 				'[auto]'
 			),
 		'form_style'    => null,
-		'form_width'    => 40,
+		'form_width'    => 35,
 	),
 
 	'show_starttime'       => array(
@@ -76,7 +76,7 @@ $widget_items_helptexts = array(
 				'[auto]'
 			),
 		'form_style'    => 'margin:0 0 0.6em 0.9em',
-		'form_width'    => 40,
+		'form_width'    => 35,
 	),
 
 	'show_excerpt'         => array(
@@ -108,7 +108,7 @@ $widget_items_helptexts = array(
 				'[0]'
 			),
 		'form_style'    => 'margin:0 0 0.6em 0.9em',
-		'form_width'    => 40,
+		'form_width'    => 35,
 	),
 
 	'url_to_page'          => array(

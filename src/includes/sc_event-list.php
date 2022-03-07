@@ -10,7 +10,6 @@
  * @phan-file-suppress PhanPluginUnknownPropertyType
  * @phan-file-suppress PhanPluginUnknownMethodParamType
  * @phan-file-suppress PhanPluginUnknownMethodReturnType
- * @phan-file-suppress PhanPluginRemoveDebugEcho
  * @phan-file-suppress PhanPartialTypeMismatchArgument
  * @phan-file-suppress PhanTypeMismatchArgumentProbablyReal
  *
@@ -181,7 +180,7 @@ class SC_Event_List {
 		// Show an error and the event list view if an invalid event_id was provided
 		if ( null === $event->post ) {
 			$this->single_event = false;
-			$out                = '<div class="el-error single-event-error">' . __( 'Sorry, the requested event is not available!', 'event-list' ) . '</div>';
+			$out                = '<div class="el-error single-event-error">' . esc_html__( 'Sorry, the requested event is not available!', 'event-list' ) . '</div>';
 			$out               .= $this->html_event_list( $a );
 			return $out;
 		}
@@ -190,7 +189,7 @@ class SC_Event_List {
 		$out            .= $this->html_filterbar( $a );
 		$out            .= $this->html_feed_links( $a, 'below_nav' );
 		$out            .= '
-			<h2>' . __( 'Event Information:', 'event-list' ) . '</h2>
+			<h2>' . esc_html__( 'Event Information:', 'event-list' ) . '</h2>
 			<ul class="single-event-view">';
 		$single_day_only = ( $event->startdate === $event->enddate );
 		$out            .= $this->html_event( $event, $a, $single_day_only );
@@ -226,7 +225,7 @@ class SC_Event_List {
 		$out .= $this->html_feed_links( $a, 'below_nav' );
 		if ( empty( $events ) ) {
 			// no events found
-			$out .= '<p>' . $this->options->get( 'el_no_event_text' ) . '</p>';
+			$out .= '<p>' . wp_kses_post( $this->options->get( 'el_no_event_text' ) ) . '</p>';
 		} else {
 			// print available events
 			$out            .= '
@@ -247,22 +246,18 @@ class SC_Event_List {
 		$cat_string                  = implode( ' ', $event->get_category_slugs() );
 		// add class with each category slug
 		$out = '
-			 	<li class="event ' . $cat_string . '">';
+			 	<li class="event ' . esc_attr( $cat_string ) . '">';
 		// event date
 		if ( '1' !== $this->options->get( 'el_date_once_per_day' ) || $last_event_startdate !== $event->startdate || $last_event_enddate !== $event->enddate ) {
 			$out .= $this->html_fulldate( $event->startdate, $event->enddate, $single_day_only );
 		}
 		$out .= '
-					<div class="event-info';
-		if ( $single_day_only ) {
-			$out .= ' single-day';
-		} else {
-			$out .= ' multi-day';
-		}
+					<div class="event-info ';
+		$out .= $single_day_only ? 'single-day' : 'multi-day';
 		$out .= '">';
 		// event title
 		$out  .= '<div class="event-title"><h3>';
-		$title = $event->truncate( esc_attr( $event->title ), $a['title_length'], $this->single_event );
+		$title = $event->truncate( esc_html( $event->title ), intval( $a['title_length'] ), $this->single_event );
 		if ( $this->is_link_available( $a, $event ) ) {
 			$out .= $this->get_event_link( $a, $event->post->ID, $title );
 		} else {
@@ -272,9 +267,9 @@ class SC_Event_List {
 		// event starttime
 		if ( '' !== $event->starttime && $this->is_visible( $a['show_starttime'] ) ) {
 			if ( '' === $this->options->get( 'el_html_tags_in_time' ) ) {
-				$event->starttime = esc_attr( $event->starttime_i18n() );
+				$event->starttime = $event->starttime_i18n();
 			}
-			$out .= '<span class="event-time">' . $event->starttime_i18n() . '</span>';
+			$out .= '<span class="event-time">' . wp_kses_post( $event->starttime_i18n() ) . '</span>';
 		}
 		// event location
 		if ( '' !== $event->location && $this->is_visible( $a['show_location'] ) ) {
@@ -283,11 +278,11 @@ class SC_Event_List {
 			} else {
 				$location = $event->truncate( $event->location, $a['location_length'], $this->single_event );
 			}
-			$out .= '<span class="event-location">' . $location . '</span>';
+			$out .= '<span class="event-location">' . wp_kses_post( $location ) . '</span>';
 		}
 		// event categories
 		if ( $this->is_visible( $a['show_cat'] ) ) {
-			$out .= '<div class="event-cat">' . esc_attr( implode( ', ', $event->get_category_names() ) ) . '</div>';
+			$out .= '<div class="event-cat">' . esc_html( implode( ', ', $event->get_category_names() ) ) . '</div>';
 		}
 		// event excerpt or content
 		$out                 .= $this->html_event_content( $event, $a );
@@ -304,11 +299,11 @@ class SC_Event_List {
 		if ( ( '' !== $event->content
 				&& ( $this->is_visible( $a['show_content'] ) || ( $this->is_visible( $a['show_excerpt'] ) && '' === $event->excerpt ) ) ) ) {
 			// Show content.
-			$content       = $event->content;
+			$content       = wp_kses_post( $event->content );
 			$content_class = 'event-content';
 		} elseif ( $this->is_visible( $a['show_excerpt'] ) && '' !== $event->excerpt ) {
 			// Show excerpt.
-			$content       = $event->excerpt;
+			$content       = wp_kses_post( $event->excerpt );
 			$content_class = 'event-excerpt';
 		} else {
 			// No content or excerpt.
@@ -339,7 +334,7 @@ class SC_Event_List {
 			}
 		}
 		// last preparations of content
-		$content = $event->truncate( do_shortcode( wpautop( $content ) ), $a['content_length'], $this->single_event, true, $truncate_url );
+		$content = wp_kses_post( $event->truncate( do_shortcode( wpautop( $content ) ), $a['content_length'], $this->single_event, true, $truncate_url ) );
 		// preparations for collapsed content
 		if ( $this->is_visible( $a['collapse_content'] ) ) {
 			wp_register_script( 'el_event-list', EL_URL . 'includes/js/event-list.js', null, '1.0', true );
@@ -431,8 +426,8 @@ class SC_Event_List {
 
 	private function html_rss_link( &$a ) {
 		require_once EL_PATH . 'includes/rss.php';
-		$feed_url  = EL_Rss::get_instance()->feed_url();
-		$link_text = $this->options->get( 'el_feed_rss_link_text' );
+		$feed_url  = esc_url_raw( EL_Rss::get_instance()->feed_url() );
+		$link_text = esc_html( $this->options->get( 'el_feed_rss_link_text' ) );
 		return '
 					<a href="' . $feed_url . '" title="' . __( 'Link to RSS feed', 'event-list' ) . '" class="el-rss"><span class="dashicons dashicons-rss"></span>' . $link_text . '</a>';
 	}
@@ -441,8 +436,8 @@ class SC_Event_List {
 	private function html_ical_link( &$a ) {
 		require_once EL_PATH . 'includes/ical.php';
 		// TODO: Respect the catfilter attribute in the ICAL feed
-		$feed_url  = EL_ICal::get_instance()->feed_url();
-		$link_text = $this->options->get( 'el_feed_ical_link_text' );
+		$feed_url  = esc_url_raw( EL_ICal::get_instance()->feed_url() );
+		$link_text = esc_html( $this->options->get( 'el_feed_ical_link_text' ) );
 		return '
 					<a href="' . $feed_url . '" title="' . __( 'Link to iCal feed', 'event-list' ) . '" class="el-ical"><span class="dashicons dashicons-calendar"></span>' . $link_text . '</a>';
 	}
@@ -526,12 +521,12 @@ class SC_Event_List {
 
 
 	private function get_event_link( &$a, $event_id, $title ) {
-		return '<a href="' . $this->get_event_url( $a, $event_id ) . '">' . $title . '</a>';
+		return '<a href="' . esc_url_raw( $this->get_event_url( $a, $event_id ) ) . '">' . esc_html( $title ) . '</a>';
 	}
 
 
 	private function get_event_url( &$a, $event_id ) {
-		return esc_html( add_query_arg( 'event_id' . $a['sc_id_for_url'], $event_id, $this->get_url( $a ) ) );
+		return add_query_arg( 'event_id' . $a['sc_id_for_url'], $event_id, $this->get_url( $a ) );
 	}
 
 
@@ -543,8 +538,10 @@ class SC_Event_List {
 			// use actual page
 			$url = get_permalink();
 			foreach ( $_GET as  $k => $v ) {
-				if ( 'date' . $a['sc_id'] !== $k && 'event_id' . $a['sc_id'] !== $k ) {
-					$url = add_query_arg( $k, $v, $url );
+				$arg = sanitize_key( $k );
+				$val = sanitize_key( $v );
+				if ( 'date' . $a['sc_id'] !== $arg && 'event_id' . $a['sc_id'] !== $arg ) {
+					$url = add_query_arg( $arg, $val, $url );
 				}
 			}
 		}
@@ -588,13 +585,17 @@ class SC_Event_List {
 
 
 	private function is_link_available( &$a, &$event ) {
-		return $this->is_visible( $a['link_to_event'] ) || ( 'events_with_content_only' === $a['link_to_event'] && ! $this->single_event && ! empty( $event->content ) );
+		return $this->is_visible( $a['link_to_event'] )
+			|| ( 'events_with_content_only' === $a['link_to_event']
+			&& ! $this->single_event
+			&& ! empty( $event->content ) );
 	}
 
 
 	public function print_eventlist_script() {
 		// print variables for script
-		echo( '<script type="text/javascript">el_content_show_text = "' . $this->options->get( 'el_content_show_text' ) . '"; el_content_hide_text = "' . $this->options->get( 'el_content_hide_text' ) . '"</script>' );
+		echo( '<script type="text/javascript">el_content_show_text = "' . esc_html( $this->options->get( 'el_content_show_text' ) ) .
+			'"; el_content_hide_text = "' . esc_html( $this->options->get( 'el_content_hide_text' ) ) . '"</script>' );
 		// print script
 		wp_print_scripts( 'el_event-list' );
 	}

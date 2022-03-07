@@ -173,7 +173,7 @@ class EL_Event {
 		}
 		// error handling: set event back to pending, and publish error message
 		if ( ! empty( $el_event_errors ) ) {
-			// TODO: Check the comment: "if((isset($_POST['publish']) || isset( $_POST['save'] ) ) && $_POST['post_status'] == 'publish' )"
+			// TODO: Check the comment: "if((isset($_POST['publish']) || isset( $_POST['save'] ) ) && 'publish' === sanitize_key($_POST['post_status']))"
 			global $wpdb;
 			$wpdb->update( $wpdb->posts, array( 'post_status' => 'pending' ), array( 'ID' => $pid ) );
 			add_filter( 'redirect_post_location', array( &$instance, 'save_metadata_redirect_post_location_filter' ) );
@@ -315,7 +315,7 @@ class EL_Event {
 						$opening_tag = array_pop( $tags );
 						if ( $opening_tag !== $tag_name ) {
 							// Not properly nested tag found: trigger a warning and add the not matching opening tag again
-							// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
+							// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error, WordPress.Security.EscapeOutput.OutputNotEscaped
 							trigger_error( 'Not properly nested tag found (last opening tag: ' . $opening_tag . ', closing tag: ' . $tag_name . ')', E_USER_NOTICE );
 							$tags[] = $opening_tag;
 						} else {

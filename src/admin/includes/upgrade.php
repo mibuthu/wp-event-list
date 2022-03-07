@@ -11,7 +11,6 @@
  * @phan-file-suppress PhanPluginUnknownPropertyType
  * @phan-file-suppress PhanPluginUnknownMethodParamType
  * @phan-file-suppress PhanPluginUnknownMethodReturnType
- * @phan-file-suppress PhanPluginRemoveDebugEcho
  * @phan-file-suppress PhanPartialTypeMismatchProperty
  * @phan-file-suppress PhanPartialTypeMismatchArgument
  * @phan-file-suppress PhanTypeMismatchArgumentProbablyReal
@@ -390,7 +389,7 @@ class EL_Upgrade {
 
 	private function redirect( $args_to_add = array(), $args_to_remove = array() ) {
 		$url = add_query_arg( $args_to_add, remove_query_arg( $args_to_remove ) );
-		echo '<meta http-equiv="refresh" content="0; url=' . $url . '">';
+		echo '<meta http-equiv="refresh" content="0; url=', esc_url_raw( $url ), '">';
 		die();
 	}
 

@@ -8,7 +8,6 @@
  * @phan-file-suppress PhanPluginNoCommentOnPrivateMethod
  * @phan-file-suppress PhanPluginUnknownPropertyType
  * @phan-file-suppress PhanPluginUnknownMethodReturnType
- * @phan-file-suppress PhanPluginRemoveDebugEcho
  *
  * @package event-list
  */
@@ -69,38 +68,39 @@ class EL_Widget extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 		$this->prepare_instance( $instance );
-		// TODO: sanitize $instance items
-		$title = apply_filters( 'widget_title', $instance['title'] );
-		echo $args['before_widget'];
+		$title = apply_filters( 'widget_title', esc_html( $instance['title'] ) );
+		echo wp_kses_post( $args['before_widget'] );
 		if ( ! empty( $title ) ) {
-			echo $args['before_title'] . $title . $args['after_title'];
+			echo wp_kses_post( $args['before_title'] . $title . $args['after_title'] );
 		}
 		$this->upgrade_widget( $instance, true );
 		$linked_page_is_set    = ! empty( $instance['url_to_page'] );
 		$linked_page_id_is_set = 0 < intval( $instance['sc_id_for_url'] );
 		$shortcode             = '[event-list show_filterbar=false';
-		$shortcode            .= ' cat_filter=' . $instance['cat_filter'];
-		$shortcode            .= ' num_events="' . $instance['num_events'] . '"';
-		$shortcode            .= ' title_length=' . $instance['title_length'];
-		$shortcode            .= ' show_starttime=' . $instance['show_starttime'];
-		$shortcode            .= ' show_location=' . $instance['show_location'];
-		$shortcode            .= ' location_length=' . $instance['location_length'];
-		$shortcode            .= ' show_excerpt=' . $instance['show_excerpt'];
-		$shortcode            .= ' show_content=' . $instance['show_content'];
-		$shortcode            .= ' content_length=' . $instance['content_length'];
+		$shortcode            .= ' cat_filter=' . wp_kses_post( $instance['cat_filter'] );
+		$shortcode            .= ' num_events="' . intval( $instance['num_events'] ) . '"';
+		$shortcode            .= ' title_length=' . intval( $instance['title_length'] );
+		$shortcode            .= ' show_starttime=' . wp_kses_post( $instance['show_starttime'] );
+		$shortcode            .= ' show_location=' . wp_kses_post( $instance['show_location'] );
+		$shortcode            .= ' location_length=' . intval( $instance['location_length'] );
+		$shortcode            .= ' show_excerpt=' . wp_kses_post( $instance['show_excerpt'] );
+		$shortcode            .= ' show_content=' . wp_kses_post( $instance['show_content'] );
+		$shortcode            .= ' content_length=' . intval( $instance['content_length'] );
 		if ( $linked_page_is_set && $linked_page_id_is_set ) {
-			$shortcode .= ' link_to_event=' . $instance['link_to_event'];
-			$shortcode .= ' url_to_page="' . $instance['url_to_page'] . '"';
-			$shortcode .= ' sc_id_for_url=' . $instance['sc_id_for_url'];
+			$shortcode .= ' link_to_event=' . wp_kses_post( $instance['link_to_event'] );
+			$shortcode .= ' url_to_page="' . wp_kses_post( $instance['url_to_page'] ) . '"';
+			$shortcode .= ' sc_id_for_url=' . intval( $instance['sc_id_for_url'] );
 		} else {
 			$shortcode .= ' link_to_event=false';
 		}
 		$shortcode .= ']';
-		echo apply_filters( 'widget_text', do_shortcode( $shortcode ) );
+		echo wp_kses_post( apply_filters( 'widget_text', do_shortcode( $shortcode ) ) );
 		if ( 'true' === $instance['link_to_page'] && $linked_page_is_set ) {
-			echo '<div style="clear:both"><a title="' . $instance['link_to_page_caption'] . '" href="' . $instance['url_to_page'] . '">' . $instance['link_to_page_caption'] . '</a></div>';
+			echo '<div style="clear:both"><a title="',
+				esc_html( $instance['link_to_page_caption'] ), '" href="' . esc_url_raw( $instance['url_to_page'] ) . '">',
+				esc_html( $instance['link_to_page_caption'] ) . '</a></div>';
 		}
-		echo $args['after_widget'];
+		echo wp_kses_post( $args['after_widget'] );
 	}
 
 
@@ -139,31 +139,35 @@ class EL_Widget extends WP_Widget {
 	public function form( $instance ) {
 		$this->upgrade_widget( $instance );
 		$this->load_widget_items_helptexts();
-		$out = '';
 		foreach ( $this->items as $itemname => $item ) {
 			$itemname = strval( $itemname );
 			if ( ! isset( $instance[ $itemname ] ) ) {
 				$instance[ $itemname ] = $item['std_value'];
 			}
-			$style_text = ( null === $item['form_style'] ) ? '' : ' style="' . $item['form_style'] . '"';
+			echo '
+				<div',
+				is_null( $item['form_style'] ) ? '' : ' style="' . esc_html( $item['form_style'] ) . '"',
+				' title="' . esc_html( $item['tooltip'] ) . '">';
 			if ( 'checkbox' === $item['type'] ) {
-				$checked_text = ( 'true' === $instance[ $itemname ] || 1 === intval( $instance[ $itemname ] ) ) ? 'checked = "checked" ' : '';
-				$out         .= '
-					<p' . $style_text . ' title="' . $item['tooltip'] . '">
-						<label><input class="widefat" id="' . $this->get_field_id( $itemname ) . '" name="' . $this->get_field_name( $itemname ) . '" type="checkbox" ' . $checked_text . 'value="1" /> ' . $item['caption'] . '</label>
-					</p>';
+				echo '
+					<label style="display: block; margin: 0.5em 0"><input class="widefat" id="' . intval( $this->get_field_id( $itemname ) ),
+					'" name="' . esc_attr( $this->get_field_name( $itemname ) ) . '" type="checkbox" ',
+					( 'true' === $instance[ $itemname ] || 1 === intval( $instance[ $itemname ] ) ) ? 'checked = "checked" ' : '',
+					'value="1" /> ' . wp_kses_post( $item['caption'] ) . '</label>';
 			} else {
 				// 'text'
-				$width_text         = ( null === $item['form_width'] ) ? '' : 'style="width:' . $item['form_width'] . 'px" ';
-				$caption_after_text = ( null === $item['caption_after'] ) ? '' : '<label>' . $item['caption_after'] . '</label>';
-				$out               .= '
-					<p' . $style_text . ' title="' . $item['tooltip'] . '">
-						<label for="' . $this->get_field_id( $itemname ) . '">' . $item['caption'] . ' </label>
-						<input ' . $width_text . 'class="widefat" id="' . $this->get_field_id( $itemname ) . '" name="' . $this->get_field_name( $itemname ) . '" type="text" value="' . esc_attr( $instance[ $itemname ] ) . '" />' . $caption_after_text . '
-					</p>';
+				echo '
+					<label style="display: block; margin: 0.5em 0" for="' . esc_attr( $this->get_field_id( $itemname ) ) . '">' . esc_html( $item['caption'] ) . '
+					<input ',
+					is_null( $item['form_width'] ) ? '' : 'style="display: inline-block; margin: 0 0.5em; width:' . esc_html( $item['form_width'] ) . 'px"',
+					'class="widefat" id="' . esc_html( $this->get_field_id( $itemname ) ) . '" name="' . esc_attr( $this->get_field_name( $itemname ) ),
+					'" type="text" value="' . esc_attr( $instance[ $itemname ] ) . '" />',
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Output is escaped correctly
+					is_null( $item['caption_after'] ) ? '' : '<label>' . esc_html( $item['caption_after'] ) . '</label>';
 			}
+			echo '</label>
+				</div>';
 		}
-		echo $out;
 		return 'form';
 	}
 
@@ -215,7 +219,7 @@ class EL_Widget extends WP_Widget {
 
 
 	private function load_widget_items_helptexts() {
-		require_once EL_PATH . 'includes/widget_helptexts.php';
+		require EL_PATH . 'includes/widget_helptexts.php';
 		// @phan-suppress-next-line PhanUndeclaredVariable
 		foreach ( (array) $widget_items_helptexts as $name => $values ) {
 			$this->items[ $name ] += $values;

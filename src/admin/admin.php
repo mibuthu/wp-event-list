@@ -9,7 +9,6 @@
  * @phan-file-suppress PhanPluginUnknownPropertyType
  * @phan-file-suppress PhanPluginUnknownMethodParamType
  * @phan-file-suppress PhanPluginUnknownMethodReturnType
- * @phan-file-suppress PhanPluginRemoveDebugEcho
  * @phan-file-suppress PhanPartialTypeMismatchArgument
  * @phan-file-suppress PhanTypeMismatchArgumentProbablyReal
  * @phan-file-suppress PhanTypeMismatchProperty
@@ -89,7 +88,13 @@ class EL_Admin {
 			$class   = $error ? 'error' : 'updated fade';
 			$title   = sprintf( $error ? __( 'Errors during upgrade of plugin %1$s', 'event-list' ) : __( 'Upgrade of plugin %1$s successful', 'event-list' ), '"Event List"' );
 			$logfile = ' (<a href="' . content_url( EL_Upgrade::get_instance()->logfile ) . '">upgrade log</a>)';
-			echo '<div id="message" class="' . $class . '"><p><strong>' . $title . '</strong>' . $logfile . '</p></div>';
+			echo '<div id="message" class="',
+				esc_attr( $class ),
+				'"><p><strong>',
+				esc_html( $title ),
+				'</strong>',
+				esc_html( $logfile ),
+				'</p></div>';
 		}
 	}
 

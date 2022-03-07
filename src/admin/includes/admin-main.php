@@ -9,7 +9,6 @@
  * @phan-file-suppress PhanPluginUnknownPropertyType
  * @phan-file-suppress PhanPluginUnknownMethodParamType
  * @phan-file-suppress PhanPluginUnknownMethodReturnType
- * @phan-file-suppress PhanPluginRemoveDebugEcho
  * @phan-file-suppress PhanPartialTypeMismatchArgument
  * @phan-file-suppress PhanTypeMismatchProperty
  *
@@ -121,11 +120,11 @@ class EL_Admin_Main {
 		switch ( $column_name ) {
 			case 'eventdate':
 				$event = new EL_Event( $pid );
-				echo $this->format_event_date( $event->startdate, $event->enddate, $event->starttime_i18n() );
+				$this->format_event_date( $event->startdate, $event->enddate, $event->starttime_i18n() );
 				break;
 			case 'location':
 				$event = new EL_Event( $pid );
-				echo $event->location;
+				echo wp_kses_post( $event->location );
 				break;
 		}
 	}
@@ -193,13 +192,15 @@ class EL_Admin_Main {
 		$date_args = array(
 			'selected_date' => isset( $_GET['date'] ) ? sanitize_key( $_GET['date'] ) : $this->default_date,
 		);
-		echo( $this->filterbar->show_years( admin_url( 'edit.php?post_type=el_events' ), $date_args, 'dropdown', array( 'show_past' => true ) ) );
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- filterbar->show_years is escapted
+		echo $this->filterbar->show_years( admin_url( 'edit.php?post_type=el_events' ), $date_args, 'dropdown', array( 'show_past' => true ) );
 
 		// cat filter
 		$cat_args = array(
 			'selected_cat' => isset( $_GET['cat'] ) ? sanitize_key( $_GET['cat'] ) : 'all',
 		);
-		echo( $this->filterbar->show_cats( admin_url( 'edit.php?post_type=el_events' ), $cat_args, 'dropdown' ) );
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- filterbar->show_cats is escapted
+		echo $this->filterbar->show_cats( admin_url( 'edit.php?post_type=el_events' ), $cat_args, 'dropdown' );
 	}
 
 
@@ -249,9 +250,9 @@ class EL_Admin_Main {
 	public function set_default_posts_list_mode() {
 		// check used get parameters
 		$post_type = isset( $_GET['post_type'] ) ? sanitize_key( $_GET['post_type'] ) : '';
-		$mode      = isset( $_REQUEST['mode'] ) ? sanitize_title( wp_unslash( $_REQUEST['mode'] ) ) : '';
+		$mode      = isset( $_REQUEST['mode'] ) ? sanitize_key( $_REQUEST['mode'] ) : '';
 
-		if ( 'el_events' === $post_type && empty( $_REQUEST['mode'] ) ) {
+		if ( 'el_events' === $post_type && empty( $mode ) ) {
 			$_REQUEST['mode'] = 'excerpt';
 		}
 	}
@@ -265,36 +266,34 @@ class EL_Admin_Main {
 	public function add_import_button() {
 		echo '
 			<script>jQuery(document).ready(function($) { items = $("a.page-title-action").length ? $("a.page-title-action") : $("a.add-new-h2"); ' .
-			'items.first().after(\'<a href="' . admin_url( 'edit.php?post_type=el_events&page=el_admin_import' ) . '" class="add-new-h2">' . __( 'Import', 'event-list' ) . '</a>\'); });</script>';
+			'items.first().after(\'<a href="' . admin_url( 'edit.php?post_type=el_events&page=el_admin_import' ) . '" class="add-new-h2">' . esc_html__( 'Import', 'event-list' ) . '</a>\'); });</script>';
 	}
 
 
 	/**
-	 * In this function the start date, the end date and time is formated for
-	 * the output.
+	 * In this function the start date, the end date and time is printed formated
 	 *
 	 * @param string $startdate The start date of the event
 	 * @param string $enddate The end date of the event
 	 * @param string $starttime The start time of the event
-	 * @return string
+	 * @return void
 	 */
 	private function format_event_date( $startdate, $enddate, $starttime ) {
-		$out = '<span style="white-space:nowrap;">';
+		echo '<span style="white-space:nowrap;">';
 		// start date
 		// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
-		$out .= mysql2date( __( 'Y/m/d' ), $startdate );
+		echo esc_html( mysql2date( __( 'Y/m/d' ), $startdate ) );
 		// end date for multiday event
 		if ( $startdate !== $enddate ) {
 			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
-			$out .= ' -<br />' . mysql2date( __( 'Y/m/d' ), $enddate );
+			echo ' -<br />' . esc_html( mysql2date( __( 'Y/m/d' ), $enddate ) );
 		}
 		// event starttime
 		if ( '' !== $starttime ) {
-			$out .= '<br />
-				<span class="starttime">' . esc_html( $starttime ) . '</span>';
+			echo '<br />
+				<span class="starttime">' . wp_kses_post( $starttime ) . '</span>';
 		}
-		$out .= '</span>';
-		return $out;
+		echo '</span>';
 	}
 
 }

@@ -9,7 +9,6 @@
  * @phan-file-suppress PhanPluginNoCommentOnPrivateMethod
  * @phan-file-suppress PhanPluginUnknownPropertyType
  * @phan-file-suppress PhanPluginUnknownMethodReturnType
- * @phan-file-suppress PhanPluginRemoveDebugEcho
  * @phan-file-suppress PhanPartialTypeMismatchArgument
  *
  * @package event-list
@@ -53,18 +52,17 @@ class EL_Admin_Settings {
 	public function show_settings() {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
-			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
 		}
 		// check used get parameters
 		$tab              = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : 'general';
 		$settings_updated = isset( $_GET['settings-updated'] ) ? sanitize_key( $_GET['settings-updated'] ) : '';
 
-		$out = '';
 		// check for changed settings
 		if ( 'true' === $settings_updated ) {
 			// show "settings saved" message
 			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault -- Standard WordPress string
-			$out .= '<div id="message" class="updated"><p><strong>' . __( 'Settings saved.' ) . '</strong></p></div>';
+			echo '<div id="message" class="updated"><p><strong>' . esc_html__( 'Settings saved.' ) . '</strong></p></div>';
 			switch ( $tab ) {
 				case 'frontend':
 					// flush rewrite rules (required if permalink slug was changed)
@@ -86,22 +84,21 @@ class EL_Admin_Settings {
 		}
 
 		// normal output
-		$out    .= '
+		echo '
 				<div class="wrap">
-				<div id="icon-edit-pages" class="icon32"><br /></div><h2>' . __( 'Event List Settings', 'event-list' ) . '</h2>';
-		$out    .= $this->show_tabs( $tab );
-		$out    .= '<div id="posttype-page" class="posttypediv">';
+				<div id="icon-edit-pages" class="icon32"><br /></div><h2>' . esc_html__( 'Event List Settings', 'event-list' ) . '</h2>';
+		$this->show_tabs( $tab );
+		echo '<div id="posttype-page" class="posttypediv">';
 		$options = array();
 		if ( 'taxonomy' === $tab ) {
 			$options['page']         = admin_url( 'edit.php?post_type=el_events&page=el_admin_cat_sync&switch_taxonomy=1' );
 			$options['button_text']  = __( 'Go to Event Category switching page', 'event-list' );
 			$options['button_class'] = 'secondary';
 		}
-		$out .= $this->functions->show_option_form( $tab, $options );
-		$out .= '
+		$this->functions->show_option_form( $tab, $options );
+		echo '
 				</div>
 			</div>';
-		echo $out;
 	}
 
 
@@ -113,13 +110,12 @@ class EL_Admin_Settings {
 			'feed'     => __( 'Feed Settings', 'event-list' ),
 			'taxonomy' => __( 'Category Taxonomy', 'event-list' ),
 		);
-		$out  = '<h3 class="nav-tab-wrapper">';
+		echo '<h3 class="nav-tab-wrapper">';
 		foreach ( $tabs as $tab => $name ) {
 			$class = ( $tab === $current ) ? ' nav-tab-active' : '';
-			$out  .= '<a class="nav-tab' . $class . '" href="' . remove_query_arg( 'settings-updated', add_query_arg( 'tab', $tab ) ) . '">' . $name . '</a>';
+			echo '<a class="nav-tab' . esc_attr( $class ) . '" href="' . esc_url_raw( remove_query_arg( 'settings-updated', add_query_arg( 'tab', $tab ) ) ) . '">' . esc_html( $name ) . '</a>';
 		}
-		$out .= '</h3>';
-		return $out;
+		echo '</h3>';
 	}
 
 
