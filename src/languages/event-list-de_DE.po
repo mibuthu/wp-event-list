@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-event-list\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/event-list/\n"
-"POT-Creation-Date: 2022-02-19 18:08+0100\n"
-"PO-Revision-Date: 2022-02-19 17:24+0000\n"
+"POT-Creation-Date: 2022-03-07 19:10+0100\n"
+"PO-Revision-Date: 2022-03-07 18:16+0000\n"
 "Last-Translator: mibuthu\n"
 "Language-Team: German (Germany) (http://www.transifex.com/mibuthu/wp-event-list/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -24,72 +24,72 @@ msgstr ""
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin/admin.php:90
+#: admin/admin.php:89
 #, php-format
 msgid "Errors during upgrade of plugin %1$s"
 msgstr "Fehler während des %1$s Plugin Upgrades"
 
-#: admin/admin.php:90
+#: admin/admin.php:89
 #, php-format
 msgid "Upgrade of plugin %1$s successful"
 msgstr "Upgrade des Plugins %1$s erfolgreich"
 
-#: admin/admin.php:142 admin/includes/admin-settings.php:91
+#: admin/admin.php:147 admin/includes/admin-settings.php:89
 msgid "Event List Settings"
 msgstr "Event List Einstellungen"
 
-#: admin/admin.php:142
+#: admin/admin.php:147
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: admin/admin.php:146 admin/includes/admin-about.php:63
+#: admin/admin.php:151 admin/includes/admin-about.php:62
 msgid "About Event List"
 msgstr "Informationen zu Event List"
 
-#: admin/admin.php:146
+#: admin/admin.php:151
 msgid "About"
 msgstr "Informationen"
 
-#: admin/admin.php:170
+#: admin/admin.php:175
 #, php-format
 msgid "%s Event"
 msgid_plural "%s Events"
 msgstr[0] "%s Termin"
 msgstr[1] "%s Termine"
 
-#: admin/includes/admin-about.php:87 admin/includes/admin-settings.php:110
+#: admin/includes/admin-about.php:86 admin/includes/admin-settings.php:107
 msgid "General"
 msgstr "Allgemein"
 
-#: admin/includes/admin-about.php:88 admin/includes/admin-about.php:108
-#: admin/includes/admin-about.php:137
+#: admin/includes/admin-about.php:87 admin/includes/admin-about.php:109
+#: admin/includes/admin-about.php:162
 msgid "Shortcode Attributes"
 msgstr "Shortcode Attribute"
 
-#: admin/includes/admin-about.php:102
+#: admin/includes/admin-about.php:101
 msgid "Help and Instructions"
 msgstr "Hilfe und Anleitungen"
 
-#: admin/includes/admin-about.php:103
+#: admin/includes/admin-about.php:102
 #, php-format
 msgid "You can manage the events %1$shere%2$s"
 msgstr "Die Termine können %1$shier%2$s verwaltet werden"
 
-#: admin/includes/admin-about.php:104
+#: admin/includes/admin-about.php:103
 msgid "To show the events on your site you have 2 possibilities"
 msgstr "Für die Anzeige von Terminen auf der Homepage gibt es 2 Möglichkeiten"
 
-#: admin/includes/admin-about.php:105
+#: admin/includes/admin-about.php:104
 #, php-format
 msgid "you can place the <strong>shortcode</strong> %1$s on any page or post"
 msgstr "durch Einfügen des <strong>Shortcodes</strong> %1$s auf einer beliebigen Seite oder eines Beitrags"
 
-#: admin/includes/admin-about.php:106
+#: admin/includes/admin-about.php:105
 #, php-format
 msgid "you can add the <strong>widget</strong> %1$s in your sidebars"
 msgstr "durch das Einfügen des <strong>Widgets</strong> %1$s in einem Widgetbereich"
 
-#: admin/includes/admin-about.php:107
+#: admin/includes/admin-about.php:106
 msgid ""
 "The displayed events and their style can be modified with the available "
 "widget settings and the available attributes for the shortcode."
@@ -102,39 +102,39 @@ msgid ""
 "available in the %1$s tab."
 msgstr "Eine Liste aller verfügbarer Shortcode Attribute und deren Beschreibung ist im Reiter %1$s verfügbar."
 
-#: admin/includes/admin-about.php:109
+#: admin/includes/admin-about.php:111
 msgid "The available  widget options are described in their tooltip text."
 msgstr "Alle verfügbaren Widget Einstellungen sind im jeweiligen Tooltip Text beschrieben."
 
-#: admin/includes/admin-about.php:110
+#: admin/includes/admin-about.php:113
 #, php-format
 msgid ""
 "If you enable one of the links options (%1$s or %2$s) in the widget you have"
 " to insert an URL to the linked event-list page."
 msgstr "Wenn eine der Link Optionen (%1$s oder %2$s) im Widget verwendet werden, dann muss die URL zur verlinkten Event-List Seite angegeben werden."
 
-#: admin/includes/admin-about.php:110 includes/widget_helptexts.php:134
+#: admin/includes/admin-about.php:114 includes/widget_helptexts.php:134
 msgid "Add links to the single events"
 msgstr "Füge Links zu den einzelnen Terminen ein"
 
-#: admin/includes/admin-about.php:110 includes/widget_helptexts.php:143
+#: admin/includes/admin-about.php:115 includes/widget_helptexts.php:143
 msgid "Add a link to the Event List page"
 msgstr "Füge einen Link zur Event List Seite hinzu"
 
-#: admin/includes/admin-about.php:111
+#: admin/includes/admin-about.php:117
 msgid ""
 "This is required because the widget does not know in which page or post the "
 "shortcode was included."
 msgstr "Dies ist erforderlich, weil das Widget nicht weiß, in welcher Seite oder welchem Beitrag der Shortcode eingefügt worden ist."
 
-#: admin/includes/admin-about.php:112
+#: admin/includes/admin-about.php:118
 msgid ""
 "Additionally you have to insert the correct Shortcode id on the linked page."
 " This id describes which shortcode should be used on the given page or post "
 "if you have more than one."
 msgstr "Zusätzlich muss die korrekte Shortcode-ID auf der verlinkten Seite angegeben werden. Diese ID beschreibt welcher Shortcode auf der angegebenen Seite oder Artikel verwendet werden soll, wenn mehrere vorhanden sind."
 
-#: admin/includes/admin-about.php:113
+#: admin/includes/admin-about.php:120
 #, php-format
 msgid ""
 "The default value %1$s is normally o.k. (for pages with 1 shortcode only), "
@@ -142,596 +142,597 @@ msgid ""
 "link on your linked page or post."
 msgstr "Der Standardwert %1$s ist normalerweise o.k. (für Seiten mit nur einem Shortcode), aber falls erforderlich kann die ID über die URL eines Termin-Links auf der verlinkten Seite ermittelt werden."
 
-#: admin/includes/admin-about.php:114
+#: admin/includes/admin-about.php:124
 #, php-format
 msgid "The id is available at the end of the URL parameters (e.g. %1$s)."
 msgstr "Die ID befindet sich am Ende der URL Parameter (z.B. %1$s)."
 
-#: admin/includes/admin-about.php:116
+#: admin/includes/admin-about.php:129
 #, php-format
 msgid ""
 "Be sure to also check the %1$s to get the plugin behaving just the way you "
 "want."
 msgstr "Bitte werfe auch einen Blick auf die %1$s in der das Plugin nach deinen Vorstellungen angepasst werden kann."
 
-#: admin/includes/admin-about.php:116
+#: admin/includes/admin-about.php:130
 msgid "Settings page"
 msgstr "Einstellungs-Seite"
 
-#: admin/includes/admin-about.php:123
+#: admin/includes/admin-about.php:138
 msgid "About the plugin author"
 msgstr "Über den Autor des Plugins"
 
-#: admin/includes/admin-about.php:125
+#: admin/includes/admin-about.php:141
 #, php-format
 msgid ""
 "This plugin is developed by %1$s, you can find more information about the "
 "plugin on the %2$s."
 msgstr "Dieses Plugin wird von %1$s entwickelt, zusätzliche Informationen über das Plugin stehen auf der %2$s zur Verfügung."
 
-#: admin/includes/admin-about.php:125
+#: admin/includes/admin-about.php:143
 msgid "WordPress plugin site"
 msgstr "Wordpress Plugin Seite"
 
-#: admin/includes/admin-about.php:126
+#: admin/includes/admin-about.php:146
 #, php-format
 msgid "If you like the plugin please rate it on the %1$s."
 msgstr "Wenn dir das Plugin gefällt bewerte es bitte unter der %1$s."
 
-#: admin/includes/admin-about.php:126
+#: admin/includes/admin-about.php:147
 msgid "WordPress plugin review site"
 msgstr "WordPress-Plugin-Bewertungsseite"
 
-#: admin/includes/admin-about.php:127
+#: admin/includes/admin-about.php:149
 msgid ""
 "If you want to support the plugin I would be happy to get a small donation"
 msgstr "Um das Plugin zu unterstützen würde ich mich auch über eine kleine Spende freuen"
 
-#: admin/includes/admin-about.php:128 admin/includes/admin-about.php:129
-#: admin/includes/admin-about.php:130
+#: admin/includes/admin-about.php:151 admin/includes/admin-about.php:153
+#: admin/includes/admin-about.php:155
 #, php-format
 msgid "Donate with %1$s"
 msgstr "Spende über %1$s"
 
-#: admin/includes/admin-about.php:139
+#: admin/includes/admin-about.php:164
 msgid ""
 "You have the possibility to modify the output if you add some of the "
 "following attributes to the shortcode."
 msgstr "Mit dem Hinzufügen der folgenden Shortcode-Attribute kann die Ausgabe entsprechend angepasst werden."
 
-#: admin/includes/admin-about.php:140
+#: admin/includes/admin-about.php:166
 #, php-format
 msgid ""
 "You can combine and add as much attributes as you want. E.g. the shortcode "
 "including the attributes %1$s and %2$s would looks like this:"
 msgstr "Es können beliebig viele dieser Attribute kombiniert und gleichzeitig verwendet werden. Z.B. würde der Shortcode mit den Attributen %1$s und %2$s folgendermaßen aussehen:"
 
-#: admin/includes/admin-about.php:142
+#: admin/includes/admin-about.php:171
 msgid ""
 "Below you can find a list of all supported attributes with their "
 "descriptions and available options:"
 msgstr "In der folgenden Liste sind alle unterstützten Shortcode-Attribute mit deren Beschreibung und verfügbaren Optionen angegeben:"
 
-#: admin/includes/admin-about.php:157
+#: admin/includes/admin-about.php:186
 msgid "Attribute name"
 msgstr "Name"
 
-#: admin/includes/admin-about.php:158
+#: admin/includes/admin-about.php:187
 msgid "Value options"
 msgstr "zulässige Werte"
 
-#: admin/includes/admin-about.php:159
+#: admin/includes/admin-about.php:188
 msgid "Default value"
 msgstr "Standard-Wert"
 
-#: admin/includes/admin-about.php:160
+#: admin/includes/admin-about.php:189
 msgid "Description"
 msgstr "Beschreibung"
 
-#: admin/includes/admin-about.php:179 includes/sc_event-list_helptexts.php:74
+#: admin/includes/admin-about.php:208 includes/sc_event-list_helptexts.php:74
 #: includes/sc_event-list_helptexts.php:91
 msgid "Filter Syntax"
 msgstr "Filter Syntax"
 
-#: admin/includes/admin-about.php:180
+#: admin/includes/admin-about.php:209
 msgid ""
 "For date and cat filters you can specify complex filters with the following "
 "syntax:"
 msgstr "Für Datums- und Kategoriefilter können komplexe Filter mit der folgenden Syntax definiert werden:"
 
-#: admin/includes/admin-about.php:181
+#: admin/includes/admin-about.php:211
 #, php-format
 msgid ""
 "You can use %1$s and %2$s connections to define complex filters. "
 "Additionally you can set brackets %3$s for nested queries."
 msgstr "Es können %1$s und %2$s Verknüpfungen verwendet werden um komplexe Filter zu definieren. Zusätzlich können Klammern %3$s für verschachtelte Abfragen eingesetzt werden."
 
-#: admin/includes/admin-about.php:181
+#: admin/includes/admin-about.php:212
 msgid "AND"
 msgstr "UND"
 
-#: admin/includes/admin-about.php:181
+#: admin/includes/admin-about.php:213
 msgid "OR"
 msgstr "ODER"
 
-#: admin/includes/admin-about.php:181
+#: admin/includes/admin-about.php:213
 msgid "or"
 msgstr "oder"
 
-#: admin/includes/admin-about.php:181
+#: admin/includes/admin-about.php:214
 msgid "and"
 msgstr "und"
 
-#: admin/includes/admin-about.php:182
+#: admin/includes/admin-about.php:216
 msgid "Examples for cat filters:"
 msgstr "Beispiele für Kategorie-Filter:"
 
-#: admin/includes/admin-about.php:183
+#: admin/includes/admin-about.php:217
 #, php-format
 msgid "Show all events with category %1$s."
 msgstr "Zeige alle Termine mit der Kategorie %1$s."
 
-#: admin/includes/admin-about.php:184
+#: admin/includes/admin-about.php:218
 #, php-format
 msgid "Show all events with category %1$s or %2$s."
 msgstr "Zeige alle Termine mit der Kategorie %1$s oder %2$s."
 
-#: admin/includes/admin-about.php:185
+#: admin/includes/admin-about.php:220
 #, php-format
 msgid ""
 "Show all events with category %1$s and all events where category %2$s as "
 "well as %3$s is selected."
 msgstr "Zeige alle Termine mit der Kategorie %1$s und alle Termine, in denen die Kategorie %2$s sowie %3$s gesetzt ist."
 
-#: admin/includes/admin-about.php:191 includes/sc_event-list_helptexts.php:69
+#: admin/includes/admin-about.php:226 includes/sc_event-list_helptexts.php:69
 msgid "Available Date Formats"
 msgstr "Verfügbare Datumsformate"
 
-#: admin/includes/admin-about.php:192
+#: admin/includes/admin-about.php:227
 msgid "For date filters you can use the following date formats:"
 msgstr "Für die Datums-Filterung stehen folgende Datums-Formate zur Verfügung:"
 
-#: admin/includes/admin-about.php:201 includes/sc_event-list_helptexts.php:70
+#: admin/includes/admin-about.php:236 includes/sc_event-list_helptexts.php:70
 msgid "Available Date Range Formats"
 msgstr "Verfügbare Datumsbereichs-Formate"
 
-#: admin/includes/admin-about.php:202
+#: admin/includes/admin-about.php:237
 msgid "For date filters you can use the following daterange formats:"
 msgstr "Für die Datums-Filterung stehen folgende Formate für Datumsbereiche zur Verfügung:"
 
-#: admin/includes/admin-about.php:215
+#: admin/includes/admin-about.php:250
 msgid "Value"
 msgstr "Wert"
 
-#: admin/includes/admin-about.php:219
+#: admin/includes/admin-about.php:254
 msgid "Example"
 msgstr "Beispiel"
 
-#: admin/includes/admin-categories.php:79
+#: admin/includes/admin-categories.php:77
 msgid "Synchronize with post categories"
 msgstr "Synchronisation mit den Beitrags-Kategorien"
 
-#: admin/includes/admin-categories.php:90
+#: admin/includes/admin-categories.php:87
 #, php-format
 msgid "%1$s categories modified (%2$s)"
 msgstr "%1$s Kategorien geändert (%2$s)"
 
-#: admin/includes/admin-categories.php:91
+#: admin/includes/admin-categories.php:88
 #, php-format
 msgid "%1$s categories added (%2$s)"
 msgstr "%1$s Kategorien erstellt (%2$s)"
 
-#: admin/includes/admin-categories.php:92
+#: admin/includes/admin-categories.php:89
 #, php-format
 msgid "%1$s categories deleted (%2$s)"
 msgstr "%1$s Kategorien gelöscht (%2$s)"
 
-#: admin/includes/admin-categories.php:95
+#: admin/includes/admin-categories.php:92
 #, php-format
 msgid "%1$s categories not modified (%2$s)"
 msgstr "%1$s Kategorien nicht geändert (%2$s)"
 
-#: admin/includes/admin-categories.php:96
+#: admin/includes/admin-categories.php:93
 #, php-format
 msgid "%1$s categories not added (%2$s)"
 msgstr "%1$s Kategorien nicht erstellt (%2$s)"
 
-#: admin/includes/admin-categories.php:97
+#: admin/includes/admin-categories.php:94
 #, php-format
 msgid "%1$s categories not deleted (%2$s)"
 msgstr "%1$s Kategorien nicht gelöscht (%2$s)"
 
-#: admin/includes/admin-categories.php:100
+#: admin/includes/admin-categories.php:97
 msgid "An Error occured during the category sync"
 msgstr "Während der Kategorie-Synchronisation ist ein Fehler aufgetreten"
 
-#: admin/includes/admin-categories.php:103
+#: admin/includes/admin-categories.php:100
 msgid "Category sync finished"
 msgstr "Kategorie-Synchronisation abgeschlossen"
 
-#: admin/includes/admin-category-sync.php:77
+#: admin/includes/admin-category-sync.php:76
 msgid "Error: You are not allowed to view this page!"
 msgstr "Fehler: Sie sind nicht befugt dieser Seite aufzurufen!"
 
-#: admin/includes/admin-category-sync.php:93
+#: admin/includes/admin-category-sync.php:92
 msgid "Affected Categories when switching to seperate Event Categories"
 msgstr "Betroffene Kategorien beim Wechseln zu separaten Termin-Kategorien"
 
-#: admin/includes/admin-category-sync.php:94
+#: admin/includes/admin-category-sync.php:93
 msgid "Switch option to seperate Event Categories"
 msgstr "Ändere Einstellung zur Verwendung separater Termin-Kategorien"
 
-#: admin/includes/admin-category-sync.php:95
+#: admin/includes/admin-category-sync.php:94
 msgid ""
 "If you proceed, all post categories will be copied and all events will be "
 "re-assigned to this new categories."
 msgstr "Beim Fortsetzen werden alle Beitrags-Kategorien kopiert und alle Termine den neuen Kategorien zugeordnet."
 
-#: admin/includes/admin-category-sync.php:96
+#: admin/includes/admin-category-sync.php:95
 msgid ""
 "Afterwards the event categories are independent of the post categories."
 msgstr "Anschließend sind die Termin-Kategorien unabhängig von den Beitrags-Kategorien."
 
-#: admin/includes/admin-category-sync.php:98
+#: admin/includes/admin-category-sync.php:97
 msgid "Affected Categories when switching to use Post Categories for events"
 msgstr "Betroffene Kategorien beim Wechseln zur Verwendung von Beitrags-Kategorien für Termine"
 
-#: admin/includes/admin-category-sync.php:99
+#: admin/includes/admin-category-sync.php:98
 msgid "Switch option to use Post Categories for events"
 msgstr "Ändere Einstellung zur Verwendung der Beitrags-Kategorien für Termine"
 
-#: admin/includes/admin-category-sync.php:100
+#: admin/includes/admin-category-sync.php:99
 msgid ""
 "Take a detailed look at the affected categories above before you proceed! "
 "All seperate event categories will be deleted, this cannot be undone!"
 msgstr "Bitte vor dem Fortsetzen die oben angezeigten betroffenen Kategorien prüfen! Alle eigenständigen Termin-Kategorien werden gelöscht, dies kann nicht mehr rückgängig gemacht werden!"
 
-#: admin/includes/admin-category-sync.php:103
+#: admin/includes/admin-category-sync.php:102
 msgid "Event Categories: Synchronise with Post Categories"
 msgstr "Termin-Kategorien: Synchronisiere mit Beitrags-Kategorien"
 
-#: admin/includes/admin-category-sync.php:104
+#: admin/includes/admin-category-sync.php:103
 msgid "Start synchronisation"
 msgstr "Starte Synchronisation"
 
-#: admin/includes/admin-category-sync.php:105
+#: admin/includes/admin-category-sync.php:104
 msgid ""
 "If this option is enabled the above listed categories will be deleted and "
 "removed from the existing events!"
 msgstr "Wenn diese Einstellung aktiviert ist, werden alle oben angezeigten Kategorien gelöscht und aus den vorhandenen Terminen entfernt!"
 
-#: admin/includes/admin-category-sync.php:120
+#: admin/includes/admin-category-sync.php:119
 msgid "Categories to modify"
 msgstr "Kategorien, die geändert werden"
 
-#: admin/includes/admin-category-sync.php:121
+#: admin/includes/admin-category-sync.php:120
 msgid "Categories to add"
 msgstr "Kategorien, die hinzugefügt werden"
 
-#: admin/includes/admin-category-sync.php:122
+#: admin/includes/admin-category-sync.php:121
 msgid "Categories to delete (optional)"
 msgstr "Kategorien, die gelöscht werden (optional)"
 
-#: admin/includes/admin-category-sync.php:123
+#: admin/includes/admin-category-sync.php:122
 msgid "Delete not available post categories"
 msgstr "Lösche nicht verfügbare Beitrags-Kategorien"
 
-#: admin/includes/admin-category-sync.php:126
+#: admin/includes/admin-category-sync.php:125
 msgid "Categories with differences"
 msgstr "Kategorien, die unterschiedlich sind"
 
-#: admin/includes/admin-category-sync.php:127
+#: admin/includes/admin-category-sync.php:126
 msgid "Categories to add (optional)"
 msgstr "Kategorien, die hinzugefügt werden (optional)"
 
-#: admin/includes/admin-category-sync.php:128
+#: admin/includes/admin-category-sync.php:127
 msgid "Add not available post categories"
 msgstr "Ergänze nicht verfügbare Beitrags-Kategorien"
 
-#: admin/includes/admin-category-sync.php:147
+#: admin/includes/admin-category-sync.php:146
 msgid "none"
 msgstr "keine"
 
-#: admin/includes/admin-import.php:91
+#: admin/includes/admin-import.php:90
 msgid "Import Events"
 msgstr "Importiere Termine"
 
-#: admin/includes/admin-import.php:110 admin/includes/admin-import.php:150
-#: admin/includes/admin-import.php:254
+#: admin/includes/admin-import.php:109 admin/includes/admin-import.php:154
+#: admin/includes/admin-import.php:261
 msgid "Step"
 msgstr "Schritt"
 
-#: admin/includes/admin-import.php:110
+#: admin/includes/admin-import.php:109
 msgid "Set import file and options"
 msgstr "Datei und Optionen zum Importieren wählen"
 
-#: admin/includes/admin-import.php:113
+#: admin/includes/admin-import.php:114
 #, php-format
 msgid "Proceed with Step %1$s"
 msgstr "Weiter zu Schritt %1$s"
 
-#: admin/includes/admin-import.php:116
+#: admin/includes/admin-import.php:117
 msgid "Example file"
 msgstr "Beispieldatei"
 
-#: admin/includes/admin-import.php:117
+#: admin/includes/admin-import.php:119
 #, php-format
 msgid ""
 "You can download an example file %1$shere%2$s (CSV delimiter is a comma!)"
-msgstr "Du kannst eine Beispieldatei herunterladen %1$shere%2$s (Das CSV-Trennzeichen ist ein Komma!)"
+msgstr "Du kannst eine Beispieldatei %1$shier%2$s herunterladen (Das CSV-Trennzeichen ist ein Komma!)"
 
-#: admin/includes/admin-import.php:118
+#: admin/includes/admin-import.php:123
 msgid "Note"
 msgstr "Achtung"
 
-#: admin/includes/admin-import.php:118
+#: admin/includes/admin-import.php:124
 msgid ""
 "Do not change the column header and separator line (first two lines), "
 "otherwise the import will fail!"
 msgstr "Die Kopfzeile und die Separator Zeile dürfen nicht geändert werden, ansonsten wird der Import "
 
-#: admin/includes/admin-import.php:128 admin/includes/admin-import.php:137
+#: admin/includes/admin-import.php:133 admin/includes/admin-import.php:141
 msgid "Sorry, there has been an error."
 msgstr "Entschuldigung, ein Fehler ist aufgetreten."
 
-#: admin/includes/admin-import.php:129
+#: admin/includes/admin-import.php:134
 msgid "The file does not exist, please try again."
 msgstr "Die Datei existiert nicht, bitte erneut versuchen."
 
-#: admin/includes/admin-import.php:138
+#: admin/includes/admin-import.php:142
 msgid "The uploaded file does not have the required csv extension."
 msgstr "Die hochgeladene Datei hat nicht das benötigte CSV-Dateiformat."
 
-#: admin/includes/admin-import.php:150
+#: admin/includes/admin-import.php:154
 msgid "Events review and additonal category selection"
 msgstr "Eventüberprüfung und zusätzliche Kategorieauswahl"
 
-#: admin/includes/admin-import.php:156 admin/includes/admin-import.php:167
+#: admin/includes/admin-import.php:160 admin/includes/admin-import.php:171
 msgid "Error"
 msgstr "Fehler"
 
-#: admin/includes/admin-import.php:156
+#: admin/includes/admin-import.php:160
 msgid "This CSV file cannot be imported"
 msgstr "Die CSV Datei kann nicht importiert werden"
 
-#: admin/includes/admin-import.php:167
+#: admin/includes/admin-import.php:171
 msgid "None of the events in this CSV file can be imported"
 msgstr "Keiner der Termine in der CSV-Datei kann importiert werden"
 
-#: admin/includes/admin-import.php:170 admin/includes/admin-import.php:213
+#: admin/includes/admin-import.php:174 admin/includes/admin-import.php:219
 msgid "Warning"
 msgstr "Warnung"
 
-#: admin/includes/admin-import.php:172
+#: admin/includes/admin-import.php:177
 #, php-format
 msgid "There is %1$s event which cannot be imported"
 msgid_plural "There are %1$s events which cannot be imported"
 msgstr[0] "%1$s Termin kann nicht importiert werden"
 msgstr[1] "%1$s Termine können nicht importiert werden"
 
-#: admin/includes/admin-import.php:184
+#: admin/includes/admin-import.php:190
 #, php-format
 msgid "CSV line %1$s"
 msgstr "CSV Zeile %1$s"
 
-#: admin/includes/admin-import.php:194
+#: admin/includes/admin-import.php:200
 msgid "You can still import all other events listed below."
 msgstr "Alle anderen unten aufgeführte Termine können weiterhin importiert werden."
 
-#: admin/includes/admin-import.php:213
+#: admin/includes/admin-import.php:220
 msgid ""
 "The following category slugs are not available and will be removed from the "
 "imported events"
 msgstr "Die folgenden Kategorie-Slugs sind nicht verfügbar und werden aus den importierten Ereignissen entfernt"
 
-#: admin/includes/admin-import.php:219
+#: admin/includes/admin-import.php:226
 msgid ""
 "If you want to keep these categories, please create these Categories first "
 "and do the import afterwards."
 msgstr "Wenn diese Kategorien erhalten bleiben sollen, bitte zuerst die Kategorien anlegen und erst anschließend den Import ausführen."
 
-#: admin/includes/admin-import.php:254
+#: admin/includes/admin-import.php:261
 msgid "Import result"
-msgstr "Importerhebnis"
+msgstr "Import Ergebnis"
 
-#: admin/includes/admin-import.php:257
+#: admin/includes/admin-import.php:264
 #, php-format
 msgid "Import of %1$s events successful!"
 msgstr "Import von %1$s Terminen erfolgreich"
 
-#: admin/includes/admin-import.php:258
+#: admin/includes/admin-import.php:265
 msgid "Go back to All Events"
 msgstr "Gehe zurück zu Alle Termine"
 
-#: admin/includes/admin-import.php:261
+#: admin/includes/admin-import.php:268
 msgid "Errors during Import"
 msgstr "Fehler während des Imports"
 
-#: admin/includes/admin-import.php:269
+#: admin/includes/admin-import.php:276
 msgid "Event from CSV-line"
 msgstr "Termin aus CSV-Zeile"
 
-#: admin/includes/admin-import.php:281 admin/includes/admin-main.php:109
+#: admin/includes/admin-import.php:288 admin/includes/admin-main.php:108
 #: includes/widget_helptexts.php:9
 msgid "Title"
 msgstr "Titel"
 
-#: admin/includes/admin-import.php:282
+#: admin/includes/admin-import.php:289
 msgid "Start Date"
 msgstr "Start-Datum"
 
-#: admin/includes/admin-import.php:283
+#: admin/includes/admin-import.php:290
 msgid "End Date"
 msgstr "End-Datum"
 
-#: admin/includes/admin-import.php:284 admin/includes/admin-new.php:131
+#: admin/includes/admin-import.php:291 admin/includes/admin-new.php:132
 #: includes/options_helptexts.php:68 includes/options_helptexts.php:69
+#: includes/rss.php:116
 msgid "Time"
 msgstr "Uhrzeit"
 
-#: admin/includes/admin-import.php:285 admin/includes/admin-main.php:110
-#: admin/includes/admin-new.php:133 includes/options_helptexts.php:75
-#: includes/options_helptexts.php:76
+#: admin/includes/admin-import.php:292 admin/includes/admin-main.php:109
+#: admin/includes/admin-new.php:134 includes/options_helptexts.php:75
+#: includes/options_helptexts.php:76 includes/rss.php:119
 msgid "Location"
 msgstr "Ort"
 
-#: admin/includes/admin-import.php:286
+#: admin/includes/admin-import.php:293
 msgid "Content"
 msgstr "Inhalt"
 
-#: admin/includes/admin-import.php:287
+#: admin/includes/admin-import.php:294
 msgid "Category slugs"
 msgstr "Kategorie-Slugs"
 
-#: admin/includes/admin-import.php:333
+#: admin/includes/admin-import.php:340
 msgid "Header line is missing or not correct!"
 msgstr "Die Kopfzeile fehlt oder ist nicht richtig!"
 
-#: admin/includes/admin-import.php:334
+#: admin/includes/admin-import.php:341
 #, php-format
 msgid ""
 "Have a look at the %1$sexample file%2$s to see the correct header line "
 "format."
 msgstr "Das korrekte Format der Kopfzeile ist in der %1$sBeispieldatei%2$s ersichtlich."
 
-#: admin/includes/admin-import.php:341
+#: admin/includes/admin-import.php:350
 #, php-format
 msgid "Wrong number of items in line (%1$s items found, 6-7 required)"
 msgstr "Falsche Anzahl von Einträgen in der Zeile (%1$s Einträge gefunden, 6-7 werden benötigt)"
 
-#: admin/includes/admin-import.php:371
-msgid "Empty event title found"
-msgstr "Leerer Termintitel gefunden"
-
-#: admin/includes/admin-import.php:377
-msgid "Wrong date format for startdate"
-msgstr "Falsches Datumsformat für das Start-Datum"
-
-#: admin/includes/admin-import.php:385
-msgid "Wrong date format for enddate"
-msgstr "Falsches Datumsformat für das Enddatum"
-
-#: admin/includes/admin-import.php:439
+#: admin/includes/admin-import.php:399
 msgid "Import events"
 msgstr "Importiere die Termine"
 
-#: admin/includes/admin-import.php:440
+#: admin/includes/admin-import.php:400
 msgid "Add additional categories"
 msgstr "Kategorien ergänzen"
 
-#: admin/includes/admin-import.php:470 includes/events_post_type.php:92
+#: admin/includes/admin-import.php:430 includes/events_post_type.php:92
 msgid "No events found"
 msgstr "Keine Termine gefunden"
 
-#: admin/includes/admin-import.php:518
+#: admin/includes/admin-import.php:478
 msgid "Saving of event failed!"
 msgstr "Speichern des Termins fehlgeschlagen!"
 
-#: admin/includes/admin-main.php:108
+#: admin/includes/admin-import.php:496
+msgid "Empty event title found"
+msgstr "Leerer Termintitel gefunden"
+
+#: admin/includes/admin-import.php:501
+msgid "Wrong date format for startdate"
+msgstr "Falsches Datumsformat für das Start-Datum"
+
+#: admin/includes/admin-import.php:509
+msgid "Wrong date format for enddate"
+msgstr "Falsches Datumsformat für das Enddatum"
+
+#: admin/includes/admin-main.php:107
 msgid "Event Date"
 msgstr "Termin-Datum"
 
-#: admin/includes/admin-main.php:113
+#: admin/includes/admin-main.php:112
 msgid "Author"
 msgstr "Autor"
 
-#: admin/includes/admin-main.php:182
+#: admin/includes/admin-main.php:181
 #, php-format
 msgid "Add a copy of %1$s"
 msgstr "Erstelle eine Kopie von %1$s"
 
-#: admin/includes/admin-main.php:182
+#: admin/includes/admin-main.php:181
 msgid "Copy"
 msgstr "Kopieren"
 
-#: admin/includes/admin-main.php:268
+#: admin/includes/admin-main.php:269
 msgid "Import"
 msgstr "Importieren"
 
-#: admin/includes/admin-new.php:83
+#: admin/includes/admin-new.php:82
 msgid "Event data"
 msgstr "Termin-Daten"
 
-#: admin/includes/admin-new.php:116
+#: admin/includes/admin-new.php:115
 msgid "Add Copy"
 msgstr "Kopie erstellen"
 
-#: admin/includes/admin-new.php:124
+#: admin/includes/admin-new.php:123
 msgid "Date"
 msgstr "Datum"
 
-#: admin/includes/admin-new.php:124
+#: admin/includes/admin-new.php:123
 msgid "required"
 msgstr "erforderlich"
 
-#: admin/includes/admin-new.php:127
+#: admin/includes/admin-new.php:128
 msgid "Multi-Day Event"
 msgstr "Mehrtägiger Termin"
 
-#: admin/includes/admin-new.php:147
+#: admin/includes/admin-new.php:148
 msgid "Event Title"
 msgstr "Termin-Titel"
 
-#: admin/includes/admin-new.php:164
+#: admin/includes/admin-new.php:165
 msgid "Event Content"
 msgstr "Termin-Inhalt"
 
-#: admin/includes/admin-new.php:240 admin/includes/admin-new.php:245
+#: admin/includes/admin-new.php:241 admin/includes/admin-new.php:246
 msgid "Event updated."
 msgstr "Termin aktualisiert."
 
-#: admin/includes/admin-new.php:240 admin/includes/admin-new.php:247
+#: admin/includes/admin-new.php:241 admin/includes/admin-new.php:248
 msgid "View event"
 msgstr "Termin anzeigen"
 
-#: admin/includes/admin-new.php:246
+#: admin/includes/admin-new.php:247
 #, php-format
 msgid "Event restored to revision from %1$s"
 msgstr "Termin wiederhergestellt  mit Revision von %1$s"
 
-#: admin/includes/admin-new.php:247
+#: admin/includes/admin-new.php:248
 msgid "Event published."
 msgstr "Termin veröffentlicht."
 
-#: admin/includes/admin-new.php:248
+#: admin/includes/admin-new.php:249
 msgid "Event saved."
 msgstr "Termin gespeichert."
 
-#: admin/includes/admin-new.php:249
+#: admin/includes/admin-new.php:250
 msgid "Event submitted."
 msgstr "Termin eingereicht."
 
-#: admin/includes/admin-new.php:249 admin/includes/admin-new.php:252
-#: admin/includes/admin-new.php:253
+#: admin/includes/admin-new.php:251 admin/includes/admin-new.php:254
+#: admin/includes/admin-new.php:256
 msgid "Preview event"
 msgstr "Termin-Vorschau anzeigen"
 
-#: admin/includes/admin-new.php:251
+#: admin/includes/admin-new.php:253
 #, php-format
 msgid "Event scheduled for: %1$s>"
 msgstr "Termin eingeplant für: %1$s"
 
-#: admin/includes/admin-new.php:253
+#: admin/includes/admin-new.php:255
 msgid "Event draft updated."
 msgstr "Termin-Entwurf aktualisiert."
 
-#: admin/includes/admin-settings.php:97
+#: admin/includes/admin-settings.php:95
 msgid "Go to Event Category switching page"
 msgstr "Gehe zur Wechel-Seite für die Termin-Kategorien"
 
-#: admin/includes/admin-settings.php:111
+#: admin/includes/admin-settings.php:108
 msgid "Frontend Settings"
 msgstr "Frontend Einstellungen"
 
-#: admin/includes/admin-settings.php:112
+#: admin/includes/admin-settings.php:109
 msgid "Admin Page Settings"
 msgstr "Admin-Seiten Einstellungen"
 
-#: admin/includes/admin-settings.php:113
+#: admin/includes/admin-settings.php:110
 msgid "Feed Settings"
 msgstr "Feed Einstellungen"
 
-#: admin/includes/admin-settings.php:114
+#: admin/includes/admin-settings.php:111
 msgid "Category Taxonomy"
 msgstr "Kategorie-Taxonomie"
 
@@ -866,7 +867,7 @@ msgstr "Datumsbereich"
 msgid ""
 "A date rage can be specified via a start date and end date seperated by a tilde (~).<br />\n"
 "\t\t\tFor the start and end date any available date format can be used."
-msgstr ""
+msgstr "Ein Datumsbereich kann durch die Angabe eines Startdatums und eines Enddatums, getrennt durch eine Tilde (~) angegeben werden.<br />\nFür das Start- und Enddatum können alle verfügbaren Datumsformate verwendet werden."
 
 #: includes/daterange_helptexts.php:147
 msgid "This value defines a range without any limits."
@@ -899,7 +900,7 @@ msgid "No valid start date provided"
 msgstr "Kein gültiges Start-Datum angegeben"
 
 #: includes/event.php:343 includes/event.php:345
-#: includes/sc_event-list.php:330
+#: includes/sc_event-list.php:325
 msgid "read more"
 msgstr "Weiterlesen"
 
@@ -1427,15 +1428,15 @@ msgid ""
 " switching page from here."
 msgstr "Diese Option kann nicht direkt geändert werden, aber es ist möglich, von hier aus zur Seite für den Wechsel der Ereigniskategorie gehen."
 
-#: includes/options.php:92
+#: includes/options.php:91
 msgid "events"
 msgstr "Termine"
 
-#: includes/options.php:96
+#: includes/options.php:95
 msgid "Show content"
 msgstr "Inhalt anzeigen"
 
-#: includes/options.php:100
+#: includes/options.php:99
 msgid "Hide content"
 msgstr "Inhalt verbergen"
 
@@ -1494,7 +1495,7 @@ msgstr "Dieses Attribut definiert die anfängliche Sortierung der Termine."
 msgid ""
 "With %1$s (default value) the events are sorted from old to new, with %2$s "
 "in the opposite direction (from new to old)."
-msgstr ""
+msgstr "Mit %1$s (Standardwert) werden die Termine von alt nach neu sortiert, durch die Angabe von %2$s in der umgekehrten Reihenfolge (von neu nach alt)."
 
 #: includes/sc_event-list_helptexts.php:60
 #, php-format
@@ -1526,9 +1527,10 @@ msgid "category slugs"
 msgstr "Kategorie-Slugs"
 
 #: includes/sc_event-list_helptexts.php:82
+#, php-format
 msgid ""
 "This attribute defines the category filter which filters the events to show."
-" The default is $1$s or an empty string to show all events."
+" The default is %1$s or an empty string to show all events."
 msgstr "Dieses Attribute definiert den Kategorien-Filter für die angezeigten Termine. Der Standard-Wert ist %1$s oder ein leerer String, mit dem alle Termine angezeigt werden."
 
 #: includes/sc_event-list_helptexts.php:86
@@ -1786,28 +1788,28 @@ msgid ""
 "This attribute specifies if the starttime is displayed in the event list.<br />\n"
 "\t\t\t\t\tChoose \"false\" to always hide and \"true\" to always show the starttime.<br />\n"
 "\t\t\t\t\tWith \"event_list_only\" the starttime is only visible in the event list and with \"single_event_only\" only for a single event"
-msgstr ""
+msgstr "Dieses Attribut gibt an, ob die Startzeit in der Terminliste angezeigt wird.<br />\n\tWähle  \"false\", um die Startzeit immer auszublenden, und \"true\", um sie immer anzuzeigen.<br />\n\tMit \"event_list_only\" ist die Startzeit nur in der Terminliste sichtbar und mit \"single_event_only\" nur für einen einzelnen Termin"
 
 #: includes/sc_event-list_helptexts.php:268
 msgid ""
 "This attribute specifies if the location is displayed in the event list.<br />\n"
 "\t\t\t\t\tChoose \"false\" to always hide and \"true\" to always show the location.<br />\n"
 "\t\t\t\t\tWith \"event_list_only\" the location is only visible in the event list and with \"single_event_only\" only for a single event"
-msgstr ""
+msgstr "Dieses Attribut gibt an, ob der Ort in der Terminliste angezeigt wird.<br />\n\tWähle  \"false\", um den Ort immer auszublenden und \"true\", um ihn immer anzuzeigen.<br />\n\tMit \"event_list_only\" ist der Ort nur in der Terminliste sichtbar und mit \"single_event_only\" nur für einen einzelnen Termin"
 
 #: includes/sc_event-list_helptexts.php:286
 msgid ""
 "This attribute specifies if the categories are displayed in the event list.<br />\n"
 "\t\t\t\t\tChoose \"false\" to always hide and \"true\" to always show the category.<br />\n"
 "\t\t\t\t\tWith \"event_list_only\" the categories are only visible in the event list and with \"single_event_only\" only for a single event"
-msgstr ""
+msgstr "Dieses Attribut gibt an, ob die Kategorien in der Terminliste angezeigt werden.<br />\n\tWähle \"false\", um die Kategorie immer auszublenden und \"true\", um sie immer anzuzeigen.<br />\n\tMit \"event_list_only\" sind die Kategorien nur in der Terminliste sichtbar und mit \"single_event_only\" nur für einen einzelnen Termin"
 
 #: includes/sc_event-list_helptexts.php:297
 msgid ""
 "This attribute specifies if the content is displayed in the event list.<br />\n"
 "\t\t\t\t\tChoose \"false\" to always hide and \"true\" to always show the content.<br />\n"
 "\t\t\t\t\tWith \"event_list_only\" the content is only visible in the event list and with \"single_event_only\" only for a single event"
-msgstr ""
+msgstr "Dieses Attribut gibt an, ob der Inhalt in der Terminliste angezeigt wird.<br />\n\tWähle \"false\", um den Inhalt immer auszublenden und \"true\", um ihn immer anzuzeigen.<br />\n\tMit \"event_list_only\" ist der Inhalt nur in der Terminliste sichtbar und mit \"single_event_only\" nur für ein einzelnes Ereignis"
 
 #: includes/sc_event-list_helptexts.php:308
 msgid ""
@@ -1816,7 +1818,7 @@ msgid ""
 "\t\t\t\t\tWith \"event_list_only\" the excerpt is only visible in the event list and with \"single_event_only\" only for a single event.<br />\n"
 "\t\t\t\t\tIf no excerpt is set, the event content will be displayed instead.<br />\n"
 "\t\t\t\t\tThis attribute will be ignored when the attribute \"show_content\" is enabled for the same display type (single event or event list)."
-msgstr ""
+msgstr "Dieses Attribut gibt an, ob der Auszug in der Terminliste angezeigt wird.<br />\n\tWähle \"false\", um den Auszug immer auszublenden und \"true\", um ihn immer anzuzeigen.<br />\n\tMit \"event_list_only\" ist der Auszug nur in der Terminliste sichtbar und mit \"single_event_only\" nur für einen einzelnen Termin.<br />\n\tIst kein Auszug angegeben, wird stattdessen der Inhalt des Termins angezeigt.<br />\n\tDieses Attribut wird ignoriert, wenn das Attribut \"show_content\" für dieselbe Anzeigeart (Einzeltermin oder Terminliste) aktiviert ist."
 
 #: includes/sc_event-list_helptexts.php:320
 msgid ""
@@ -1867,27 +1869,27 @@ msgid ""
 "This attribute specifies the page or post url for event links.<br />\n"
 "\t\t\t\t\tThe standard is an empty string. Then the url will be calculated automatically.<br />\n"
 "\t\t\t\t\tAn url is normally only required for the use of the shortcode in sidebars. It is also used in the event-list widget."
-msgstr ""
+msgstr "Dieses Attribut gibt die Seiten- oder Beitragsurl für Terminlinks an.<br />\n\tDer Standard ist ein leerer String. Dann wird die URL automatisch berechnet.<br />\n\tEine URL ist normalerweise nur für die Verwendung des Shortcodes in Sidebars erforderlich. Sie wird auch im Event-List-Widget verwendet."
 
 #: includes/sc_event-list_helptexts.php:391
 msgid ""
 "This attribute the specifies shortcode id of the used shortcode on the page specified with \"url_to_page\" attribute.<br />\n"
 "\t\t\t\t\tThe empty standard value is o.k. for the normal use. This attribute is normally only required for the event-list widget."
-msgstr ""
+msgstr "Dieses Attribut spezifiziert die Shortcode-ID des verwendeten Shortcodes auf der mit dem Attribut \"url_to_page\" angegebenen Seite.<br />\n\tDer leere Standardwert ist für den normalen Gebrauch in Ordnung. Dieses Attribut wird normalerweise nur für das Event-List-Widget benötigt."
 
-#: includes/sc_event-list.php:184
+#: includes/sc_event-list.php:183
 msgid "Sorry, the requested event is not available!"
 msgstr "Entschuldigung, die der angeforderte Termin ist nicht verfügbar!"
 
-#: includes/sc_event-list.php:193
+#: includes/sc_event-list.php:192
 msgid "Event Information:"
 msgstr "Termin Informationen:"
 
-#: includes/sc_event-list.php:437
+#: includes/sc_event-list.php:432
 msgid "Link to RSS feed"
 msgstr "Link zum RSS-Feed"
 
-#: includes/sc_event-list.php:447
+#: includes/sc_event-list.php:442
 msgid "Link to iCal feed"
 msgstr "Link zum iCal-Feed"
 
@@ -2039,14 +2041,14 @@ msgid ""
 "approriate option is selected."
 msgstr "Diese Option legt den anzuzeigenden Text für den Link zur Event List Seite fest, wenn die entsprechende Option ausgewählt wurde."
 
-#: includes/widget.php:38
+#: includes/widget.php:37
 msgid "With this widget a list of upcoming events can be displayed."
 msgstr "Mit diesem Widget kann eine Liste mit den anstehenden Terminen angezeigt werden."
 
-#: includes/widget.php:43
+#: includes/widget.php:42
 msgid "Upcoming events"
 msgstr "Anstehende Termine"
 
-#: includes/widget.php:57
+#: includes/widget.php:56
 msgid "show events page"
 msgstr "öffne den Kalender"
