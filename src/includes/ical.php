@@ -16,6 +16,8 @@
  * @package event-list
  */
 
+// cspell:ignore CALSCALE DTEND DTSTAMP DTSTART FMTTYPE NONSGML PRODID VCALENDAR VEVENT
+
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }

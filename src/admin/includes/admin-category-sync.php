@@ -18,6 +18,8 @@
  * @package event-list
  */
 
+// cspell:ignore catlist
+
 if ( ! defined( 'WP_ADMIN' ) ) {
 	exit;
 }
@@ -89,18 +91,18 @@ class EL_Admin_Category_Sync {
 		}
 		// defining the used texts depending on switch_taxonomy value
 		if ( 'switch-to-event' === $action ) {
-			$main_title  = __( 'Affected Categories when switching to seperate Event Categories', 'event-list' );
-			$button_text = __( 'Switch option to seperate Event Categories', 'event-list' );
+			$main_title  = __( 'Affected Categories when switching to separate Event Categories', 'event-list' );
+			$button_text = __( 'Switch option to separate Event Categories', 'event-list' );
 			$description = __( 'If you proceed, all post categories will be copied and all events will be re-assigned to this new categories.', 'event-list' ) . '<br />' .
 				__( 'Afterwards the event categories are independent of the post categories.', 'event-list' );
 		} elseif ( 'switch-to-post' === $action ) {
 			$main_title  = __( 'Affected Categories when switching to use Post Categories for events', 'event-list' );
 			$button_text = __( 'Switch option to use Post Categories for events', 'event-list' );
-			$description = __( 'Take a detailed look at the affected categories above before you proceed! All seperate event categories will be deleted, this cannot be undone!', 'event-list' );
+			$description = __( 'Take a detailed look at the affected categories above before you proceed! All separate event categories will be deleted, this cannot be undone!', 'event-list' );
 		} else {
 			// 'sync' === action
-			$main_title  = __( 'Event Categories: Synchronise with Post Categories', 'event-list' );
-			$button_text = __( 'Start synchronisation', 'event-list' );
+			$main_title  = __( 'Event Categories: Synchronize with Post Categories', 'event-list' );
+			$button_text = __( 'Start synchronization', 'event-list' );
 			$description = __( 'If this option is enabled the above listed categories will be deleted and removed from the existing events!', 'event-list' );
 		}
 		// show form

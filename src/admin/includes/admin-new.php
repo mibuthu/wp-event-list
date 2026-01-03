@@ -20,6 +20,8 @@
  * @package event-list
  */
 
+// cspell:ignore dashicons
+
 // TODO: Fix phpcs warnings to remove the disabled checks
 // phpcs:disable WordPress.DateTime.CurrentTimeTimestamp.Requested
 
@@ -225,7 +227,7 @@ class EL_Admin_New {
 
 
 	public function change_default_title( $title ) {
-		// Delete default title in text field (not required due to additional lable above the title field)
+		// Delete default title in text field (not required due to additional label above the title field)
 		return '';
 	}
 

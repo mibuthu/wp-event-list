@@ -13,6 +13,8 @@
  * @package event-list
  */
 
+// cspell:ignore dashicons eventcategory
+
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }

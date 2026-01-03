@@ -23,6 +23,8 @@
  * @package event-list
  */
 
+// cspell:ignore autosavenonce closedpostboxesnonce poststuff sexample shere submitbox submitdelete
+
 if ( ! defined( 'WP_ADMIN' ) ) {
 	exit;
 }
@@ -151,7 +153,7 @@ class EL_Admin_Import {
 
 		// show heading
 		echo '
-			<h3>' . esc_html__( 'Step', 'event-list' ) . ' 2: ' . esc_html__( 'Events review and additonal category selection', 'event-list' ) . '</h3>';
+			<h3>' . esc_html__( 'Step', 'event-list' ) . ' 2: ' . esc_html__( 'Events review and additional category selection', 'event-list' ) . '</h3>';
 
 		// show messages
 		// failed parsing
@@ -386,10 +388,10 @@ class EL_Admin_Import {
 	private function save_import_settings() {
 		foreach ( $this->options->options as $oname => $o ) {
 			// check used post parameters
-			$ovalue = isset( $_POST[ $oname ] ) ? sanitize_text_field( wp_unslash( $_POST[ $oname ] ) ) : '';
+			$option_value = isset( $_POST[ $oname ] ) ? sanitize_text_field( wp_unslash( $_POST[ $oname ] ) ) : '';
 
-			if ( 'import' === $o['section'] && ! empty( $ovalue ) ) {
-				$this->options->set( $oname, $ovalue );
+			if ( 'import' === $o['section'] && ! empty( $option_value ) ) {
+				$this->options->set( $oname, $option_value );
 			}
 		}
 	}
@@ -416,9 +418,9 @@ class EL_Admin_Import {
 	public function render_category_metabox( $post, $metabox ) {
 		// @phan-suppress-next-line PhanMissingRequireFile  This file is available in WordPress
 		require_once ABSPATH . 'wp-admin/includes/meta-boxes.php';
-		$dpost = get_default_post_to_edit( 'el-events' );
-		$box   = array( 'args' => array( 'taxonomy' => $this->events_post_type->taxonomy ) );
-		post_categories_meta_box( $dpost, $box );
+		$default_post = get_default_post_to_edit( 'el-events' );
+		$box          = array( 'args' => array( 'taxonomy' => $this->events_post_type->taxonomy ) );
+		post_categories_meta_box( $default_post, $box );
 	}
 
 
@@ -472,7 +474,7 @@ class EL_Admin_Import {
 				$ret['errors'][] = $eventdata;
 				continue;
 			}
-			// TODO: return WP_Error instead of false in EL_Event when safing fails
+			// TODO: return WP_Error instead of false in EL_Event when saving fails
 			$event = EL_Event::save( $eventdata );
 			if ( ! $event instanceof EL_Event ) {
 				$ret['errors'][] = new WP_Error( 'failed_saving', __( 'Saving of event failed!', 'event-list' ), $eventdata['csv-line'] );

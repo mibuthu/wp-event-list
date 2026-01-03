@@ -16,6 +16,8 @@
  * @package event-list
  */
 
+// cspell:ignore aname dashicons
+
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
@@ -184,7 +186,7 @@ class SC_Event_List {
 			$out               .= $this->html_event_list( $a );
 			return $out;
 		}
-		// Default behaviour
+		// Default behavior
 		$out             = $this->html_feed_links( $a, 'top' );
 		$out            .= $this->html_filterbar( $a );
 		$out            .= $this->html_feed_links( $a, 'below_nav' );
@@ -435,7 +437,7 @@ class SC_Event_List {
 
 	private function html_ical_link( &$a ) {
 		require_once EL_PATH . 'includes/ical.php';
-		// TODO: Respect the catfilter attribute in the ICAL feed
+		// TODO: Respect the cat-filter attribute in the ICAL feed
 		$feed_url  = esc_url_raw( EL_ICal::get_instance()->feed_url() );
 		$link_text = esc_html( $this->options->get( 'el_feed_ical_link_text' ) );
 		return '

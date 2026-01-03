@@ -192,14 +192,14 @@ class EL_Admin_Main {
 		$date_args = array(
 			'selected_date' => isset( $_GET['date'] ) ? sanitize_key( $_GET['date'] ) : $this->default_date,
 		);
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- filterbar->show_years is escapted
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- filterbar->show_years is escaped
 		echo $this->filterbar->show_years( admin_url( 'edit.php?post_type=el_events' ), $date_args, 'dropdown', array( 'show_past' => true ) );
 
 		// cat filter
 		$cat_args = array(
 			'selected_cat' => isset( $_GET['cat'] ) ? sanitize_key( $_GET['cat'] ) : 'all',
 		);
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- filterbar->show_cats is escapted
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- filterbar->show_cats is escaped
 		echo $this->filterbar->show_cats( admin_url( 'edit.php?post_type=el_events' ), $cat_args, 'dropdown' );
 	}
 
@@ -234,7 +234,7 @@ class EL_Admin_Main {
 			),
 		);
 		$query->query_vars['meta_query'] = $meta_query;
-		// adaptions for taxonomy filter if a seperate taxonomy is used (no adaptions required if post categories are used)
+		// adaptions for taxonomy filter if a separate taxonomy is used (no adaptions required if post categories are used)
 		if ( ! $this->events_post_type->use_post_categories ) {
 			// check used get parameters
 			$selected_cat = isset( $_GET['cat'] ) ? sanitize_key( $_GET['cat'] ) : '';
@@ -271,7 +271,7 @@ class EL_Admin_Main {
 
 
 	/**
-	 * In this function the start date, the end date and time is printed formated
+	 * In this function the start date, the end date and time is printed formatted
 	 *
 	 * @param string $startdate The start date of the event
 	 * @param string $enddate The end date of the event

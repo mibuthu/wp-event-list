@@ -1,5 +1,7 @@
 // Javascript functions for event-list admin_categories page
 
+// cspell:ignore bulkactions syncform
+
 jQuery(document).ready(function($) {
 	// Move sync button next to table action button
 	$("#sync-cats").first().insertAfter($("div.bulkactions").first());

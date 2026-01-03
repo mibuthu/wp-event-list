@@ -15,6 +15,8 @@
  * @package event-list
  */
 
+// cspell:ignore syncdone syncform
+
 if ( ! defined( 'WP_ADMIN' ) ) {
 	exit;
 }
@@ -94,21 +96,21 @@ class EL_Admin_Categories {
 			$items['del_error'] = __( '%1$s categories not deleted (%2$s)', 'event-list' );
 		}
 		if ( $error ) {
-			$msgtext = __( 'An Error occured during the category sync', 'event-list' ) . ':<br />';
-			$msgnum  = 22;
+			$msg_text = __( 'An Error occurred during the category sync', 'event-list' ) . ':<br />';
+			$msg_num  = 22;
 		} else {
-			$msgtext = __( 'Category sync finished', 'event-list' ) . ':<br />';
-			$msgnum  = 21;
+			$msg_text = __( 'Category sync finished', 'event-list' ) . ':<br />';
+			$msg_num  = 21;
 		}
-		$msgtext .= '<ul style="list-style:inside">';
+		$msg_text .= '<ul style="list-style:inside">';
 		foreach ( $items as $name => $text ) {
 			if ( isset( $msgdata[ $name ] ) && is_array( $msgdata[ $name ] ) ) {
 				$items    = array_map( 'sanitize_key', $msgdata[ $name ] );
-				$msgtext .= $this->show_sync_items( $items, $text );
+				$msg_text .= $this->show_sync_items( $items, $text );
 			}
 		}
-		$msgtext                     .= '</ul>';
-		$messages['_item'][ $msgnum ] = $msgtext;
+		$msg_text                     .= '</ul>';
+		$messages['_item'][ $msg_num ] = $msg_text;
 		return $messages;
 	}
 

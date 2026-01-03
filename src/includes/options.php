@@ -197,7 +197,7 @@ class EL_Options {
 
 
 	/**
-	 * Sanitize an option value before safing the value to the database
+	 * Sanitize an option value before saving the value to the database
 	 *
 	 * @param string $value The value to sanitize
 	 * @return string

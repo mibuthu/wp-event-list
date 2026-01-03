@@ -15,6 +15,8 @@
  * @package event-list
  */
 
+// cspell:ignore aname examp shere
+
 if ( ! defined( 'WP_ADMIN' ) ) {
 	exit;
 }

@@ -119,7 +119,7 @@ class EL_Event_Category_Functions {
 
 				/**
 				 * Add to $affected_cats['to_mod'] when:
-				 *   * one of the category is root (parent isnull) and the other is not
+				 *   * one of the category is root (parent is_null) and the other is not
 				 *   * both category parent exists (instanceof WP_Term) and parent slug of post and event category are different
 				 */
 				if ( ( is_null( $post_cat_parent ) xor is_null( $event_cat_parent ) ) ||
@@ -292,7 +292,7 @@ class EL_Event_Category_Functions {
 
 	private function unregister_event_category_taxonomy() {
 		$this->events_post_type->taxonomy = $this->events_post_type->post_cat_taxonomy;
-		// @phan-suppress-next-line PhanUndeclaredFunction  The WordPress function unregister_taxonimy() exists
+		// @phan-suppress-next-line PhanUndeclaredFunction  The WordPress function unregister_taxonomy() exists
 		unregister_taxonomy( $this->events_post_type->event_cat_taxonomy );
 	}
 

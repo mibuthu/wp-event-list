@@ -138,7 +138,7 @@ class EL_Event {
 	 *
 	 * @param  int                  $pid       The post id of the event to update.
 	 * @param  array<string,string> $eventdata The event data provided in an array where the key is the event field and the value is the corresponding data.
-	 *                                         The provided data does not have to be sanitized from the user imputs because this is done in the function.
+	 *                                         The provided data does not have to be sanitized from the user inputs because this is done in the function.
 	 * @return self|false
 	 */
 	public static function save_postmeta( $pid, $eventdata ) {
@@ -209,32 +209,32 @@ class EL_Event {
 	/**
 	 * Validate a given date string
 	 *
-	 * @param string $datestring The date string to validate
+	 * @param string $date_string The date string to validate
 	 * @return false|string
 	 *
 	 * @suppress PhanDeprecatedFunctionInternal
 	 */
-	private function validate_date( $datestring ) {
+	private function validate_date( $date_string ) {
 		// phpcs:ignore PHPCompatibility.FunctionUse.NewFunctions.date_create_from_formatFound
-		$d = date_create_from_format( 'Y-m-d', $datestring );
-		if ( $d && $d->format( 'Y-m-d' ) === $datestring
+		$d = date_create_from_format( 'Y-m-d', $date_string );
+		if ( $d && $d->format( 'Y-m-d' ) === $date_string
 				&& 1970 <= $d->format( 'Y' )
 				&& 2999 >= $d->format( 'Y' ) ) {
-			return $datestring;
+			return $date_string;
 		}
 		return false;
 	}
 
 
-	public static function validate_time( $timestring ) {
+	public static function validate_time( $time_string ) {
 		// Try to extract a correct time from the provided text
-		$timestamp = strtotime( stripslashes( $timestring ) );
+		$timestamp = strtotime( stripslashes( $time_string ) );
 		// Return a standard time format if the conversion was successful
 		if ( $timestamp ) {
 			return gmdate( 'H:i:s', $timestamp );
 		}
 		// Else return the given text
-		return $timestring;
+		return $time_string;
 	}
 
 

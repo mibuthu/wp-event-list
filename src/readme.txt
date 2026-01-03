@@ -7,7 +7,7 @@ Tested up to: 5.9
 Requires PHP: 5.2
 Stable tag: 0.8.8
 Plugin URI: https://wordpress.org/plugins/event-list
-Licence: GPLv2
+License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Manage your events and show them on your site.
@@ -92,7 +92,7 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 * improved display of widget options form
 
 = 0.8.7 (2022-02-19) =
-* fixed a vulnerability that the plugin does not sanitize and escape the settings before safing them to the database
+* fixed a vulnerability that the plugin does not sanitize and escape the settings before saving them to the database
 * fixed the display of the events in the admin main page
 * always show all events in the admin main page by default, not only the upcoming
 * fixed the default order of the events in the admin main page
@@ -134,7 +134,7 @@ Another possibility would be to call the wordpress function "do_shortcode()".
 = 0.8.2 (2018-04-22) =
 * fixed category view in front page
 * fixed "past" filter option
-* fixed category filter in admin view, if a seperate taxonomy is used
+* fixed category filter in admin view, if a separate taxonomy is used
 * many improvements and fixes in upgrade process
 * add upgrade log file
 
@@ -157,13 +157,13 @@ Also check the required manual changes provided there.
 
 Attention:
 The modifications in this versions are huge. This modifications will bring some huge improvements and is a good basis for future improvements (e.g. permalinks).
-But inspite of a lot testing it doesn't eliminate any possibility for some regressions or problems during update process to the new data structure.
+But despite extensive testing, it does not eliminate the possibility of regressions or issues occurring during the update process to the new data structure.
 
 Due to this there are some steps you should consider before and after this upgrade:
 
 * have a look at the support forum if there are issues reported with the new version, and wait with the upgrade until these are solved
 * if you have a big productive site probably do not upgrade in the first days
-* have a look at the PHP error file after upgrade, the upgrade function will write some informations regarding the upgrade process to this file
+* have a look at the PHP error file after upgrade, the upgrade function will write some information regarding the upgrade process to this file
 * check your shortcodes and widget and do the required manual changes provided below
 * check your events, the event categories and the event output on the frontpage after the upgrade
 * please report problems with the upgrade or issues/regressions after the upgrade in the support forum or on github
@@ -183,7 +183,7 @@ There are some manual changes required after the upgrade:
 * fixed link to events in event-list widget
 
 = 0.7.11 (2017-10-08) =
-* more security improvments due to better sanitation of user inputs
+* more security improvements due to better sanitation of user inputs
 * prepare additional strings for translations
 * some code improvements
 
@@ -199,7 +199,7 @@ There are some manual changes required after the upgrade:
 * fixed security vulnerability reported by WordPress
 * fixed / improved time handling and sorting according to time (fixed sorting will only work in new or modified events)
 * fixed problem with locale handling in older wordpress versions
-* fixed url when going back from event details page to event list page with a drowdown filter
+* fixed url when going back from event details page to event list page with a dropdown filter
 * fixed HTML format issue in admin event table (with not properly nested tag warning)
 
 = 0.7.8 (2017-03-17) =
@@ -210,13 +210,13 @@ There are some manual changes required after the upgrade:
 * added support for categories in event import file
 * improvements and better error messages in event import
 * fixed html tag handling truncate function
-* splitted about page into 2 tabs
+* split about page into 2 tabs
 * changes in language file handling, additional option to define which language file shall be loaded first
 * some improvements in the language files itself
 * prepare more help strings for translation
 * updated translations and added more german translations
 * moved screenshots to assets folder to reduce download size
-* changed mimimum required wordpress version to 3.8
+* changed minimum required wordpress version to 3.8
 
 = 0.7.7 (2017-01-13) =
 * replaced custom admin menu icon with wordpress integrated icon for a consistent styling
@@ -239,7 +239,7 @@ There are some manual changes required after the upgrade:
 * added dutch translation nl_NL (46%)
 * added spanish translation es_ES (39%)
 * added spanish translation es_AR (18%)
-* added frensh translation fr_FR (0%)
+* added french translation fr_FR (0%)
 * Thanks to all translators at transifex!
 
 = 0.7.5 (2015-07-19) =
@@ -251,7 +251,7 @@ There are some manual changes required after the upgrade:
 * some import improvements
 * set standard import date format to mysql dateformat
 * some speed improvements
-* updated some dates and daterange helptexts and added german translations
+* updated some dates and daterange help-texts and added german translations
 * added finnish translation (thanks to jvesaladesign)
 
 = 0.7.4 (2015-05-16) =
@@ -274,7 +274,7 @@ There are some manual changes required after the upgrade:
 * fixed sub-category handling of deleted categories
 * fixed sub-category handling when a category slug is changed
 * fixed parent selection list in category edit mode
-* some helptext fixes
+* some help-text fixes
 
 = 0.7.1 (2015-02-01) =
 * added options for month filterbar item
@@ -285,7 +285,7 @@ There are some manual changes required after the upgrade:
 * some code improvements
 
 = 0.7.0 (2014-12-22) =
-* initial multilanguage support
+* initial multi-language support
 * German translation (not complete yet)
 * Unicode support in truncate function
 * Changed position of admin menu
@@ -320,7 +320,7 @@ There are some manual changes required after the upgrade:
 
 = 0.6.5 (2014-04-26) =
 * added shortcode attribute "initial_event_id"
-* added an option to only show umpcoming events in the feed
+* added an option to only show upcoming events in the feed
 * fixed a problem in truncate function
 
 = 0.6.4 (2014-02-10) =
@@ -345,7 +345,7 @@ There are some manual changes required after the upgrade:
 = 0.6.1 (2014-01-03) =
 * fixed redirect issue in admin event table
 * fixed a bug in filterbar javascript
-* fixed a problem with wrong format of deatails in admin event table
+* fixed a problem with wrong format of details in admin event table
 * changed button text for event update from "Publish" to "Update"
 * show required manual widget update message on the frontpage only to users with required privileges
 
@@ -354,7 +354,7 @@ There are some manual changes required after the upgrade:
 * added "All" and "Past" options to years filter in filterbar
 * added category filter option in filterbar
 * change "cat_filter" behavior with additional features
-* added option to display categorys/years filter in a dropdown
+* added option to display categories/years filter in a dropdown
 * added reset option to filterbar
 * added category filter selection in admin event table
 * added shortcode attribute "initial_date"
@@ -367,7 +367,7 @@ There are some manual changes required after the upgrade:
 Attention:
 In this version some of the shortcode attributes and the behavior of some existing attributes have changed and are not compatible with the old version! Please check all your shortcodes after the update.
 Additionally the url parameter has changed. So if you are using existing links to an eventlist with parameters you have to update them.
-Also existing widgets must be updated after plugin upgrade. Please visit the widget admin page and press save for all evenlist wigets.
+Also existing widgets must be updated after plugin upgrade. Please visit the widget admin page and press save for all eventlist widgets.
 
 = 0.5.2 (2013-11-09) =
 * added number of events in Right Now dashboard widget
@@ -391,12 +391,12 @@ Also existing widgets must be updated after plugin upgrade. Please visit the wid
 
 = 0.4.4 (2013-07-20) =
 * added support for sub-categories
-* moved category administration to seperate page
+* moved category administration to separate page
 * improved category sorting
 
 = 0.4.3 (2013-07-05) =
 * added possibility to edit existing categories
-* added tooptip texts for the widget option
+* added tooltip texts for the widget option
 * changed css classes to differ between event-list-view and single-event-view
 * added missing permission check for new events and about page
 * do not change publish date and user when an event is modified
@@ -446,7 +446,7 @@ Also existing widgets must be updated after plugin upgrade. Please visit the wid
 * added widget option "show_location"
 * fixed wrong url for single event page link
 * fixed issue with different shortcodes on one page or post
-* changed required prevelegs for admin about page
+* changed required privileges for admin about page
 * updated help messages on admin about page
 * small style changes on frontpage
 

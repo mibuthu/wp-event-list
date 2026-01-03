@@ -28,6 +28,8 @@
  * @package event-list
  */
 
+// cspell:ignore mofile
+
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
@@ -42,7 +44,7 @@ require_once EL_PATH . 'includes/events_post_type.php';
 /**
  * Main plugin class
  *
- * This is the inital class for loading the plugin.
+ * This is the initial class for loading the plugin.
  */
 class Event_List {
 
@@ -199,7 +201,7 @@ class Event_List {
 
 
 	/**
-	 * Equeue the event-list styles
+	 * Enqueue the event-list styles
 	 *
 	 * @return void
 	 */

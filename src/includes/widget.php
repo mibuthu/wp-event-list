@@ -12,6 +12,8 @@
  * @package event-list
  */
 
+// cspell:ignore widefat
+
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }

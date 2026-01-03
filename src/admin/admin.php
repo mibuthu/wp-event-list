@@ -17,6 +17,8 @@
  * @package event-list
  */
 
+// cspell:ignore editpost upgr
+
 if ( ! defined( 'WP_ADMIN' ) ) {
 	exit;
 }

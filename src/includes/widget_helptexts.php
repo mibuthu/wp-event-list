@@ -69,7 +69,7 @@ $widget_items_helptexts = array(
 		'caption'       => __( 'Truncate location to', 'event-list' ),
 		'caption_after' => __( 'characters', 'event-list' ),
 		'tooltip'       =>
-			__( 'If the event location is diplayed this option defines the number of displayed characters.', 'event-list' ) . ' ' .
+			__( 'If the event location is displayed this option defines the number of displayed characters.', 'event-list' ) . ' ' .
 			sprintf(
 				__( 'Set this value to %1$s to view the full text, or set it to %2$s to automatically truncate the text via css.', 'event-list' ),
 				'[0]',
@@ -102,7 +102,7 @@ $widget_items_helptexts = array(
 		'caption'       => __( 'Truncate content to', 'event-list' ),
 		'caption_after' => __( 'characters', 'event-list' ),
 		'tooltip'       =>
-			__( 'If the event content are diplayed this option defines the number of diplayed characters.', 'event-list' ) . ' ' .
+			__( 'If the event content are displayed this option defines the number of displayed characters.', 'event-list' ) . ' ' .
 			sprintf(
 				__( 'Set this value to %1$s to view the full text.', 'event-list' ),
 				'[0]'
@@ -142,7 +142,7 @@ $widget_items_helptexts = array(
 		'type'          => 'checkbox',
 		'caption'       => __( 'Add a link to the Event List page', 'event-list' ),
 		'caption_after' => null,
-		'tooltip'       => __( 'With this option you can add a link to the event-list page below the diplayed events. You have to specify the url to page option if you want to use it.', 'event-list' ),
+		'tooltip'       => __( 'With this option you can add a link to the event-list page below the displayed events. You have to specify the url to page option if you want to use it.', 'event-list' ),
 		'form_style'    => 'margin:0 0 0.2em 0.8em',
 		'form_width'    => null,
 	),
@@ -151,7 +151,7 @@ $widget_items_helptexts = array(
 		'type'          => 'text',
 		'caption'       => __( 'Caption for the link', 'event-list' ) . ':',
 		'caption_after' => null,
-		'tooltip'       => __( 'This option defines the text for the link to the Event List page if the approriate option is selected.', 'event-list' ),
+		'tooltip'       => __( 'This option defines the text for the link to the Event List page if the appropriate option is selected.', 'event-list' ),
 		'form_style'    => 'margin:0 0 1em 2.5em',
 		'form_width'    => null,
 	),

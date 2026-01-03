@@ -48,7 +48,7 @@ jQuery(document).ready(function($) {
 		altField: "#enddate-iso",
 	});
 
-	// Toogle end_date visibility and insert the correct date
+	// Toggle end_date visibility and insert the correct date
 	$("#multiday").click(function() {
 		var enddate = $("#startdate").datepicker("getDate");
 		if (this.checked) {

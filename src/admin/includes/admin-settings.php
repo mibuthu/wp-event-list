@@ -14,6 +14,8 @@
  * @package event-list
  */
 
+// cspell:ignore posttype posttypediv
+
 if ( ! defined( 'WP_ADMIN' ) ) {
 	exit;
 }

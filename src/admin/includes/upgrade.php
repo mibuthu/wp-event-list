@@ -18,6 +18,8 @@
  * @package event-list
  */
 
+// cspell:ignore upgr
+
 // TODO: Fix phpcs warnings to remove the disabled checks
 // phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery
@@ -105,7 +107,7 @@ class EL_Upgrade {
 	 * Preparations for the upgrade check
 	 */
 	private function init() {
-		// enable wbdb error logging
+		// enable wpdb error logging
 		global $wpdb;
 		$wpdb->show_errors();
 		// init logfile
@@ -152,7 +154,7 @@ class EL_Upgrade {
 	}
 
 
-	/** Upgrade to VERSION 0.8.0: change from seperate database to custom post type
+	/** Upgrade to VERSION 0.8.0: change from separate database to custom post type
 	 *   * import existing categories from "categories" option
 	 *   * import existing events from "event_list" table
 	 *   * delete option "el_db_version"
@@ -176,7 +178,7 @@ class EL_Upgrade {
 		// @phan-suppress-next-line PhanUndeclaredFunction  The WordPress function unregister_post_type() is existing.
 		unregister_post_type( 'el_events' );
 		$events_post_type->register_event_post_type();
-		// register event_cateogry taxonomy if required
+		// register event_category taxonomy if required
 		if ( ! $events_post_type->use_post_categories ) {
 			$events_post_type->register_event_category_taxonomy();
 		}
@@ -406,14 +408,14 @@ class EL_Upgrade {
 	 *                        false.. on error
 	 */
 	private function update_option( $option, $value, $msg = true ) {
-		$oldvalue = get_option( $option, null );
+		$old_value = get_option( $option, null );
 		// add option, if option does not exist
-		if ( is_null( $oldvalue ) ) {
+		if ( is_null( $old_value ) ) {
 			$ret = $this->add_option( $option, $value, $msg );
 			return $ret ? 2 : false;
 		}
 		// do nothing, if correct value is already set
-		if ( $value === $oldvalue ) {
+		if ( $value === $old_value ) {
 			$this->log( 'Update of option "' . $option . '" is not required: correct value "' . $value . '" already set', $msg );
 			return 0;
 		}
@@ -492,11 +494,11 @@ class EL_Upgrade {
 			$this->log( 'Renaming of option "' . $oldname . '" to "' . $newname . '" is not required: old option name "' . $oldname . '" is not set (default value is used)', $msg );
 			return true;
 		}
-		$newvalue = get_option( $newname, null );
-		if ( ! is_null( $newvalue ) ) {
+		$new_value = get_option( $newname, null );
+		if ( ! is_null( $new_value ) ) {
 			// update existing option
 			$this->log( 'New option name "' . $newname . '" is already available', $msg );
-			if ( $value !== $newvalue ) {
+			if ( $value !== $new_value ) {
 				$ret = $this->update_option( $newname, $value, $msg );
 				if ( false !== $ret ) {
 					$this->log( 'Updated value for existing new option name "' . $newname . '"', $msg );

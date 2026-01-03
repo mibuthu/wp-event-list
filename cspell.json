@@ -1,0 +1,66 @@
+// cSpell Settings
+{
+    // Version of the setting file
+    "version": "0.2",
+    // Active spelling language
+    "language": "en",
+    // Ignored paths and files
+    "ignorePaths": [
+        "cspell.json",
+        "*.code-workspace",
+        "composer*",
+        "assets/**",
+        "vendor/**",
+        "** copy.*",
+        "src/languages/**",
+        "src/admin/css/**",
+        "*.svg"
+    ],
+    // List of words to be always considered correct
+    "words": [
+        "ABSPATH",
+        "atts",
+        "bloginfo",
+        "chunsen",
+        "clhunsen",
+        "dateformat",
+        "datepicker",
+        "daterange",
+        "enddate",
+        "endrange",
+        "eventdata",
+        "eventdate",
+        "eventlist",
+        "filterbar",
+        "filterlist",
+        "filterrange",
+        "frontpage",
+        "fulldate",
+        "helptexts",
+        "hlist",
+        "ical",
+        "itemname",
+        "jqueryui",
+        "jvesaladesign",
+        "kses",
+        "listview",
+        "logfile",
+        "metaboxes",
+        "mibuthu",
+        "msgdata",
+        "multiday",
+        "phan",
+        "phpcs",
+        "seeseekey",
+        "Squiz",
+        "startdate",
+        "startrange",
+        "tabledata",
+        "tableitem",
+        "transifex",
+        "unslash",
+        "wpautop",
+        "wpdb",
+        "WPINC"
+    ]
+}

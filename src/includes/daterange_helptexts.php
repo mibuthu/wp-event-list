@@ -1,4 +1,7 @@
 <?php
+
+// cspell:ignore examp
+
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
@@ -18,7 +21,7 @@ $date_formats_helptexts = array(
 	'month'     => array(
 		'name'  => __( 'Month', 'event-list' ),
 		'desc'  =>
-			__( 'A month can be specified with 4 digits for the year and 2 digits for the month, seperated by a hyphen (-).', 'event-list' ) . '<br />' .
+			__( 'A month can be specified with 4 digits for the year and 2 digits for the month, separated by a hyphen (-).', 'event-list' ) . '<br />' .
 			sprintf(
 				__( 'For a start date filter the first day of %1$s is used, in an end date the last day.', 'event-list' ),
 				__( 'the resulting month', 'event-list' )
@@ -28,7 +31,7 @@ $date_formats_helptexts = array(
 
 	'day'       => array(
 		'name'  => __( 'Day', 'event-list' ),
-		'desc'  => __( 'A day can be specified in the format 4 digits for the year, 2 digits for the month and 2 digets for the day, seperated by hyphens (-).', 'event-list' ),
+		'desc'  => __( 'A day can be specified in the format 4 digits for the year, 2 digits for the month and 2 digits for the day, separated by hyphens (-).', 'event-list' ),
 		'examp' => '2015-03-29',
 	),
 
@@ -133,7 +136,7 @@ $daterange_formats_helptexts = array(
 	'date_range' => array(
 		'name'  => __( 'Date range', 'event-list' ),
 		'desc'  => __(
-			'A date rage can be specified via a start date and end date seperated by a tilde (~).<br />
+			'A date rage can be specified via a start date and end date separated by a tilde (~).<br />
 			For the start and end date any available date format can be used.',
 			'event-list'
 		),

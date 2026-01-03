@@ -17,6 +17,8 @@
  * @package event-list
  */
 
+// cspell:ignore mday
+
 // TODO: Fix phpcs warnings to remove the disabled checks
 // phpcs:disable WordPress.WhiteSpace.ControlStructureSpacing.BlankLineAfterEnd
 
@@ -207,15 +209,15 @@ if ( ! function_exists( 'date_create_from_format' ) ) {
 	/**
 	 * Undocumented function
 	 *
-	 * @param string $dformat The date format
-	 * @param string $dvalue The date value
+	 * @param string $date_format The date format
+	 * @param string $date_value The date value
 	 * @return DateTime
 	 *
 	 * @suppress PhanDeprecatedFunctionInternal
 	 */
-	function date_create_from_format( $dformat, $dvalue ) {
-		$schedule        = $dvalue;
-		$schedule_format = str_replace( array( 'Y', 'm', 'd', 'H', 'i', 'a' ), array( '%Y', '%m', '%d', '%I', '%M', '%p' ), $dformat );
+	function date_create_from_format( $date_format, $date_value ) {
+		$schedule        = $date_value;
+		$schedule_format = str_replace( array( 'Y', 'm', 'd', 'H', 'i', 'a' ), array( '%Y', '%m', '%d', '%I', '%M', '%p' ), $date_format );
 		// phpcs:ignore Generic.PHP.DeprecatedFunctions.Deprecated
 		$ugly = strptime( $schedule, $schedule_format );
 		$ymd  = sprintf(

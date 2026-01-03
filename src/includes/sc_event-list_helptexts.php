@@ -11,6 +11,8 @@
  * @package event-list
  */
 
+// cspell:ignore doption
+
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
@@ -83,7 +85,7 @@ $sc_eventlist_helptexts = array(
 				'"all"'
 			) . '<br />' .
 			sprintf(
-				__( 'Events with categories that doesn´t match %1$s are not shown in the event list. They are also not available if a manual url parameter is added.', 'event-list' ),
+				__( 'Events with categories that does not match %1$s are not shown in the event list. They are also not available if a manual url parameter is added.', 'event-list' ),
 				'cat_filter'
 			) . '<br />' .
 			sprintf(
@@ -176,7 +178,7 @@ $sc_eventlist_helptexts = array(
 						'all | upcoming | past',
 						'all&amp;upcoming&amp;past',
 						sprintf(
-							__( 'Specifies the displayed values and their order. The items must be seperated by %1$s.', 'event-list' ),
+							__( 'Specifies the displayed values and their order. The items must be separated by %1$s.', 'event-list' ),
 							'"&amp;"'
 						),
 					),
@@ -208,12 +210,12 @@ $sc_eventlist_helptexts = array(
 					),
 					array(
 						'hlist',
-						sprintf( __( 'Shows a horizonal list seperated by %1$s with a link to each item.', 'event-list' ), '"|"' ),
+						sprintf( __( 'Shows a horizontal list separated by %1$s with a link to each item.', 'event-list' ), '"|"' ),
 						'years, months, daterange, cats',
 					),
 					array(
 						'dropdown',
-						__( 'Shows a select box where an item can be choosen. After the selection of an item the page is reloaded via javascript to show the filtered events.', 'event-list' ),
+						__( 'Shows a select box where an item can be chosen. After the selection of an item the page is reloaded via javascript to show the filtered events.', 'event-list' ),
 						'years, months, daterange, cats',
 					),
 					array( 'link', __( 'Shows a simple link which can be clicked.', 'event-list' ), 'reset' ),
@@ -222,18 +224,18 @@ $sc_eventlist_helptexts = array(
 			'<p>' . __( 'Find below some declaration examples with descriptions:', 'event-list' ) . '</p>
 			<code>years_hlist,cats_dropdown</code><br />
 			' . sprintf(
-				__( 'In this example you can see that the filterbar item and the used display option is joined by an underscore %1$s. You can define several filterbar items seperated by a comma %2$s. These items will be displayed left-aligned.', 'event-list' ),
+				__( 'In this example you can see that the filterbar item and the used display option is joined by an underscore %1$s. You can define several filterbar items separated by a comma %2$s. These items will be displayed left-aligned.', 'event-list' ),
 				'"_"',
 				'(",")'
 			) . '
 			<p><code>years_dropdown(show_all=false|show_past=true),cats_dropdown;;reset_link</code><br />
 			' . sprintf(
-				__( 'In this example you can see that filterbar options can be added in brackets in format %1$s. You can also add multiple options seperated by a pipe %2$s.', 'event-list' ),
+				__( 'In this example you can see that filterbar options can be added in brackets in format %1$s. You can also add multiple options separated by a pipe %2$s.', 'event-list' ),
 				'"' . __( 'option_name', 'event-list' ) . '=' . __( 'value', 'event-list' ) . '"',
 				'("|")'
 			) . '<br />
 			' . sprintf(
-				__( 'The 2 semicolon %1$s devides the bar in 3 section. The first section will be displayed left-justified, the second section will be centered and the third section will be right-aligned. So in this example the 2 dropdown will be left-aligned and the reset link will be on the right side.', 'event-list' ),
+				__( 'The 2 semicolon %1$s divides the bar in 3 section. The first section will be displayed left-justified, the second section will be centered and the third section will be right-aligned. So in this example the 2 dropdown will be left-aligned and the reset link will be on the right side.', 'event-list' ),
 				'(";")'
 			) . '</p>',
 	),

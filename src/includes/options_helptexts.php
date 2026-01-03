@@ -1,4 +1,7 @@
 <?php
+
+// cspell:ignore shere
+
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
@@ -50,7 +53,7 @@ $options_helptexts = array(
 		'desc'    =>
 			__( 'This option defines if the complete range of a multiday event shall be considered in the date filter.', 'event-list' ) . '<br />' .
 			__( 'If disabled, only the start day of an event is considered in the filter.', 'event-list' ) . '<br />' .
-			__( 'For an example multiday event which started yesterday and ends tomorrow this means, that it is displayed in umcoming dates when this option is enabled, but it is hidden when the option is disabled.', 'event-list' ),
+			__( 'For an example multiday event which started yesterday and ends tomorrow this means, that it is displayed in upcoming dates when this option is enabled, but it is hidden when the option is disabled.', 'event-list' ),
 	),
 
 	'el_date_once_per_day'       => array(
@@ -231,7 +234,7 @@ $options_helptexts = array(
 		'label'   => __( 'Event Category handling', 'event-list' ),
 		'caption' => __( 'Use Post Categories', 'event-list' ),
 		'desc'    =>
-			__( 'Do not maintain seperate categories for the events, and use the existing post categories instead.', 'event-list' ) . '<br /><br />
+			__( 'Do not maintain separate categories for the events, and use the existing post categories instead.', 'event-list' ) . '<br /><br />
 			<strong>' . __( 'Attention', 'event-list' ) . ':</strong><br />
 			' . __( 'This option cannot be changed directly, but you can go to the Event Category switching page from here.', 'event-list' ),
 	),

@@ -17,6 +17,8 @@
  * @package event-list
  */
 
+// cspell:ignore lastpostmodified
+
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
@@ -112,20 +114,20 @@ class EL_Rss {
 					echo '
 				<category>' . esc_attr( $cat->name ) . '</category>';
 				}
-				$timetext     = empty( $event->starttime ) ? '' :
+				$time_text     = empty( $event->starttime ) ? '' :
 					__( 'Time', 'event-list' ) . ': ' . $this->format_date( $event->startdate, $event->enddate ) . ' ' . wp_kses_post( $event->starttime ) . '<br />
 					';
-				$locationtext = empty( $event->location ) ? '' :
+				$location_text = empty( $event->location ) ? '' :
 					__( 'Location', 'event-list' ) . ': ' . wp_kses_post( $event->location ) . '<br />
 					<br />
 					';
-				if ( ! empty( $timetext ) && empty( $locationtext ) ) {
-					$timetext .= '<br />
+				if ( ! empty( $time_text ) && empty( $location_text ) ) {
+					$time_text .= '<br />
 					';
 				}
 				echo '
 				<description>
-					' . esc_html( $timetext . $locationtext . do_shortcode( $event->content ) ) . '
+					' . esc_html( $time_text . $location_text . do_shortcode( $event->content ) ) . '
 				</description>';
 				echo '
 			</item>';

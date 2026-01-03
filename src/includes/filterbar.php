@@ -17,6 +17,8 @@
  * @package event-list
  */
 
+// cspell:ignore subsubsub
+
 if ( ! defined( 'WPINC' ) ) {
 	exit;
 }
@@ -52,7 +54,7 @@ class EL_Filterbar {
 	 * Main function to show the rendered HTML output
 	 *
 	 * @param string               $url The url for links
-	 * @param array<string,string> $args The filerbar arguments
+	 * @param array<string,string> $args The filterbar arguments
 	 * @return string
 	 */
 	public function show( $url, &$args ) {
@@ -67,7 +69,7 @@ class EL_Filterbar {
 				<![endif]-->
 				<div class="filterbar subsubsub">';
 		// prepare filterbar-items
-		// split 3 section (left, center, right) seperated by semicolon
+		// split 3 section (left, center, right) separated by semicolon
 		$sections      = array_slice( explode( ';', html_entity_decode( $args['filterbar_items'] ) ), 0, 3 );
 		$section_align = array( 'left', 'center', 'right' );
 		$num_sections  = count( $sections );
@@ -75,7 +77,7 @@ class EL_Filterbar {
 			if ( ! empty( $sections[ $i ] ) ) {
 				$out .= '
 					<div style="text-align:' . esc_attr( $section_align[ $i ] ) . '">';
-				// split items in section seperated by comma
+				// split items in section separated by comma
 				$items = explode( ',', $sections[ $i ] );
 				foreach ( $items as $item ) {
 					// search for item options

@@ -15,7 +15,7 @@ function el_updateUrlParameter(url, paramName, paramVal, sc_id) {
 	var oldParams = urlArray[1] ? urlArray[1] : null;
 	// create new parameter list
 	var newParams = "";
-	var seperator = "?";
+	var separator = "?";
 	var paramNameAdded = false;
 	if(null != oldParams) {
 		urlArray = oldParams.split("&");
@@ -25,18 +25,18 @@ function el_updateUrlParameter(url, paramName, paramVal, sc_id) {
 				continue;
 			}
 			if(urlArray[i].split("=")[0] == paramName) {
-				newParams += seperator + paramName + "=" + paramVal;
+				newParams += separator + paramName + "=" + paramVal;
 				paramNameAdded = true;
 			}
 			else {
-				newParams += seperator + urlArray[i];
+				newParams += separator + urlArray[i];
 			}
-			seperator = "&";
+			separator = "&";
 		}
 	}
 	// add paramName if not already done
 	if(!paramNameAdded) {
-		newParams += seperator + paramName + "=" + paramVal;
+		newParams += separator + paramName + "=" + paramVal;
 	}
 	return baseUrl + newParams + anchor;
 }
