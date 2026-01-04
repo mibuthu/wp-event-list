@@ -1,3 +1,6 @@
+<?php // phpcs:disable WordPress.Files.FileName.NotHyphenatedLowercase
+// TODO: Change filename to avoid phpcs warnings
+?>
 <?php
 
 // cspell:ignore shere
@@ -239,4 +242,3 @@ $options_helptexts = array(
 			' . __( 'This option cannot be changed directly, but you can go to the Event Category switching page from here.', 'event-list' ),
 	),
 );
-

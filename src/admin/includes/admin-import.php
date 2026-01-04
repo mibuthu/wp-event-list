@@ -311,7 +311,8 @@ class EL_Admin_Import {
 
 		// list of events to import
 		$events = array();
-		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fopen
+		// TODO: Use WP_Filesystem instead of direct PHP filesystem calls
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- Using WP_Filesystem not implemented yet
 		$file_handle = fopen( $file_path, 'r' );
 		$event_lines = -1;
 		$empty_lines = 0;
@@ -323,18 +324,18 @@ class EL_Admin_Import {
 
 			// skip empty lines
 			if ( ! array_filter( $line ) ) {
-				$empty_lines ++;
+				++$empty_lines;
 				continue;
 			}
 			// check header
 			if ( 0 > $event_lines ) {
 				if ( $line[0] === $separator_line ) {
 					// check optional separator line
-					$empty_lines ++;
+					++$empty_lines;
 					continue;
 				} elseif ( $header === $line || array_slice( $header, 0, -1 ) === $line ) {
 					// check header line
-					$event_lines ++;
+					++$event_lines;
 					continue;
 				} else {
 					return new WP_Error(
@@ -344,7 +345,7 @@ class EL_Admin_Import {
 					);
 				}
 			}
-			$event_lines ++;
+			++$event_lines;
 			// check correct number of items in line
 			if ( 6 > count( $line ) || 7 < count( $line ) ) {
 				$events[] = new WP_Error(
@@ -370,7 +371,8 @@ class EL_Admin_Import {
 			$events[] = $event;
 		}
 		// close file
-		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose
+		// TODO: Use WP_Filesystem instead of direct PHP filesystem calls
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- Using WP_Filesystem not implemented yet
 		fclose( $file_handle );
 		return $events;
 	}
@@ -415,7 +417,8 @@ class EL_Admin_Import {
 	}
 
 
-	public function render_category_metabox( $post, $metabox ) {
+	// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter -- Parameter $post not used
+	public function render_category_metabox( $_post, $metabox ) {
 		// @phan-suppress-next-line PhanMissingRequireFile  This file is available in WordPress
 		require_once ABSPATH . 'wp-admin/includes/meta-boxes.php';
 		$default_post = get_default_post_to_edit( 'el-events' );
@@ -550,4 +553,3 @@ class EL_Admin_Import {
 	}
 
 }
-

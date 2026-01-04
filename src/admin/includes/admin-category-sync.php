@@ -233,4 +233,3 @@ class EL_Admin_Category_Sync {
 	}
 
 }
-

@@ -1,3 +1,6 @@
+<?php // phpcs:disable WordPress.Files.FileName.NotHyphenatedLowercase
+// TODO: Change filename to avoid phpcs warnings
+?>
 <?php
 if ( ! defined( 'WPINC' ) ) {
 	exit;
@@ -156,4 +159,3 @@ $widget_items_helptexts = array(
 		'form_width'    => null,
 	),
 );
-

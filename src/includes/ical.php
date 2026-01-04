@@ -137,4 +137,3 @@ class EL_ICal {
 	}
 
 }
-

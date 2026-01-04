@@ -1,3 +1,6 @@
+<?php // phpcs:disable WordPress.Files.FileName.NotHyphenatedLowercase
+// TODO: Change filename to avoid phpcs warnings
+?>
 <?php
 /**
  * The shortcode [event-list] class
@@ -133,7 +136,7 @@ class SC_Event_List {
 	 */
 	public function show_html( $atts ) {
 		// change number of shortcodes
-		$this->num_sc_loaded++;
+		++$this->num_sc_loaded;
 		// Fallback for versions < 0.8.5 where the attribute 'add_feed_link' was renamed to 'add_rss_link'
 		// This can be removed in a later version.
 		if ( ( ! isset( $atts['add_rss_link'] ) ) && isset( $atts['add_feed_link'] ) ) {
@@ -329,11 +332,9 @@ class SC_Event_List {
 				// Content with more-link.
 				$content = apply_filters( 'the_content_more_link', $part[0] . $this->get_event_link( $a, $event->post->ID, $more_link_text ) );
 			}
-		} else {
+		} elseif ( $this->is_link_available( $a, $event ) ) {
 			// normal content
-			if ( $this->is_link_available( $a, $event ) ) {
-				$truncate_url = $this->get_event_url( $a, $event->post->ID );
-			}
+			$truncate_url = $this->get_event_url( $a, $event->post->ID );
 		}
 		// last preparations of content
 		$content = wp_kses_post( $event->truncate( do_shortcode( wpautop( $content ) ), $a['content_length'], $this->single_event, true, $truncate_url ) );
@@ -426,7 +427,8 @@ class SC_Event_List {
 	}
 
 
-	private function html_rss_link( &$a ) {
+	// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter -- Parameter $a not used
+	private function html_rss_link( &$_a ) {
 		require_once EL_PATH . 'includes/rss.php';
 		$feed_url  = esc_url_raw( EL_Rss::get_instance()->feed_url() );
 		$link_text = esc_html( $this->options->get( 'el_feed_rss_link_text' ) );
@@ -435,7 +437,8 @@ class SC_Event_List {
 	}
 
 
-	private function html_ical_link( &$a ) {
+	// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter -- Parameter $a not used
+	private function html_ical_link( &$_a ) {
 		require_once EL_PATH . 'includes/ical.php';
 		// TODO: Respect the cat-filter attribute in the ICAL feed
 		$feed_url  = esc_url_raw( EL_ICal::get_instance()->feed_url() );
@@ -603,4 +606,3 @@ class SC_Event_List {
 	}
 
 }
-

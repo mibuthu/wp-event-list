@@ -19,8 +19,7 @@
 
 // cspell:ignore mday
 
-// TODO: Fix phpcs warnings to remove the disabled checks
-// phpcs:disable WordPress.WhiteSpace.ControlStructureSpacing.BlankLineAfterEnd
+// phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed -- Required for helper function
 
 if ( ! defined( 'WPINC' ) ) {
 	exit;
@@ -203,6 +202,7 @@ class EL_Daterange {
 /**
  * Create date_create_from_format (DateTime::createFromFormat) alternative for PHP 5.2
  */
+// TODO: Remove function, when PHP 5.2 support is removed
 if ( ! function_exists( 'date_create_from_format' ) ) {
 
 
@@ -237,4 +237,3 @@ if ( ! function_exists( 'date_create_from_format' ) ) {
 	}
 
 }
-

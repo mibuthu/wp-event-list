@@ -185,10 +185,11 @@ class EL_Admin_New {
 	 *
 	 * @param int     $pid Post ID
 	 * @param WP_Post $post Post Object
-	 * @param bool    $update Whether this is an existing post being updated
+	 * @param bool    $_update Whether this is an existing post being updated
 	 * @return bool|int
 	 */
-	public function save_eventdata( $pid, $post, $update ) {
+	// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter -- Parameter $update not used
+	public function save_eventdata( $pid, $post, $_update ) {
 		// don't do on autosave or when new posts are first created
 		if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || 'auto-draft' === $post->post_status ) {
 			return $pid;
@@ -226,7 +227,8 @@ class EL_Admin_New {
 	}
 
 
-	public function change_default_title( $title ) {
+	// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter -- Parameter $title not used
+	public function change_default_title( $_title ) {
 		// Delete default title in text field (not required due to additional label above the title field)
 		return '';
 	}
@@ -312,4 +314,3 @@ class EL_Admin_New {
 	}
 
 }
-

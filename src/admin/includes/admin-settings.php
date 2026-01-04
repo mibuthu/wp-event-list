@@ -126,4 +126,3 @@ class EL_Admin_Settings {
 	}
 
 }
-

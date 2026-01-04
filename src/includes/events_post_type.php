@@ -1,3 +1,6 @@
+<?php // phpcs:disable WordPress.Files.FileName.NotHyphenatedLowercase
+// TODO: Change filename to avoid phpcs warnings
+?>
 <?php
 /**
  * The events post type class
@@ -183,4 +186,3 @@ class EL_Events_Post_Type {
 	}
 
 }
-

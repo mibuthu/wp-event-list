@@ -26,9 +26,9 @@
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching
 // phpcs:disable WordPress.PHP.NoSilencedErrors.Discouraged
 // phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_error_log
-// phpcs:disable WordPress.WP.AlternativeFunctions.file_system_read_fopen
-// phpcs:disable WordPress.WP.AlternativeFunctions.file_system_read_fwrite
-// phpcs:disable WordPress.WP.AlternativeFunctions.file_system_read_fclose
+// phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_fopen
+// phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_fwrite
+// phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 
 if ( ! defined( 'WP_ADMIN' ) ) {
 	exit;
@@ -541,7 +541,7 @@ class EL_Upgrade {
 		if ( file_exists( $logfile_path ) && empty( $this->resume_version ) ) {
 			// delete file if it is too old
 			if ( filemtime( $logfile_path ) < time() - 30 * 24 * 60 * 60 ) {
-				if ( ! @unlink( $logfile_path ) ) {
+				if ( ! wp_delete_file( $logfile_path ) ) {
 					error_log( 'The logfile "' . $logfile_path . '" cannot be deleted! No upgrade log file will be written!' );
 					return false;
 				}
@@ -592,5 +592,3 @@ class EL_Upgrade {
 	}
 
 }
-
-

@@ -230,4 +230,3 @@ class EL_Widget extends WP_Widget {
 	}
 
 }
-

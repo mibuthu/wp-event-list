@@ -222,4 +222,3 @@ class Event_List {
  * @var EL_EventList
  */
 $event_list = new Event_List();
-

@@ -1,3 +1,6 @@
+<?php // phpcs:disable WordPress.Files.FileName.NotHyphenatedLowercase
+// TODO: Change filename to avoid phpcs warnings
+?>
 <?php
 /**
  * The class to handle the event category functions
@@ -300,6 +303,8 @@ class EL_Event_Category_Functions {
 	private function get_event_cats( $options ) {
 		// fix for different get_terms function parameters in older WordPress versions
 		if ( version_compare( get_bloginfo( 'version' ), '4.5' ) < 0 ) {
+			// TODO: Remove support for older WordPress version
+			// phpcs:ignore WordPress.WP.DeprecatedParameters.Get_termsParam2Found -- Workaround for old wordpress version
 			return get_terms( $options['taxonomy'], $options );
 		} else {
 			return get_terms( $options );

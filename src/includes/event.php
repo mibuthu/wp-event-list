@@ -306,7 +306,7 @@ class EL_Event {
 				if ( '&' === $tag[0] ) {
 					// Handle the entity
 					$out .= $tag;
-					$printed_length++;
+					++$printed_length;
 				} else {
 					// Handle the tag
 					$tag_name = $match[1][0];

@@ -1,3 +1,6 @@
+<?php // phpcs:disable WordPress.Files.FileName.NotHyphenatedLowercase
+// TODO: Change filename to avoid phpcs warnings
+?>
 <?php
 /**
  * This file includes the helptexts for the eventlist shortcode (required in the admin page)
@@ -425,4 +428,3 @@ function sc_eventlist_helptexts_filterbar_table( $tabledata_array ) {
 		';
 	return $out;
 }
-

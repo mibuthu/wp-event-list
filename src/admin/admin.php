@@ -232,4 +232,3 @@ class EL_Admin {
 	}
 
 }
-

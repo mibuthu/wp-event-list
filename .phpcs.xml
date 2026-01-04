@@ -1,116 +1,92 @@
 <?xml version="1.0"?>
 
-<ruleset name="WordPress-plugin-event-list" namespace="WordPress-plugin-event-list">
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="phpcs.xsd" name="WordPress-plugin-comment-guestbook">
+
+    <!-- Settings -->
     <description>WordPress Coding Standards with some adaptions</description>
-
-    <!-- Add the required coding standards -->
-    <config name="installed_paths" value="vendor/wp-coding-standards/wpcs/,vendor/phpcompatibility/php-compatibility,vendor/phpcompatibility/phpcompatibility-paragonie,vendor/phpcompatibility/phpcompatibility-wp" />
-
-    <!-- Set the directories to check -->
     <file>src</file>
-    <file>.phan</file>
-
-    <!-- Set some arguments -->
     <arg name="basepath" value="." />
     <arg name="colors" />
     <arg name="extensions" value="php" />
     <arg name="report" value="full" />
     <arg name="parallel" value="8" />
 
-    <!-- Set the coding standards -->
-    <rule ref="WordPress" />
+    <!-- Rules -->
+    <rule ref="WordPress">
+        <exclude name="WordPress.WP.I18n.TranslatorsCommentWrongStyle" />
+	    <exclude name="WordPress.WP.I18n.MissingTranslatorsComment" />
+        <!-- <exclude name="Universal.Arrays.DisallowShortArraySyntax" /> -->
+        <exclude name="Squiz.Commenting.InlineComment.InvalidEndChar" />
+        <exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop" />
+        <exclude name="PSR2.Classes.ClassDeclaration.CloseBraceAfterBody" />
+    </rule>
     <rule ref="PHPCompatibilityWP" />
+    <!-- <rule ref="Generic.Arrays.DisallowLongArraySyntax" /> -->
 
-    <!-- Setting the minimum supported WP version for all sniffs in WordPress Coding-Standard -->
-    <config name="minimum_supported_wp_version" value="4.9" />
-    <!-- Setting the PHP version compatibility for PHPCompatibilityWP Coding-Standard -->
-    <config name="testVersion" value="5.2-" />
+    <!-- Rule settings -->
+    <config name="minimum_wp_version" value="6.9" /> <!-- for WordPress -->
+    <config name="testVersion" value="8.4-"/> <!-- for PHPCompatibilityWP -->
 
-    <!-- Modifications of the default coding standards -->
-
-    <!-- Disable strict filenames for classes -->
+    <!-- Rule properties -->
     <rule ref="WordPress.Files.FileName">
         <properties>
             <property name="strict_class_file_names" type="bool" value="false" />
         </properties>
     </rule>
-    <!-- Set the available text domains -->
     <rule ref="WordPress.WP.I18n">
         <properties>
-            <property name="text_domain" type="array" value="event-list,default" />
+            <property name="text_domain" type="array">
+                <element value="event-list" />
+                <element value="default" />
+            </property>
         </properties>
     </rule>
-    <!-- Disable the check for translator comments -->
-    <rule ref="WordPress.WP.I18n">
+    <rule ref="WordPress.WP.DeprecatedFunctions">
         <properties>
-            <property name="check_translator_comments" value="false" />
+            <property name="minimum_wp_version" value="6.9" />
         </properties>
     </rule>
-    <!-- Enable the blank line check -->
     <rule ref="WordPress.WhiteSpace.ControlStructureSpacing">
         <properties>
             <property name="blank_line_check" value="true" />
         </properties>
     </rule>
-    <!-- Enable the new line check for multiple stantement alignment -->
     <rule ref="WordPress.Arrays.MultipleStatementAlignment">
         <properties>
             <property name="ignoreNewlines" value="false" />
         </properties>
     </rule>
-    <!-- Set the line spacing for functions -->
     <rule ref="Squiz.WhiteSpace.FunctionSpacing">
         <properties>
             <property name="spacing" value="2" />
             <property name="spacingAfterLast" value="1" />
         </properties>
     </rule>
-    <!-- Set the line spacing for member variables -->
     <rule ref="Squiz.WhiteSpace.MemberVarSpacing">
         <properties>
             <property name="spacing" value="1" />
             <property name="spacingBeforeFirst" value="1" />
         </properties>
     </rule>
-    <!-- Set custom escaping functions -->
     <rule ref="WordPress.Security.EscapeOutput">
         <properties>
-            <property name="customEscapingFunctions" type="array" value="admin_url, get_submit_button" />
-            <property name="customAutoEscapedFunctions" type="array" value="PLUGIN_URL" />
+            <property name="customEscapingFunctions" type="array">
+                <element value="admin_url" />
+                <element value="get_submit_button" />
+            </property>
+            <property name="customAutoEscapedFunctions" type="array">
+                <element value="PLUGIN_URL" />
+            </property>
         </properties>
     </rule>
-    <!-- Allow inline comments without special end character and remove condition closing comments -->
-    <rule ref="Squiz.Commenting">
-        <exclude name="Squiz.Commenting.InlineComment.InvalidEndChar" />
-        <exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop" />
-        <exclude name="Squiz.Commenting.LongConditionClosingComment.Missing" />
-    </rule>
 
-    <!-- Use short array syntax instead of long array syntax specified in Wordpress (switch not possible as long as PHP 5.2 is supported)
-    <rule ref="Generic.Arrays.DisallowShortArraySyntax.Found">
-        <severity>0</severity>
-    </rule>
-    <rule ref="Generic.Arrays.DisallowLongArraySyntax.Found"/> -->
-
-    <!-- Temporary rules (before actual rewrite was done) -->
-    <rule ref="Squiz.Commenting">
+    <!-- Temporary disabled rules to hide unfixed issues -->
+    <rule ref="Wordpress">
         <exclude name="Squiz.Commenting.FileComment.Missing" />
         <exclude name="Squiz.Commenting.VariableComment.Missing" />
         <exclude name="Squiz.Commenting.FunctionComment.Missing" />
-    </rule>
-    <rule ref="WordPress.Files.FileName">
-        <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
-    </rule>
-    <rule ref="WordPress.DB.SlowDBQuery">
-        <exclude name="WordPress.DB.SlowDBQuery.slow_db_query_meta_key" />
-        <exclude name="WordPress.DB.SlowDBQuery.slow_db_query_meta_query" />
-    </rule>
-    <rule ref="WordPress.Security">
-        <exclude name="WordPress.Security.NonceVerification.Recommended" />
         <exclude name="WordPress.Security.NonceVerification.Missing" />
-    </rule>
-    <rule ref="PHPCompatibility.ParameterValues.NewHTMLEntitiesEncodingDefault">
-        <exclude name="PHPCompatibility.ParameterValues.NewHTMLEntitiesEncodingDefault.NotSet" />
+        <exclude name="WordPress.Security.NonceVerification.Recommended" />
     </rule>
 
 </ruleset>

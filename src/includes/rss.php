@@ -195,4 +195,3 @@ class EL_Rss {
 	}
 
 }
-

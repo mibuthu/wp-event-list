@@ -261,4 +261,3 @@ class EL_Admin_About {
 	}
 
 }
-

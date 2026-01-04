@@ -105,7 +105,7 @@ class EL_Admin_Categories {
 		$msg_text .= '<ul style="list-style:inside">';
 		foreach ( $items as $name => $text ) {
 			if ( isset( $msgdata[ $name ] ) && is_array( $msgdata[ $name ] ) ) {
-				$items    = array_map( 'sanitize_key', $msgdata[ $name ] );
+				$items     = array_map( 'sanitize_key', $msgdata[ $name ] );
 				$msg_text .= $this->show_sync_items( $items, $text );
 			}
 		}
@@ -130,4 +130,3 @@ class EL_Admin_Categories {
 	}
 
 }
-

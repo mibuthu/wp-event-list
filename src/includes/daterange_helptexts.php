@@ -1,3 +1,6 @@
+<?php // phpcs:disable WordPress.Files.FileName.NotHyphenatedLowercase
+// TODO: Change filename to avoid phpcs warnings
+?>
 <?php
 
 // cspell:ignore examp
@@ -177,4 +180,3 @@ $daterange_formats_helptexts = array(
 		'value' => 'past',
 	),
 );
-

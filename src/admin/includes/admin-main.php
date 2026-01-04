@@ -97,10 +97,11 @@ class EL_Admin_Main {
 	 *
 	 * @see WP_List_Table::::single_row_columns()
 	 *
-	 * @param array<string,string> $columns The columns
+	 * @param array<string,string> $_columns The columns
 	 * @return array<string,string> An associative array containing column information: 'slugs'=>'Visible Titles'
 	 */
-	public function events_edit_columns( $columns ) {
+	// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter -- Parameter $columns not used
+	public function events_edit_columns( $_columns ) {
 		return array(
 			// Render a checkbox instead of text
 			'cb'        => '<input type="checkbox" />',
@@ -148,7 +149,9 @@ class EL_Admin_Main {
 		switch ( $args['orderby'] ) {
 			case 'eventdate':
 				$add_args = array(
+					// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- This is required here
 					'meta_key'   => 'startdate',
+					// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- This is required here
 					'meta_query' => array(
 						'relation'  => 'AND',
 						'startdate' => array( 'key' => 'startdate' ),
@@ -164,6 +167,7 @@ class EL_Admin_Main {
 				break;
 			case 'location':
 				$add_args = array(
+					// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- This is required here
 					'meta_key' => 'location',
 				);
 				break;
@@ -220,7 +224,7 @@ class EL_Admin_Main {
 		if ( empty( $date_range ) ) {
 			$date_range = EL_Daterange::get_instance()->check_date_format( $selected_date );
 		}
-		$meta_query[]                    = array(
+		$meta_query[] = array(
 			'relation' => 'AND',
 			array(
 				'key'     => $date_for_startrange,
@@ -233,6 +237,7 @@ class EL_Admin_Main {
 				'compare' => '<',
 			),
 		);
+		// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- This is required here
 		$query->query_vars['meta_query'] = $meta_query;
 		// adaptions for taxonomy filter if a separate taxonomy is used (no adaptions required if post categories are used)
 		if ( ! $this->events_post_type->use_post_categories ) {
@@ -297,4 +302,3 @@ class EL_Admin_Main {
 	}
 
 }
-

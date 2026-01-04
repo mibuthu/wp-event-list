@@ -172,14 +172,14 @@ class EL_Events {
 	}
 
 
-	private function add_term_to_list( &$element, $level, &$children, &$list ) {
+	private function add_term_to_list( &$element, $level, &$children, &$term_list ) {
 		// Add level to object and add object to list
 		$element->level = $level;
-		$list[]         = $element;
+		$term_list[]    = $element;
 		// Handle children of element
 		if ( isset( $children[ $element->term_id ] ) ) {
 			foreach ( $children[ $element->term_id ] as &$c ) {
-				$this->add_term_to_list( $c, $level + 1, $children, $list );
+				$this->add_term_to_list( $c, $level + 1, $children, $term_list );
 			}
 			unset( $children[ $element->term_id ] );
 		}
@@ -336,4 +336,3 @@ class EL_Events {
 	}
 
 }
-

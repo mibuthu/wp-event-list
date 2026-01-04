@@ -320,9 +320,9 @@ class EL_Filterbar {
 	}
 
 
-	private function show_link( $url, $caption, $class = null ) {
-		$class = ( null === $class ) ? '' : ' class="' . $class . '"';
-		return '<a href="' . esc_url_raw( $url ) . '"' . $class . '>' . esc_html( $caption ) . '</a>';
+	private function show_link( $url, $caption, $css_class = null ) {
+		$css_class = ( null === $css_class ) ? '' : ' class="' . $css_class . '"';
+		return '<a href="' . esc_url_raw( $url ) . '"' . $css_class . '>' . esc_html( $caption ) . '</a>';
 	}
 
 
@@ -368,7 +368,7 @@ class EL_Filterbar {
 		if ( ! empty( $args['event_id'] ) ) {
 			$args['selected_date'] = null;
 			$args['selected_cat']  = null;
-		};
+		}
 	}
 
 
@@ -377,4 +377,3 @@ class EL_Filterbar {
 	}
 
 }
-

@@ -140,7 +140,8 @@ class EL_Admin_Functions {
 	}
 
 
-	public function show_radio( $name, $selected, $value_array, $disabled = false ) {
+	// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter -- Parameter $disable not used (yet)
+	public function show_radio( $name, $selected, $value_array, $_disabled = false ) {
 		echo '
 							<fieldset>';
 		foreach ( $value_array as $key => $value ) {
@@ -173,7 +174,8 @@ class EL_Admin_Functions {
 	}
 
 
-	public function show_file_upload( $name, $max_size, $disabled = false ) {
+	// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter -- Parameter $disable not used (yet)
+	public function show_file_upload( $name, $max_size, $_disabled = false ) {
 		echo '
 							<input name="' . esc_attr( $name ) . '" type="file" maxlength="' . esc_attr( $max_size ) . '">';
 	}
@@ -186,4 +188,3 @@ class EL_Admin_Functions {
 	}
 
 }
-
